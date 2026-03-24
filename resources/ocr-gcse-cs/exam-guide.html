@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR GCSE Computer Science: Exam Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-purple: #8b5cf6;
+            --accent-blue: #3b82f6;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --text-muted: #555566;
+            --border-subtle: #2a2a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+        header { text-align: center; margin-bottom: 50px; }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; font-weight: 300; }
+        .spec-tag {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 12px;
+        }
+
+        /* Progress */
+        .progress-container { margin-top: 30px; }
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border-subtle);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .progress-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 12px var(--accent-cyan);
+            transform: scale(1.2);
+        }
+        .progress-dot.completed { background: var(--accent-green); }
+        .progress-label {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        section { display: none; animation: fadeIn 0.5s ease; }
+        section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        .learning-objective {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.02));
+            border-left: 3px solid var(--accent-cyan);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 0 12px 12px 0;
+        }
+        .learning-objective-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-cyan);
+            margin-bottom: 6px;
+        }
+        .learning-objective p { color: var(--text-primary); margin: 0; font-size: 1rem; }
+
+        h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--accent-cyan); }
+        h3 { font-size: 1.15rem; margin-bottom: 14px; color: var(--text-primary); }
+        p { color: var(--text-secondary); margin-bottom: 14px; }
+        p:last-child { margin-bottom: 0; }
+
+        .highlight { color: var(--accent-yellow); font-weight: 600; }
+        .highlight-cyan { color: var(--accent-cyan); font-weight: 600; }
+        .highlight-magenta { color: var(--accent-magenta); font-weight: 600; }
+        .highlight-green { color: var(--accent-green); font-weight: 600; }
+        .highlight-orange { color: var(--accent-orange); font-weight: 600; }
+        .highlight-purple { color: var(--accent-purple); font-weight: 600; }
+
+        /* Key boxes */
+        .key-term {
+            background: linear-gradient(135deg, rgba(255, 214, 10, 0.1), rgba(255, 149, 0, 0.05));
+            border: 1px solid rgba(255, 214, 10, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+        .key-term-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .key-term-badge {
+            background: var(--accent-yellow);
+            color: var(--bg-dark);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+        .key-term-word {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-yellow);
+        }
+        .key-term p { color: var(--text-primary); margin: 0; }
+
+        .tip-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-left: 4px solid var(--accent-green);
+            border-radius: 0 12px 12px 0;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+        .tip-header {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            margin-bottom: 8px;
+        }
+        .tip-box p { color: var(--text-primary); margin: 0; }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.1), rgba(255, 0, 110, 0.05));
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            border-left: 4px solid var(--accent-magenta);
+            border-radius: 0 12px 12px 0;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+        .warning-header {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-magenta);
+            margin-bottom: 8px;
+        }
+        .warning-box p { color: var(--text-primary); margin: 0; }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-left: 4px solid var(--accent-purple);
+            border-radius: 0 12px 12px 0;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+        .info-header {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+            margin-bottom: 8px;
+        }
+        .info-box p { color: var(--text-primary); margin: 0; }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Component cards */
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .component-card {
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+        .component-card.comp1 { border-color: var(--accent-cyan); }
+        .component-card.comp2 { border-color: var(--accent-purple); }
+        .component-header {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .component-card.comp1 .component-header { color: var(--accent-cyan); }
+        .component-card.comp2 .component-header { color: var(--accent-purple); }
+        .component-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .component-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* AO bars */
+        .ao-bar {
+            margin: 16px 0;
+        }
+        .ao-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .ao-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .ao-percent {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+        .ao-track {
+            height: 12px;
+            background: var(--bg-dark);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .ao-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+        .ao1 .ao-fill { background: var(--accent-cyan); }
+        .ao2 .ao-fill { background: var(--accent-purple); }
+        .ao3 .ao-fill { background: var(--accent-orange); }
+
+        /* Response type table */
+        .response-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 4px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        .response-table th, .response-table td {
+            padding: 12px;
+            text-align: left;
+            border-radius: 8px;
+        }
+        .response-table th {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+        .response-table td {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+        }
+        .response-table .yes {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+        .response-table .no {
+            color: var(--accent-magenta);
+        }
+
+        /* Question type cards */
+        .question-type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .question-type-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .question-type-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .question-type-marks {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .question-type-name {
+            font-weight: 600;
+        }
+        .question-type-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Command word list */
+        .command-word-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .command-word {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+        .command-word-term {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            color: var(--accent-orange);
+            margin-bottom: 4px;
+        }
+        .command-word-def {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Input & buttons */
+        .input-field {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            text-align: center;
+            width: 80px;
+            padding: 10px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+        .input-field.correct {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+        .input-field.incorrect {
+            border-color: var(--accent-magenta);
+            background: rgba(255, 0, 110, 0.1);
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(139, 92, 246, 0.05));
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .question-box p {
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+        }
+        .input-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .check-btn, .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .check-btn:hover, .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+        .check-btn:disabled, .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .nav-btn.secondary {
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+        }
+        .nav-btn.secondary:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+        }
+
+        .options {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .option-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            padding: 12px 18px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            max-width: 320px;
+        }
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+        .option-btn.correct {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.2);
+        }
+        .option-btn.incorrect {
+            border-color: var(--accent-magenta);
+            background: rgba(255, 0, 110, 0.2);
+        }
+        .option-btn:disabled { cursor: not-allowed; opacity: 0.8; }
+
+        .feedback {
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-top: 14px;
+            display: none;
+            font-size: 0.95rem;
+        }
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        .feedback.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+        .feedback.error {
+            background: rgba(255, 0, 110, 0.1);
+            border: 1px solid var(--accent-magenta);
+            color: var(--accent-magenta);
+        }
+        .feedback.hint {
+            background: rgba(255, 214, 10, 0.1);
+            border: 1px solid var(--accent-yellow);
+            color: var(--accent-yellow);
+        }
+
+        .notes-section {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-top: 20px;
+        }
+        .notes-section.hidden { display: none; }
+        .notes-header {
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 12px;
+        }
+        .notes-section ul {
+            margin-left: 20px;
+            color: var(--text-secondary);
+        }
+        .notes-section li { margin: 6px 0; }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        /* Badge */
+        .badge-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .badge {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 24px;
+            position: relative;
+        }
+        .badge-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 4px solid var(--accent-cyan);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(139, 92, 246, 0.1));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+        .badge-icon {
+            font-size: 3rem;
+            margin-bottom: 8px;
+        }
+        .badge-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .badge-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .badge-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 20px;
+        }
+        .badge-name-on-badge {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 4px 0;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .badge-date {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .badge-score {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--accent-green);
+            margin-top: 8px;
+        }
+
+        /* Score tracker */
+        .score-tracker {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 12px 16px;
+            z-index: 100;
+            display: none;
+        }
+        .score-tracker.visible { display: block; }
+        .score-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .score-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        /* Scenario box */
+        .scenario-box {
+            background: var(--bg-dark);
+            border: 2px dashed var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .scenario-header {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .scenario-content {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            background: var(--bg-card);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px 15px; }
+            h1 { font-size: 1.7rem; }
+            .card { padding: 20px 16px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .stat-value { font-size: 1.5rem; }
+            .score-tracker { top: auto; bottom: 20px; right: 10px; left: 10px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="score-tracker" id="scoreTracker">
+        <div class="score-label">Your Score</div>
+        <div class="score-value"><span id="currentScore">0</span>/<span id="maxScore">0</span></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>OCR GCSE Computer Science</h1>
+            <p class="subtitle">Master the Exam — Know Exactly What's Expected</p>
+            <span class="spec-tag">J277 Specification</span>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <p class="progress-label">Section <span id="currentSection">1</span> of <span id="totalSections">12</span></p>
+            </div>
+        </header>
+
+        <main>
+            <!-- SECTION 1: Welcome -->
+            <section id="section-1" class="active">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">What You'll Learn</div>
+                        <p>Understand exactly how your GCSE Computer Science exams work so you can prepare effectively.</p>
+                    </div>
+
+                    <h2>📋 Know Your Exam</h2>
+                    <p>This resource will teach you everything you need to know about how the OCR GCSE Computer Science exams work — the structure, what's expected, and how to approach different question types.</p>
+
+                    <p>By the end, you'll understand:</p>
+                    <ul style="margin-left: 20px; color: var(--text-secondary);">
+                        <li>How the two papers are structured</li>
+                        <li>What the Assessment Objectives (AO1, AO2, AO3) mean for you</li>
+                        <li>When you can use pseudocode vs when you <em>must</em> use code</li>
+                        <li>How different question types are marked</li>
+                        <li>Key exam techniques to maximise your marks</li>
+                    </ul>
+
+                    <div class="stats-grid" style="margin-top: 24px;">
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: var(--accent-cyan);">2</div>
+                            <div class="stat-label">Exam Papers</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: var(--accent-purple);">160</div>
+                            <div class="stat-label">Total Marks</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: var(--accent-orange);">3</div>
+                            <div class="stat-label">Hours Total</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" style="color: var(--accent-green);">50/50</div>
+                            <div class="stat-label">Split</div>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <div class="tip-header">💡 Why This Matters</div>
+                        <p>Students who understand how exams are marked consistently perform better. Knowing what examiners are looking for helps you write answers that hit the mark points.</p>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <div></div>
+                    <button class="nav-btn" onclick="goToSection(2)">Let's Begin →</button>
+                </div>
+            </section>
+
+            <!-- SECTION 2: The Two Papers -->
+            <section id="section-2">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objective</div>
+                        <p>Understand the structure of the two exam papers and what each one tests.</p>
+                    </div>
+
+                    <h2>📑 The Two Papers</h2>
+                    <p>Your GCSE Computer Science qualification is split equally between two papers. You must sit both.</p>
+
+                    <div class="component-grid">
+                        <div class="component-card comp1">
+                            <div class="component-header">Component 01</div>
+                            <div class="component-title">Computer Systems</div>
+                            <div class="component-desc">
+                                <strong>80 marks • 1 hour 30 mins • 50%</strong><br><br>
+                                Theory paper covering hardware, software, networks, security, and ethics.
+                            </div>
+                        </div>
+                        <div class="component-card comp2">
+                            <div class="component-header">Component 02</div>
+                            <div class="component-title">Computational Thinking, Algorithms & Programming</div>
+                            <div class="component-desc">
+                                <strong>80 marks • 1 hour 30 mins • 50%</strong><br><br>
+                                Problem-solving, algorithms, and programming skills.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>Quick check:</strong> If the total qualification is out of 160 marks, how many marks is each paper worth?</p>
+                        <div class="input-row">
+                            <input type="number" class="input-field" id="q2-marks" placeholder="?" aria-label="Marks per paper">
+                            <span style="color: var(--text-secondary);">marks each</span>
+                            <button class="check-btn" onclick="checkSection2()">Check</button>
+                        </div>
+                        <div class="feedback" id="fb-q2"></div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-header">🔗 Synopticity</div>
+                        <p>Questions can draw on knowledge from <strong>both</strong> papers. For example, a programming question in Paper 2 might involve concepts from Paper 1 (like how the CPU works). Everything connects!</p>
+                    </div>
+
+                    <div class="notes-section hidden" id="notes-2">
+                        <div class="notes-header">📝 Key Points</div>
+                        <ul>
+                            <li>Two papers, each worth 50% (80 marks)</li>
+                            <li>1 hour 30 minutes for each paper</li>
+                            <li>Paper 1 = Theory, Paper 2 = Programming & Problem-solving</li>
+                            <li>Questions can link knowledge from across the whole course</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn secondary" onclick="goToSection(1)">← Back</button>
+                    <button class="nav-btn" id="next-2" onclick="goToSection(3)" disabled>Continue →</button>
+                </div>
+            </section>
+
+            <!-- SECTION 3: Assessment Objectives -->
+            <section id="section-3">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objective</div>
+                        <p>Understand what AO1, AO2, and AO3 mean and how they affect your answers.</p>
+                    </div>
+
+                    <h2>🎯 Assessment Objectives</h2>
+                    <p>Every exam question tests one or more <span class="highlight">Assessment Objectives</span> (AOs). Understanding these helps you know what the examiner is looking for.</p>
+
+                    <div class="ao-bar ao1">
+                        <div class="ao-header">
+                            <span class="ao-label" style="color: var(--accent-cyan);">AO1: Knowledge & Understanding</span>
+                            <span class="ao-percent" style="color: var(--accent-cyan);">30%</span>
+                        </div>
+                        <div class="ao-track">
+                            <div class="ao-fill" style="width: 30%;"></div>
+                        </div>
+                        <p style="font-size: 0.85rem; margin-top: 6px;">Show you <strong>know</strong> the facts, concepts, and terminology.</p>
+                    </div>
+
+                    <div class="ao-bar ao2">
+                        <div class="ao-header">
+                            <span class="ao-label" style="color: var(--accent-purple);">AO2: Application</span>
+                            <span class="ao-percent" style="color: var(--accent-purple);">40%</span>
+                        </div>
+                        <div class="ao-track">
+                            <div class="ao-fill" style="width: 40%;"></div>
+                        </div>
+                        <p style="font-size: 0.85rem; margin-top: 6px;"><strong>Apply</strong> your knowledge to scenarios and problems.</p>
+                    </div>
+
+                    <div class="ao-bar ao3">
+                        <div class="ao-header">
+                            <span class="ao-label" style="color: var(--accent-orange);">AO3: Analysis & Problem-Solving</span>
+                            <span class="ao-percent" style="color: var(--accent-orange);">30%</span>
+                        </div>
+                        <div class="ao-track">
+                            <div class="ao-fill" style="width: 30%;"></div>
+                        </div>
+                        <p style="font-size: 0.85rem; margin-top: 6px;"><strong>Analyse</strong> problems, make judgements, design and write programs.</p>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>Match the AO:</strong> A question asks you to "State two advantages of using an SSD over an HDD." Which AO is this primarily testing?</p>
+                        <div class="options" id="q3-options">
+                            <button class="option-btn" onclick="checkSection3(this, true)">AO1 — You're showing knowledge of facts</button>
+                            <button class="option-btn" onclick="checkSection3(this, false)">AO2 — You're applying to a scenario</button>
+                            <button class="option-btn" onclick="checkSection3(this, false)">AO3 — You're designing a solution</button>
+                        </div>
+                        <div class="feedback" id="fb-q3"></div>
+                    </div>
+
+                    <div class="tip-box">
+                        <div class="tip-header">💡 What This Means For You</div>
+                        <p><strong>40% of marks are AO2</strong> — that's application. You'll often need to apply your knowledge to a specific context or scenario, not just state facts. Read questions carefully!</p>
+                    </div>
+
+                    <div class="notes-section hidden" id="notes-3">
+                        <div class="notes-header">📝 Key Points</div>
+                        <ul>
+                            <li>AO1 (30%): Know the facts — definitions, terminology, concepts</li>
+                            <li>AO2 (40%): Apply knowledge — use it in scenarios/contexts</li>
+                            <li>AO3 (30%): Analyse & solve — design programs, make judgements</li>
+                            <li>Most marks require more than just memorisation!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn secondary" onclick="goToSection(2)">← Back</button>
+                    <button class="nav-btn" id="next-3" onclick="goToSection(4)" disabled>Continue →</button>
+                </div>
+            </section>
+
+            <!-- SECTION 4: Component 01 Deep Dive -->
+            <section id="section-4">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objective</div>
+                        <p>Understand what Component 01 contains and how the 8-mark extended response works.</p>
+                    </div>
+
+                    <h2>📘 Component 01: Computer Systems</h2>
+                    <p>This is your theory paper. It tests your understanding of how computers work, from hardware to ethics.</p>
+
+                    <h3>What's Covered</h3>
+                    <ul style="margin-left: 20px; color: var(--text-secondary); margin-bottom: 20px;">
+                        <li>Systems architecture (CPU, memory)</li>
+                        <li>Memory and storage</li>
+                        <li>Networks, connections, and protocols</li>
+                        <li>Network security</li>
+                        <li>Systems software</li>
+                        <li>Ethical, legal, cultural, and environmental issues</li>
+                    </ul>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Special Question</span>
+                            <span class="key-term-word">8-Mark Extended Response</span>
+                        </div>
+                        <p>Component 01 always has <strong>one 8-mark question</strong> that tests your ability to construct a detailed, logical argument. These use a "levels of response" mark scheme.</p>
+                    </div>
+
+                    <div class="scenario-box">
+                        <div class="scenario-header">Example 8-Mark Question</div>
+                        <div class="scenario-content">
+                            "People often want to buy the most up-to-date smartphones, even though the smartphone they own still works.<br><br>
+                            <strong>Discuss</strong> the impact of people wanting to upgrade to the latest smartphone.<br><br>
+                            In your answer you might consider the impact on: smartphone users, cultural issues, ethical issues, environmental issues."
+                        </div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>Think about it:</strong> For an 8-mark "Discuss" question, which approach would get you more marks?</p>
+                        <div class="options" id="q4-options">
+                            <button class="option-btn" onclick="checkSection4(this, false)">Write a list of as many points as possible</button>
+                            <button class="option-btn" onclick="checkSection4(this, true)">Write a logical, structured response covering multiple perspectives with developed points</button>
+                            <button class="option-btn" onclick="checkSection4(this, false)">Write one really long paragraph about one issue</button>
+                        </div>
+                        <div class="feedback" id="fb-q4"></div>
+                    </div>
+
+                    <div class="tip-box" id="tip-4" style="display: none;">
+                        <div class="tip-header">💡 Extended Response Tips</div>
+                        <p>For 8-mark questions: Plan before you write. Cover multiple aspects (the bullet points are hints!). Develop your points with explanation. Use a logical structure. A conclusion can help show balanced judgement.</p>
+                    </div>
+
+                    <div class="notes-section hidden" id="notes-4">
+                        <div class="notes-header">📝 Key Points</div>
+                        <ul>
+                            <li>Component 01 is the theory paper (hardware, software, networks, security, ethics)</li>
+                            <li>Contains ONE 8-mark extended response question</li>
+                            <li>8-mark questions test your ability to discuss and evaluate, not just list</li>
+                            <li>Use the bullet points in the question as a guide for structure</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn secondary" onclick="goToSection(3)">← Back</button>
+                    <button class="nav-btn" id="next-4" onclick="goToSection(5)" disabled>Continue →</button>
+                </div>
+            </section>
+
+            <!-- SECTION 5: Component 02 Section A -->
+            <section id="section-5">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objective</div>
+                        <p>Understand Component 02 Section A and the flexibility you have in how you respond.</p>
+                    </div>
+
+                    <h2>📗 Component 02: Section A (50 marks)</h2>
+                    <p>Section A covers computational thinking, algorithms, and general programming concepts.</p>
+
+                    <h3>You Have Flexibility!</h3>
+                    <p>Unless the question specifically states otherwise, in Section A you can respond using:</p>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div style="font-size: 1.5rem; margin-bottom: 8px;">📝</div>
+                            <div class="stat-label">Pseudocode</div>
+                        </div>
+                        <div class="stat-card">
+                            <div style="font-size: 1.5rem; margin-bottom: 8px;">🔀</div>
+                            <div class="stat-label">Flowcharts</div>
+                        </div>
+                        <div class="stat-card">
+                            <div style="font-size: 1.5rem; margin-bottom: 8px;">📋</div>
+                            <div class="stat-label">Bullet Points</div>
+                        </div>
+                        <div class="stat-card">
+                            <div style="font-size: 1.5rem; margin-bottom: 8px;">💻</div>
+                            <div class="stat-label">ERL or Code</div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-header">📖 What is ERL?</div>
+                        <p>The <strong>Exam Reference Language</strong> is OCR's standardised pseudocode. You <em>don't</em> need to memorise it or write in it — but you <em>do</em> need to be able to read and understand it when it appears in questions.</p>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>Check your understanding:</strong> A Section A question asks you to "write an algorithm to find the largest number in a list." Can you respond with a flowchart?</p>
+                        <div class="options" id="q5-options">
+                            <button class="option-btn" onclick="checkSection5(this, true)">Yes — Section A allows flowcharts unless it says otherwise</button>
+                            <button class="option-btn" onclick="checkSection5(this, false)">No — algorithms must always be written in code</button>
+                        </div>
+                        <div class="feedback" id="fb-q5"></div>
+                    </div>
+
+                    <div class="tip-box">
+                        <div class="tip-header">💡 Section A also has a 6-mark question</div>
+                        <p>Section A always includes one larger 6-mark question. This is still marked using a points-based scheme (not levels of response like the 8-marker in Paper 1).</p>
+                    </div>
+
+                    <div class="notes-section hidden" id="notes-5">
+                        <div class="notes-header">📝 Key Points</div>
+                        <ul>
+                            <li>Section A = 50 marks of computational thinking and algorithms</li>
+                            <li>Flexible responses: pseudocode, flowcharts, bullet points, ERL, or actual code</li>
+                            <li>ERL: You need to READ it, not memorise it</li>
+                            <li>Contains one 6-mark question (points-based marking)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn secondary" onclick="goToSection(4)">← Back</button>
+                    <button class="nav-btn" id="next-5" onclick="goToSection(6)" disabled>Continue →</button>
+                </div>
+            </section>
+
+            <!-- SECTION 6: Component 02 Section B -->
+            <section id="section-6">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objective</div>
+                        <p>Understand Component 02 Section B and the four question types: Design, Write, Test, and Refine.</p>
+                    </div>
+
+                    <h2>📗 Component 02: Section B (30 marks)</h2>
+                    <p>Section B tests your <strong>actual programming skills</strong>. Questions build on each other but aren't dependent — you can still answer later questions even if you struggled with earlier ones.</p>
+
+                    <div class="warning-box">
+                        <div class="warning-header">⚠️ Less Flexibility Here!</div>
+                        <p>Section B has stricter rules about how you respond. Some questions <strong>require</strong> you to use ERL or a high-level programming language — flowcharts and bullet points won't be accepted for those.</p>
+                    </div>
+
+                    <h3>The Four Question Types</h3>
+                    <p>Section B questions fall into four categories:</p>
+
+                    <table class="response-table">
+                        <tr>
+                            <th>Type</th>
+                            <th>What It Tests</th>
+                            <th>Allowed Responses</th>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--accent-cyan); font-weight: 600;">Design</td>
+                            <td>Creating ideas for algorithms</td>
+                            <td><span class="yes">✓ Pseudocode, flowchart, bullet points, code</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--accent-green); font-weight: 600;">Write</td>
+                            <td>Writing actual program code</td>
+                            <td><span class="yes">✓ ERL or high-level language ONLY</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--accent-orange); font-weight: 600;">Test</td>
+                            <td>Testing programs work correctly</td>
+                            <td><span class="yes">✓ Trace tables, test data, test cases</span></td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--accent-purple); font-weight: 600;">Refine</td>
+                            <td>Fixing/improving existing code</td>
+                            <td><span class="yes">✓ ERL or high-level language ONLY</span></td>
+                        </tr>
+                    </table>
+
+                    <div class="question-box">
+                        <p><strong>Quick check:</strong> A question says "Write a program to calculate the average of numbers in an array." Can you answer using a flowchart?</p>
+                        <div class="options" id="q6-options">
+                            <button class="option-btn" onclick="checkSection6(this, false)">Yes — flowcharts always work</button>
+                            <button class="option-btn" onclick="checkSection6(this, true)">No — "Write" questions need ERL or actual code</button>
+                        </div>
+                        <div class="feedback" id="fb-q6"></div>
+                    </div>
+
+                    <div class="tip-box">
+                        <div class="tip-header">💡 Look For This Instruction</div>
+                        <p>Questions that require code will clearly state: <em>"You must use either: OCR Exam Reference Language, or a high-level programming language that you have studied."</em></p>
+                    </div>
+
+                    <div class="notes-section hidden" id="notes-6">
+                        <div class="notes-header">📝 Key Points</div>
+                        <ul>
+                            <li>Section B = 30 marks testing practical programming</li>
+                            <li><strong>Design</strong>: Flexible (pseudocode, flowchart, etc.)</li>
+                            <li><strong>Write</strong>: Must use ERL or actual code</li>
+                            <li><strong>Test</strong>: Trace tables and test data</li>
+                            <li><strong>Refine</strong>: Must use ERL or actual code</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn secondary" onclick="goToSection(5)">← Back</button>
+                    <button class="nav-btn" id="next-6" onclick="goToSection(7)" disabled>Continue →</button>
+                </div>
+            </section>
+
+            <!-- SECTION 7: Programming Precision -->
+            <section id="section-7">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objective</div>
+                        <p>Understand how programming answers are marked and what "precision" means.</p>
+                    </div>
+
+                    <h2>⌨️ Writing Code in Exams</h2>
+                    <p>Between <span class="highlight">10-15% of Component 02</span> (that's 8-12 marks) specifically tests your ability to write algorithms with <strong>precision</strong>.</p>
+
+                    <div class="info-box">
+                        <div class="info-header">🎯 What Does "Precision" Mean?</div>
+                        <p>OCR tests that you can use correct programming syntax — the common elements that appear across all languages (variables, loops, conditions, etc.).</p>
+                    </div>
+
+                    <h3>What's Penalised vs What's Not</h3>
+                    
+                    <div class="tip-box">
+                        <div class="tip-header">✓ Minor Errors Usually NOT Penalised</div>
+                        <p>A missing colon or semicolon won't lose marks if the examiner can still understand what your code is meant to do.</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-header">✗ These WILL Be Penalised</div>
+                        <p>Errors that show misunderstanding, like writing <code style="color: var(--accent-cyan);">7 = x</code> instead of <code style="color: var(--accent-green);">x = 7</code> (assignment the wrong way round).</p>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>Which of these would likely lose marks?</strong></p>
+                        <div class="options" id="q7-options">
+                            <button class="option-btn" onclick="checkSection7(this, false)">Forgetting a colon after an if statement</button>
+                            <button class="option-btn" onclick="checkSection7(this, true)">Writing total = total / count when you meant total = count / total</button>
+                            <button class="option-btn" onclick="checkSection7(this, false)">Inconsistent indentation</button>
+                        </div>
+                        <div class="feedback" id="fb-q7"></div>
+                    </div>
+
+                    <div class="tip-box">
+                        <div class="tip-header">💡 Best Practice</div>
+                        <p>Write in the language you've used in class — you'll make fewer mistakes. Stronger candidates typically use their classroom language rather than trying to use ERL.</p>
+                    </div>
+
+                    <div class="notes-section hidden" id="notes-7">
+                        <div class="notes-header">📝 Key Points</div>
+                        <ul>
+                            <li>8-12 marks test precise algorithm writing</li>
+                            <li>Minor syntax errors (colons, semicolons) usually not penalised</li>
+                            <li>Logic errors and wrong operations ARE penalised</li>
+                            <li>Use the language you know best from class</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn secondary" onclick="goToSection(6)">← Back</button>
+                    <button class="nav-btn" id="next-7" onclick="goToSection(8)" disabled>Continue →</button>
+                </div>
+            </section>
+
+            <!-- SECTION 8: Question Types -->
+            <section id="section-8">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objective</div>
+                        <p>Recognise the three main question types and understand how each is marked.</p>
+                    </div>
+
+                    <h2>❓ Question Types</h2>
+                    <p>Questions fall into three broad categories based on how many marks they're worth:</p>
+
+                    <div class="question-type-grid">
+                        <div class="question-type-card">
+                            <div class="question-type-header">
+                                <span class="question-type-marks">1-3 marks</span>
+                                <span class="question-type-name">Short Answer</span>
+                            </div>
+                            <div class="question-type-desc">
+                                Quick recall or simple application. May be tick boxes, fill-in-the-blank, or brief written answers.
+                            </div>
+                        </div>
+                        <div class="question-type-card">
+                            <div class="question-type-header">
+                                <span class="question-type-marks" style="background: var(--accent-purple);">3-6 marks</span>
+                                <span class="question-type-name">Medium Response</span>
+                            </div>
+                            <div class="question-type-desc">
+                                More detailed answers or algorithm writing. Points-based marking — each correct point earns marks.
+                            </div>
+                        </div>
+                        <div class="question-type-card">
+                            <div class="question-type-header">
+                                <span class="question-type-marks" style="background: var(--accent-orange);">8 marks</span>
+                                <span class="question-type-name">Extended Response</span>
+                            </div>
+                            <div class="question-type-desc">
+                                Only in Paper 1. Requires discussion/evaluation. Marked using levels (quality of argument, not just number of points).
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 24px;">Short Answer Examples</h3>
+                    <p>These are designed to be accessible and test knowledge efficiently:</p>
+                    <ul style="margin-left: 20px; color: var(--text-secondary);">
+                        <li><strong>Tick box</strong>: "Tick one box to identify which is a comparison operator"</li>
+                        <li><strong>Fill in the blank</strong>: "The process of _____ breaks down a problem into smaller parts"</li>
+                        <li><strong>State/Identify</strong>: "Identify three devices that contain embedded systems"</li>
+                    </ul>
+
+                    <div class="question-box">
+                        <p><strong>Quick check:</strong> A question worth 6 marks in Component 02 Section A would be marked using...</p>
+                        <div class="options" id="q8-options">
+                            <button class="option-btn" onclick="checkSection8(this, true)">Points-based marking (each correct element earns marks)</button>
+                            <button class="option-btn" onclick="checkSection8(this, false)">Levels of response (quality of overall argument)</button>
+                        </div>
+                        <div class="feedback" id="fb-q8"></div>
+                    </div>
+
+                    <div class="notes-section hidden" id="notes-8">
+                        <div class="notes-header">📝 Key Points</div>
+                        <ul>
+                            <li>Short (1-3): Quick answers, tick boxes, fill blanks</li>
+                            <li>Medium (3-6): More detail, points-based marking</li>
+                            <li>Extended (8): Paper 1 only, levels of response</li>
+                            <li>The 6-mark in Section A is points-based, NOT levels</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn secondary" onclick="goToSection(7)">← Back</button>
+                    <button class="nav-btn" id="next-8" onclick="goToSection(9)" disabled>Continue →</button>
+                </div>
+            </section>
+
+            <!-- SECTION 9: Command Words -->
+            <section id="section-9">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objective</div>
+                        <p>Understand key command words and what type of response each one requires.</p>
+                    </div>
+
+                    <h2>📢 Command Words</h2>
+                    <p>Command words tell you exactly what kind of response is expected. Misreading them is one of the most common ways to lose marks!</p>
+
+                    <div class="command-word-list">
+                        <div class="command-word">
+                            <div class="command-word-term">State / Identify / Name</div>
+                            <div class="command-word-def">Brief answer — no explanation needed</div>
+                        </div>
+                        <div class="command-word">
+                            <div class="command-word-term">Describe</div>
+                            <div class="command-word-def">Say what something is or how it works</div>
+                        </div>
+                        <div class="command-word">
+                            <div class="command-word-term">Explain</div>
+                            <div class="command-word-def">Give reasons WHY — more detail than describe</div>
+                        </div>
+                        <div class="command-word">
+                            <div class="command-word-term">Discuss</div>
+                            <div class="command-word-def">Consider different aspects/viewpoints</div>
+                        </div>
+                        <div class="command-word">
+                            <div class="command-word-term">Compare</div>
+                            <div class="command-word-def">Show similarities AND differences</div>
+                        </div>
+                        <div class="command-word">
+                            <div class="command-word-term">Write / Complete</div>
+                            <div class="command-word-def">Produce code/algorithm — check if code required</div>
+                        </div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>Spot the difference:</strong> How would your answer differ between these two questions?</p>
+                        <div class="scenario-box" style="margin: 16px 0;">
+                            <p style="margin-bottom: 8px;"><strong>A:</strong> "State one advantage of using an SSD" [1 mark]</p>
+                            <p><strong>B:</strong> "Explain one advantage of using an SSD" [2 marks]</p>
+                        </div>
+                        <div class="options" id="q9-options">
+                            <button class="option-btn" onclick="checkSection9(this, false)">Both need the same level of detail</button>
+                            <button class="option-btn" onclick="checkSection9(this, true)">A needs just the advantage; B needs the advantage PLUS why it matters</button>
+                        </div>
+                        <div class="feedback" id="fb-q9"></div>
+                    </div>
+
+                    <div class="tip-box" id="tip-9" style="display: none;">
+                        <div class="tip-header">💡 Example Answers</div>
+                        <p><strong>State (1 mark):</strong> "Faster read/write speeds"</p>
+                        <p style="margin-top: 8px;"><strong>Explain (2 marks):</strong> "Faster read/write speeds [1] because SSDs have no moving parts so data can be accessed instantly [1]"</p>
+                    </div>
+
+                    <div class="notes-section hidden" id="notes-9">
+                        <div class="notes-header">📝 Key Points</div>
+                        <ul>
+                            <li>State/Identify = brief, no explanation</li>
+                            <li>Describe = what/how</li>
+                            <li>Explain = why (give reasons)</li>
+                            <li>Discuss = multiple viewpoints/aspects</li>
+                            <li>More marks usually = more detail expected</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn secondary" onclick="goToSection(8)">← Back</button>
+                    <button class="nav-btn" id="next-9" onclick="goToSection(10)" disabled>Continue →</button>
+                </div>
+            </section>
+
+            <!-- SECTION 10: Show Your Working -->
+            <section id="section-10">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objective</div>
+                        <p>Understand when and why showing your working matters.</p>
+                    </div>
+
+                    <h2>✏️ Show Your Working</h2>
+                    <p>Some questions explicitly ask you to <span class="highlight">show your working</span>. This is especially common for:</p>
+
+                    <ul style="margin-left: 20px; color: var(--text-secondary); margin-bottom: 20px;">
+                        <li>Binary, denary, and hexadecimal conversions</li>
+                        <li>Data representation calculations</li>
+                        <li>Any mathematical computation</li>
+                    </ul>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Important</span>
+                            <span class="key-term-word">Partial Credit</span>
+                        </div>
+                        <p>If you show your working, you can still earn marks even if your final answer is wrong! The examiner can see where you went wrong and credit the correct steps.</p>
+                    </div>
+
+                    <div class="scenario-box">
+                        <div class="scenario-header">Example: Converting 156 to Binary</div>
+                        <div class="scenario-content" style="font-size: 0.85rem;">
+                            <strong>Good working:</strong><br>
+                            156 - 128 = 28 ✓<br>
+                            28 - 64 = can't<br>
+                            28 - 32 = can't<br>
+                            28 - 16 = 12 ✓<br>
+                            12 - 8 = 4 ✓<br>
+                            4 - 4 = 0 ✓<br>
+                            Answer: 10011100<br><br>
+                            <em>Even if you made an arithmetic error, correct method = marks!</em>
+                        </div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>True or false:</strong> If a question doesn't ask for working, you should never show it.</p>
+                        <div class="options" id="q10-options">
+                            <button class="option-btn" onclick="checkSection10(this, false)">True — only show working when asked</button>
+                            <button class="option-btn" onclick="checkSection10(this, true)">False — it's good practice to show working even when not required</button>
+                        </div>
+                        <div class="feedback" id="fb-q10"></div>
+                    </div>
+
+                    <div class="notes-section hidden" id="notes-10">
+                        <div class="notes-header">📝 Key Points</div>
+                        <ul>
+                            <li>Show working when asked — especially for conversions</li>
+                            <li>Working can earn partial credit even if final answer is wrong</li>
+                            <li>Good practice to show working even when not required</li>
+                            <li>Working helps you avoid mistakes too!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn secondary" onclick="goToSection(9)">← Back</button>
+                    <button class="nav-btn" id="next-10" onclick="goToSection(11)" disabled>Continue →</button>
+                </div>
+            </section>
+
+            <!-- SECTION 11: Practice Quiz -->
+            <section id="section-11">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Final Check</div>
+                        <p>Test your understanding of how the exam works.</p>
+                    </div>
+
+                    <h2>🎯 Exam Knowledge Quiz</h2>
+                    <p>Let's check you've understood the key points. Answer all questions to unlock your badge!</p>
+
+                    <div class="question-box">
+                        <p><strong>Q1:</strong> How many marks is the whole GCSE Computer Science qualification worth?</p>
+                        <div class="options" id="quiz-q1">
+                            <button class="option-btn" onclick="checkQuiz(1, this, false)">80 marks</button>
+                            <button class="option-btn" onclick="checkQuiz(1, this, true)">160 marks</button>
+                            <button class="option-btn" onclick="checkQuiz(1, this, false)">200 marks</button>
+                        </div>
+                        <div class="feedback" id="fb-quiz-1"></div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>Q2:</strong> Which section of Component 02 requires you to use ERL or a high-level language for "Write" questions?</p>
+                        <div class="options" id="quiz-q2">
+                            <button class="option-btn" onclick="checkQuiz(2, this, false)">Section A only</button>
+                            <button class="option-btn" onclick="checkQuiz(2, this, true)">Section B</button>
+                            <button class="option-btn" onclick="checkQuiz(2, this, false)">Both sections equally</button>
+                        </div>
+                        <div class="feedback" id="fb-quiz-2"></div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>Q3:</strong> What type of mark scheme is used for the 8-mark extended response in Component 01?</p>
+                        <div class="options" id="quiz-q3">
+                            <button class="option-btn" onclick="checkQuiz(3, this, false)">Points-based (each point = 1 mark)</button>
+                            <button class="option-btn" onclick="checkQuiz(3, this, true)">Levels of response (quality of argument)</button>
+                            <button class="option-btn" onclick="checkQuiz(3, this, false)">All-or-nothing</button>
+                        </div>
+                        <div class="feedback" id="fb-quiz-3"></div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>Q4:</strong> Which Assessment Objective has the highest weighting (40%)?</p>
+                        <div class="options" id="quiz-q4">
+                            <button class="option-btn" onclick="checkQuiz(4, this, false)">AO1 — Knowledge</button>
+                            <button class="option-btn" onclick="checkQuiz(4, this, true)">AO2 — Application</button>
+                            <button class="option-btn" onclick="checkQuiz(4, this, false)">AO3 — Analysis</button>
+                        </div>
+                        <div class="feedback" id="fb-quiz-4"></div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>Q5:</strong> In Section A of Component 02, can you respond to algorithm questions using a flowchart?</p>
+                        <div class="options" id="quiz-q5">
+                            <button class="option-btn" onclick="checkQuiz(5, this, true)">Yes — unless it specifically says otherwise</button>
+                            <button class="option-btn" onclick="checkQuiz(5, this, false)">No — must always use code</button>
+                        </div>
+                        <div class="feedback" id="fb-quiz-5"></div>
+                    </div>
+
+                    <div class="question-box">
+                        <p><strong>Q6:</strong> What's the difference between "State" and "Explain"?</p>
+                        <div class="options" id="quiz-q6">
+                            <button class="option-btn" onclick="checkQuiz(6, this, false)">They mean the same thing</button>
+                            <button class="option-btn" onclick="checkQuiz(6, this, true)">State = brief answer; Explain = give reasons why</button>
+                            <button class="option-btn" onclick="checkQuiz(6, this, false)">State = more detail; Explain = brief</button>
+                        </div>
+                        <div class="feedback" id="fb-quiz-6"></div>
+                    </div>
+
+                    <div class="notes-section hidden" id="notes-11">
+                        <div class="notes-header">🎉 Ready for Your Exams!</div>
+                        <ul>
+                            <li>You understand the two-paper structure</li>
+                            <li>You know what AO1, AO2, and AO3 expect</li>
+                            <li>You can identify when code is required vs when you have flexibility</li>
+                            <li>You understand command words and marking approaches</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn secondary" onclick="goToSection(10)">← Back</button>
+                    <button class="nav-btn" id="next-11" onclick="goToSection(12)" disabled>Claim Badge →</button>
+                </div>
+            </section>
+
+            <!-- SECTION 12: Badge -->
+            <section id="section-12">
+                <div class="card">
+                    <div class="badge-container">
+                        <h2 style="margin-bottom: 16px;">🎉 Congratulations!</h2>
+                        <p style="max-width: 500px; margin: 0 auto 24px;">You've completed the OCR GCSE Computer Science Exam Guide. You now understand how both papers work and what examiners are looking for.</p>
+
+                        <div id="badge-form" style="margin-bottom: 24px;">
+                            <label style="color: var(--text-secondary); display: block; margin-bottom: 12px;">Enter your name to generate your badge:</label>
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                <input type="text" id="badge-name" class="input-field" style="width: 200px;" placeholder="Your name">
+                                <button class="nav-btn" onclick="generateBadge()">Generate My Badge</button>
+                            </div>
+                        </div>
+
+                        <div id="badge-result" style="display: none;">
+                            <div class="badge">
+                                <div class="badge-circle">
+                                    <div class="badge-icon">📋</div>
+                                    <div class="badge-title">Exam Expert</div>
+                                    <div class="badge-name-on-badge" id="display-name"></div>
+                                    <div class="badge-subtitle">OCR J277</div>
+                                </div>
+                            </div>
+                            
+                            <div class="badge-date" id="display-date"></div>
+                            <div class="badge-score" id="display-score"></div>
+                            
+                            <div class="tip-box" style="margin-top: 24px; text-align: left;">
+                                <div class="tip-header">📸 Save Your Badge</div>
+                                <p>Take a screenshot to save your achievement!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notes-section" style="margin-top: 24px;">
+                        <div class="notes-header">📚 What's Next?</div>
+                        <ul>
+                            <li>Practice with past papers on <a href="https://www.ocr.org.uk" style="color: var(--accent-cyan);">OCR's website</a></li>
+                            <li>Review mark schemes to see how answers are credited</li>
+                            <li>Time yourself under exam conditions</li>
+                            <li>Focus on AO2 — application questions are worth 40%!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="navigation">
+                    <button class="nav-btn secondary" onclick="goToSection(11)">← Back</button>
+                    <div></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // ========== STATE ==========
+        const totalSections = 12;
+        let currentSection = 1;
+        let completedSections = new Set();
+        let score = 0;
+        let maxScore = 0;
+        let quizAnswered = 0;
+
+        // ========== NAVIGATION ==========
+        function updateProgressBar() {
+            const bar = document.getElementById('progressBar');
+            bar.innerHTML = '';
+            for (let i = 1; i <= totalSections; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                if (i === currentSection) dot.classList.add('active');
+                if (completedSections.has(i)) dot.classList.add('completed');
+                dot.onclick = () => { if (completedSections.has(i) || i === currentSection || i <= Math.max(...completedSections, 0) + 1) goToSection(i); };
+                bar.appendChild(dot);
+            }
+            document.getElementById('currentSection').textContent = currentSection;
+            document.getElementById('totalSections').textContent = totalSections;
+        }
+
+        function goToSection(num) {
+            if (currentSection !== num) {
+                completedSections.add(currentSection);
+            }
+            document.getElementById(`section-${currentSection}`).classList.remove('active');
+            document.getElementById(`section-${num}`).classList.add('active');
+            currentSection = num;
+            updateProgressBar();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Show score tracker from section 2
+            if (num >= 2 && num < 12) {
+                document.getElementById('scoreTracker').classList.add('visible');
+            } else {
+                document.getElementById('scoreTracker').classList.remove('visible');
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('currentScore').textContent = score;
+            document.getElementById('maxScore').textContent = maxScore;
+        }
+
+        function addPoints(earned, possible) {
+            score += earned;
+            maxScore += possible;
+            updateScore();
+        }
+
+        // ========== SECTION 2 ==========
+        function checkSection2() {
+            const input = document.getElementById('q2-marks');
+            const fb = document.getElementById('fb-q2');
+            if (parseInt(input.value) === 80) {
+                input.classList.add('correct');
+                fb.textContent = '✓ Correct! Each paper is worth 80 marks (160 ÷ 2 = 80).';
+                fb.className = 'feedback success show';
+                document.getElementById('next-2').disabled = false;
+                document.getElementById('notes-2').classList.remove('hidden');
+                addPoints(1, 1);
+            } else {
+                input.classList.add('incorrect');
+                fb.textContent = '✗ Not quite. Total is 160 marks split equally between 2 papers.';
+                fb.className = 'feedback error show';
+                addPoints(0, 1);
+            }
+            input.disabled = true;
+        }
+
+        // ========== SECTION 3 ==========
+        function checkSection3(btn, correct) {
+            const options = document.querySelectorAll('#q3-options .option-btn');
+            options.forEach(o => {
+                o.disabled = true;
+                if (o === btn) o.classList.add(correct ? 'correct' : 'incorrect');
+            });
+            const fb = document.getElementById('fb-q3');
+            if (correct) {
+                fb.textContent = '✓ Correct! "State advantages" is testing your knowledge of facts — that\'s AO1.';
+                fb.className = 'feedback success show';
+                addPoints(1, 1);
+            } else {
+                fb.textContent = '✗ This is AO1 — it\'s asking you to recall facts you\'ve learned.';
+                fb.className = 'feedback error show';
+                addPoints(0, 1);
+            }
+            document.getElementById('next-3').disabled = false;
+            document.getElementById('notes-3').classList.remove('hidden');
+        }
+
+        // ========== SECTION 4 ==========
+        function checkSection4(btn, correct) {
+            const options = document.querySelectorAll('#q4-options .option-btn');
+            options.forEach(o => {
+                o.disabled = true;
+                if (o === btn) o.classList.add(correct ? 'correct' : 'incorrect');
+            });
+            const fb = document.getElementById('fb-q4');
+            if (correct) {
+                fb.textContent = '✓ Exactly! Extended response questions are about quality of argument, not just quantity of points.';
+                fb.className = 'feedback success show';
+                addPoints(1, 1);
+            } else {
+                fb.textContent = '✗ Extended responses need structure and developed points — it\'s about quality, not just listing facts.';
+                fb.className = 'feedback error show';
+                addPoints(0, 1);
+            }
+            document.getElementById('tip-4').style.display = 'block';
+            document.getElementById('next-4').disabled = false;
+            document.getElementById('notes-4').classList.remove('hidden');
+        }
+
+        // ========== SECTION 5 ==========
+        function checkSection5(btn, correct) {
+            const options = document.querySelectorAll('#q5-options .option-btn');
+            options.forEach(o => {
+                o.disabled = true;
+                if (o === btn) o.classList.add(correct ? 'correct' : 'incorrect');
+            });
+            const fb = document.getElementById('fb-q5');
+            if (correct) {
+                fb.textContent = '✓ Correct! Section A gives you flexibility — flowcharts, pseudocode, bullet points, or code are all acceptable.';
+                fb.className = 'feedback success show';
+                addPoints(1, 1);
+            } else {
+                fb.textContent = '✗ Actually, Section A allows multiple response formats including flowcharts!';
+                fb.className = 'feedback error show';
+                addPoints(0, 1);
+            }
+            document.getElementById('next-5').disabled = false;
+            document.getElementById('notes-5').classList.remove('hidden');
+        }
+
+        // ========== SECTION 6 ==========
+        function checkSection6(btn, correct) {
+            const options = document.querySelectorAll('#q6-options .option-btn');
+            options.forEach(o => {
+                o.disabled = true;
+                if (o === btn) o.classList.add(correct ? 'correct' : 'incorrect');
+            });
+            const fb = document.getElementById('fb-q6');
+            if (correct) {
+                fb.textContent = '✓ Correct! "Write" questions in Section B require ERL or actual programming code.';
+                fb.className = 'feedback success show';
+                addPoints(1, 1);
+            } else {
+                fb.textContent = '✗ "Write" is a Section B question type that requires proper code, not flowcharts.';
+                fb.className = 'feedback error show';
+                addPoints(0, 1);
+            }
+            document.getElementById('next-6').disabled = false;
+            document.getElementById('notes-6').classList.remove('hidden');
+        }
+
+        // ========== SECTION 7 ==========
+        function checkSection7(btn, correct) {
+            const options = document.querySelectorAll('#q7-options .option-btn');
+            options.forEach(o => {
+                o.disabled = true;
+                if (o === btn) o.classList.add(correct ? 'correct' : 'incorrect');
+            });
+            const fb = document.getElementById('fb-q7');
+            if (correct) {
+                fb.textContent = '✓ Correct! Logic errors that show misunderstanding will lose marks. Minor syntax issues usually don\'t.';
+                fb.className = 'feedback success show';
+                addPoints(1, 1);
+            } else {
+                fb.textContent = '✗ Minor syntax errors (colons, indentation) usually aren\'t penalised — but logic errors are!';
+                fb.className = 'feedback error show';
+                addPoints(0, 1);
+            }
+            document.getElementById('next-7').disabled = false;
+            document.getElementById('notes-7').classList.remove('hidden');
+        }
+
+        // ========== SECTION 8 ==========
+        function checkSection8(btn, correct) {
+            const options = document.querySelectorAll('#q8-options .option-btn');
+            options.forEach(o => {
+                o.disabled = true;
+                if (o === btn) o.classList.add(correct ? 'correct' : 'incorrect');
+            });
+            const fb = document.getElementById('fb-q8');
+            if (correct) {
+                fb.textContent = '✓ Correct! The 6-mark in Section A uses points-based marking. Only the 8-mark in Paper 1 uses levels.';
+                fb.className = 'feedback success show';
+                addPoints(1, 1);
+            } else {
+                fb.textContent = '✗ Levels of response is only for the 8-mark extended question in Paper 1.';
+                fb.className = 'feedback error show';
+                addPoints(0, 1);
+            }
+            document.getElementById('next-8').disabled = false;
+            document.getElementById('notes-8').classList.remove('hidden');
+        }
+
+        // ========== SECTION 9 ==========
+        function checkSection9(btn, correct) {
+            const options = document.querySelectorAll('#q9-options .option-btn');
+            options.forEach(o => {
+                o.disabled = true;
+                if (o === btn) o.classList.add(correct ? 'correct' : 'incorrect');
+            });
+            const fb = document.getElementById('fb-q9');
+            if (correct) {
+                fb.textContent = '✓ Exactly! "Explain" needs a reason/justification; "State" just needs the fact.';
+                fb.className = 'feedback success show';
+                addPoints(1, 1);
+            } else {
+                fb.textContent = '✗ They\'re different! "State" = just the answer. "Explain" = answer + why.';
+                fb.className = 'feedback error show';
+                addPoints(0, 1);
+            }
+            document.getElementById('tip-9').style.display = 'block';
+            document.getElementById('next-9').disabled = false;
+            document.getElementById('notes-9').classList.remove('hidden');
+        }
+
+        // ========== SECTION 10 ==========
+        function checkSection10(btn, correct) {
+            const options = document.querySelectorAll('#q10-options .option-btn');
+            options.forEach(o => {
+                o.disabled = true;
+                if (o === btn) o.classList.add(correct ? 'correct' : 'incorrect');
+            });
+            const fb = document.getElementById('fb-q10');
+            if (correct) {
+                fb.textContent = '✓ Correct! Showing working is good practice — it helps avoid mistakes and can earn partial credit.';
+                fb.className = 'feedback success show';
+                addPoints(1, 1);
+            } else {
+                fb.textContent = '✗ Actually, showing working is recommended even when not required — it helps you and can earn partial marks.';
+                fb.className = 'feedback error show';
+                addPoints(0, 1);
+            }
+            document.getElementById('next-10').disabled = false;
+            document.getElementById('notes-10').classList.remove('hidden');
+        }
+
+        // ========== SECTION 11: QUIZ ==========
+        function checkQuiz(q, btn, correct) {
+            const options = document.querySelectorAll(`#quiz-q${q} .option-btn`);
+            options.forEach(o => {
+                o.disabled = true;
+                if (o === btn) o.classList.add(correct ? 'correct' : 'incorrect');
+            });
+            
+            const fb = document.getElementById(`fb-quiz-${q}`);
+            const explanations = {
+                1: { correct: '✓ Correct! 80 + 80 = 160 total marks.', wrong: '✗ It\'s 160 marks total (80 per paper).' },
+                2: { correct: '✓ Correct! Section B has stricter requirements for Write and Refine questions.', wrong: '✗ Section B requires code for Write and Refine questions.' },
+                3: { correct: '✓ Correct! The 8-marker uses levels of response, assessing quality of argument.', wrong: '✗ The 8-mark extended response uses levels of response.' },
+                4: { correct: '✓ Correct! AO2 (Application) is worth 40% — the highest weighting.', wrong: '✗ AO2 (Application) has the highest weighting at 40%.' },
+                5: { correct: '✓ Correct! Section A allows flowcharts unless specifically told otherwise.', wrong: '✗ Section A is flexible — flowcharts are allowed.' },
+                6: { correct: '✓ Correct! State = brief; Explain = give reasons.', wrong: '✗ State is brief, Explain needs reasons/justification.' }
+            };
+            
+            if (correct) {
+                fb.textContent = explanations[q].correct;
+                fb.className = 'feedback success show';
+                addPoints(1, 1);
+            } else {
+                fb.textContent = explanations[q].wrong;
+                fb.className = 'feedback error show';
+                addPoints(0, 1);
+            }
+            
+            quizAnswered++;
+            if (quizAnswered >= 6) {
+                document.getElementById('next-11').disabled = false;
+                document.getElementById('notes-11').classList.remove('hidden');
+            }
+        }
+
+        // ========== BADGE ==========
+        function generateBadge() {
+            const name = document.getElementById('badge-name').value.trim() || 'Student';
+            const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            
+            document.getElementById('display-name').textContent = name;
+            document.getElementById('display-date').textContent = today;
+            document.getElementById('display-score').textContent = `Score: ${score}/${maxScore}`;
+            
+            document.getElementById('badge-form').style.display = 'none';
+            document.getElementById('badge-result').style.display = 'block';
+        }
+
+        // ========== INIT ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgressBar();
+            
+            document.querySelectorAll('.input-field').forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        const btn = this.closest('.question-box')?.querySelector('.check-btn');
+                        if (btn) btn.click();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

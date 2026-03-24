@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cache Memory | GCSE Computer Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --text-muted: #555566;
+            --border-subtle: #2a2a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header { text-align: center; margin-bottom: 50px; }
+
+        .exam-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-magenta));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; font-weight: 300; }
+
+        .progress-container { margin-top: 30px; }
+
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .progress-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--border-subtle);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .progress-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 12px var(--accent-cyan);
+            transform: scale(1.2);
+        }
+
+        .progress-dot.completed { background: var(--accent-green); }
+
+        .progress-label { margin-top: 12px; font-size: 0.9rem; color: var(--text-muted); }
+
+        section { display: none; animation: fadeIn 0.5s ease; }
+        section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        .learning-objective {
+            background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(0,212,255,0.02));
+            border-left: 3px solid var(--accent-cyan);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .learning-objective-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-cyan);
+            margin-bottom: 6px;
+        }
+
+        .learning-objective p, .learning-objective ul { color: var(--text-primary); margin: 0; }
+        .learning-objective ul { margin-top: 10px; padding-left: 20px; }
+        .learning-objective li { margin-bottom: 6px; }
+
+        h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--accent-cyan); }
+        h3 { font-size: 1.15rem; margin-bottom: 14px; color: var(--text-primary); }
+
+        p { color: var(--text-secondary); margin-bottom: 14px; }
+
+        .highlight        { color: var(--accent-yellow);  font-weight: 600; }
+        .highlight-cyan   { color: var(--accent-cyan);    font-weight: 600; }
+        .highlight-magenta{ color: var(--accent-magenta); font-weight: 600; }
+        .highlight-green  { color: var(--accent-green);   font-weight: 600; }
+        .highlight-purple { color: var(--accent-purple);  font-weight: 600; }
+        .highlight-orange { color: var(--accent-orange);  font-weight: 600; }
+
+        .key-term {
+            background: linear-gradient(135deg, rgba(255,214,10,0.1), rgba(255,149,0,0.05));
+            border: 1px solid rgba(255,214,10,0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .key-term-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+
+        .key-term-badge {
+            background: var(--accent-yellow);
+            color: var(--bg-dark);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .key-term-word {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-yellow);
+        }
+
+        .key-term p { color: var(--text-primary); margin: 0; }
+
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(168,85,247,0.05));
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .analogy-box-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--accent-cyan); font-weight: 600; }
+        .analogy-box p { color: var(--text-primary); margin: 0; }
+
+        .think-box {
+            background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(168,85,247,0.03));
+            border: 1px solid rgba(168,85,247,0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .think-box-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--accent-purple); font-weight: 600; }
+        .think-box p, .think-box ul { color: var(--text-primary); margin: 0; }
+
+        .connect-box {
+            background: linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,255,136,0.02));
+            border: 1px solid rgba(0,255,136,0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .connect-box-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--accent-green); font-weight: 600; }
+        .connect-box p { color: var(--text-primary); margin: 0; }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255,0,110,0.1), rgba(255,0,110,0.03));
+            border: 1px solid rgba(255,0,110,0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .warning-box-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--accent-magenta); font-weight: 600; }
+        .warning-box p { color: var(--text-primary); margin: 0; }
+
+        /* Recall Ramp */
+        .recall-ramp {
+            background: linear-gradient(135deg, rgba(255,149,0,0.1), rgba(255,214,10,0.05));
+            border: 1px solid rgba(255,149,0,0.4);
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+        }
+
+        .recall-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+
+        .recall-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .recall-q {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 14px;
+        }
+
+        .recall-q-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-orange);
+            margin-bottom: 6px;
+        }
+
+        .recall-q p { color: var(--text-primary); margin: 0; }
+
+        .recall-input {
+            width: 100%;
+            padding: 10px 14px;
+            margin-top: 10px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+
+        .recall-input:focus { outline: none; border-color: var(--accent-orange); }
+
+        .recall-reveal-btn {
+            margin-top: 10px;
+            padding: 7px 16px;
+            background: rgba(255,149,0,0.15);
+            border: 1px solid rgba(255,149,0,0.4);
+            border-radius: 8px;
+            color: var(--accent-orange);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .recall-reveal-btn:hover { background: rgba(255,149,0,0.25); }
+
+        .recall-answer {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 14px;
+            background: rgba(0,255,136,0.08);
+            border: 1px solid rgba(0,255,136,0.3);
+            border-radius: 8px;
+            color: var(--accent-green);
+            font-size: 0.95rem;
+        }
+
+        /* Cache hierarchy diagram */
+        .cache-hierarchy {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            margin: 24px 0;
+        }
+
+        .cache-tier {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 10px;
+            padding: 14px 20px;
+            margin: 4px 0;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .cache-tier:hover { transform: scale(1.02); }
+
+        .tier-l1 {
+            width: 55%;
+            background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,255,136,0.05));
+            border: 2px solid rgba(0,255,136,0.5);
+        }
+
+        .tier-l2 {
+            width: 70%;
+            background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(0,212,255,0.05));
+            border: 2px solid rgba(0,212,255,0.5);
+        }
+
+        .tier-l3 {
+            width: 85%;
+            background: linear-gradient(135deg, rgba(168,85,247,0.15), rgba(168,85,247,0.05));
+            border: 2px solid rgba(168,85,247,0.5);
+        }
+
+        .tier-ram {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(255,149,0,0.1), rgba(255,149,0,0.03));
+            border: 2px solid rgba(255,149,0,0.4);
+        }
+
+        .tier-storage {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(255,0,110,0.08), rgba(255,0,110,0.02));
+            border: 1px dashed rgba(255,0,110,0.4);
+        }
+
+        .tier-name { font-weight: 700; font-size: 1rem; }
+        .tier-stats { font-size: 0.82rem; color: var(--text-secondary); text-align: right; line-height: 1.4; }
+
+        .tier-arrow {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin: 2px 0;
+        }
+
+        /* Analogy desk layout */
+        .desk-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 20px 0;
+        }
+
+        .desk-item {
+            border-radius: 12px;
+            padding: 16px;
+            position: relative;
+        }
+
+        .desk-item-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .desk-item-name {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .desk-item-sub {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .desk-you {
+            background: rgba(255,214,10,0.1);
+            border: 2px solid rgba(255,214,10,0.4);
+            grid-column: 1 / -1;
+        }
+
+        .desk-sticky {
+            background: rgba(0,255,136,0.08);
+            border: 2px solid rgba(0,255,136,0.4);
+        }
+
+        .desk-textbook {
+            background: rgba(0,212,255,0.08);
+            border: 2px solid rgba(0,212,255,0.4);
+        }
+
+        .desk-library {
+            background: rgba(255,0,110,0.08);
+            border: 1px dashed rgba(255,0,110,0.4);
+            grid-column: 1 / -1;
+        }
+
+        /* Cache simulation */
+        .sim-container {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .sim-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .sim-component {
+            border-radius: 10px;
+            padding: 12px 16px;
+            min-width: 100px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .sim-cpu {
+            background: rgba(255,214,10,0.12);
+            border: 2px solid rgba(255,214,10,0.5);
+        }
+
+        .sim-cache {
+            background: rgba(0,255,136,0.08);
+            border: 2px solid rgba(0,255,136,0.4);
+        }
+
+        .sim-ram {
+            background: rgba(0,212,255,0.08);
+            border: 2px solid rgba(0,212,255,0.4);
+        }
+
+        .sim-component.pulsing {
+            animation: pulse 0.6s ease-in-out 2;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+        }
+
+        .sim-component.hit {
+            border-color: var(--accent-green) !important;
+            background: rgba(0,255,136,0.2) !important;
+            box-shadow: 0 0 20px rgba(0,255,136,0.4);
+        }
+
+        .sim-component.miss-highlight {
+            border-color: var(--accent-magenta) !important;
+            background: rgba(255,0,110,0.15) !important;
+            box-shadow: 0 0 20px rgba(255,0,110,0.3);
+        }
+
+        .sim-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .sim-value { font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 600; margin-top: 4px; }
+
+        .sim-arrow {
+            color: var(--text-muted);
+            font-size: 1.4rem;
+            transition: all 0.4s;
+        }
+
+        .sim-arrow.active { color: var(--accent-cyan); text-shadow: 0 0 10px var(--accent-cyan); }
+        .sim-arrow.blocked { color: var(--border-subtle); }
+
+        .sim-result {
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            min-height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s;
+        }
+
+        .sim-result.hit-result {
+            background: rgba(0,255,136,0.1);
+            border: 1px solid rgba(0,255,136,0.4);
+            color: var(--accent-green);
+        }
+
+        .sim-result.miss-result {
+            background: rgba(255,0,110,0.1);
+            border: 1px solid rgba(255,0,110,0.4);
+            color: var(--accent-magenta);
+        }
+
+        .sim-result.idle { background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); color: var(--text-muted); }
+
+        .cache-contents {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .cache-slot {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 6px 8px;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            transition: all 0.3s;
+        }
+
+        .cache-slot.populated { border-color: rgba(0,255,136,0.4); color: var(--accent-green); }
+        .cache-slot.searching { border-color: var(--accent-cyan); background: rgba(0,212,255,0.1); animation: pulse 0.4s ease-in-out 3; }
+        .cache-slot.found { border-color: var(--accent-green); background: rgba(0,255,136,0.2); box-shadow: 0 0 10px rgba(0,255,136,0.3); }
+        .cache-slot.empty { color: var(--text-muted); }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+
+        .control-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .control-btn.primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+        }
+
+        .control-btn.secondary {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+
+        .control-btn.hit-btn {
+            background: rgba(0,255,136,0.15);
+            border: 1px solid rgba(0,255,136,0.4);
+            color: var(--accent-green);
+        }
+
+        .control-btn.miss-btn {
+            background: rgba(255,0,110,0.12);
+            border: 1px solid rgba(255,0,110,0.3);
+            color: var(--accent-magenta);
+        }
+
+        .control-btn:hover { transform: translateY(-1px); opacity: 0.9; }
+        .control-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+        .explanation-panel {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-top: 14px;
+            min-height: 60px;
+        }
+
+        .explanation-panel p { color: var(--text-primary); margin: 0; }
+
+        /* Question boxes */
+        .question-box {
+            margin-top: 8px;
+        }
+
+        .question-box > p {
+            color: var(--text-primary);
+            font-weight: 500;
+            margin-bottom: 14px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            padding: 12px 18px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.2);
+            color: var(--text-primary);
+        }
+
+        .option-btn.correct {
+            background: rgba(0,255,136,0.15);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .option-btn.incorrect {
+            background: rgba(255,0,110,0.12);
+            border-color: var(--accent-magenta);
+            color: var(--accent-magenta);
+        }
+
+        .feedback {
+            display: none;
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .feedback.show { display: block; }
+        .feedback.success { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); color: var(--accent-green); }
+        .feedback.error { background: rgba(255,0,110,0.1); border: 1px solid rgba(255,0,110,0.3); color: var(--accent-magenta); }
+
+        /* Written task */
+        .written-task {
+            background: linear-gradient(135deg, rgba(255,149,0,0.08), rgba(255,149,0,0.02));
+            border: 1px solid rgba(255,149,0,0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .written-task-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--accent-orange); font-weight: 600; }
+        .written-task p { color: var(--text-primary); }
+
+        .text-area {
+            width: 100%;
+            min-height: 120px;
+            padding: 14px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            margin-top: 12px;
+        }
+
+        .text-area:focus { outline: none; border-color: var(--accent-cyan); }
+        .word-count { font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; text-align: right; }
+
+        /* Notes summary */
+        .notes-summary {
+            background: linear-gradient(135deg, rgba(255,149,0,0.08), rgba(255,214,10,0.05));
+            border: 1px solid rgba(255,149,0,0.3);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 24px;
+        }
+
+        .notes-summary-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; color: var(--accent-orange); font-weight: 600; }
+
+        .notes-summary h4 { color: var(--accent-yellow); font-size: 1rem; margin: 16px 0 8px 0; }
+        .notes-summary h4:first-of-type { margin-top: 0; }
+        .notes-summary p, .notes-summary ul { color: var(--text-primary); margin: 0 0 8px 0; }
+        .notes-summary ul { padding-left: 20px; }
+        .notes-summary li { margin-bottom: 4px; }
+
+        .notes-summary code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Nav */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn.prev {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+
+        .nav-btn.prev:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+        }
+
+        .nav-btn.next:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,212,255,0.3); }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
+
+        /* Badge */
+        .badge-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .badge-outer {
+            display: inline-block;
+            position: relative;
+        }
+
+        .badge-ring {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: conic-gradient(var(--accent-cyan), var(--accent-purple), var(--accent-magenta), var(--accent-yellow), var(--accent-cyan));
+            padding: 4px;
+            animation: spin 8s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .badge-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--bg-card);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .badge-icon { font-size: 3rem; }
+        .badge-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-cyan); }
+        .badge-topic { font-size: 0.72rem; color: var(--text-muted); }
+
+        .badge-earned-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .badge-sub { color: var(--text-secondary); font-size: 0.95rem; }
+
+        /* Speed compare */
+        .speed-bar-container { margin: 20px 0; }
+
+        .speed-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .speed-label {
+            width: 110px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .speed-bar-track {
+            flex: 1;
+            height: 28px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .speed-bar {
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: width 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .speed-stat { font-size: 0.8rem; color: var(--text-muted); flex-shrink: 0; width: 80px; text-align: right; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container { padding: 20px 16px; }
+            h1 { font-size: 1.7rem; }
+            .card { padding: 20px; }
+            .desk-grid { grid-template-columns: 1fr; }
+            .desk-you, .desk-library { grid-column: 1; }
+            .cache-contents { grid-template-columns: repeat(2, 1fr); }
+            .nav-buttons { flex-direction: column; gap: 12px; }
+            .nav-btn { width: 100%; }
+            .sim-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="exam-badge">OCR GCSE Computer Science</div>
+        <h1>Cache Memory</h1>
+        <p class="subtitle">Why the CPU doesn't always have to wait</p>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <p class="progress-label" id="progressLabel">Section 1 of 10</p>
+        </div>
+    </header>
+
+    <main id="content">
+
+        <!-- ===== SECTION 1: RECALL RAMP ===== -->
+        <section id="section-1" class="active">
+
+            <div class="recall-ramp">
+                <div class="recall-header">🧠 Recall Ramp</div>
+                <p class="recall-subtitle">Before we start something new, let's activate what you already know. Have a go at each question — then reveal the answer.</p>
+
+                <div class="recall-q">
+                    <div class="recall-q-label">Question 1</div>
+                    <p>Where does the CPU look to find instructions and data when it is running a program?</p>
+                    <input class="recall-input" type="text" placeholder="Type your answer here...">
+                    <button class="recall-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+                    <div class="recall-answer">The CPU fetches instructions and data from <strong>RAM (Random Access Memory)</strong>. During the Fetch phase of the FDE cycle, the MAR sends an address to RAM and the instruction returns via the MDR.</div>
+                </div>
+
+                <div class="recall-q">
+                    <div class="recall-q-label">Question 2</div>
+                    <p>Name two factors that affect the overall performance of a CPU.</p>
+                    <input class="recall-input" type="text" placeholder="Type your answer here...">
+                    <button class="recall-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+                    <div class="recall-answer">Any two from: <strong>Clock Speed</strong> (how many cycles per second), <strong>Number of Cores</strong> (how many processors on the chip), and <strong>Cache Size</strong> (how much fast-access memory is built in).</div>
+                </div>
+
+                <div class="recall-q">
+                    <div class="recall-q-label">Question 3</div>
+                    <p>RAM is described as <em>volatile</em>. What does volatile mean in this context?</p>
+                    <input class="recall-input" type="text" placeholder="Type your answer here...">
+                    <button class="recall-reveal-btn" onclick="revealAnswer(this)">Reveal Answer</button>
+                    <div class="recall-answer">Volatile means the data stored in RAM is <strong>lost when the power is switched off</strong>. RAM requires a constant power supply to maintain its contents.</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🎯 What You'll Learn</h2>
+                <div class="learning-objective">
+                    <div class="learning-objective-label">Learning Objectives</div>
+                    <p>By the end of this resource, you will be able to:</p>
+                    <ul>
+                        <li>Explain the <span class="highlight-cyan">function of cache memory</span> and why it exists</li>
+                        <li>Describe the <span class="highlight-green">three levels of cache</span> (L1, L2, L3) and how they differ</li>
+                        <li>Define and distinguish between a <span class="highlight">Cache Hit</span> and a <span class="highlight-magenta">Cache Miss</span></li>
+                        <li>Explain how <span class="highlight-cyan">cache size</span> affects CPU performance using correct technical vocabulary</li>
+                        <li>Evaluate why cache cannot simply replace RAM</li>
+                    </ul>
+                </div>
+
+                <div class="connect-box">
+                    <div class="connect-box-header">🔗 Connect to What You Know</div>
+                    <p>You already know the CPU fetches instructions from RAM. But RAM is slow compared to the CPU. Cache is the bridge that keeps the CPU fed with data fast enough to work at full speed. It's one of three core factors — alongside clock speed and cores — that determine CPU performance.</p>
+                </div>
+            </div>
+
+            <div class="notes-summary">
+                <div class="notes-summary-header">📝 Notes for This Section</div>
+                <h4>Prior Knowledge Check</h4>
+                <ul>
+                    <li>CPU fetches instructions from RAM using the FDE cycle</li>
+                    <li>Three factors affecting CPU performance: Clock Speed, Cores, Cache Size</li>
+                    <li>RAM is volatile — contents lost when power is removed</li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn prev" disabled>← Previous</button>
+                <button class="nav-btn next" onclick="nextSection()">Next →</button>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 2: WHAT IS CACHE? ===== -->
+        <section id="section-2">
+            <div class="card">
+                <h2>💾 What is Cache Memory?</h2>
+
+                <p>Every time the CPU needs an instruction or a piece of data, it has to fetch it from RAM. RAM can hold gigabytes of data — but that size comes at a cost: <span class="highlight-magenta">speed</span>. RAM is significantly slower than the CPU. If the CPU had to wait for RAM every single cycle, billions of clock cycles would be wasted sitting idle.</p>
+
+                <p>Cache memory solves this problem.</p>
+
+                <div class="key-term">
+                    <div class="key-term-header">
+                        <span class="key-term-badge">Key Term</span>
+                        <span class="key-term-word">Cache Memory</span>
+                    </div>
+                    <p>A small, extremely fast type of memory built directly into (or very close to) the CPU. It stores copies of the most frequently used instructions and data. <strong>Before the CPU looks in RAM, it checks cache first.</strong></p>
+                </div>
+
+                <p>The logic is simple: if you're likely to need the same data again very soon, keep a copy somewhere fast. Cache is that "somewhere fast."</p>
+
+                <div class="think-box">
+                    <div class="think-box-header">🤔 Why is Cache so Much Faster than RAM?</div>
+                    <p>Cache uses a type of memory called <strong>SRAM (Static RAM)</strong>. Each bit is stored using a small circuit of transistors that maintains its state without needing to be constantly refreshed. RAM uses <strong>DRAM (Dynamic RAM)</strong>, which stores bits as tiny charges in capacitors that leak and need refreshing thousands of times per second — this refresh cycle introduces delay. SRAM is faster, but far more expensive to manufacture.</p>
+                </div>
+
+                <div class="warning-box">
+                    <div class="warning-box-header">⚠️ Common Misconception</div>
+                    <p>Cache does <em>not</em> store all the data from RAM. It only stores <strong>copies of recently or frequently used data</strong>. The CPU predicts what it will need next and pre-loads it. Cache is never a complete picture of what's in RAM — it's a smart, temporary shortcut.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>✓ Quick Check</h3>
+                <div class="question-box" id="q-whatiscache">
+                    <p>When the CPU needs an instruction, what is the correct order in which it looks for it?</p>
+                    <div class="options">
+                        <button class="option-btn" onclick="checkSectionAnswer('whatiscache', this, false)">RAM → Cache → Secondary Storage</button>
+                        <button class="option-btn" onclick="checkSectionAnswer('whatiscache', this, true)">Cache → RAM → Secondary Storage</button>
+                        <button class="option-btn" onclick="checkSectionAnswer('whatiscache', this, false)">Cache → Secondary Storage → RAM</button>
+                        <button class="option-btn" onclick="checkSectionAnswer('whatiscache', this, false)">RAM → Secondary Storage → Cache</button>
+                    </div>
+                    <div class="feedback" id="feedback-whatiscache"></div>
+                </div>
+            </div>
+
+            <div class="notes-summary">
+                <div class="notes-summary-header">📝 Notes for This Section</div>
+                <h4>Cache Memory</h4>
+                <ul>
+                    <li>Stores copies of <strong>frequently used</strong> instructions and data</li>
+                    <li>CPU checks cache <strong>before</strong> looking in RAM</li>
+                    <li>Built into or very close to the CPU</li>
+                    <li>Uses SRAM — faster but more expensive than DRAM (used in RAM)</li>
+                    <li>Does <em>not</em> hold all of RAM — only a fast, temporary subset</li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                <button class="nav-btn next" onclick="nextSection()">Next →</button>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 3: THE HIERARCHY ===== -->
+        <section id="section-3">
+            <div class="card">
+                <h2>🏗️ The Cache Hierarchy: L1, L2, L3</h2>
+
+                <p>Cache isn't just a single block of memory. It is organised into <span class="highlight-cyan">levels</span>, each representing a trade-off between speed and size. The closer to the CPU core, the faster — and the smaller.</p>
+
+                <div class="cache-hierarchy">
+                    <div class="cache-tier tier-l1">
+                        <div>
+                            <div class="tier-name" style="color: var(--accent-green);">L1 Cache</div>
+                            <div style="font-size: 0.82rem; color: var(--text-secondary);">Level 1 — Built into the core</div>
+                        </div>
+                        <div class="tier-stats">
+                            <div style="color: var(--accent-green);">Fastest ⚡⚡⚡</div>
+                            <div>~32–64 KB</div>
+                        </div>
+                    </div>
+                    <div class="tier-arrow">↕</div>
+                    <div class="cache-tier tier-l2">
+                        <div>
+                            <div class="tier-name" style="color: var(--accent-cyan);">L2 Cache</div>
+                            <div style="font-size: 0.82rem; color: var(--text-secondary);">Level 2 — Per core or shared</div>
+                        </div>
+                        <div class="tier-stats">
+                            <div style="color: var(--accent-cyan);">Fast ⚡⚡</div>
+                            <div>~256 KB – 2 MB</div>
+                        </div>
+                    </div>
+                    <div class="tier-arrow">↕</div>
+                    <div class="cache-tier tier-l3">
+                        <div>
+                            <div class="tier-name" style="color: var(--accent-purple);">L3 Cache</div>
+                            <div style="font-size: 0.82rem; color: var(--text-secondary);">Level 3 — Shared across all cores</div>
+                        </div>
+                        <div class="tier-stats">
+                            <div style="color: var(--accent-purple);">Slower ⚡</div>
+                            <div>~4–64 MB</div>
+                        </div>
+                    </div>
+                    <div class="tier-arrow">↕</div>
+                    <div class="cache-tier tier-ram">
+                        <div>
+                            <div class="tier-name" style="color: var(--accent-orange);">RAM</div>
+                            <div style="font-size: 0.82rem; color: var(--text-secondary);">Main memory — off the CPU chip</div>
+                        </div>
+                        <div class="tier-stats">
+                            <div style="color: var(--accent-orange);">Much Slower 🐢</div>
+                            <div>4 – 64 GB+</div>
+                        </div>
+                    </div>
+                    <div class="tier-arrow">↕</div>
+                    <div class="cache-tier tier-storage">
+                        <div>
+                            <div class="tier-name" style="color: var(--accent-magenta);">Secondary Storage (SSD/HDD)</div>
+                            <div style="font-size: 0.82rem; color: var(--text-secondary);">Persistent storage — not volatile</div>
+                        </div>
+                        <div class="tier-stats">
+                            <div style="color: var(--accent-magenta);">Very Slow 🐌</div>
+                            <div>Hundreds of GB+</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 20px;">Understanding Each Level</h3>
+
+                <p><span class="highlight-green">L1 Cache</span> is the smallest but the fastest. It sits right inside each CPU core — physically on the same silicon die. Access time is typically 1–4 clock cycles. Think of it as the CPU core's own private, instant-access shelf.</p>
+
+                <p><span class="highlight-cyan">L2 Cache</span> is slightly larger and slightly slower. It may be per-core or shared between a small cluster of cores. It acts as a second chance before going all the way to L3 or RAM.</p>
+
+                <p><span class="highlight-purple">L3 Cache</span> is the largest cache level, shared across <em>all</em> CPU cores. It's still much faster than RAM, but the sharing means it's slower than L1 and L2. On modern processors this can be tens of megabytes.</p>
+
+                <div class="connect-box">
+                    <div class="connect-box-header">🔗 The Pattern to Remember</div>
+                    <p>As the level number goes up: <strong>size increases, speed decreases, distance from the core increases.</strong> L1 is small, fast, close. L3 is large, slower, shared. RAM is huge, much slower, off the chip entirely.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>✓ Quick Check</h3>
+                <div class="question-box" id="q-hierarchy">
+                    <p>Which cache level is shared across all CPU cores and is the largest of the three?</p>
+                    <div class="options">
+                        <button class="option-btn" onclick="checkSectionAnswer('hierarchy', this, false)">L1 — it's the most accessible</button>
+                        <button class="option-btn" onclick="checkSectionAnswer('hierarchy', this, false)">L2 — it's in the middle</button>
+                        <button class="option-btn" onclick="checkSectionAnswer('hierarchy', this, true)">L3 — largest, slowest, shared</button>
+                        <button class="option-btn" onclick="checkSectionAnswer('hierarchy', this, false)">RAM — it is shared by everything</button>
+                    </div>
+                    <div class="feedback" id="feedback-hierarchy"></div>
+                </div>
+            </div>
+
+            <div class="notes-summary">
+                <div class="notes-summary-header">📝 Notes for This Section</div>
+                <h4>Cache Levels</h4>
+                <ul>
+                    <li><strong>L1:</strong> Smallest (~32–64 KB), fastest, built into each CPU core</li>
+                    <li><strong>L2:</strong> Medium size (~256 KB–2 MB), slightly slower, per core or shared</li>
+                    <li><strong>L3:</strong> Largest (4–64 MB), slowest of the three, shared across all cores</li>
+                    <li>Rule: higher level number = larger, slower, further from core</li>
+                    <li>All cache levels are still far faster than RAM</li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                <button class="nav-btn next" onclick="nextSection()">Next →</button>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 4: THE ANALOGY ===== -->
+        <section id="section-4">
+            <div class="card">
+                <h2>📚 The Student at a Desk</h2>
+
+                <p>The vocabulary makes sense, but <em>"frequently used instructions"</em> is still a vague concept until you have a concrete picture. Here's one that maps directly onto the speed and distance problem the CPU faces.</p>
+
+                <p>Imagine you are working through a complex maths assignment at your desk.</p>
+
+                <div class="desk-grid">
+                    <div class="desk-item desk-you">
+                        <div class="desk-item-label" style="color: var(--accent-yellow);">The Processor</div>
+                        <div class="desk-item-name" style="color: var(--accent-yellow);">🧠 You (Your Brain)</div>
+                        <div class="desk-item-sub">You are the CPU. Fast, capable, but completely dependent on having the right formula in front of you to work. You can only process what you can <em>see right now</em>.</div>
+                    </div>
+
+                    <div class="desk-item desk-sticky">
+                        <div class="desk-item-label" style="color: var(--accent-green);">L1 Cache</div>
+                        <div class="desk-item-name" style="color: var(--accent-green);">📝 Sticky Notes on Your Desk</div>
+                        <div class="desk-item-sub">Right in front of you. The three formulas you use every question — zero seconds to glance at. Tiny amount of space, but instant access.</div>
+                    </div>
+
+                    <div class="desk-item desk-textbook">
+                        <div class="desk-item-label" style="color: var(--accent-cyan);">RAM</div>
+                        <div class="desk-item-name" style="color: var(--accent-cyan);">📖 Textbook in Your Bag</div>
+                        <div class="desk-item-sub">On the floor. Contains everything. But you have to stop working, unzip your bag, find the page. Takes several seconds — your brain sits idle while you fetch it.</div>
+                    </div>
+
+                    <div class="desk-item desk-library">
+                        <div class="desk-item-label" style="color: var(--accent-magenta);">Secondary Storage</div>
+                        <div class="desk-item-name" style="color: var(--accent-magenta);">🏛️ The Town Library</div>
+                        <div class="desk-item-sub">20-minute drive away. Has every book ever written — but you are essentially stopped working for the duration. Used only as a last resort.</div>
+                    </div>
+                </div>
+
+                <div class="analogy-box" style="margin-top: 20px;">
+                    <div class="analogy-box-header">💡 Where Does L2 and L3 Fit?</div>
+                    <p>Extend the analogy: your <strong>L2 cache</strong> is a slightly larger notepad on the corner of your desk — more space than sticky notes, slightly further to reach, but still on the desk. Your <strong>L3 cache</strong> is a folder in your drawer — larger still, shared with a sibling doing their own homework at the same desk, but still much faster than the bag on the floor.</p>
+                </div>
+
+                <h3 style="margin-top: 20px;">How the Homework Gets Done</h3>
+
+                <p>When you need a formula, you check your sticky notes first. If it's there — you keep working at full speed. In computing, this is called a <span class="highlight-green">Cache Hit</span>.</p>
+
+                <p>If it's not on the sticky note, you have to pause, reach into your bag, and find the page. You lose several seconds. In computing, this is called a <span class="highlight-magenta">Cache Miss</span>.</p>
+
+                <p>If you had a slightly <em>larger</em> sticky note, you could write more formulas on it. More formulas on the desk means fewer trips to the bag. Fewer trips to the bag means you finish your homework faster — even though your brain hasn't become any smarter or faster. This is <em>exactly</em> how a larger cache improves CPU performance.</p>
+            </div>
+
+            <div class="notes-summary">
+                <div class="notes-summary-header">📝 Notes for This Section</div>
+                <h4>The Analogy Mapped</h4>
+                <ul>
+                    <li><strong>You (brain)</strong> = CPU — fast processor, needs data supplied quickly</li>
+                    <li><strong>Sticky notes</strong> = L1 Cache — instant access, tiny, on the desk</li>
+                    <li><strong>Desk notepad</strong> = L2 Cache — slightly more space, slightly further</li>
+                    <li><strong>Desk drawer folder</strong> = L3 Cache — larger, shared, still faster than the bag</li>
+                    <li><strong>Textbook in bag</strong> = RAM — all the data, but takes time to reach</li>
+                    <li><strong>Library</strong> = Secondary Storage — vast, very slow to access</li>
+                    <li>More space on your desk → fewer trips to the bag → faster overall work</li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                <button class="nav-btn next" onclick="nextSection()">Next →</button>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 5: HIT vs MISS SIMULATION ===== -->
+        <section id="section-5">
+            <div class="card">
+                <h2>⚡ Cache Hit vs Cache Miss</h2>
+
+                <p>These are two of the most important terms for the exam. Let's be precise about what they mean — and then see them in action.</p>
+
+                <div class="key-term">
+                    <div class="key-term-header">
+                        <span class="key-term-badge">Key Term</span>
+                        <span class="key-term-word">Cache Hit</span>
+                    </div>
+                    <p>When the CPU needs data and finds it already stored in cache. The data is returned directly from cache — <strong>no RAM access required</strong>. This is fast.</p>
+                </div>
+
+                <div class="key-term" style="background: linear-gradient(135deg, rgba(255,0,110,0.1), rgba(255,0,110,0.03)); border-color: rgba(255,0,110,0.3);">
+                    <div class="key-term-header">
+                        <span class="key-term-badge" style="background: var(--accent-magenta);">Key Term</span>
+                        <span class="key-term-word" style="color: var(--accent-magenta);">Cache Miss</span>
+                    </div>
+                    <p>When the CPU needs data and it is <strong>not</strong> in cache. The CPU must fetch it from the slower RAM. This causes the CPU to enter an <strong>idle (waiting) state</strong>, reducing performance. The fetched data is then copied into cache for future use.</p>
+                </div>
+
+                <h3>Interactive Simulation</h3>
+                <p>The cache below has 8 slots. Some are already populated. Use the buttons to simulate the CPU requesting different data — see whether it's a hit or a miss.</p>
+
+                <div class="sim-container">
+                    <div style="margin-bottom: 12px;">
+                        <div style="font-size: 0.78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Cache Contents (8 slots)</div>
+                        <div class="cache-contents" id="cacheContents">
+                            <div class="cache-slot populated" id="slot-0">ADD 7</div>
+                            <div class="cache-slot populated" id="slot-1">LDA 5</div>
+                            <div class="cache-slot populated" id="slot-2">STA 10</div>
+                            <div class="cache-slot populated" id="slot-3">CMP 3</div>
+                            <div class="cache-slot empty" id="slot-4">empty</div>
+                            <div class="cache-slot empty" id="slot-5">empty</div>
+                            <div class="cache-slot empty" id="slot-6">empty</div>
+                            <div class="cache-slot empty" id="slot-7">empty</div>
+                        </div>
+                    </div>
+
+                    <div class="sim-row" style="margin-top: 16px;">
+                        <div class="sim-component sim-cpu" id="simCPU">
+                            <div class="sim-label">CPU</div>
+                            <div class="sim-value" id="simCPUVal">Idle</div>
+                        </div>
+                        <div class="sim-arrow" id="arrow1">→</div>
+                        <div class="sim-component sim-cache" id="simCache">
+                            <div class="sim-label">Cache</div>
+                            <div class="sim-value" id="simCacheVal">Checking...</div>
+                        </div>
+                        <div class="sim-arrow" id="arrow2">→</div>
+                        <div class="sim-component sim-ram" id="simRAM">
+                            <div class="sim-label">RAM</div>
+                            <div class="sim-value" id="simRAMVal">Standby</div>
+                        </div>
+                    </div>
+
+                    <div class="sim-result idle" id="simResult">Press a button below to simulate a cache lookup</div>
+
+                    <div class="controls">
+                        <button class="control-btn hit-btn" onclick="simulateHit()" id="hitBtn">✅ Simulate Cache Hit (fetch "ADD 7")</button>
+                        <button class="control-btn miss-btn" onclick="simulateMiss()" id="missBtn">❌ Simulate Cache Miss (fetch "SUB 2")</button>
+                        <button class="control-btn secondary" onclick="resetSim()">Reset</button>
+                    </div>
+                </div>
+
+                <div class="explanation-panel" id="simExplanation">
+                    <p>The CPU will first look in cache. If the data is there, it's a <strong style="color:var(--accent-green)">Cache Hit</strong> — fast! If not, it's a <strong style="color:var(--accent-magenta)">Cache Miss</strong> — the CPU must wait for RAM.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>✓ Quick Check</h3>
+                <div class="question-box" id="q-hitmiss">
+                    <p>A Cache Miss causes the CPU's performance to decrease. What is the specific reason for this?</p>
+                    <div class="options">
+                        <button class="option-btn" onclick="checkSectionAnswer('hitmiss', this, false)">The cache becomes corrupted and must be cleared</button>
+                        <button class="option-btn" onclick="checkSectionAnswer('hitmiss', this, false)">The CPU clock speed is temporarily reduced</button>
+                        <button class="option-btn" onclick="checkSectionAnswer('hitmiss', this, true)">The CPU enters an idle state waiting for data to be fetched from the slower RAM</button>
+                        <button class="option-btn" onclick="checkSectionAnswer('hitmiss', this, false)">The instruction is lost and must be re-requested from secondary storage</button>
+                    </div>
+                    <div class="feedback" id="feedback-hitmiss"></div>
+                </div>
+            </div>
+
+            <div class="notes-summary">
+                <div class="notes-summary-header">📝 Notes for This Section</div>
+                <h4>Cache Hit</h4>
+                <ul>
+                    <li>CPU requests data → data found in cache → returned immediately</li>
+                    <li>No RAM access needed — very fast</li>
+                </ul>
+                <h4>Cache Miss</h4>
+                <ul>
+                    <li>CPU requests data → data <em>not</em> in cache → must fetch from RAM</li>
+                    <li>CPU enters an <strong>idle (waiting) state</strong> while data travels from RAM</li>
+                    <li>Fetched data is then copied into cache for potential future use</li>
+                    <li>Reduces overall CPU performance</li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                <button class="nav-btn next" onclick="nextSection()">Next →</button>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 6: SPEED COMPARISON ===== -->
+        <section id="section-6">
+            <div class="card">
+                <h2>📊 The Speed Reality</h2>
+
+                <p>It helps to have a sense of <em>just how different</em> the speeds are. These numbers are approximate and vary by hardware, but the scale is real and important.</p>
+
+                <div class="speed-bar-container" id="speedBars">
+                    <div class="speed-row">
+                        <div class="speed-label" style="color:var(--accent-green);">L1 Cache</div>
+                        <div class="speed-bar-track">
+                            <div class="speed-bar" style="width: 0%; background: var(--accent-green); color: var(--bg-dark);" data-width="98%">1–4 cycles</div>
+                        </div>
+                        <div class="speed-stat">~0.5 ns</div>
+                    </div>
+                    <div class="speed-row">
+                        <div class="speed-label" style="color:var(--accent-cyan);">L2 Cache</div>
+                        <div class="speed-bar-track">
+                            <div class="speed-bar" style="width: 0%; background: var(--accent-cyan); color: var(--bg-dark);" data-width="82%">4–12 cycles</div>
+                        </div>
+                        <div class="speed-stat">~2–5 ns</div>
+                    </div>
+                    <div class="speed-row">
+                        <div class="speed-label" style="color:var(--accent-purple);">L3 Cache</div>
+                        <div class="speed-bar-track">
+                            <div class="speed-bar" style="width: 0%; background: var(--accent-purple); color: white;" data-width="60%">30–40 cycles</div>
+                        </div>
+                        <div class="speed-stat">~10–20 ns</div>
+                    </div>
+                    <div class="speed-row">
+                        <div class="speed-label" style="color:var(--accent-orange);">RAM</div>
+                        <div class="speed-bar-track">
+                            <div class="speed-bar" style="width: 0%; background: var(--accent-orange); color: var(--bg-dark);" data-width="28%">100–200 cycles</div>
+                        </div>
+                        <div class="speed-stat">~60–100 ns</div>
+                    </div>
+                    <div class="speed-row">
+                        <div class="speed-label" style="color:var(--accent-magenta);">SSD</div>
+                        <div class="speed-bar-track">
+                            <div class="speed-bar" style="width: 0%; background: var(--accent-magenta); color: white;" data-width="5%">millions of cycles</div>
+                        </div>
+                        <div class="speed-stat">~100,000 ns</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 10px;">
+                    <button class="control-btn primary" onclick="animateBars()" id="animateBtn">▶ Animate Speed Comparison</button>
+                </div>
+
+                <div class="think-box" style="margin-top: 20px;">
+                    <div class="think-box-header">🤔 Put This in Perspective</div>
+                    <p>If L1 cache access were one second, RAM access would be around three to four minutes. Secondary storage (SSD) access would be roughly four days. This is why the CPU cannot afford to go to RAM every time it needs data — and why having more data in cache is so valuable.</p>
+                </div>
+
+                <div class="analogy-box">
+                    <div class="analogy-box-header">🔗 Back to the Desk</div>
+                    <p>Your sticky notes are <em>right there</em>. But your textbook in your bag might as well be in another building when you're trying to work at CPU speed. At 3 billion clock cycles per second, the difference between 1 cycle and 200 cycles is enormous.</p>
+                </div>
+            </div>
+
+            <div class="notes-summary">
+                <div class="notes-summary-header">📝 Notes for This Section</div>
+                <h4>Approximate Access Times</h4>
+                <ul>
+                    <li><strong>L1 Cache:</strong> ~1–4 CPU cycles (~0.5 ns)</li>
+                    <li><strong>L2 Cache:</strong> ~4–12 CPU cycles (~2–5 ns)</li>
+                    <li><strong>L3 Cache:</strong> ~30–40 CPU cycles (~10–20 ns)</li>
+                    <li><strong>RAM:</strong> ~100–200 CPU cycles (~60–100 ns)</li>
+                    <li><strong>SSD:</strong> millions of cycles (~100,000 ns)</li>
+                    <li>RAM is roughly 100× slower than L1 cache — this is why cache exists</li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                <button class="nav-btn next" onclick="nextSection()">Next →</button>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 7: PERFORMANCE IMPACT ===== -->
+        <section id="section-7">
+            <div class="card">
+                <h2>🏎️ Cache Size and CPU Performance</h2>
+
+                <p>Now we return to exam language. You need to be able to explain — precisely — <em>why</em> a larger cache improves performance. Saying "it's faster" is not enough. Here is the causal chain:</p>
+
+                <div style="background: var(--bg-dark); border-radius: 12px; padding: 20px; margin: 20px 0; border: 1px solid var(--border-subtle);">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 10px; background: rgba(0,255,136,0.07); border-radius: 8px; border-left: 3px solid var(--accent-green);">
+                            <span style="color: var(--accent-green); font-size: 1.2rem;">①</span>
+                            <p style="margin: 0; color: var(--text-primary);">A <span class="highlight-green">larger cache</span> can store more frequently used instructions and data.</p>
+                        </div>
+                        <div style="text-align: center; color: var(--text-muted);">↓</div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 10px; background: rgba(0,212,255,0.07); border-radius: 8px; border-left: 3px solid var(--accent-cyan);">
+                            <span style="color: var(--accent-cyan); font-size: 1.2rem;">②</span>
+                            <p style="margin: 0; color: var(--text-primary);">The probability of the CPU finding data in cache (<span class="highlight-cyan">Cache Hit Rate</span>) increases.</p>
+                        </div>
+                        <div style="text-align: center; color: var(--text-muted);">↓</div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 10px; background: rgba(168,85,247,0.07); border-radius: 8px; border-left: 3px solid var(--accent-purple);">
+                            <span style="color: var(--accent-purple); font-size: 1.2rem;">③</span>
+                            <p style="margin: 0; color: var(--text-primary);">The CPU spends <span class="highlight-purple">less time in an idle state</span> waiting for data to arrive from the slower RAM.</p>
+                        </div>
+                        <div style="text-align: center; color: var(--text-muted);">↓</div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 10px; background: rgba(255,214,10,0.07); border-radius: 8px; border-left: 3px solid var(--accent-yellow);">
+                            <span style="color: var(--accent-yellow); font-size: 1.2rem;">④</span>
+                            <p style="margin: 0; color: var(--text-primary);">The CPU completes tasks <span class="highlight">faster</span> — even if its clock speed is identical.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="key-term">
+                    <div class="key-term-header">
+                        <span class="key-term-badge">Key Term</span>
+                        <span class="key-term-word">Cache Hit Rate</span>
+                    </div>
+                    <p>The percentage of memory accesses that are successfully served by the cache (rather than requiring a trip to RAM). A higher cache hit rate means fewer cache misses, less idle time, and better performance.</p>
+                </div>
+
+                <div class="warning-box">
+                    <div class="warning-box-header">⚠️ Exam Language Alert</div>
+                    <p>Don't just write "larger cache means faster CPU." The marks come from the chain: larger capacity → stores more frequently-used instructions → higher cache hit rate → CPU idles less waiting for RAM → task completes faster. Examiners want causation, not just correlation.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>✓ Quick Check</h3>
+                <div class="question-box" id="q-performance">
+                    <p>A larger cache improves performance primarily because it increases the cache hit rate. What does a higher cache hit rate mean for the CPU?</p>
+                    <div class="options">
+                        <button class="option-btn" onclick="checkSectionAnswer('performance', this, false)">The CPU core runs at a higher clock speed</button>
+                        <button class="option-btn" onclick="checkSectionAnswer('performance', this, true)">The CPU spends less time idle waiting for data from RAM</button>
+                        <button class="option-btn" onclick="checkSectionAnswer('performance', this, false)">The RAM is replaced and no longer used</button>
+                        <button class="option-btn" onclick="checkSectionAnswer('performance', this, false)">More cores are activated automatically</button>
+                    </div>
+                    <div class="feedback" id="feedback-performance"></div>
+                </div>
+            </div>
+
+            <div class="notes-summary">
+                <div class="notes-summary-header">📝 Notes for This Section</div>
+                <h4>The Performance Chain (learn this!)</h4>
+                <ul>
+                    <li>Larger cache → stores more instructions/data</li>
+                    <li>More stored → higher <strong>Cache Hit Rate</strong></li>
+                    <li>Higher hit rate → fewer trips to RAM</li>
+                    <li>Fewer RAM trips → CPU idles less</li>
+                    <li>Less idling → faster task completion</li>
+                    <li>This happens even if clock speed is <em>unchanged</em></li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                <button class="nav-btn next" onclick="nextSection()">Next →</button>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 8: EXAM QUESTION WALKTHROUGH ===== -->
+        <section id="section-8">
+            <div class="card">
+                <h2>📝 Worked Exam Question</h2>
+
+                <p>Let's apply what we've learned to a classic exam-style question. Read the question, think about your answer, then work through the response together.</p>
+
+                <div style="background: rgba(255,255,255,0.04); border: 2px solid var(--border-subtle); border-radius: 12px; padding: 20px; margin: 20px 0;">
+                    <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px;">Exam Question</div>
+                    <p style="color: var(--text-primary); font-size: 1.05rem; margin: 0;">Computer A has a 4 MB cache. Computer B has an 8 MB cache. Both computers have an identical CPU clock speed of 3.0 GHz and the same amount of RAM. Explain why Computer B will complete a complex task in less time than Computer A. <strong>[4 marks]</strong></p>
+                </div>
+
+                <div class="written-task">
+                    <div class="written-task-header">✍️ Have a go first</div>
+                    <p>Write your own answer below before revealing the mark scheme response. Use the causal chain from the previous section.</p>
+                    <textarea class="text-area" id="examResponse" placeholder="Type your answer here..." oninput="updateExamWordCount()"></textarea>
+                    <div class="word-count" id="examWordCount">0 words</div>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <button class="control-btn primary" onclick="revealMarkScheme()">Reveal Mark Scheme Response</button>
+                </div>
+
+                <div id="markScheme" style="display: none;">
+                    <div class="connect-box">
+                        <div class="connect-box-header">✅ Model Answer (4 marks)</div>
+                        <p>Computer B has a larger cache (8 MB compared to 4 MB), which means it is able to store a greater volume of frequently used instructions and data. <span class="highlight-cyan">This increases the cache hit rate</span> — the proportion of memory accesses where the required data is found in cache rather than RAM.</p>
+                        <p style="margin-top: 10px;">As a result, <span class="highlight-green">the CPU spends less time in an idle state</span> waiting for data to be fetched from the slower RAM. Since both CPUs run at the same clock speed, the difference in performance is entirely due to cache efficiency. Computer B's data fetch pipeline is more efficient, so it completes the task in less time.</p>
+                    </div>
+
+                    <div class="think-box" style="margin-top: 16px;">
+                        <div class="think-box-header">🎯 The 4 Marks Mapped</div>
+                        <p><strong>Mark 1:</strong> Computer B has a larger cache, so it can store more frequently used data/instructions.</p>
+                        <p style="margin-top: 6px;"><strong>Mark 2:</strong> This increases the cache hit rate.</p>
+                        <p style="margin-top: 6px;"><strong>Mark 3:</strong> The CPU spends less time idle / waiting for data from RAM.</p>
+                        <p style="margin-top: 6px;"><strong>Mark 4:</strong> Since clock speed is identical, the difference in completion time is due to cache efficiency alone.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes-summary">
+                <div class="notes-summary-header">📝 Notes for This Section</div>
+                <h4>4-Mark Exam Structure</h4>
+                <ul>
+                    <li>Larger cache → stores more frequently used instructions</li>
+                    <li>→ Higher cache hit rate</li>
+                    <li>→ CPU idles less waiting for RAM</li>
+                    <li>→ Faster task completion (even with same clock speed)</li>
+                    <li>Always link clock speed: "identical clock speed means the difference is <em>only</em> due to cache"</li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                <button class="nav-btn next" onclick="nextSection()">Next →</button>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 9: CRITICAL THINKING + FINAL QUIZ ===== -->
+        <section id="section-9">
+            <div class="card">
+                <h2>🧩 Critical Thinking</h2>
+
+                <div class="think-box">
+                    <div class="think-box-header">🤔 The Big Question</div>
+                    <p style="font-size: 1.05rem;"><strong>"If cache is so much faster than RAM — why don't we just build all of our RAM out of cache memory?"</strong></p>
+                </div>
+
+                <div style="text-align: center; margin: 16px 0;">
+                    <button class="control-btn primary" onclick="revealCritical()">Reveal the Answer</button>
+                </div>
+
+                <div id="criticalAnswer" style="display: none;">
+                    <div class="connect-box">
+                        <div class="connect-box-header">💡 Two Reasons — Both Examinable</div>
+                        <p><strong>1. Cost:</strong> Cache uses SRAM, which requires more transistors per bit than the DRAM used in RAM. Manufacturing SRAM is significantly more expensive per gigabyte. A typical computer has 8–32 GB of RAM; making that volume out of SRAM would cost thousands of pounds per machine.</p>
+                        <p style="margin-top: 10px;"><strong>2. Physical size:</strong> SRAM takes up considerably more space on the silicon die than DRAM. There is a hard physical limit to how much cache can fit on a CPU chip. You cannot simply scale it to gigabytes without making the chip impractically large and power-hungry.</p>
+                    </div>
+
+                    <div class="warning-box" style="margin-top: 16px;">
+                        <div class="warning-box-header">⚠️ The Fundamental Trade-off</div>
+                        <p>This is the core tension in CPU design: faster memory is always smaller and more expensive. The entire cache hierarchy exists as a solution to this trade-off — getting the benefit of speed where it matters most (close to the core) while still having affordable, large-capacity memory (RAM) for the full dataset.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🎯 Final Quiz</h2>
+                <p>Four questions. All the core concepts. Let's see what's stuck.</p>
+
+                <div class="question-box">
+                    <p><strong>Q1.</strong> Which cache level is built directly into the CPU core and offers the fastest access time?</p>
+                    <div class="options">
+                        <button class="option-btn" onclick="checkFinalAnswer(1, this, true)">L1 Cache</button>
+                        <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">L2 Cache</button>
+                        <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">L3 Cache</button>
+                        <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">RAM</button>
+                    </div>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+
+                <hr style="border-color: var(--border-subtle); margin: 20px 0;">
+
+                <div class="question-box">
+                    <p><strong>Q2.</strong> When the CPU requests data and it is found in cache, what is this called?</p>
+                    <div class="options">
+                        <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">Cache Miss</button>
+                        <button class="option-btn" onclick="checkFinalAnswer(2, this, true)">Cache Hit</button>
+                        <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">Cache Fetch</button>
+                        <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">Cache Write</button>
+                    </div>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+
+                <hr style="border-color: var(--border-subtle); margin: 20px 0;">
+
+                <div class="question-box">
+                    <p><strong>Q3.</strong> Two CPUs have identical clock speeds. CPU A has 4 MB cache; CPU B has 16 MB cache. Which statement correctly explains why CPU B performs better?</p>
+                    <div class="options">
+                        <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">CPU B runs at a higher effective clock speed due to the extra cache</button>
+                        <button class="option-btn" onclick="checkFinalAnswer(3, this, true)">CPU B has a higher cache hit rate, meaning it idles less waiting for RAM, completing tasks faster</button>
+                        <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">CPU B's larger cache replaces RAM, removing memory delays entirely</button>
+                        <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">CPU B can process more cores simultaneously</button>
+                    </div>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+
+                <hr style="border-color: var(--border-subtle); margin: 20px 0;">
+
+                <div class="question-box">
+                    <p><strong>Q4.</strong> Why can't we simply replace all RAM with cache memory?</p>
+                    <div class="options">
+                        <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">Cache memory is volatile and would lose data on shutdown</button>
+                        <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">Cache memory is too slow to be used for large datasets</button>
+                        <button class="option-btn" onclick="checkFinalAnswer(4, this, true)">Cache memory (SRAM) is far more expensive to manufacture and takes up significantly more physical space on the chip</button>
+                        <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">Cache memory can only store instructions, not data</button>
+                    </div>
+                    <div class="feedback" id="feedback4"></div>
+                </div>
+
+                <div id="quizResult" style="display:none; margin-top: 20px; padding: 20px; background: var(--bg-card); border-radius: 12px; text-align: center;">
+                    <h3 id="quizScore" style="color: var(--accent-green); margin-bottom: 8px;"></h3>
+                    <p id="quizMessage" style="color: var(--text-secondary);"></p>
+                </div>
+            </div>
+
+            <div class="notes-summary">
+                <div class="notes-summary-header">📝 Notes for This Section</div>
+                <h4>Why Not All Cache?</h4>
+                <ul>
+                    <li>SRAM (cache) is far more expensive per GB than DRAM (RAM)</li>
+                    <li>SRAM takes up more physical space on the silicon die</li>
+                    <li>There is a hard physical limit to how much fits on a CPU chip</li>
+                    <li>The hierarchy (L1→L2→L3→RAM) is the engineering compromise</li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                <button class="nav-btn next" onclick="nextSection()">Next →</button>
+            </div>
+        </section>
+
+        <!-- ===== SECTION 10: SUMMARY + BADGE ===== -->
+        <section id="section-10">
+            <div class="card">
+                <h2>📋 Complete Summary Notes</h2>
+                <p>Everything you need for the exam, in one place.</p>
+
+                <div class="notes-summary" style="margin-top: 0;">
+                    <div class="notes-summary-header">📝 Full Topic Summary — Cache Memory</div>
+
+                    <h4>What is Cache?</h4>
+                    <ul>
+                        <li>Small, fast memory built into or very close to the CPU</li>
+                        <li>Stores copies of <strong>frequently used</strong> instructions and data</li>
+                        <li>CPU checks cache <strong>before</strong> RAM — cache hit avoids RAM access entirely</li>
+                        <li>Uses SRAM: faster but more expensive than DRAM (used in RAM)</li>
+                    </ul>
+
+                    <h4>The Cache Hierarchy</h4>
+                    <ul>
+                        <li><strong>L1:</strong> Smallest (~32–64 KB), fastest (~1–4 cycles), built into each core</li>
+                        <li><strong>L2:</strong> Medium (~256 KB–2 MB), slightly slower, per core</li>
+                        <li><strong>L3:</strong> Largest (4–64 MB), slowest of the three, shared across all cores</li>
+                        <li>Rule: higher level = larger, slower, further from core</li>
+                    </ul>
+
+                    <h4>Cache Hit and Cache Miss</h4>
+                    <ul>
+                        <li><strong>Cache Hit:</strong> Data found in cache → returned instantly, no RAM access</li>
+                        <li><strong>Cache Miss:</strong> Data not in cache → CPU fetches from RAM → CPU enters idle state</li>
+                        <li><strong>Cache Hit Rate:</strong> Percentage of accesses served by cache (higher = better)</li>
+                    </ul>
+
+                    <h4>Performance Impact Chain (4-mark answer)</h4>
+                    <ul>
+                        <li>Larger cache → stores more frequently used instructions</li>
+                        <li>→ Higher cache hit rate</li>
+                        <li>→ Fewer trips to RAM</li>
+                        <li>→ CPU idles less</li>
+                        <li>→ Task completes faster (even with same clock speed)</li>
+                    </ul>
+
+                    <h4>Why Not All Cache?</h4>
+                    <ul>
+                        <li>SRAM is very expensive to manufacture per GB</li>
+                        <li>SRAM takes up more physical space on the silicon die</li>
+                        <li>Cannot scale to gigabytes on a CPU chip economically</li>
+                    </ul>
+
+                    <h4>The Analogy Mapped</h4>
+                    <ul>
+                        <li>You (brain) = CPU | Sticky notes = L1 | Desk notepad = L2 | Desk drawer = L3</li>
+                        <li>Textbook in bag = RAM | Town library = Secondary Storage</li>
+                        <li>More on the desk → fewer bag trips → faster homework</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="badge-container">
+                    <div class="badge-outer">
+                        <div class="badge-ring">
+                            <div class="badge-inner">
+                                <div class="badge-icon">⚡</div>
+                                <div class="badge-title">Earned</div>
+                                <div class="badge-topic">Cache Memory</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="badge-earned-text">Cache Memory — Complete</div>
+                    <p class="badge-sub">You've covered the function, hierarchy, hit/miss mechanics,<br>performance impact, and exam technique for cache memory.</p>
+                    <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                        <div style="background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; color: var(--accent-green);">✓ Cache Function</div>
+                        <div style="background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; color: var(--accent-cyan);">✓ L1 / L2 / L3</div>
+                        <div style="background: rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.3); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; color: var(--accent-purple);">✓ Hit & Miss</div>
+                        <div style="background: rgba(255,214,10,0.1); border: 1px solid rgba(255,214,10,0.3); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; color: var(--accent-yellow);">✓ Performance Chain</div>
+                        <div style="background: rgba(255,149,0,0.1); border: 1px solid rgba(255,149,0,0.3); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; color: var(--accent-orange);">✓ Exam Technique</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                <button class="nav-btn next" disabled style="background: var(--accent-green); opacity: 1;">Complete! 🎉</button>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    // ============ Navigation ============
+    const totalSections = 10;
+    let currentSection = 1;
+
+    function updateProgress() {
+        const progressBar = document.getElementById('progressBar');
+        progressBar.innerHTML = '';
+        for (let i = 1; i <= totalSections; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'progress-dot';
+            if (i === currentSection) dot.classList.add('active');
+            if (i < currentSection) dot.classList.add('completed');
+            dot.onclick = () => goToSection(i);
+            progressBar.appendChild(dot);
+        }
+        document.getElementById('progressLabel').textContent = `Section ${currentSection} of ${totalSections}`;
+    }
+
+    function goToSection(num) {
+        document.getElementById(`section-${currentSection}`).classList.remove('active');
+        currentSection = num;
+        document.getElementById(`section-${currentSection}`).classList.add('active');
+        updateProgress();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextSection() { if (currentSection < totalSections) goToSection(currentSection + 1); }
+    function prevSection() { if (currentSection > 1) goToSection(currentSection - 1); }
+
+    // ============ Recall Ramp ============
+    function revealAnswer(btn) {
+        const answer = btn.nextElementSibling;
+        answer.style.display = 'block';
+        btn.disabled = true;
+        btn.textContent = 'Answer Revealed';
+        btn.style.opacity = '0.5';
+    }
+
+    // ============ Section Self-Check ============
+    const sectionFeedback = {
+        'whatiscache': {
+            correct: "Correct! The CPU always checks cache first, then RAM if there's a cache miss. Secondary storage is only accessed when loading programs, not during normal instruction fetching.",
+            incorrect: "Remember: cache is checked before RAM. The whole point of cache is to intercept requests before they have to go all the way to the slower RAM."
+        },
+        'hierarchy': {
+            correct: "Correct! L3 is the largest and slowest of the three cache levels, and it's shared across all CPU cores — acting as a shared pool before the CPU is forced out to RAM.",
+            incorrect: "Think about the rule: higher level number = larger, slower, more shared. Which level is shared across all cores?"
+        },
+        'hitmiss': {
+            correct: "Correct! A cache miss forces the CPU into an idle (waiting) state while data travels from the slower RAM. This wasted time reduces the effective performance of the CPU.",
+            incorrect: "Think about what happens when data isn't in cache — the CPU has to go to RAM. RAM is slower. What does the CPU do while it waits?"
+        },
+        'performance': {
+            correct: "Correct! A higher cache hit rate means more requests are served from cache, so the CPU spends less time idle waiting for RAM. Task completion time decreases.",
+            incorrect: "The hit rate is about how often the CPU finds data in cache. If it finds data more often, what doesn't it need to do as often?"
+        }
+    };
+
+    function checkSectionAnswer(section, button, isCorrect) {
+        const questionBox = button.closest('.question-box');
+        if (questionBox.classList.contains('answered')) return;
+        questionBox.classList.add('answered');
+        const options = questionBox.querySelectorAll('.option-btn');
+        options.forEach(opt => {
+            opt.disabled = true;
+            if (opt === button) opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+        });
+        const feedback = document.getElementById(`feedback-${section}`);
+        feedback.textContent = isCorrect ? sectionFeedback[section].correct : sectionFeedback[section].incorrect;
+        feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+    }
+
+    // ============ Cache Simulation ============
+    const cacheData = ['ADD 7', 'LDA 5', 'STA 10', 'CMP 3'];
+    let simRunning = false;
+
+    function simulateHit() {
+        if (simRunning) return;
+        simRunning = true;
+        resetSimVisuals();
+
+        document.getElementById('simCPUVal').textContent = 'Needs: ADD 7';
+        document.getElementById('simCPU').classList.add('pulsing');
+        document.getElementById('simExplanation').innerHTML = '<p><strong>Step 1:</strong> CPU needs the instruction "ADD 7". It will check cache first...</p>';
+
+        setTimeout(() => {
+            // Searching cache
+            document.getElementById('simCacheVal').textContent = 'Searching...';
+            document.getElementById('arrow1').classList.add('active');
+            const slots = document.querySelectorAll('.cache-slot');
+            slots.forEach(s => { if (s.textContent.trim() !== 'empty') s.classList.add('searching'); });
+
+            document.getElementById('simExplanation').innerHTML = '<p><strong>Step 2:</strong> Scanning cache slots for "ADD 7"...</p>';
+        }, 700);
+
+        setTimeout(() => {
+            // Found it!
+            document.querySelectorAll('.cache-slot').forEach(s => s.classList.remove('searching'));
+            document.getElementById('slot-0').classList.add('found');
+            document.getElementById('simCache').classList.add('hit');
+            document.getElementById('simCPUVal').textContent = 'Got it! ✓';
+            document.getElementById('simResult').textContent = '✅ CACHE HIT — "ADD 7" found in cache. RAM not accessed.';
+            document.getElementById('simResult').className = 'sim-result hit-result';
+            document.getElementById('simExplanation').innerHTML = '<p><strong>Cache Hit!</strong> "ADD 7" was found in cache slot 0. The CPU receives the instruction immediately — <strong>RAM was never accessed</strong>. No idle time. Full speed maintained.</p>';
+            simRunning = false;
+        }, 2000);
+    }
+
+    function simulateMiss() {
+        if (simRunning) return;
+        simRunning = true;
+        resetSimVisuals();
+
+        document.getElementById('simCPUVal').textContent = 'Needs: SUB 2';
+        document.getElementById('simCPU').classList.add('pulsing');
+        document.getElementById('simExplanation').innerHTML = '<p><strong>Step 1:</strong> CPU needs the instruction "SUB 2". Checking cache first...</p>';
+
+        setTimeout(() => {
+            document.getElementById('simCacheVal').textContent = 'Searching...';
+            document.getElementById('arrow1').classList.add('active');
+            const slots = document.querySelectorAll('.cache-slot');
+            slots.forEach(s => { if (s.textContent.trim() !== 'empty') s.classList.add('searching'); });
+            document.getElementById('simExplanation').innerHTML = '<p><strong>Step 2:</strong> Scanning all cache slots for "SUB 2"... not found in any slot.</p>';
+        }, 700);
+
+        setTimeout(() => {
+            // Not found
+            document.querySelectorAll('.cache-slot').forEach(s => s.classList.remove('searching'));
+            document.getElementById('simCache').classList.add('miss-highlight');
+            document.getElementById('simCacheVal').textContent = 'NOT FOUND';
+            document.getElementById('simCPUVal').textContent = 'IDLE ⏳';
+            document.getElementById('simExplanation').innerHTML = '<p><strong>Cache Miss!</strong> "SUB 2" is not in cache. The CPU must now request it from RAM. The CPU enters an <strong>idle state</strong> while it waits...</p>';
+        }, 1800);
+
+        setTimeout(() => {
+            // Going to RAM
+            document.getElementById('arrow2').classList.add('active');
+            document.getElementById('simRAMVal').textContent = 'Fetching...';
+            document.getElementById('simResult').textContent = '❌ CACHE MISS — CPU is idle, waiting for RAM...';
+            document.getElementById('simResult').className = 'sim-result miss-result';
+        }, 2800);
+
+        setTimeout(() => {
+            // Data arrives
+            document.getElementById('simRAMVal').textContent = 'SUB 2 → sent';
+            document.getElementById('simCPUVal').textContent = 'Got it (slow)';
+            document.getElementById('simResult').textContent = '❌ CACHE MISS — "SUB 2" fetched from RAM. CPU was idle during wait. Now copied to cache.';
+
+            // Fill an empty cache slot
+            const emptySlots = document.querySelectorAll('.cache-slot.empty');
+            if (emptySlots.length > 0) {
+                emptySlots[0].textContent = 'SUB 2';
+                emptySlots[0].classList.remove('empty');
+                emptySlots[0].classList.add('populated');
+            }
+
+            document.getElementById('simExplanation').innerHTML = '<p><strong>Data arrives from RAM.</strong> The CPU received "SUB 2" but had to wait — this is lost time. The instruction is now copied into cache so that <em>next time</em> it will be a hit. This is how cache builds up its contents over time.</p>';
+            simRunning = false;
+        }, 4200);
+    }
+
+    function resetSimVisuals() {
+        document.getElementById('simCPU').className = 'sim-component sim-cpu';
+        document.getElementById('simCache').className = 'sim-component sim-cache';
+        document.getElementById('simRAM').className = 'sim-component sim-ram';
+        document.getElementById('arrow1').className = 'sim-arrow';
+        document.getElementById('arrow2').className = 'sim-arrow';
+        document.getElementById('simCPUVal').textContent = 'Idle';
+        document.getElementById('simCacheVal').textContent = 'Ready';
+        document.getElementById('simRAMVal').textContent = 'Standby';
+        document.getElementById('simResult').textContent = 'Press a button below to simulate a cache lookup';
+        document.getElementById('simResult').className = 'sim-result idle';
+        document.querySelectorAll('.cache-slot').forEach(s => s.classList.remove('searching', 'found'));
+    }
+
+    function resetSim() {
+        simRunning = false;
+        resetSimVisuals();
+        // Reset cache slots to original state
+        const slots = document.querySelectorAll('.cache-slot');
+        const origData = ['ADD 7', 'LDA 5', 'STA 10', 'CMP 3', 'empty', 'empty', 'empty', 'empty'];
+        slots.forEach((slot, i) => {
+            slot.className = 'cache-slot ' + (i < 4 ? 'populated' : 'empty');
+            slot.textContent = origData[i];
+        });
+        document.getElementById('simExplanation').innerHTML = '<p>The CPU will first look in cache. If the data is there, it\'s a <strong style="color:var(--accent-green)">Cache Hit</strong> — fast! If not, it\'s a <strong style="color:var(--accent-magenta)">Cache Miss</strong> — the CPU must wait for RAM.</p>';
+    }
+
+    // ============ Speed Bars ============
+    function animateBars() {
+        document.getElementById('animateBtn').disabled = true;
+        document.getElementById('animateBtn').textContent = 'Animating...';
+        const bars = document.querySelectorAll('.speed-bar');
+        bars.forEach((bar, i) => {
+            setTimeout(() => {
+                bar.style.width = bar.dataset.width;
+            }, i * 200);
+        });
+        setTimeout(() => {
+            document.getElementById('animateBtn').textContent = '✓ Done';
+        }, 1400);
+    }
+
+    // ============ Mark Scheme Reveal ============
+    function revealMarkScheme() {
+        document.getElementById('markScheme').style.display = 'block';
+        event.target.style.display = 'none';
+    }
+
+    function revealCritical() {
+        document.getElementById('criticalAnswer').style.display = 'block';
+        event.target.style.display = 'none';
+    }
+
+    // ============ Final Quiz ============
+    let finalAnswered = new Set();
+    let finalCorrect = 0;
+
+    const finalFeedback = {
+        1: {
+            correct: "Correct! L1 cache is built directly into each CPU core, making it the fastest but smallest cache level.",
+            incorrect: "Think about which level is physically closest to — actually inside — the CPU core."
+        },
+        2: {
+            correct: "Correct! A Cache Hit means the data was found in cache, so no RAM access was needed. Fast and efficient.",
+            incorrect: "A 'hit' means success — the data was found. What do we call it when the cache successfully serves the CPU?"
+        },
+        3: {
+            correct: "Correct! Larger cache → higher hit rate → less idle time waiting for RAM → faster completion. Clock speed being identical is key — it isolates cache as the only variable.",
+            incorrect: "Remember: clock speed is the same. The only difference is cache size. Follow the chain: larger cache → higher hit rate → less idle time → faster task completion."
+        },
+        4: {
+            correct: "Correct! SRAM (used in cache) is far more expensive per GB and takes up much more space on the silicon die than DRAM (used in RAM). It cannot economically scale to the gigabytes a computer needs.",
+            incorrect: "Think about why cache is so expensive — it's a different type of memory (SRAM vs DRAM). What are the two practical limitations of SRAM?"
+        }
+    };
+
+    function checkFinalAnswer(qNum, button, isCorrect) {
+        if (finalAnswered.has(qNum)) return;
+        finalAnswered.add(qNum);
+        const options = button.parentElement.querySelectorAll('.option-btn');
+        options.forEach(opt => {
+            opt.disabled = true;
+            if (opt === button) opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+        });
+        const feedback = document.getElementById(`feedback${qNum}`);
+        feedback.textContent = isCorrect ? finalFeedback[qNum].correct : finalFeedback[qNum].incorrect;
+        feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+        if (isCorrect) finalCorrect++;
+        if (finalAnswered.size === 4) showFinalResult();
+    }
+
+    function showFinalResult() {
+        const result = document.getElementById('quizResult');
+        const score = document.getElementById('quizScore');
+        const message = document.getElementById('quizMessage');
+        result.style.display = 'block';
+        score.textContent = `${finalCorrect}/4 Correct`;
+        if (finalCorrect === 4) {
+            score.style.color = 'var(--accent-green)';
+            message.textContent = "Perfect score — you've fully mastered cache memory!";
+        } else if (finalCorrect >= 3) {
+            score.style.color = 'var(--accent-cyan)';
+            message.textContent = "Strong work. Review the question you missed before your exam.";
+        } else {
+            score.style.color = 'var(--accent-yellow)';
+            message.textContent = "Go back through sections 7 and 8 — the performance chain is the key idea to nail.";
+        }
+    }
+
+    // ============ Word Counts ============
+    function updateExamWordCount() {
+        const text = document.getElementById('examResponse').value;
+        const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+        document.getElementById('examWordCount').textContent = words + ' word' + (words !== 1 ? 's' : '');
+    }
+
+    // ============ Init ============
+    document.addEventListener('DOMContentLoaded', function () {
+        updateProgress();
+    });
+</script>
+</body>
+</html>

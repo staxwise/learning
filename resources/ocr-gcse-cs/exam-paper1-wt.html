@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J277/01 Paper Feedback — Walking Talking Mock</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Source+Serif+4:wght@300;400;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080610;--card:#0d0a1e;--card2:#120e26;--bd:#1e1840;--bd2:#2a2055;
+  --pu:#a78bfa;--pu2:#c4b5fd;--rose:#fb7185;--green:#4ade80;--teal:#2dd4bf;
+  --sky:#38bdf8;--amber:#fbbf24;--yellow:#fde047;--pink:#f472b6;--orange:#fb923c;
+  --text:#d4c8f5;--muted:#3d3470;--muted2:#5a4f8a;
+  --font:'Syne',sans-serif;--serif:'Source Serif 4',serif;--hand:'Caveat',cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--serif);background:var(--bg);color:var(--text);overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 55% 35% at 15% 0%,rgba(167,139,250,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 30% at 85% 85%,rgba(44,212,191,.04) 0%,transparent 60%);
+  pointer-events:none;z-index:0;}
+.container{max-width:920px;margin:0 auto;padding:20px 20px 80px;position:relative;z-index:1;}
+
+/* ── HEADER ── */
+.site-header{text-align:center;padding:44px 0 30px;}
+.subject-tag{font-family:var(--font);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--pu);background:rgba(167,139,250,.09);border:1px solid rgba(167,139,250,.22);padding:6px 18px;border-radius:3px;display:inline-block;margin-bottom:20px;}
+.site-header h1{font-family:var(--font);font-size:clamp(24px,4.5vw,40px);font-weight:800;color:#fff;line-height:1.08;margin-bottom:10px;}
+.site-header h1 .acc{color:var(--pu);}
+.site-header p{color:var(--muted2);font-family:var(--font);font-size:13px;max-width:540px;margin:0 auto;}
+
+/* ── PROGRESS ── */
+.progress-nav{display:flex;justify-content:center;gap:6px;padding:20px 0;flex-wrap:wrap;}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--bd2);cursor:pointer;transition:all .3s;border:none;padding:0;}
+.dot.active{background:var(--pu);transform:scale(1.35);box-shadow:0 0 8px rgba(167,139,250,.5);}
+.dot.completed{background:var(--green);}
+.dot.priority{background:var(--amber);box-shadow:0 0 6px rgba(251,191,36,.3);}
+
+/* ── SECTIONS ── */
+.section{display:none;animation:fadeUp .35s ease;}
+.section.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── CARD ── */
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:24px 28px;margin-bottom:12px;}
+.card p{font-size:15px;line-height:1.85;color:#c0b0e8;margin-bottom:10px;}
+.card p strong{color:#fff;}
+.card p:last-child{margin-bottom:0;}
+
+/* ── SECTION HEADERS ── */
+.sec-tag{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.sec-num{font-family:var(--font);font-size:10px;letter-spacing:3px;color:var(--muted2);background:var(--card2);padding:4px 10px;border-radius:3px;white-space:nowrap;}
+.sec-tag h2{font-family:var(--font);font-size:20px;font-weight:700;color:#fff;}
+.marks-pill{font-family:var(--font);font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:auto;flex-shrink:0;}
+.mp-green{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);color:var(--green);}
+.mp-amber{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);color:var(--amber);}
+.mp-rose{background:rgba(251,113,133,.12);border:1px solid rgba(251,113,133,.3);color:var(--rose);}
+
+/* ── CLASS PERFORMANCE BARS ── */
+.perf-bar-wrap{margin:8px 0 12px;}
+.perf-bar-label{font-family:var(--font);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);margin-bottom:5px;display:flex;justify-content:space-between;}
+.perf-bar-track{height:10px;background:var(--bd2);border-radius:5px;overflow:hidden;}
+.perf-bar-fill{height:100%;border-radius:5px;transition:width .6s ease;}
+.perf-green{background:linear-gradient(90deg,var(--green),#6ee7b7);}
+.perf-amber{background:linear-gradient(90deg,var(--amber),#fcd34d);}
+.perf-rose{background:linear-gradient(90deg,var(--rose),#fda4af);}
+
+/* ── BOXES ── */
+.box{border-radius:9px;padding:14px 18px;margin:12px 0;border-left:4px solid;}
+.box-hd{font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.box p,.box li{font-size:14px;line-height:1.7;color:#c0b0e8;}
+.box p strong,.box li strong{color:#fff;}
+.box ul{padding-left:16px;}.box li{margin-bottom:5px;}
+.bx-pu{background:rgba(167,139,250,.07);border-color:var(--pu);}.bx-pu .box-hd{color:var(--pu);}
+.bx-green{background:rgba(74,222,128,.06);border-color:var(--green);}.bx-green .box-hd{color:var(--green);}
+.bx-amber{background:rgba(251,191,36,.06);border-color:var(--amber);}.bx-amber .box-hd{color:var(--amber);}
+.bx-rose{background:rgba(251,113,133,.07);border-color:var(--rose);}.bx-rose .box-hd{color:var(--rose);}
+.bx-teal{background:rgba(45,212,191,.06);border-color:var(--teal);}.bx-teal .box-hd{color:var(--teal);}
+.bx-sky{background:rgba(56,189,248,.06);border-color:var(--sky);}.bx-sky .box-hd{color:var(--sky);}
+.bx-orange{background:rgba(251,146,60,.07);border-color:var(--orange);}.bx-orange .box-hd{color:var(--orange);}
+
+/* ── QUESTION BLOCK ── */
+.q-block{background:var(--card2);border:1px solid var(--bd2);border-radius:9px;padding:16px 20px;margin:14px 0;}
+.q-block .qb-stem{font-family:var(--font);font-size:13px;font-style:italic;color:var(--muted2);margin-bottom:8px;letter-spacing:.3px;}
+.q-block .qb-text{font-size:15px;color:#fff;line-height:1.65;font-family:var(--serif);}
+.q-marks{font-family:var(--font);font-size:11px;color:var(--muted2);margin-top:8px;letter-spacing:.5px;}
+
+/* ── MODEL ANSWER ── */
+.model-answer{background:#060415;border:1px solid var(--bd2);border-radius:9px;padding:18px 22px;margin:14px 0;}
+.ma-header{font-family:var(--font);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.ma-header::before{content:'✓';font-size:14px;}
+.ma-body{font-size:14px;line-height:1.85;color:#c0b0e8;}
+.ma-body strong{color:#fff;}
+.ma-body .mark{display:inline-block;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:var(--green);font-family:var(--font);font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;margin-left:4px;vertical-align:middle;letter-spacing:1px;}
+.ma-body ul{padding-left:18px;margin:6px 0;}
+.ma-body li{margin-bottom:6px;}
+.ma-body li strong{color:#fff;}
+
+/* ── MARKING POINTS ── */
+.marking-points{margin:14px 0;}
+.mp-row{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--bd);font-size:14px;color:#c0b0e8;line-height:1.55;}
+.mp-row:last-child{border-bottom:none;}
+.mp-tick{color:var(--green);flex-shrink:0;font-size:13px;margin-top:1px;}
+.mp-text strong{color:#fff;}
+
+/* ── COMMON MISTAKES ── */
+.mistake-list{margin:6px 0;}
+.mistake-row{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid rgba(251,113,133,.1);font-size:13.5px;color:#c0b0e8;line-height:1.55;}
+.mistake-row:last-child{border-bottom:none;}
+.mx{color:var(--rose);flex-shrink:0;}
+.mistake-row strong{color:#fff;}
+
+/* ── LEVEL RESPONSE BANDS ── */
+.bands{display:flex;flex-direction:column;gap:8px;margin:12px 0;}
+.band{border-radius:8px;padding:12px 16px;border:1px solid;}
+.band-hd{font-family:var(--font);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.band-body{font-size:13px;color:#c0b0e8;line-height:1.65;}
+.band-body strong{color:#fff;}
+.band-l4{background:rgba(74,222,128,.06);border-color:rgba(74,222,128,.2);}.band-l4 .band-hd{color:var(--green);}
+.band-l3{background:rgba(45,212,191,.06);border-color:rgba(45,212,191,.2);}.band-l3 .band-hd{color:var(--teal);}
+.band-l2{background:rgba(251,191,36,.06);border-color:rgba(251,191,36,.2);}.band-l2 .band-hd{color:var(--amber);}
+.band-l1{background:rgba(251,113,133,.06);border-color:rgba(251,113,133,.2);}.band-l1 .band-hd{color:var(--rose);}
+
+/* ── CALCULATION STEPS ── */
+.calc-steps{background:#06041a;border:1px solid var(--bd2);border-radius:8px;padding:16px 20px;margin:12px 0;font-family:'Courier New',monospace;font-size:14px;line-height:2.2;color:#c0b0e8;}
+.calc-steps .cs-step{display:flex;gap:10px;align-items:flex-start;}
+.cs-n{font-family:var(--font);font-size:9px;font-weight:700;color:var(--muted2);background:var(--card2);border-radius:3px;padding:2px 6px;flex-shrink:0;margin-top:4px;letter-spacing:1px;}
+.calc-steps .hl{color:var(--amber);}
+.calc-steps .ans{color:var(--green);font-weight:700;}
+
+/* ── TWO COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;}
+@media(max-width:560px){.two-col{grid-template-columns:1fr;}}
+.tcol{border-radius:9px;border:1px solid var(--bd2);padding:14px 16px;}
+.tcol h4{font-family:var(--font);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.tcol ul{padding-left:14px;font-size:13px;color:#c0b0e8;line-height:1.75;}
+.tcol li{margin-bottom:3px;}
+.tcol li strong{color:#fff;}
+
+/* ── NAV ── */
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:10px;}
+.btn{font-family:var(--font);font-weight:700;font-size:13px;padding:11px 24px;border-radius:7px;cursor:pointer;border:none;transition:all .2s;}
+.btn-p{background:var(--pu);color:#08041a;}
+.btn-p:hover{background:var(--pu2);transform:translateY(-1px);}
+.btn-g{background:transparent;color:var(--muted2);border:1px solid var(--bd2);}
+.btn-g:hover{border-color:var(--pu);color:var(--pu);}
+.btn:disabled{opacity:.3;cursor:not-allowed;transform:none!important;}
+
+/* ── DASHBOARD SPECIFIC ── */
+.dash-hero{background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--bd);border-radius:14px;padding:28px 30px;margin-bottom:16px;position:relative;overflow:hidden;}
+.dash-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,.08) 0%,transparent 70%);pointer-events:none;}
+.dh-tag{font-family:var(--font);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--pu);margin-bottom:10px;}
+.dh-title{font-family:var(--font);font-size:clamp(20px,3vw,28px);font-weight:800;color:#fff;margin-bottom:10px;line-height:1.15;}
+.dh-body{font-size:14px;color:#c0b0e8;line-height:1.75;max-width:580px;}
+.dh-body strong{color:#fff;}
+
+/* ── LEVERAGE TABLE ── */
+.leverage-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0;}
+@media(max-width:560px){.leverage-grid{grid-template-columns:1fr;}}
+.lev-card{background:var(--card2);border-radius:9px;padding:14px 16px;border:1px solid;}
+.lev-card.lev-high{border-color:rgba(251,113,133,.3);background:rgba(251,113,133,.05);}
+.lev-card.lev-mid{border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.04);}
+.lev-card .lc-q{font-family:var(--font);font-size:22px;font-weight:800;line-height:1;margin-bottom:4px;}
+.lev-card.lev-high .lc-q{color:var(--rose);}
+.lev-card.lev-mid .lc-q{color:var(--amber);}
+.lev-card .lc-label{font-family:var(--font);font-size:12px;color:#fff;font-weight:600;margin-bottom:4px;}
+.lev-card .lc-detail{font-size:12px;color:var(--muted2);line-height:1.5;}
+
+/* ── TOPIC JUMP ── */
+.topic-jump{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0;}
+.tj-btn{font-family:var(--font);font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;cursor:pointer;border:1px solid var(--bd2);background:var(--card2);color:var(--muted2);transition:all .2s;letter-spacing:.3px;}
+.tj-btn:hover{border-color:var(--pu);color:var(--pu);background:rgba(167,139,250,.06);}
+.tj-btn.priority{border-color:rgba(251,113,133,.4);color:var(--rose);}
+
+/* ── WELL DONE ── */
+.well-done-grid{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;}
+.wd-chip{font-family:var(--font);font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);color:var(--green);}
+
+code{background:rgba(167,139,250,.12);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:12.5px;color:var(--pu2);}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="site-header">
+  <div class="subject-tag">GCSE Computer Science · J277/01 · Spring Mock 2026</div>
+  <h1>Walking Talking <span class="acc">Mock</span><br>Paper 1 Feedback</h1>
+  <p>Question-by-question mark scheme walkthrough — annotate your paper as you go</p>
+</div>
+
+<div class="progress-nav" id="progressNav"></div>
+
+
+<!-- ══════════════════════════════════════
+     S0 — CLASS DASHBOARD
+══════════════════════════════════════ -->
+<div class="section active" data-section="0">
+
+<div class="dash-hero">
+  <div class="dh-tag">Class Feedback · J277/01 Computer Systems</div>
+  <div class="dh-title">Here's where the marks were won and lost.</div>
+  <div class="dh-body">This resource walks through every question on the paper with the mark scheme, model answers and common mistakes. <strong>Open your paper now</strong> and annotate it as you go. Sections marked 🔴 are where the class lost the most marks.</div>
+</div>
+
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">CLASS DATA</span><h2>Where Did Marks Go?</h2></div>
+  <p>Below are the questions with the biggest mark-loss across the class — these are your highest-leverage areas to improve before the real exam.</p>
+
+  <div class="leverage-grid">
+    <div class="lev-card lev-high">
+      <div class="lc-q">Q6A</div>
+      <div class="lc-label">Cultural, Privacy &amp; Legal Issues</div>
+      <div class="lc-detail">8 marks · Class avg ~60% · Most students scoring Level 2 or low Level 3. <strong>~3.2 marks left on the table per student</strong> — the single biggest opportunity.</div>
+    </div>
+    <div class="lev-card lev-high">
+      <div class="lc-q">Q2B</div>
+      <div class="lc-label">Image File Size Calculation</div>
+      <div class="lc-detail">3 marks · Class avg ~55% · Many lost marks on the bits→bytes conversion step. Easy marks to pick up with one formula.</div>
+    </div>
+    <div class="lev-card lev-mid">
+      <div class="lc-q">Q2A</div>
+      <div class="lc-label">HDD vs SSD Comparison</div>
+      <div class="lc-detail">6 marks · Class avg ~78% · Most scoring 3–4/6. The top band needs three aspects developed AND a conclusion.</div>
+    </div>
+    <div class="lev-card lev-mid">
+      <div class="lc-q">Q5A</div>
+      <div class="lc-label">OS Memory Management &amp; Multitasking</div>
+      <div class="lc-detail">4 marks · Class avg ~68% · Students often addressed one role well but the second poorly. Both must be answered.</div>
+    </div>
+    <div class="lev-card lev-mid">
+      <div class="lc-q">Q4D</div>
+      <div class="lc-label">Penetration Testing</div>
+      <div class="lc-detail">2 marks · Class avg ~58% · "Testing security" alone = 0. Must name the simulate/identify/fix structure.</div>
+    </div>
+    <div class="lev-card lev-mid">
+      <div class="lc-q">Q1B</div>
+      <div class="lc-label">Cache &amp; CPU Performance</div>
+      <div class="lc-detail">2 marks · Class avg ~62% · Marks need the link: larger cache → less RAM access → faster processing. Chain must be complete.</div>
+    </div>
+  </div>
+
+  <div class="box bx-green" style="margin-top:16px;">
+    <div class="box-hd">✅ Well Done — Strong Areas</div>
+    <p>The class performed well on these — keep it up:</p>
+    <div class="well-done-grid">
+      <span class="wd-chip">Q4B Phishing identification</span>
+      <span class="wd-chip">Q9A RAM vs ROM</span>
+      <span class="wd-chip">Q10B Switch vs Router</span>
+      <span class="wd-chip">Q8B CPU performance blanks</span>
+      <span class="wd-chip">Q9B Virtual memory</span>
+      <span class="wd-chip">Q3B Network layers</span>
+      <span class="wd-chip">Q7A Hex conversion</span>
+    </div>
+  </div>
+
+  <div class="box bx-amber" style="margin-top:6px;">
+    <div class="box-hd">💡 How to Use This Resource</div>
+    <p><strong>Open your paper now.</strong> For every question, this walkthrough shows exactly what marks were available, what the marker was looking for, and a model answer. Where you lost marks — annotate your paper in a different colour with what you should have written.</p>
+    <p>Navigate question by question using the dots above or the Next button. 🔴 priority dots = highest-leverage questions for your class.</p>
+  </div>
+
+  <div class="topic-jump">
+    <span style="font-family:var(--font);font-size:11px;color:var(--muted2);align-self:center;">Jump to:</span>
+    <button class="tj-btn priority" onclick="goTo(1)">🔴 Q1 CPU</button>
+    <button class="tj-btn priority" onclick="goTo(2)">🔴 Q2 Storage &amp; Data</button>
+    <button class="tj-btn" onclick="goTo(3)">Q3 Networks</button>
+    <button class="tj-btn" onclick="goTo(4)">Q4 Security</button>
+    <button class="tj-btn" onclick="goTo(5)">Q5 OS</button>
+    <button class="tj-btn priority" onclick="goTo(6)">🔴 Q6 Ethics</button>
+    <button class="tj-btn" onclick="goTo(7)">Q7 Data Rep</button>
+    <button class="tj-btn" onclick="goTo(8)">Q8 Embedded/CPU</button>
+    <button class="tj-btn" onclick="goTo(9)">Q9 Memory</button>
+    <button class="tj-btn" onclick="goTo(10)">Q10 Networks</button>
+    <button class="tj-btn" onclick="goTo(11)">Q11 Software</button>
+  </div>
+</div>
+
+<div class="nav-row"><div></div><button class="btn btn-p" onclick="goNext()">Start with Q1 →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S1 — Q1 CPU Architecture
+══════════════════════════════════════ -->
+<div class="section" data-section="1">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">QUESTION 1</span><h2>CPU Architecture</h2><span class="marks-pill mp-amber">9 marks</span></div>
+
+  <div class="perf-bar-wrap">
+    <div class="perf-bar-label"><span>Class performance</span><span style="color:var(--amber);">Mixed — Q1B and Q1D were the sticking points</span></div>
+    <div class="perf-bar-track"><div class="perf-bar-fill perf-amber" style="width:74%"></div></div>
+  </div>
+
+  <!-- Q1a -->
+  <div class="q-block">
+    <div class="qb-stem">1(a) — 2 marks · DESCRIBE</div>
+    <div class="qb-text">Describe the function of cache memory.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">What to write — 2 marks</div>
+    <div class="ma-body">
+      Cache memory stores <strong>frequently or recently used data/instructions</strong> <span class="mark">MARK 1</span> so that the CPU can access them <strong>quickly — faster than accessing RAM</strong> <span class="mark">MARK 2</span>.
+    </div>
+  </div>
+  <div class="box bx-rose">
+    <div class="box-hd">⚠ Common mistakes</div>
+    <div class="mistake-list">
+      <div class="mistake-row"><span class="mx">✗</span><span>"Memory that helps the CPU" — too vague, 0 marks. Must mention <strong>what</strong> it stores AND <strong>why</strong> it's faster.</span></div>
+      <div class="mistake-row"><span class="mx">✗</span><span>Confusing cache with RAM — cache is smaller, faster, and sits closer to the CPU.</span></div>
+    </div>
+  </div>
+
+  <!-- Q1b -->
+  <div class="q-block">
+    <div class="qb-stem">1(b) — 2 marks · EXPLAIN</div>
+    <div class="qb-text">Explain how cache memory can affect the performance of the CPU.</div>
+    <div class="q-marks">Class avg ~62% — many students made the link but didn't complete the chain</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">What to write — 2 marks (chain must be complete)</div>
+    <div class="ma-body">
+      A larger cache can store more frequently used data <span class="mark">MARK 1</span>, which reduces the need to access the slower RAM/main memory, allowing the CPU to process instructions more quickly / reducing latency <span class="mark">MARK 2</span>.<br><br>
+      <strong>The chain:</strong> More/larger cache → less RAM access → faster CPU performance. Break the chain and you lose marks.
+    </div>
+  </div>
+
+  <!-- Q1c -->
+  <div class="q-block">
+    <div class="qb-stem">1(c) — 1 mark · STATE</div>
+    <div class="qb-text">State the purpose of the Arithmetic Logic Unit (ALU).</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">What to write — 1 mark</div>
+    <div class="ma-body">Performs <strong>arithmetic calculations</strong> (e.g. addition, subtraction) <strong>and/or logical comparisons</strong> (e.g. AND, OR, NOT). <span class="mark">MARK 1</span></div>
+  </div>
+  <div class="box bx-amber"><div class="box-hd">💡 Note</div><p>"Processes data" alone = 0. You must mention arithmetic OR logical. Most of the class got this — well done.</p></div>
+
+  <!-- Q1d -->
+  <div class="q-block">
+    <div class="qb-stem">1(d) — 4 marks · DESCRIBE</div>
+    <div class="qb-text">Describe how the fetch–execute cycle handles instructions within the CPU.</div>
+    <div class="q-marks">Class avg ~74% — most scored 2–3/4. Getting all 4 requires covering all three stages.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Model answer — 4 marks available across FETCH, DECODE, EXECUTE</div>
+    <div class="ma-body">
+      <strong>FETCH:</strong> The Program Counter (PC) holds the address of the next instruction. <span class="mark">MARK</span> The address is copied to the MAR and the instruction is fetched from RAM into the MDR. <span class="mark">MARK</span> It is then copied to the CIR and the PC is incremented. <span class="mark">MARK</span><br><br>
+      <strong>DECODE:</strong> The Control Unit decodes the instruction in the CIR. <span class="mark">MARK</span><br><br>
+      <strong>EXECUTE:</strong> The instruction is executed by the relevant component (e.g. ALU). Results may be stored back in memory/registers. <span class="mark">MARK</span>
+    </div>
+  </div>
+  <div class="box bx-pu">
+    <div class="box-hd">📌 The Registers to Know</div>
+    <div class="two-col">
+      <div class="tcol"><h4 style="color:var(--sky);">Registers</h4><ul>
+        <li><strong>PC</strong> — Program Counter: holds address of next instruction</li>
+        <li><strong>MAR</strong> — Memory Address Register: holds address being accessed</li>
+        <li><strong>MDR</strong> — Memory Data Register: holds data fetched from memory</li>
+        <li><strong>CIR</strong> — Current Instruction Register: holds instruction being decoded/executed</li>
+      </ul></div>
+      <div class="tcol"><h4 style="color:var(--teal);">Components</h4><ul>
+        <li><strong>CU</strong> — Control Unit: decodes instructions, coordinates CPU</li>
+        <li><strong>ALU</strong> — Arithmetic Logic Unit: carries out calculations</li>
+        <li><strong>PC increments</strong> after each fetch (points to next instruction)</li>
+        <li>Cycle repeats continuously while powered</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" onclick="goNext()">Q2 Storage →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S2 — Q2 Storage & Data Representation
+══════════════════════════════════════ -->
+<div class="section" data-section="2">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">QUESTION 2</span><h2>Storage &amp; Data Representation</h2><span class="marks-pill mp-rose">12 marks</span></div>
+  <div class="box bx-rose"><div class="box-hd">🔴 High Priority — Class lost marks here</div><p>Q2A and Q2B were both weaker than expected. Q2B (the calculation) should be 3 reliable marks every exam — fix the method and lock them in.</p></div>
+
+  <!-- Q2a -->
+  <div class="q-block">
+    <div class="qb-stem">2(a) — 6 marks · LEVEL RESPONSE · COMPARE</div>
+    <div class="qb-text">A gamer wants to store high-resolution video games. Compare magnetic storage and solid-state storage. You might want to refer to: Cost, Speed, Durability.</div>
+    <div class="q-marks">Class avg ~78% — most scoring 3–4/6. Top band (5–6) requires all three aspects WITH conclusions.</div>
+  </div>
+  <div class="bands">
+    <div class="band band-l4"><div class="band-hd">Level 3: 5–6 marks</div><div class="band-body">Covers <strong>all three aspects</strong> (cost, speed, durability) with clear development. Links to the gaming context. Reaches a <strong>conclusion</strong> on which is better and why. Uses technical terminology throughout.</div></div>
+    <div class="band band-l3"><div class="band-hd">Level 2: 3–4 marks</div><div class="band-body">Covers <strong>at least two aspects</strong>. Some development, some links to gaming. Generally accurate terminology.</div></div>
+    <div class="band band-l1"><div class="band-hd">Level 1: 1–2 marks</div><div class="band-body">Only one aspect, or very superficial coverage. Limited terminology.</div></div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Model answer — Level 3 (5–6 marks)</div>
+    <div class="ma-body">
+      <strong>Cost:</strong> Magnetic hard drives (HDDs) are cheaper per gigabyte than SSDs, meaning a gamer could store more games for the same budget on an HDD. However, SSD prices have fallen significantly and they are now affordable for most consumers. <span class="mark">COST ✓</span><br><br>
+      <strong>Speed:</strong> SSDs have faster read/write speeds with no moving parts, meaning games load significantly faster — often in seconds compared to minutes on an HDD, which has seek time due to spinning platters. For a gaming context, this is a major advantage. <span class="mark">SPEED ✓</span><br><br>
+      <strong>Durability:</strong> SSDs have no moving parts and are therefore more shock-resistant and durable. HDDs can fail if moved or dropped during operation. This matters less for a desktop gaming PC but is significant for portable gaming. <span class="mark">DURABILITY ✓</span><br><br>
+      <strong>Conclusion:</strong> For a gaming use case, SSD is recommended for its speed and reliability, though an HDD remains a valid choice for budget-conscious bulk storage of many games. <span class="mark">CONCLUSION ✓</span>
+    </div>
+  </div>
+  <div class="box bx-amber"><div class="box-hd">💡 The Level 3 Formula</div><p>To reach 5–6: <strong>(1) cover all three bullet points + (2) develop each with gaming context + (3) write a conclusion</strong>. Missing the conclusion is the most common reason students fall to Level 2.</p></div>
+
+  <!-- Q2b -->
+  <div class="q-block">
+    <div class="qb-stem">2(b) — 3 marks · CALCULATE</div>
+    <div class="qb-text">An image has a resolution of 100 × 100 pixels and a colour depth of 4 bits per pixel. Calculate the file size in kilobytes (KB). Show your working.</div>
+    <div class="q-marks">🔴 Class avg ~55% — the most fixable question on the paper. One formula, three steps.</div>
+  </div>
+  <div class="calc-steps">
+    <div class="cs-step"><div class="cs-n">STEP 1</div><div>100 × 100 = <span class="hl">10,000 pixels</span> &nbsp;→ &nbsp;<span class="mark" style="font-family:var(--font);font-size:9px;padding:1px 6px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:var(--green);border-radius:3px;">MARK 1</span></div></div>
+    <div class="cs-step"><div class="cs-n">STEP 2</div><div>10,000 × 4 = <span class="hl">40,000 bits</span> &nbsp;→ &nbsp;<span class="mark" style="font-family:var(--font);font-size:9px;padding:1px 6px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:var(--green);border-radius:3px;">MARK 2</span></div></div>
+    <div class="cs-step"><div class="cs-n">STEP 3</div><div>40,000 ÷ 8 = 5,000 bytes &nbsp;→ &nbsp;5,000 ÷ 1,000 = <span class="ans">5 KB</span> &nbsp;→ &nbsp;<span class="mark" style="font-family:var(--font);font-size:9px;padding:1px 6px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:var(--green);border-radius:3px;">MARK 3</span></div></div>
+  </div>
+  <div class="box bx-rose">
+    <div class="box-hd">⚠ Where students went wrong</div>
+    <div class="mistake-list">
+      <div class="mistake-row"><span class="mx">✗</span><span>Forgetting to <strong>÷8</strong> to convert bits to bytes — the most common single error</span></div>
+      <div class="mistake-row"><span class="mx">✗</span><span>Treating 100×100 as the answer (forgetting to multiply by colour depth)</span></div>
+      <div class="mistake-row"><span class="mx">✗</span><span>Method marks are awarded even if arithmetic is wrong — <strong>always show your working</strong></span></div>
+    </div>
+  </div>
+  <div class="box bx-pu"><div class="box-hd">📌 The Formula (memorise this)</div><p><strong>File size (bits)</strong> = Width × Height × Colour depth &nbsp;→&nbsp; ÷8 for bytes &nbsp;→&nbsp; ÷1,000 for KB &nbsp;→&nbsp; ÷1,000 for MB</p></div>
+
+  <!-- Q2c -->
+  <div class="q-block">
+    <div class="qb-stem">2(c) — 3 marks · EXPLAIN</div>
+    <div class="qb-text">Explain why lossy compression is suitable for a video file on a website but not suitable for a text file.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">What to write — need at least 1 point for each file type</div>
+    <div class="ma-body">
+      <strong>For video (suitable):</strong> Video files are very large and lossy compression achieves significant size reduction. <span class="mark">MARK</span> The data removed (such as imperceptible colour differences between frames) is not noticeable to a viewer, so quality loss is acceptable. <span class="mark">MARK</span><br><br>
+      <strong>For text (not suitable):</strong> Every character in a text file is essential for meaning — losing even one character would corrupt the document or change its meaning entirely. <span class="mark">MARK</span>
+    </div>
+  </div>
+</div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Q1</button><button class="btn btn-p" onclick="goNext()">Q3 Networks →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S3 — Q3 Networks
+══════════════════════════════════════ -->
+<div class="section" data-section="3">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">QUESTION 3</span><h2>Networks &amp; Protocols</h2><span class="marks-pill mp-green">9 marks</span></div>
+  <p>Mixed performance across this question — Q3B was strong (87%) but Q3A and Q3C had more yellow than expected.</p>
+
+  <!-- Q3a -->
+  <div class="q-block">
+    <div class="qb-stem">3(a) — 2 marks · IDENTIFY</div>
+    <div class="qb-text">Identify the protocol used for: (1) Sending an email &nbsp;&nbsp; (2) Securely accessing a bank website</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Exact answers required (AO questions)</div>
+    <div class="ma-body">
+      Sending an email: <strong>SMTP</strong> (sending) or <strong>POP3 / IMAP</strong> (receiving) — accept any <span class="mark">MARK 1</span><br>
+      Securely accessing a bank website: <strong>HTTPS</strong> (only — not HTTP) <span class="mark">MARK 2</span>
+    </div>
+  </div>
+  <div class="box bx-rose"><div class="box-hd">⚠ Watch out</div><p>For the bank website: <strong>HTTPS only</strong>. "SSL" or "TLS" alone = 0. SSL/TLS are protocols within HTTPS, not the answer to this question. If you wrote HTTP you scored 0 — the S matters.</p></div>
+
+  <!-- Q3b -->
+  <div class="q-block">
+    <div class="qb-stem">3(b) — 2 marks · EXPLAIN</div>
+    <div class="qb-text">Explain the concept of layers in network protocols.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">What to write — 2 marks</div>
+    <div class="ma-body">
+      Network communication is divided into <strong>separate layers</strong>, each with a specific function/responsibility. <span class="mark">MARK 1</span> Each layer communicates only with the layers immediately above and below it, working together to enable complete data transmission. <span class="mark">MARK 2</span>
+    </div>
+  </div>
+
+  <!-- Q3c -->
+  <div class="q-block">
+    <div class="qb-stem">3(c) — 1 mark · GIVE</div>
+    <div class="qb-text">Give one benefit of using a layered approach.</div>
+    <div class="q-marks">Class avg ~55% — surprisingly weak for 1 mark. Must be specific.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Any ONE of these — 1 mark</div>
+    <div class="ma-body">
+      • Easier to update or modify one layer without affecting the others <span class="mark">OR</span><br>
+      • Allows different manufacturers to develop different layers independently <span class="mark">OR</span><br>
+      • Easier to troubleshoot — can identify which layer has a problem <span class="mark">OR</span><br>
+      • Allows standardisation across different systems/devices
+    </div>
+  </div>
+  <div class="box bx-rose"><div class="box-hd">⚠ Common mistake</div><p>"Makes it faster" — 0 marks without explanation. You must name a specific benefit, not a vague claim.</p></div>
+
+  <!-- Q3d = cloud storage -->
+  <div class="q-block">
+    <div class="qb-stem">3(d) — 4 marks · EXPLAIN</div>
+    <div class="qb-text">Explain two advantages of using cloud storage for files.</div>
+    <div class="q-marks">Class avg ~70% — most scored 2/4. Getting 4 requires identifying the advantage AND explaining it.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">2 marks per advantage (identify + explain)</div>
+    <div class="ma-body">
+      <strong>Advantage 1:</strong> Files can be accessed from anywhere / any device with an internet connection. <span class="mark">MARK 1</span> This means users can work remotely or from different locations without needing their original device. <span class="mark">MARK 2</span><br><br>
+      <strong>Advantage 2:</strong> Cloud storage providers automatically back up data (redundancy). <span class="mark">MARK 3</span> This protects against data loss if the user's local device fails, is damaged, or stolen. <span class="mark">MARK 4</span>
+    </div>
+  </div>
+  <div class="box bx-amber"><div class="box-hd">💡 The 2-mark pattern</div><p>Each advantage = identification (1 mark) + explanation/development (1 mark). "You can access from anywhere" alone = 1 mark, not 2. Always add the <em>why this is useful</em> sentence.</p></div>
+</div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Q2</button><button class="btn btn-p" onclick="goNext()">Q4 Security →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S4 — Q4 Security
+══════════════════════════════════════ -->
+<div class="section" data-section="4">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">QUESTION 4</span><h2>Security</h2><span class="marks-pill mp-amber">8 marks</span></div>
+
+  <!-- Q4a -->
+  <div class="q-block">
+    <div class="qb-stem">4(a) — 2 marks · DEFINE</div>
+    <div class="qb-text">Define phishing.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Must have BOTH components — 2 marks</div>
+    <div class="ma-body">
+      A <strong>fraudulent attempt to obtain sensitive information</strong> (passwords, bank details, personal data) <span class="mark">MARK 1</span> by <strong>disguising as a trustworthy entity</strong> in electronic communication (e.g. fake emails appearing to be from a bank). <span class="mark">MARK 2</span>
+    </div>
+  </div>
+  <div class="box bx-rose"><div class="box-hd">⚠ Must have BOTH</div><p>"Fake emails to steal information" = 2 marks (includes both deception AND purpose). "Hacking" alone = 0. The marker needs to see: (1) the deception/disguise element AND (2) the purpose (to steal data/credentials).</p></div>
+
+  <!-- Q4b -->
+  <div class="q-block">
+    <div class="qb-stem">4(b) — 1 mark · STATE</div>
+    <div class="qb-text">State one way a user could identify a phishing email.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Any ONE — 1 mark (class scored well here ✅)</div>
+    <div class="ma-body">
+      • Suspicious/misspelled sender email address <span class="mark">OR</span> Poor spelling/grammar <span class="mark">OR</span> Urgent/threatening language <span class="mark">OR</span> Requests for personal/financial info <span class="mark">OR</span> Suspicious links <span class="mark">OR</span> Generic greeting ("Dear Customer") <span class="mark">OR</span> Unexpected attachments
+    </div>
+  </div>
+
+  <!-- Q4c -->
+  <div class="q-block">
+    <div class="qb-stem">4(c) — 3 marks · EXPLAIN</div>
+    <div class="qb-text">Explain how user access levels could help prevent a data breach within an organisation.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">What to write — 3 from these points, must link to breach prevention</div>
+    <div class="ma-body">
+      <ul>
+        <li>Different users are given different permissions/rights, so they can only access data <strong>relevant to their role</strong>. <span class="mark">MARK</span></li>
+        <li>This <strong>limits the damage</strong> if one account is compromised — an attacker can only access that user's permitted data, not the entire system. <span class="mark">MARK</span></li>
+        <li>Sensitive data is only accessible to <strong>authorised personnel</strong>, reducing the risk of accidental or intentional exposure. <span class="mark">MARK</span></li>
+        <li>Creates <strong>accountability</strong> — actions can be traced to specific users, deterring misuse. <span class="mark">MARK</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Q4d (penetration testing) -->
+  <div class="q-block">
+    <div class="qb-stem">4(d) — 2 marks · DESCRIBE</div>
+    <div class="qb-text">Describe the purpose of penetration testing.</div>
+    <div class="q-marks">🔴 Class avg ~58% — "testing security" or "testing the network" = 0. Need the simulate/identify structure.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">What to write — 2 marks</div>
+    <div class="ma-body">
+      Penetration testing involves <strong>simulating a cyber attack on a system</strong> (an authorised/ethical hacking attempt) <span class="mark">MARK 1</span> in order to <strong>identify vulnerabilities before real attackers do</strong>, allowing the organisation to fix security flaws proactively. <span class="mark">MARK 2</span>
+    </div>
+  </div>
+  <div class="box bx-rose"><div class="box-hd">⚠ Why students lost marks</div><p>"Testing the network" = 0. "Testing security" = 0. You must include: (1) the simulate/ethical hacking aspect AND (2) the purpose — finding vulnerabilities before real attackers. Think of it as: <em>attack your own system on purpose, so you can fix what you find.</em></p></div>
+</div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Q3</button><button class="btn btn-p" onclick="goNext()">Q5 OS →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S5 — Q5 Systems Software
+══════════════════════════════════════ -->
+<div class="section" data-section="5">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">QUESTION 5</span><h2>Systems Software — Operating System</h2><span class="marks-pill mp-amber">4 marks</span></div>
+  <div class="box bx-amber"><div class="box-hd">⚠ Class avg ~68% — both roles must be answered</div><p>Most students answered one role well but gave a weaker answer on the second. Both memory management AND multitasking must be addressed for full marks.</p></div>
+
+  <div class="q-block">
+    <div class="qb-stem">5(a) — 4 marks · DESCRIBE (2+2)</div>
+    <div class="qb-text">Describe the role of the operating system in: (1) memory management &nbsp;&nbsp; (2) multitasking.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Model answer — max 2 marks per role</div>
+    <div class="ma-body">
+      <strong>Memory Management (2 marks — any 2):</strong><br>
+      • Allocates memory to programs/processes when they are launched. <span class="mark">MARK</span><br>
+      • Deallocates / frees memory when programs close. <span class="mark">MARK</span><br>
+      • Manages virtual memory when RAM becomes full. <span class="mark">MARK</span><br>
+      • Prevents programs from accessing each other's memory space. <span class="mark">MARK</span><br><br>
+      <strong>Multitasking (2 marks — any 2):</strong><br>
+      • Allows multiple programs to appear to run simultaneously by switching between them rapidly (context switching). <span class="mark">MARK</span><br>
+      • Allocates CPU time to each process (time slicing / scheduling). <span class="mark">MARK</span><br>
+      • Prioritises tasks so more important processes receive more CPU time. <span class="mark">MARK</span>
+    </div>
+  </div>
+  <div class="box bx-pu"><div class="box-hd">📌 Key vocab that gets marks</div><p>Memory management: <strong>allocate, deallocate, virtual memory, address space</strong>. Multitasking: <strong>time slicing, context switching, process scheduling, concurrent</strong>. Using these terms signals understanding to the examiner.</p></div>
+</div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Q4</button><button class="btn btn-p" onclick="goNext()">Q6 Ethics →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S6 — Q6 Ethical Issues (PRIORITY)
+══════════════════════════════════════ -->
+<div class="section" data-section="6">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">QUESTION 6 🔴 PRIORITY</span><h2>Ethical, Legal &amp; Cultural Issues</h2><span class="marks-pill mp-rose">10 marks</span></div>
+
+  <div class="box bx-rose">
+    <div class="box-hd">🔴 Biggest single mark-loss on the paper</div>
+    <p>Q6A (8 marks) had a class average of ~60% — <strong>approximately 3.2 marks per student left on the table</strong>. This is a level response question with four bands. Most students scored Level 2 (3–4) or low Level 3 (5). Scoring Level 4 (7–8) requires all three issue types covered, developed with examples, and balanced perspectives.</p>
+  </div>
+
+  <!-- Q6a -->
+  <div class="q-block">
+    <div class="qb-stem">6(a) — 8 marks · LEVEL RESPONSE · DISCUSS</div>
+    <div class="qb-text">A global social media company uses algorithms to filter content for users in different countries and collects large amounts of personal data. Discuss the cultural, privacy, and legal issues raised.</div>
+  </div>
+
+  <div class="bands">
+    <div class="band band-l4"><div class="band-hd">Level 4: 7–8 marks — what it takes</div><div class="band-body">Covers <strong>all three areas</strong> (cultural + privacy + legal) <strong>in depth</strong>. Well-developed arguments with <strong>specific examples</strong>. Shows understanding of tensions and conflicts between different interests. <strong>Balanced — considers multiple perspectives</strong> (e.g. benefits vs harms, individual vs state, company vs user).</div></div>
+    <div class="band band-l3"><div class="band-hd">Level 3: 5–6 marks</div><div class="band-body">Covers all three areas with some depth. Points developed with some examples. Some attempt at balance or different viewpoints. Where most of your class was — to move up, add specific examples and balance.</div></div>
+    <div class="band band-l2"><div class="band-hd">Level 2: 3–4 marks — where many students were</div><div class="band-body">Covers some but not all three areas. Some development but lacks specific examples. Limited consideration of different perspectives.</div></div>
+    <div class="band band-l1"><div class="band-hd">Level 1: 1–2 marks</div><div class="band-body">Limited, superficial. Only addresses one area. Little development.</div></div>
+  </div>
+
+  <div class="model-answer">
+    <div class="ma-header">Model content — what a Level 4 answer covers</div>
+    <div class="ma-body">
+      <strong>CULTURAL ISSUES:</strong> Algorithm-driven content filtering may reflect the cultural values of the company's home country, suppressing content from minority cultures or languages. This raises concerns about <em>cultural imperialism</em> — where one country's norms are imposed globally. Filter bubbles limit users' exposure to diverse viewpoints, reinforcing existing beliefs rather than challenging them. Different countries have genuinely different standards for acceptable content (e.g. political speech, religious content), creating genuine ethical dilemmas about whose values should govern global platforms.<br><br>
+      <strong>PRIVACY ISSUES:</strong> The company collects large volumes of personal data, often without users fully understanding what is collected or how it is used. Data may be sold to third parties for targeted advertising without truly informed consent. Users have little transparency over what data is held or how profiles are built. Data breaches could expose sensitive personal information. The concept of the <em>right to be forgotten</em> is relevant — can users have their data removed?<br><br>
+      <strong>LEGAL ISSUES:</strong> GDPR (General Data Protection Regulation) requires companies to have a legal basis for processing personal data, to gain consent, and to allow users to access and delete their data. Different countries have different laws, creating compliance challenges for a global platform. The Computer Misuse Act may apply if data is accessed without authorisation. There are tensions between freedom of speech laws (stronger in some countries) and censorship regulations in others — the company must navigate these competing legal frameworks.<br><br>
+      <strong>BALANCE:</strong> On the other hand, content filtering can protect users from harmful material (hate speech, misinformation, illegal content). Personalisation driven by data collection genuinely improves user experience. Completely unfiltered platforms raise their own serious harms. There is no simple right answer — the key is appropriate regulation and transparency.
+    </div>
+  </div>
+
+  <div class="box bx-amber">
+    <div class="box-hd">💡 The Level 4 Checklist — annotate your answer now</div>
+    <div class="two-col">
+      <div class="tcol"><h4 style="color:var(--amber);">Did your answer include?</h4><ul>
+        <li>At least <strong>2 points on cultural</strong> issues?</li>
+        <li>At least <strong>2 points on privacy</strong> issues?</li>
+        <li>At least <strong>2 points on legal</strong> issues?</li>
+        <li><strong>Specific examples</strong> (GDPR, right to be forgotten, filter bubbles)?</li>
+      </ul></div>
+      <div class="tcol"><h4 style="color:var(--teal);">For Level 4 specifically</h4><ul>
+        <li>Did you consider <strong>multiple perspectives</strong> (not just negatives)?</li>
+        <li>Did you discuss <strong>tensions/conflicts</strong> between issues?</li>
+        <li>Did you use a <strong>range of technical vocabulary</strong>?</li>
+        <li>Was your answer <strong>organised</strong> (cultural → privacy → legal)?</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- Q6b -->
+  <div class="q-block">
+    <div class="qb-stem">6(b) — 2 marks · STATE</div>
+    <div class="qb-text">State the purpose of the Computer Misuse Act (1990) and identify one offence under the Act.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">1 mark for purpose + 1 mark for offence</div>
+    <div class="ma-body">
+      <strong>Purpose:</strong> To prevent and criminalise <strong>unauthorised access to computer systems</strong> / protect computer users from malicious attacks / hacking. <span class="mark">MARK 1</span><br><br>
+      <strong>Offence (any one):</strong><br>
+      • Unauthorised access to computer material <span class="mark">OR</span><br>
+      • Unauthorised access with intent to commit further offences <span class="mark">OR</span><br>
+      • Unauthorised modification of computer material (e.g. spreading viruses) <span class="mark">MARK 2</span>
+    </div>
+  </div>
+</div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Q5</button><button class="btn btn-p" onclick="goNext()">Q7 Data Rep →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S7 — Q7 Data Representation
+══════════════════════════════════════ -->
+<div class="section" data-section="7">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">QUESTION 7</span><h2>Data Representation</h2><span class="marks-pill mp-green">9 marks</span></div>
+  <p>Generally strong performance on this section — Q7A hex conversion was particularly well done. Q7B (binary addition) had some unnecessary marks dropped.</p>
+
+  <!-- Q7a -->
+  <div class="q-block">
+    <div class="qb-stem">7(a) — 4 marks · CONVERT · SHOW WORKING</div>
+    <div class="qb-text">Convert the hexadecimal number 3B into denary. Show your working.</div>
+  </div>
+  <div class="calc-steps">
+    <div class="cs-step"><div class="cs-n">STEP 1</div><div>3 = <span class="hl">3</span> in denary &nbsp;&nbsp;<span style="color:var(--muted2);">|</span>&nbsp;&nbsp; B = <span class="hl">11</span> in denary <span class="mark" style="font-family:var(--font);font-size:9px;padding:1px 6px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:var(--green);border-radius:3px;">MARKS 1+2</span></div></div>
+    <div class="cs-step"><div class="cs-n">STEP 2</div><div>3 × 16 = <span class="hl">48</span> <span class="mark" style="font-family:var(--font);font-size:9px;padding:1px 6px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:var(--green);border-radius:3px;">MARK 3</span></div></div>
+    <div class="cs-step"><div class="cs-n">STEP 3</div><div>48 + 11 = <span class="ans">59</span> <span class="mark" style="font-family:var(--font);font-size:9px;padding:1px 6px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:var(--green);border-radius:3px;">MARK 4</span></div></div>
+  </div>
+  <div class="box bx-teal"><div class="box-hd">📌 Remember</div><p>Hex to denary: left digit × 16, right digit × 1. A=10, B=11, C=12, D=13, E=14, F=15. Method marks are awarded even with an arithmetic error — always show working.</p></div>
+
+  <!-- Q7b -->
+  <div class="q-block">
+    <div class="qb-stem">7(b) — 2 marks · CALCULATE</div>
+    <div class="qb-text">Add the binary numbers: 01011010 + 00110011. Show your working.</div>
+    <div class="q-marks">Class avg ~66% — some dropped marks on the carrying step or final answer</div>
+  </div>
+  <div class="calc-steps">
+    <div style="padding:4px 0;color:#c0b0e8;">
+      &nbsp;&nbsp;&nbsp;<span style="color:var(--amber);">Carry: 0 0 1 1 1 0 0 0</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 1 0 1 1 0 1 0<br>
+      + &nbsp;0 0 1 1 0 0 1 1<br>
+      <span style="color:#5a4f8a;">───────────────</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="ans">1 0 0 0 1 1 0 1</span> = <span class="ans">10001101</span> <span class="mark" style="font-family:var(--font);font-size:9px;padding:1px 6px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:var(--green);border-radius:3px;">MARKS 1+2</span>
+    </div>
+  </div>
+  <div class="box bx-amber"><div class="box-hd">💡 Carrying rules</div><p>1+1 = 10 (write 0, carry 1). &nbsp; 1+1+1 = 11 (write 1, carry 1). Work right to left. 1 mark for correct carry method shown, 1 mark for correct final answer.</p></div>
+
+  <!-- Q7c -->
+  <div class="q-block">
+    <div class="qb-stem">7(c) — 1 mark · COMPLETE</div>
+    <div class="qb-text">Left shift operation: Result after left shift — Multiply by ________</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Answer: Multiply by 2 <span class="mark" style="font-family:var(--font);font-size:9px;padding:1px 6px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:var(--green);border-radius:3px;">MARK 1</span></div>
+    <div class="ma-body">"Doubles" also accepted. "Multiplies" without specifying by 2 = 0. Right shift ÷2.</div>
+  </div>
+
+  <!-- Q7d -->
+  <div class="q-block">
+    <div class="qb-stem">7(d) — 2 marks · TICK TABLE</div>
+    <div class="qb-text">Unicode vs ASCII — tick the correct box for each statement.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Answers</div>
+    <div class="ma-body">
+      "Supports a much larger range of characters" → <strong>Unicode ✓</strong> <span class="mark">MARK 1</span><br>
+      "Uses fewer bits per character (basic form)" → <strong>ASCII ✓</strong> <span class="mark">MARK 2</span>
+    </div>
+  </div>
+  <div class="box bx-pu"><div class="box-hd">📌 ASCII vs Unicode</div><p>ASCII: 7-bit (128 characters), English/Western characters only. Unicode: variable-length, covers 100,000+ characters from all world languages, scripts, emoji. Unicode was created to solve ASCII's limitations.</p></div>
+</div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Q6</button><button class="btn btn-p" onclick="goNext()">Q8 Embedded →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S8 — Q8 Embedded Systems & CPU
+══════════════════════════════════════ -->
+<div class="section" data-section="8">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">QUESTION 8</span><h2>Embedded Systems &amp; CPU Performance</h2><span class="marks-pill mp-green">5 marks</span></div>
+  <p>Strong performance overall — Q8B was particularly well done (94%). Good work.</p>
+
+  <!-- Q8a -->
+  <div class="q-block">
+    <div class="qb-stem">8(a) — 1 mark · TICK</div>
+    <div class="qb-text">Which of the following best describes an embedded system?</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Answer: First option only</div>
+    <div class="ma-body"><strong>"A computer system built into another device to perform one dedicated function"</strong> <span class="mark">MARK 1</span><br><br>Examples: washing machine controller, car engine management system, pacemaker, smart TV processor.</div>
+  </div>
+
+  <!-- Q8b -->
+  <div class="q-block">
+    <div class="qb-stem">8(b) — 4 marks · FILL IN THE BLANKS</div>
+    <div class="qb-text">1. A dual-core processor can perform more _____ at the same time because it has multiple _____.<br>2. Increasing the clock speed means the CPU can carry out more _____ per second, measured in _____.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Answers</div>
+    <div class="ma-body">
+      1. … more <strong>tasks / operations / processes</strong> <span class="mark">MARK 1</span> … multiple <strong>cores / processing units</strong> <span class="mark">MARK 2</span><br><br>
+      2. … more <strong>instructions / operations / cycles</strong> <span class="mark">MARK 3</span> … measured in <strong>Hertz / Hz / GHz</strong> <span class="mark">MARK 4</span>
+    </div>
+  </div>
+</div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Q7</button><button class="btn btn-p" onclick="goNext()">Q9 Memory →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S9 — Q9 Memory
+══════════════════════════════════════ -->
+<div class="section" data-section="9">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">QUESTION 9</span><h2>Memory</h2><span class="marks-pill mp-green">7 marks</span></div>
+  <p>Strong performance — Q9A (95%) and Q9B (88%) were both excellent. Well done. Make sure you can reproduce the virtual memory blanks under pressure.</p>
+
+  <!-- Q9a -->
+  <div class="q-block">
+    <div class="qb-stem">9(a) — 2 marks · R or O</div>
+    <div class="qb-text">RAM vs ROM. Write R for RAM, O for ROM. (1) Is volatile memory &nbsp;&nbsp; (2) Stores boot instructions</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Answers</div>
+    <div class="ma-body">
+      Is volatile memory → <strong>R (RAM)</strong> <span class="mark">MARK 1</span><br>
+      Stores boot instructions → <strong>O (ROM)</strong> <span class="mark">MARK 2</span>
+    </div>
+  </div>
+  <div class="box bx-pu"><div class="box-hd">📌 RAM vs ROM at a glance</div><p><strong>RAM</strong>: volatile (data lost when powered off), stores currently running programs and data, fast, can be read and written. <strong>ROM</strong>: non-volatile (data permanent), stores BIOS/boot instructions, cannot normally be written to.</p></div>
+
+  <!-- Q9b -->
+  <div class="q-block">
+    <div class="qb-stem">9(b) — 5 marks · FILL IN THE BLANKS</div>
+    <div class="qb-text">When the _____ becomes full, the computer uses part of the _____ as virtual memory. Data is _____ between RAM and virtual memory in a process called _____, although this is much _____ than using normal RAM.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Answers (in order)</div>
+    <div class="ma-body">
+      When the <strong>RAM</strong> <span class="mark">MARK 1</span> becomes full, the computer uses part of the <strong>hard drive / secondary storage / HDD / SSD</strong> <span class="mark">MARK 2</span> as virtual memory. Data is <strong>swapped / transferred</strong> <span class="mark">MARK 3</span> between RAM and virtual memory in a process called <strong>paging / swapping</strong> <span class="mark">MARK 4</span>, although this is much <strong>slower</strong> <span class="mark">MARK 5</span> than using normal RAM.
+    </div>
+  </div>
+</div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Q8</button><button class="btn btn-p" onclick="goNext()">Q10 Networks →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S10 — Q10 Networks
+══════════════════════════════════════ -->
+<div class="section" data-section="10">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">QUESTION 10</span><h2>Networks — Topology &amp; Hardware</h2><span class="marks-pill mp-green">4 marks</span></div>
+  <p>Strong performance on Q10B (97%) — switch vs router is well understood. Q10A had some mixed results (72%).</p>
+
+  <!-- Q10a -->
+  <div class="q-block">
+    <div class="qb-stem">10(a) — 2 marks · BENEFIT or DRAWBACK</div>
+    <div class="qb-text">Star vs Mesh topology. Tick whether each statement is a benefit or drawback.<br>(1) Easier to add new devices &nbsp;&nbsp; (2) Central device failure can bring network down</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Answers — both relate to STAR topology</div>
+    <div class="ma-body">
+      Easier to add new devices → <strong>Benefit ✓</strong> <span class="mark">MARK 1</span><br>
+      Central device failure can bring network down → <strong>Drawback ✓</strong> <span class="mark">MARK 2</span>
+    </div>
+  </div>
+  <div class="box bx-teal">
+    <div class="box-hd">📌 Star topology: Key points</div>
+    <div class="two-col">
+      <div class="tcol"><h4 style="color:var(--green);">Benefits</h4><ul>
+        <li>Easy to add/remove devices</li>
+        <li>Fault in one device doesn't affect others</li>
+        <li>Easy to troubleshoot</li>
+        <li>High performance (dedicated connection)</li>
+      </ul></div>
+      <div class="tcol"><h4 style="color:var(--rose);">Drawbacks</h4><ul>
+        <li>Central switch/hub = single point of failure</li>
+        <li>More cable needed than bus topology</li>
+        <li>Dependent on central device</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- Q10b -->
+  <div class="q-block">
+    <div class="qb-stem">10(b) — 2 marks · SWITCH or ROUTER</div>
+    <div class="qb-text">(1) Sends data between different networks &nbsp;&nbsp; (2) Learns MAC addresses to direct frames</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Answers (class scored 97% here ✅)</div>
+    <div class="ma-body">
+      Sends data between different networks → <strong>Router ✓</strong> <span class="mark">MARK 1</span><br>
+      Learns MAC addresses to direct frames → <strong>Switch ✓</strong> <span class="mark">MARK 2</span>
+    </div>
+  </div>
+  <div class="box bx-pu"><div class="box-hd">📌 Switch vs Router in one sentence each</div><p><strong>Switch</strong>: connects devices within a LAN, learns MAC addresses to direct frames only to the intended recipient. <strong>Router</strong>: connects different networks (e.g. LAN to WAN/internet), routes packets using IP addresses.</p></div>
+</div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Q9</button><button class="btn btn-p" onclick="goNext()">Q11 Final →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S11 — Q11 Systems Software & Legislation
+══════════════════════════════════════ -->
+<div class="section" data-section="11">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">QUESTION 11</span><h2>Systems Software &amp; Legislation</h2><span class="marks-pill mp-amber">3 marks</span></div>
+  <p>Q11A was mostly fine. Q11B (proprietary licence) had lower performance (~50%) — make sure you know which tick is which.</p>
+
+  <!-- Q11a -->
+  <div class="q-block">
+    <div class="qb-stem">11(a) — 2 marks · FILL IN THE BLANKS</div>
+    <div class="qb-text">Defragmentation improves file access speed by moving file fragments, so they are stored _____ on the disk, reducing the _____ time of the read/write head.</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Answers</div>
+    <div class="ma-body">
+      …stored <strong>contiguously / together / sequentially / next to each other</strong> <span class="mark">MARK 1</span> …reducing the <strong>seek / movement / travel</strong> time <span class="mark">MARK 2</span>
+    </div>
+  </div>
+  <div class="box bx-sky"><div class="box-hd">📌 Why defragmentation helps</div><p>Over time, files get split into fragments stored in different locations on an HDD. The read/write head has to physically move (seek) to each fragment location — this takes time. Defragmentation reorganises fragments so they are stored <em>contiguously</em> (all in one place), reducing seek time and improving speed. <strong>Note: SSDs don't need defragmenting</strong> — no moving parts means seek time isn't an issue.</p></div>
+
+  <!-- Q11b -->
+  <div class="q-block">
+    <div class="qb-stem">11(b) — 1 mark · TICK one benefit AND one drawback</div>
+    <div class="qb-text">Proprietary licence — tick one benefit and one drawback.</div>
+    <div class="q-marks">Class avg ~50% — the wrong options are easy to confuse with open source characteristics</div>
+  </div>
+  <div class="model-answer">
+    <div class="ma-header">Correct answers (AO — exact ticks required)</div>
+    <div class="ma-body">
+      <strong>Benefit:</strong> ✓ Protects source code <span class="mark">MARK</span><br>
+      <strong>Drawback:</strong> ✓ Cannot access or modify source code
+    </div>
+  </div>
+  <div class="box bx-rose">
+    <div class="box-hd">⚠ The traps in this question</div>
+    <div class="mistake-list">
+      <div class="mistake-row"><span class="mx">✗</span><span>"Users can edit and improve software freely" — this is an <strong>open source</strong> feature, NOT a benefit of proprietary</span></div>
+      <div class="mistake-row"><span class="mx">✗</span><span>"Software can be redistributed without restrictions" — again open source, not proprietary</span></div>
+      <div class="mistake-row"><span class="mx">✗</span><span>"Guaranteed free updates" — 0 (not a drawback of proprietary; often proprietary software does provide updates)</span></div>
+    </div>
+  </div>
+  <div class="box bx-pu">
+    <div class="box-hd">📌 Proprietary vs Open Source — quick reference</div>
+    <div class="two-col">
+      <div class="tcol"><h4 style="color:var(--amber);">Proprietary</h4><ul>
+        <li>Source code is hidden/protected</li>
+        <li>Cannot be freely modified or redistributed</li>
+        <li>Usually costs money (licence fee)</li>
+        <li>Developer controls updates and support</li>
+        <li>Examples: Windows, Microsoft Office, Photoshop</li>
+      </ul></div>
+      <div class="tcol"><h4 style="color:var(--green);">Open Source</h4><ul>
+        <li>Source code is freely available</li>
+        <li>Can be modified and redistributed</li>
+        <li>Usually free to use</li>
+        <li>Community-driven development</li>
+        <li>Examples: Linux, LibreOffice, Firefox</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:8px;text-align:center;">
+  <div class="sec-tag" style="justify-content:center;"><span class="sec-num">COMPLETE</span><h2>Walkthrough Complete</h2></div>
+  <p>You've now been through every question on the paper. Go back through your marked script and annotate it with the correct responses where you lost marks — writing out the correct answer is the most effective way to consolidate this.</p>
+  <div class="box bx-green" style="text-align:left;margin-top:14px;">
+    <div class="box-hd">✅ Your Top Priorities for the Next Assessment</div>
+    <ul>
+      <li><strong>Q6-style 8-mark ethics essays</strong> — learn the three-part structure (cultural / privacy / legal) and practise including specific examples and balance</li>
+      <li><strong>Image file size calculations</strong> — memorise: pixels × colour depth ÷ 8 = bytes ÷ 1,000 = KB. Always show working.</li>
+      <li><strong>Level response questions</strong> (Q2A, Q6A) — always aim for all aspects + context + conclusion</li>
+      <li><strong>Penetration testing, access levels, cache</strong> — these need the technical chain, not just a surface description</li>
+    </ul>
+  </div>
+</div>
+
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Q10</button><button class="btn btn-p" onclick="goTo(0)">⊞ Back to Dashboard</button></div>
+</div>
+
+
+</div><!-- /container -->
+
+<script>
+const TOTAL = 12;
+let current = 0;
+
+// Priority sections (highest mark-loss)
+const priorities = [2, 6]; // Q2 and Q6
+
+function buildDots(){
+  const nav = document.getElementById('progressNav');
+  const labels = ['Dashboard','Q1 CPU','Q2 Storage','Q3 Networks','Q4 Security','Q5 OS','Q6 Ethics','Q7 Data Rep','Q8 Embedded','Q9 Memory','Q10 Networks','Q11 Software'];
+  for(let i = 0; i < TOTAL; i++){
+    const b = document.createElement('button');
+    b.className = 'dot' + (i === 0 ? ' active' : '') + (priorities.includes(i) ? ' priority' : '');
+    b.title = labels[i];
+    b.onclick = () => goTo(i);
+    nav.appendChild(b);
+  }
+}
+
+function goTo(n){
+  document.querySelectorAll('.section')[current].classList.remove('active');
+  current = n;
+  document.querySelectorAll('.section')[current].classList.add('active');
+  updateDots();
+  window.scrollTo(0, 0);
+}
+
+function goNext(){ if(current < TOTAL - 1) goTo(current + 1); }
+function goPrev(){ if(current > 0) goTo(current - 1); }
+
+function updateDots(){
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.className = 'dot';
+    if(priorities.includes(i)) d.classList.add('priority');
+    if(i === current) d.classList.add('active');
+    else if(i < current) d.classList.add('completed');
+  });
+}
+
+buildDots();
+</script>
+</body>
+</html>

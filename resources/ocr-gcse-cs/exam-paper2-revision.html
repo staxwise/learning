@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J277/02 Revision — Algorithms &amp; Programming</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Source+Serif+4:wght@300;400;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080610;--card:#0d0a1e;--card2:#120e26;--bd:#1e1840;--bd2:#2a2055;
+  --pu:#a78bfa;--pu2:#c4b5fd;--rose:#fb7185;--green:#4ade80;--teal:#2dd4bf;
+  --sky:#38bdf8;--amber:#fbbf24;--yellow:#fde047;--pink:#f472b6;
+  --text:#d4c8f5;--muted:#3d3470;
+  --font:'Syne',sans-serif;--serif:'Source Serif 4',serif;--hand:'Caveat',cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--serif);background:var(--bg);color:var(--text);overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 55% 35% at 15% 0%,rgba(167,139,250,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 30% at 85% 85%,rgba(244,114,182,.04) 0%,transparent 60%);
+  pointer-events:none;z-index:0;}
+.container{max-width:900px;margin:0 auto;padding:20px 20px 80px;position:relative;z-index:1;}
+
+.site-header{text-align:center;padding:52px 0 34px;}
+.subject-tag{font-family:var(--font);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--pu);background:rgba(167,139,250,.09);border:1px solid rgba(167,139,250,.22);padding:6px 18px;border-radius:3px;display:inline-block;margin-bottom:22px;}
+.site-header h1{font-family:var(--font);font-size:clamp(26px,5vw,46px);font-weight:800;color:#fff;line-height:1.07;margin-bottom:12px;}
+.site-header h1 .acc{color:var(--pu);}
+.site-header p{color:var(--muted);font-family:var(--font);font-size:13px;max-width:540px;margin:0 auto;}
+.topics-strip{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:20px;}
+.topic-pill{font-family:var(--font);font-size:11px;padding:5px 12px;border-radius:4px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);color:var(--pu2);}
+
+.progress-nav{display:flex;justify-content:center;gap:7px;padding:22px 0;flex-wrap:wrap;}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--bd2);cursor:pointer;transition:all .3s;border:none;padding:0;}
+.dot.active{background:var(--pu);transform:scale(1.35);box-shadow:0 0 8px rgba(167,139,250,.5);}
+.dot.completed{background:var(--green);}
+
+.section{display:none;animation:fadeUp .35s ease;}
+.section.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:28px 30px;margin-bottom:14px;}
+.sec-tag{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.sec-num{font-family:var(--font);font-size:10px;letter-spacing:3px;color:var(--muted);background:var(--card2);padding:4px 10px;border-radius:3px;white-space:nowrap;}
+.sec-tag h2{font-family:var(--font);font-size:20px;font-weight:700;color:#fff;}
+p.body{font-size:15px;line-height:1.8;color:#c0b0e8;margin-bottom:12px;}
+p.body strong{color:#fff;}
+ul.bl{padding-left:20px;margin:8px 0 12px;}
+ul.bl li{font-size:14px;line-height:1.75;color:#c0b0e8;margin-bottom:6px;}
+ul.bl li strong{color:#fff;}
+
+/* ── REVEAL SYSTEM ── */
+.rv-group{margin:10px 0;}
+.rv-btn{font-family:var(--font);font-size:13px;font-weight:700;padding:11px 18px;border-radius:9px;cursor:pointer;border:2px solid;transition:all .22s;background:transparent;display:inline-flex;align-items:center;gap:9px;width:100%;text-align:left;margin-bottom:6px;}
+.rv-btn .rv-icon{font-size:16px;flex-shrink:0;}
+.rv-btn .rv-label{flex:1;}
+.rv-btn .rv-chevron{font-size:11px;transition:transform .22s;margin-left:auto;flex-shrink:0;}
+.rv-btn.open .rv-chevron{transform:rotate(180deg);}
+.rv-pu{border-color:rgba(167,139,250,.45);color:var(--pu2);}
+.rv-pu:hover,.rv-pu.open{background:rgba(167,139,250,.1);border-color:var(--pu);}
+.rv-green{border-color:rgba(74,222,128,.45);color:#86efac;}
+.rv-green:hover,.rv-green.open{background:rgba(74,222,128,.1);border-color:var(--green);}
+.rv-rose{border-color:rgba(251,113,133,.45);color:#fca5b4;}
+.rv-rose:hover,.rv-rose.open{background:rgba(251,113,133,.1);border-color:var(--rose);}
+.rv-amber{border-color:rgba(251,191,36,.45);color:#fde68a;}
+.rv-amber:hover,.rv-amber.open{background:rgba(251,191,36,.1);border-color:var(--amber);}
+.rv-teal{border-color:rgba(45,212,191,.45);color:#99f6e4;}
+.rv-teal:hover,.rv-teal.open{background:rgba(45,212,191,.1);border-color:var(--teal);}
+.rv-sky{border-color:rgba(56,189,248,.45);color:#bae6fd;}
+.rv-sky:hover,.rv-sky.open{background:rgba(56,189,248,.1);border-color:var(--sky);}
+.rv-pink{border-color:rgba(244,114,182,.45);color:#fbcfe8;}
+.rv-pink:hover,.rv-pink.open{background:rgba(244,114,182,.1);border-color:var(--pink);}
+
+.rv-panel{display:none;background:var(--card2);border:1px solid var(--bd2);border-radius:0 0 10px 10px;padding:18px 20px;margin-top:-4px;margin-bottom:8px;animation:panelIn .25s ease;}
+.rv-panel.open{display:block;}
+@keyframes panelIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.rv-panel ul{padding-left:18px;margin:4px 0;}
+.rv-panel li{font-size:14px;line-height:1.75;color:#c0b0e8;margin-bottom:5px;}
+.rv-panel li strong{color:#fff;}
+.rv-panel p{font-size:14px;line-height:1.7;color:#c0b0e8;margin-bottom:8px;}
+.rv-panel p:last-child{margin-bottom:0;}
+.rv-panel p strong{color:#fff;}
+.rv-hd{font-family:var(--font);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.rv-hd.c-pu{color:var(--pu);}
+.rv-hd.c-green{color:var(--green);}
+.rv-hd.c-rose{color:var(--rose);}
+.rv-hd.c-amber{color:var(--amber);}
+.rv-hd.c-teal{color:var(--teal);}
+.rv-hd.c-sky{color:var(--sky);}
+.rv-hd.c-pink{color:var(--pink);}
+
+.rv-hint{font-family:var(--font);font-size:11px;color:var(--muted);letter-spacing:.5px;margin-bottom:14px;}
+
+/* ── BOXES ── */
+.rv-btn.rv-warn{border-color:rgba(251,113,133,.45);color:#fca5b4;}
+.rv-btn.rv-warn:hover,.rv-btn.rv-warn.open{background:rgba(251,113,133,.1);border-color:var(--rose);}
+.rv-btn.rv-note{border-color:rgba(251,191,36,.45);color:#fde68a;}
+.rv-btn.rv-note:hover,.rv-btn.rv-note.open{background:rgba(251,191,36,.1);border-color:var(--amber);}
+/* ── BOXES (for warnings/key notes still shown directly) ── */
+.box{border-radius:10px;padding:16px 20px;margin:14px 0;border-left:4px solid;}
+.box-hd{font-family:var(--font);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.box p,.box li{font-size:14px;line-height:1.65;color:#c0b0e8;}
+.box ul{padding-left:16px;}
+.box li{margin-bottom:5px;}
+.box p strong,.box li strong{color:#fff;}
+.bx-warn{background:rgba(251,113,133,.07);border-color:var(--rose);}
+.bx-warn .box-hd{color:var(--rose);}
+.bx-tip{background:rgba(251,191,36,.07);border-color:var(--amber);}
+.bx-tip .box-hd{color:var(--amber);}
+
+/* ── MCQ ── */
+.mcq-wrap{background:var(--card2);border:1px solid var(--bd2);border-radius:10px;padding:20px;margin-top:18px;}
+.q-label{font-family:var(--font);font-size:10px;letter-spacing:2.5px;color:var(--pu);text-transform:uppercase;margin-bottom:10px;}
+.q-text{font-family:var(--font);font-weight:600;font-size:15px;color:#fff;margin-bottom:14px;line-height:1.5;}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border:1px solid var(--bd);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all .2s;font-size:14px;color:#c0b0e8;line-height:1.5;}
+.opt:hover{border-color:var(--pu);background:rgba(167,139,250,.05);}
+.opt.correct{border-color:var(--green);background:rgba(74,222,128,.08);color:#fff;}
+.opt.wrong{border-color:var(--rose);background:rgba(251,113,133,.08);}
+.opt .ol{font-family:var(--font);font-size:11px;color:var(--muted);min-width:20px;margin-top:1px;flex-shrink:0;}
+.fb-msg{display:none;padding:12px 16px;border-radius:8px;font-size:13px;margin-top:10px;line-height:1.55;}
+.fb-ok{background:rgba(74,222,128,.09);border:1px solid rgba(74,222,128,.3);color:var(--green);}
+.fb-no{background:rgba(251,113,133,.09);border:1px solid rgba(251,113,133,.3);color:#fca5b4;}
+
+/* ── CODE ── */
+pre.code-block{background:#06041a;border:1px solid var(--bd2);border-radius:8px;padding:16px 20px;font-family:'Courier New',monospace;font-size:13px;color:#e2d9f3;line-height:1.8;margin:12px 0;overflow-x:auto;white-space:pre;}
+.kw{color:var(--pu2);}
+.str{color:var(--green);}
+.fn{color:var(--sky);}
+.cm{color:#5a4f7a;font-style:italic;}
+.num{color:var(--amber);}
+/* inline code */
+code{background:rgba(167,139,250,.12);padding:2px 6px;border-radius:4px;font-family:'Courier New',monospace;font-size:12.5px;color:var(--pu2);}
+/* code inside opt answer */
+.opt-code{display:block;margin-top:6px;}
+pre.opt-pre{background:#06041a;border:1px solid var(--bd);border-radius:6px;padding:10px 14px;font-family:'Courier New',monospace;font-size:12px;color:#e2d9f3;line-height:1.75;overflow-x:auto;white-space:pre;margin-top:6px;}
+
+/* ── NAV ── */
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:10px;}
+.btn{font-family:var(--font);font-weight:700;font-size:13px;padding:12px 26px;border-radius:8px;cursor:pointer;border:none;transition:all .2s;}
+.btn-p{background:var(--pu);color:#08041a;}
+.btn-p:hover{background:var(--pu2);transform:translateY(-1px);}
+.btn-g{background:transparent;color:var(--muted);border:1px solid var(--bd2);}
+.btn-g:hover{border-color:var(--pu);color:var(--pu);}
+.btn:disabled{opacity:.3;cursor:not-allowed;transform:none!important;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0;}
+th{background:var(--card2);padding:9px 13px;text-align:left;font-family:var(--font);font-size:11px;letter-spacing:.5px;color:var(--muted);border:1px solid var(--bd);}
+td{padding:10px 13px;border:1px solid var(--bd);vertical-align:top;line-height:1.55;color:#c0b0e8;}
+tr:nth-child(even) td{background:rgba(255,255,255,.013);}
+td strong{color:#fff;}
+td.ok{color:var(--green);}
+td.no{color:var(--rose);}
+
+/* ── TWO COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0;}
+@media(max-width:520px){.two-col{grid-template-columns:1fr;}}
+.tcol{border-radius:10px;border:2px solid;padding:16px;}
+.tcol h4{font-family:var(--font);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;}
+.tcol ul{padding-left:14px;font-size:13px;color:#c0b0e8;line-height:1.75;}
+.tcol li{margin-bottom:4px;}
+.tcol li strong{color:#fff;}
+
+/* ── TRUTH TABLE ── */
+.tt-grid{display:grid;grid-template-columns:repeat(5,1fr);border-radius:10px;overflow:hidden;border:1px solid var(--bd2);margin:12px 0;font-family:var(--font);font-size:13px;}
+.tt-h{background:var(--card2);padding:10px 8px;text-align:center;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--bd2);}
+.tt-c{padding:9px 8px;text-align:center;color:#c0b0e8;border-bottom:1px solid var(--bd);}
+.tt-c.v0{color:var(--rose);}
+.tt-c.v1{color:var(--green);}
+.tt-c.derived{color:var(--amber);}
+
+/* ── FORMULA ── */
+.formula{background:var(--card2);border:2px solid rgba(167,139,250,.3);border-radius:10px;padding:14px 20px;text-align:center;margin:12px 0;}
+.formula .f-label{font-family:var(--font);font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+.formula .f-eq{font-family:'Courier New',monospace;font-size:16px;font-weight:700;color:#fff;line-height:1.8;white-space:pre-wrap;}
+.formula .f-eq span{color:var(--pu);}
+
+/* ── TEST DATA CARDS ── */
+.test-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:10px 0;}
+@media(max-width:580px){.test-grid{grid-template-columns:1fr;}}
+.test-card{border-radius:10px;padding:14px;border:2px solid;}
+.test-card h4{font-family:var(--font);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
+.test-card p{font-size:13px;line-height:1.6;color:#c0b0e8;}
+.test-card ul{padding-left:14px;font-size:13px;color:#c0b0e8;line-height:1.7;margin-top:6px;}
+.tc-normal{border-color:rgba(74,222,128,.4);background:rgba(74,222,128,.06);}
+.tc-normal h4{color:var(--green);}
+.tc-bound{border-color:rgba(251,191,36,.4);background:rgba(251,191,36,.06);}
+.tc-bound h4{color:var(--amber);}
+.tc-err{border-color:rgba(251,113,133,.4);background:rgba(251,113,133,.06);}
+.tc-err h4{color:var(--rose);}
+
+/* ── GATES ── */
+.gates-row{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0;}
+.gate-card{background:var(--card2);border:1px solid var(--bd2);border-radius:10px;padding:14px 16px;flex:1;min-width:130px;}
+.gate-name{font-family:var(--font);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;color:var(--pu);}
+.gate-sym{font-size:22px;margin-bottom:5px;}
+.gate-rule{font-size:13px;color:#c0b0e8;line-height:1.5;}
+.gate-rule strong{color:#fff;}
+
+/* ── LINED PAPER ── */
+.lined-notes{margin-top:18px;}
+.lined-tab{display:inline-flex;align-items:center;gap:7px;background:#160e30;padding:7px 18px 7px 14px;border-radius:8px 8px 0 0;font-family:var(--hand);font-size:17px;color:#c4b5fd;font-weight:600;cursor:pointer;user-select:none;border:none;width:100%;border-radius:8px;transition:all .2s;}
+.lined-tab:hover{background:#200f40;}
+.lined-tab .note-chevron{margin-left:auto;font-size:12px;transition:transform .22s;font-family:var(--font);}
+.lined-tab.open{border-radius:8px 8px 0 0;}
+.lined-tab.open .note-chevron{transform:rotate(180deg);}
+.lined-paper{display:none;background:#f7f5ff;background-image:linear-gradient(90deg,#d0b8e8 0,#d0b8e8 2px,transparent 2px),repeating-linear-gradient(transparent,transparent 31px,#c0b0d8 31px,#c0b0d8 32px);background-size:100% 32px;background-position:0 0,0 8px;padding:16px 20px 16px 36px;min-height:130px;border-radius:0 0 8px 8px;overflow:hidden;}
+.lined-paper.open{display:block;animation:panelIn .25s ease;}
+.lined-paper ul{list-style:none;padding:0;margin:0;}
+.lined-paper li{font-family:var(--hand);font-size:18px;color:#1a1030;line-height:32px;display:flex;align-items:center;gap:8px;}
+.lined-paper li::before{content:'•';color:#9080b0;font-size:14px;flex-shrink:0;}
+
+/* ── BADGE ── */
+.badge-section{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:32px;text-align:center;margin-top:18px;}
+.badge-prog-txt{font-family:var(--font);font-size:12px;color:var(--muted);letter-spacing:1px;margin-bottom:8px;}
+.badge-bar-outer{background:var(--bd2);border-radius:6px;height:8px;max-width:360px;margin:8px auto 22px;overflow:hidden;}
+.badge-bar-inner{height:100%;background:linear-gradient(90deg,var(--pu),var(--pink));border-radius:6px;transition:width .5s ease;width:0%;}
+.badge-locked{opacity:.3;pointer-events:none;filter:grayscale(1);}
+.badge-unlocked{animation:badgePop .6s ease forwards;}
+@keyframes badgePop{0%{transform:scale(.8);opacity:0;}70%{transform:scale(1.06);}100%{transform:scale(1);opacity:1;}}
+.badge-visual{width:260px;margin:0 auto 20px;background:linear-gradient(150deg,#050310,#0a0620);border:2px solid var(--pu);border-radius:16px;padding:26px 20px;box-shadow:0 0 50px rgba(167,139,250,.14);}
+.badge-icon{font-size:52px;margin-bottom:10px;}
+.badge-hdr{font-family:var(--font);font-size:9px;letter-spacing:3px;color:var(--pu);text-transform:uppercase;margin-bottom:5px;}
+.badge-topic{font-family:var(--font);font-size:13px;font-weight:800;color:#fff;margin-bottom:4px;}
+.badge-spec{font-family:var(--font);font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:8px;}
+.badge-score-disp{font-family:var(--font);font-size:24px;color:var(--yellow);font-weight:700;margin-bottom:8px;}
+.badge-name-disp{font-size:14px;color:var(--pu2);font-weight:600;font-family:var(--font);}
+.badge-ribbon{background:var(--pu);color:#08041a;font-family:var(--font);font-size:10px;font-weight:800;padding:4px 18px;margin-top:12px;border-radius:3px;display:inline-block;letter-spacing:2px;}
+.name-input{padding:10px 16px;background:var(--card2);border:1px solid var(--bd2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:14px;width:250px;text-align:center;display:block;margin:0 auto 14px;}
+.name-input:focus{outline:none;border-color:var(--pu);}
+.snip-hint{font-size:12px;color:var(--muted);margin-top:12px;font-style:italic;font-family:var(--font);}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="site-header">
+  <div class="subject-tag">GCSE Computer Science · OCR J277/02</div>
+  <h1>Algorithms &amp;<br><span class="acc">Programming</span> Revision</h1>
+  <p>Click the buttons in each section to reveal content — work at your own pace.</p>
+  <div class="topics-strip">
+    <span class="topic-pill">Computational Thinking</span>
+    <span class="topic-pill">Trace Tables</span>
+    <span class="topic-pill">Sorting &amp; Searching</span>
+    <span class="topic-pill">Boolean Logic</span>
+    <span class="topic-pill">Defensive Design</span>
+    <span class="topic-pill">Translators &amp; IDEs</span>
+    <span class="topic-pill">SQL &amp; Databases</span>
+    <span class="topic-pill">Arrays &amp; Sub-programs</span>
+  </div>
+</div>
+
+<div class="progress-nav" id="progressNav"></div>
+
+
+<!-- S1 WELCOME -->
+<div class="section active" data-section="0">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">SECTION 01</span><h2>Welcome — What This Paper Tests</h2></div>
+  <p class="body">J277/02 is the <strong>Computational Thinking, Algorithms and Programming</strong> paper — 1 hour 30 minutes, 80 marks. It covers concepts (Section A) and practical programming (Section B).</p>
+  <div class="two-col">
+    <div class="tcol" style="border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.06);">
+      <h4 style="color:var(--pu);">Section A — Concepts (50 marks)</h4>
+      <ul><li>Computational thinking</li><li>Algorithm tracing &amp; strings</li><li>Sorting &amp; searching</li><li>Boolean logic &amp; gates</li><li>Defensive design &amp; testing</li><li>Translators &amp; IDEs</li><li>Logic error debugging</li></ul>
+    </div>
+    <div class="tcol" style="border-color:rgba(244,114,182,.3);background:rgba(244,114,182,.06);">
+      <h4 style="color:var(--pink);">Section B — Programming (30 marks)</h4>
+      <ul><li>Databases &amp; SQL</li><li>Algorithm design</li><li>Code maintainability</li><li>1D and 2D arrays</li><li>Functions &amp; procedures</li><li>Nested loops</li><li>Local variables &amp; scope</li></ul>
+    </div>
+  </div>
+  <div class="rv-group">
+    <button class="rv-btn rv-note" onclick="togglePanel('tip_intro',this)"><span class="rv-icon">💡</span><span class="rv-label">How To Use This Resource</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="tip_intro">
+      <div class="rv-hd c-amber">HOW TO USE</div>
+      <p>Each section has <strong>reveal buttons</strong> — click them one at a time to uncover each concept.</p>
+      <ul style="margin-top:8px;">
+        <li>Try to recall the answer <em>before</em> clicking each button</li>
+        <li>Every section ends with a ✓ CHECK question</li>
+        <li>Answer all <strong>15 questions</strong> to unlock your badge</li>
+        <li>Click <strong>✏️ Quick Notes</strong> at the bottom of each section to reveal a revision summary</li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="nav-row">
+  <button class="btn btn-g" disabled>← Back</button>
+  <button class="btn btn-p" onclick="goNext()">Start →</button>
+</div>
+</div>
+
+
+<!-- S2 COMPUTATIONAL THINKING -->
+<div class="section" data-section="1">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">🧠 SECTION 02</span><h2>Computational Thinking</h2></div>
+  <p class="body">There are four key techniques — click each one to reveal the definition. Try to predict it first.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pu" onclick="togglePanel('ct1',this)"><span class="rv-icon">🔧</span><span class="rv-label">Decomposition</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="ct1">
+      <div class="rv-hd c-pu">DECOMPOSITION</div>
+      <p>Breaking a <strong>complex problem</strong> into smaller, more manageable <strong>sub-problems</strong> that can each be solved separately. Shown visually as a <strong>structure diagram</strong> — a tree with the main problem at the top, broken into modules below.</p>
+      <p style="margin-top:8px;font-family:var(--font);font-size:12px;color:var(--pu);">EXAM PHRASE: "break the problem into smaller parts / sub-problems"</p>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pink" onclick="togglePanel('ct2',this)"><span class="rv-icon">🔍</span><span class="rv-label">Abstraction</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="ct2">
+      <div class="rv-hd c-pink">ABSTRACTION</div>
+      <p>Removing or hiding <strong>unnecessary details</strong> to focus on only the aspects important for solving the problem. A map is a classic example — it abstracts real geography into simple symbols, hiding irrelevant detail.</p>
+      <p style="margin-top:8px;font-family:var(--font);font-size:12px;color:var(--pink);">EXAM PHRASE: "remove unnecessary detail / focus on what matters"</p>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-teal" onclick="togglePanel('ct3',this)"><span class="rv-icon">📐</span><span class="rv-label">Pattern Recognition</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="ct3">
+      <div class="rv-hd c-teal">PATTERN RECOGNITION</div>
+      <p>Identifying <strong>similarities and repeated patterns</strong> within or between problems. Recognising patterns allows reuse of existing solutions — e.g. noticing that multiple parts of a program need the same validation, so you write one function and call it everywhere.</p>
+      <p style="margin-top:8px;font-family:var(--font);font-size:12px;color:var(--teal);">EXAM PHRASE: "identify similarities / reuse existing solutions"</p>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-green" onclick="togglePanel('ct4',this)"><span class="rv-icon">📋</span><span class="rv-label">Algorithmic Thinking</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="ct4">
+      <div class="rv-hd c-green">ALGORITHMIC THINKING</div>
+      <p>Designing a clear, precise <strong>step-by-step set of instructions</strong> (an algorithm) that a computer can follow to solve the problem. This is the logical planning stage — before writing any actual code.</p>
+      <p style="margin-top:8px;font-family:var(--font);font-size:12px;color:var(--green);">EXAM PHRASE: "a sequence of steps to solve the problem"</p>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-amber" onclick="togglePanel('ct5',this)"><span class="rv-icon">🌳</span><span class="rv-label">Structure Diagrams — How to Draw Them</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="ct5">
+      <div class="rv-hd c-amber">STRUCTURE DIAGRAM RULES</div>
+      <ul>
+        <li>The <strong>top-level box</strong> is the whole system/problem</li>
+        <li>Each layer below represents a further level of decomposition</li>
+        <li>Lines connect parent modules to their children — never skip levels</li>
+        <li>Labels on boxes are the module or sub-program names</li>
+        <li>Examiners award marks for <strong>correct hierarchy AND correct labels</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-warn" onclick="togglePanel('warn_ct',this)"><span class="rv-icon">⚠️</span><span class="rv-label">Abstraction vs Decomposition — Don't Confuse These!</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="warn_ct">
+      <div class="rv-hd c-rose">⚠️ EXAM TRAP — KNOW THE DIFFERENCE</div>
+      <p>Decomposition = <strong>structure</strong> (splitting into parts). Abstraction = <strong>detail</strong> (removing what you don't need).</p>
+      <p style="margin-top:8px;">In an exam, read the wording carefully — <em>"breaking down"</em> = decomposition; <em>"hiding unnecessary detail"</em> = abstraction.</p>
+    </div>
+  </div>
+
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q1</div>
+    <div class="q-text">A developer identifies that several different parts of their program need to validate user input in the same way. They create a single validation function that all parts call. Which computational thinking technique does this best demonstrate?</div>
+    <div class="opt" onclick="checkQ(this,false,'q1')"><span class="ol">A</span>Decomposition — the program has been broken down into separate components</div>
+    <div class="opt" onclick="checkQ(this,false,'q1')"><span class="ol">B</span>Abstraction — the validation details have been hidden from the rest of the program</div>
+    <div class="opt" onclick="checkQ(this,true,'q1')"><span class="ol">C</span>Pattern recognition — the developer noticed the same validation pattern repeating and reused a single solution</div>
+    <div class="opt" onclick="checkQ(this,false,'q1')"><span class="ol">D</span>Algorithmic thinking — the developer wrote a step-by-step algorithm for validation</div>
+    <div class="fb-msg fb-ok" id="q1-ok">✓ Correct. Pattern recognition is about spotting that the same problem appears in multiple places and creating a reusable solution. Here, the same validation requirement appears in several parts of the program — the developer recognised that pattern and wrote one function to handle all of them. Options A and D describe what the function does internally, but the key insight that led to creating it was pattern recognition.</div>
+    <div class="fb-msg fb-no" id="q1-no">✗ The key action here is noticing a repeated need and reusing a solution — that is pattern recognition. Decomposition would be breaking the whole problem into sub-problems. Abstraction would be hiding the validation details. Algorithmic thinking would describe writing the step-by-step validation logic. The question focuses on the recognition of repetition across the program, not the internal structure of the function.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_1',this)" id="tab_notes_1"><span>✏️ Quick Notes</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_1"><ul>
+  <li>🔧 Decomposition: break into sub-problems → structure diagram</li>
+  <li>🔍 Abstraction: hide unnecessary detail → focus on what matters</li>
+  <li>📐 Pattern recognition: spot repeating patterns → reuse solutions</li>
+  <li>📋 Algorithmic thinking: design step-by-step instructions</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" onclick="goNext()">Next →</button></div>
+</div>
+
+
+<!-- S3 VARIABLES & DATA TYPES -->
+<div class="section" data-section="2">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">📦 SECTION 03</span><h2>Variables, Scope &amp; Data Types</h2></div>
+  <p class="body">Click each topic to reveal the detail. Understanding scope is essential for Section B questions.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pu" onclick="togglePanel('sc1',this)"><span class="rv-icon">🌍</span><span class="rv-label">Global Variables</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="sc1">
+      <div class="rv-hd c-pu">GLOBAL VARIABLES</div>
+      <p>Declared <strong>outside all sub-programs</strong> — accessible from anywhere in the program, including inside functions and procedures. They persist throughout the program's lifetime.</p>
+      <ul style="margin-top:8px;">
+        <li>Can be read and modified from any part of the code</li>
+        <li>Risk: any sub-program can accidentally change them</li>
+        <li>Use sparingly — only for values genuinely needed everywhere</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-teal" onclick="togglePanel('sc2',this)"><span class="rv-icon">📦</span><span class="rv-label">Local Variables</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="sc2">
+      <div class="rv-hd c-teal">LOCAL VARIABLES</div>
+      <p>Declared <strong>inside a sub-program</strong> (function or procedure) — only accessible within that sub-program. They are created when the sub-program is called and <strong>destroyed when it ends</strong>.</p>
+      <ul style="margin-top:8px;">
+        <li>Parameters passed into a sub-program are also local variables</li>
+        <li>Cannot be accessed from outside the sub-program — prevents accidental modification</li>
+        <li>Better for maintainability — each sub-program is self-contained</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-amber" onclick="togglePanel('sc3',this)"><span class="rv-icon">🔢</span><span class="rv-label">Data Types — Know All Five</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="sc3">
+      <div class="rv-hd c-amber">DATA TYPES</div>
+      <table>
+        <thead><tr><th>Type</th><th>What it stores</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Integer</strong></td><td>Whole numbers (no decimal point)</td><td>age = 16, count = 0</td></tr>
+          <tr><td><strong>Real / Float</strong></td><td>Numbers with a decimal point</td><td>price = 3.99, pi = 3.14</td></tr>
+          <tr><td><strong>Boolean</strong></td><td>True or False only</td><td>isLoggedIn = True</td></tr>
+          <tr><td><strong>String</strong></td><td>Text — any sequence of characters</td><td>name = "Alice"</td></tr>
+          <tr><td><strong>Char</strong></td><td>A single character</td><td>grade = 'A'</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:8px;font-size:13px;color:var(--amber);">⭐ Use <strong>Boolean</strong> for any yes/no, true/false, active/inactive field — e.g. IsDelivered, HasPaid.</p>
+    </div>
+  </div>
+
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q2</div>
+    <div class="q-text">A programmer writes a procedure that uses a counter variable. The counter is only needed inside the procedure. Where should it be declared, and why?</div>
+    <div class="opt" onclick="checkQ(this,false,'q2')"><span class="ol">A</span>As a global variable — so other sub-programs can access the count if needed later</div>
+    <div class="opt" onclick="checkQ(this,true,'q2')"><span class="ol">B</span>As a local variable inside the procedure — the counter is only needed there, so limiting its scope prevents accidental modification from outside</div>
+    <div class="opt" onclick="checkQ(this,false,'q2')"><span class="ol">C</span>As a global variable — because local variables are deleted after the procedure runs</div>
+    <div class="opt" onclick="checkQ(this,false,'q2')"><span class="ol">D</span>It doesn't matter — global and local variables behave identically in OCR ERL</div>
+    <div class="fb-msg fb-ok" id="q2-ok">✓ Correct. If a variable is only needed inside one sub-program, it should be declared locally. This limits its scope — no other part of the code can accidentally modify it, which makes the program more predictable and maintainable. Option C is technically true (local variables are destroyed after the procedure ends) but this is exactly the point — since the value is only needed during that procedure, there's no reason for it to persist.</div>
+    <div class="fb-msg fb-no" id="q2-no">✗ The best practice is to declare a variable in the narrowest scope where it's needed. Since the counter is only needed inside the procedure, a local variable is correct — it cannot be accidentally changed from outside, making the code safer. Option D is wrong: global and local variables have very different accessibility rules — scope is a fundamental concept in programming.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_2',this)" id="tab_notes_2"><span>✏️ Quick Notes</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_2"><ul>
+  <li>🌍 Global: accessible everywhere · can be changed anywhere (risky)</li>
+  <li>📦 Local: only inside its sub-program · destroyed when sub-program ends</li>
+  <li>Parameters passed in = local variables in that sub-program</li>
+  <li>Boolean = True/False · Integer = whole · Real = decimal</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" onclick="goNext()">Next →</button></div>
+</div>
+
+
+<!-- S4 TRACE TABLES & STRINGS -->
+<div class="section" data-section="3">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">📊 SECTION 04</span><h2>Trace Tables &amp; String Manipulation</h2></div>
+  <p class="body">Trace tables and string operations are core to Section A. Reveal each topic in turn.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pu" onclick="togglePanel('tr1',this)"><span class="rv-icon">📊</span><span class="rv-label">How to Trace — Step by Step Method</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="tr1">
+      <div class="rv-hd c-pu">TRACE TABLE METHOD</div>
+      <ul>
+        <li>Create a column for <strong>every variable</strong> in the algorithm, plus an Output column</li>
+        <li>Work through <strong>line by line</strong> — one row per change</li>
+        <li>Only update the column for the variable that changed on that line</li>
+        <li>For loops: trace every iteration, including updating the loop counter itself</li>
+        <li>Evaluate conditions first — which branch runs?</li>
+        <li>Leave cells blank if that variable did not change on that line</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-green" onclick="togglePanel('tr2',this)"><span class="rv-icon">🔤</span><span class="rv-label">String Operations — Know These for the Exam</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="tr2">
+      <div class="rv-hd c-green">STRING OPERATIONS</div>
+      <table>
+        <thead><tr><th>Operation</th><th>What it does</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><code>LEN(str)</code> / <code>str.length</code></td><td>Returns number of characters</td><td>LEN("Tiger") → 5</td></tr>
+          <tr><td><code>str.substring(i, n)</code></td><td>Extracts n characters starting at index i (0-indexed)</td><td>"Tiger".substring(1,1) → "i"</td></tr>
+          <tr><td><code>str.upper()</code></td><td>Converts all to uppercase</td><td>"tiger".upper() → "TIGER"</td></tr>
+          <tr><td><code>str.lower()</code></td><td>Converts all to lowercase</td><td>"TIGER".lower() → "tiger"</td></tr>
+          <tr><td><code>str + str</code></td><td>Concatenation — joins strings</td><td>"Ti" + "ger" → "Tiger"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-rose" onclick="togglePanel('tr3',this)"><span class="rv-icon">0️⃣</span><span class="rv-label">Zero Indexing — The Critical Detail</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="tr3">
+      <div class="rv-hd c-rose">⚠️ ZERO INDEXING</div>
+      <p>String indices in OCR pseudocode <strong>start at 0</strong>, not 1.</p>
+      <p style="margin-top:8px;font-family:'Courier New',monospace;font-size:14px;color:#e2d9f3;background:#06041a;padding:10px 14px;border-radius:6px;">"Tiger" → T=0, i=1, g=2, e=3, r=4</p>
+      <p style="margin-top:8px;">A loop <code>for i = 0 to word.length - 1</code> runs 5 times for "Tiger" (i = 0, 1, 2, 3, 4). This is where most trace table marks are lost — always double-check index values.</p>
+    </div>
+  </div>
+
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q3</div>
+    <div class="q-text">A string variable holds "Code". The algorithm uses: <code>str.substring(2, 1).upper()</code>. What is the result?</div>
+    <div class="opt" onclick="checkQ(this,false,'q3')"><span class="ol">A</span>"c" — extracts at index 2 and doesn't uppercase it</div>
+    <div class="opt" onclick="checkQ(this,false,'q3')"><span class="ol">B</span>"O" — extracts at index 2 using 1-based counting</div>
+    <div class="opt" onclick="checkQ(this,true,'q3')"><span class="ol">C</span>"D" — 0-indexed: C=0, o=1, d=2, e=3; substring(2,1) = "d"; .upper() = "D"</div>
+    <div class="opt" onclick="checkQ(this,false,'q3')"><span class="ol">D</span>"E" — index 2 gives the third character 'e', uppercased to "E"</div>
+    <div class="fb-msg fb-ok" id="q3-ok">✓ Correct. 0-indexed: "Code" → C=0, o=1, d=2, e=3. So <code>substring(2, 1)</code> extracts 1 character at index 2 = "d". Then <code>.upper()</code> converts to "D". Option D is a common mistake — confusing 0-indexing (where index 2 = 'd') with 1-indexing (where index 2 = 'o' or index 3 = 'd').</div>
+    <div class="fb-msg fb-no" id="q3-no">✗ Remember: strings are 0-indexed. "Code": C=0, o=1, d=2, e=3. Index 2 = 'd', not 'e'. The <code>substring(2, 1)</code> call extracts exactly 1 character starting at position 2 = "d". Then <code>.upper()</code> produces "D". Option D confuses 0-indexing with 1-indexing.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_3',this)" id="tab_notes_3"><span>✏️ Quick Notes</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_3"><ul>
+  <li>📊 Trace: one column per variable · one row per change</li>
+  <li>0️⃣ String indexing starts at 0 — "Tiger": T=0, i=1, g=2, e=3, r=4</li>
+  <li>substring(i, n) = n chars from index i · .upper() = uppercase</li>
+  <li>Loop: evaluate condition → body → update counter → repeat</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" onclick="goNext()">Next →</button></div>
+</div>
+
+
+<!-- S5 SORTING & SEARCHING -->
+<div class="section" data-section="4">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">🔀 SECTION 05</span><h2>Sorting &amp; Searching Algorithms</h2></div>
+  <p class="body">Reveal each algorithm in turn. You need to describe, trace, and compare them.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-sky" onclick="togglePanel('al1',this)"><span class="rv-icon">🔍</span><span class="rv-label">Binary Search</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="al1">
+      <div class="rv-hd c-sky">BINARY SEARCH</div>
+      <p><strong>⭐ Prerequisite: the list MUST be sorted first.</strong> Binary search will produce wrong results on an unsorted list.</p>
+      <ul style="margin-top:8px;">
+        <li>Find the <strong>midpoint</strong> of the list</li>
+        <li>Compare the target to the midpoint value</li>
+        <li>If equal → found ✓</li>
+        <li>If target &lt; midpoint → search the <strong>left half</strong></li>
+        <li>If target &gt; midpoint → search the <strong>right half</strong></li>
+        <li>Repeat until found or list exhausted</li>
+        <li>Very efficient: eliminates half the remaining items each step (O log n)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-teal" onclick="togglePanel('al2',this)"><span class="rv-icon">🔀</span><span class="rv-label">Merge Sort</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="al2">
+      <div class="rv-hd c-teal">MERGE SORT — DIVIDE AND CONQUER</div>
+      <p>Split the list in half repeatedly until every sub-list has one element (a single element is trivially sorted). Then <strong>merge</strong> the sub-lists back together in sorted order.</p>
+      <pre class="code-block"><span class="cm">-- Example: split phase for [8, 3, 1, 5]</span>
+[8, 3, 1, 5]
+[8, 3]   [1, 5]
+[8] [3]  [1] [5]
+→ Merge: [3, 8]  [1, 5]
+→ Merge: [1, 3, 5, 8]</pre>
+      <p style="font-size:13px;color:#c0b0e8;margin-top:6px;">In an exam, show every split and every merge step. One mark per correct stage.</p>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pu" onclick="togglePanel('al3',this)"><span class="rv-icon">🫧</span><span class="rv-label">Bubble Sort</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="al3">
+      <div class="rv-hd c-pu">BUBBLE SORT</div>
+      <p>Repeatedly compares adjacent elements and swaps them if they are in the wrong order. After each full pass, the <strong>largest unsorted value "bubbles" to the end</strong>.</p>
+      <ul style="margin-top:8px;">
+        <li>After pass 1: the <strong>maximum</strong> value is in its final position at the end</li>
+        <li>After pass 2: the second largest is in its final position</li>
+        <li>Continue until no swaps occur in a full pass (list is sorted)</li>
+        <li>Less efficient than merge sort for large lists</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-amber" onclick="togglePanel('al4',this)"><span class="rv-icon">📊</span><span class="rv-label">Algorithm Comparison Table</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="al4">
+      <div class="rv-hd c-amber">COMPARISON</div>
+      <table>
+        <thead><tr><th>Algorithm</th><th>Sorted first?</th><th>Method</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Binary Search</strong></td><td class="no">✓ Required</td><td>Halve search space each step</td><td>Large sorted lists</td></tr>
+          <tr><td><strong>Linear Search</strong></td><td class="ok">✗ Not needed</td><td>Check every element in order</td><td>Small / unsorted lists</td></tr>
+          <tr><td><strong>Bubble Sort</strong></td><td class="ok">✗ Not needed</td><td>Repeatedly swap adjacent pairs</td><td>Nearly-sorted lists</td></tr>
+          <tr><td><strong>Merge Sort</strong></td><td class="ok">✗ Not needed</td><td>Split into singles, merge back sorted</td><td>Large lists, reliable</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q4</div>
+    <div class="q-text">After completing the first full pass of a bubble sort on [5, 2, 8, 1, 9], which value is guaranteed to be in its final sorted position?</div>
+    <div class="opt" onclick="checkQ(this,false,'q4')"><span class="ol">A</span>5 — the first element is always sorted after the first pass</div>
+    <div class="opt" onclick="checkQ(this,false,'q4')"><span class="ol">B</span>2 — the smallest value always bubbles to the front on the first pass</div>
+    <div class="opt" onclick="checkQ(this,true,'q4')"><span class="ol">C</span>9 — after the first pass, the largest value has bubbled to the end</div>
+    <div class="opt" onclick="checkQ(this,false,'q4')"><span class="ol">D</span>1 — the smallest value is always placed correctly after one pass</div>
+    <div class="fb-msg fb-ok" id="q4-ok">✓ Correct. After each pass, the largest unsorted value bubbles to its correct position at the end. After pass 1, the global maximum (9) is guaranteed to be at the right end. After pass 2, the second largest will be correct, and so on. The smallest element does not necessarily reach the front in one pass.</div>
+    <div class="fb-msg fb-no" id="q4-no">✗ In bubble sort, adjacent elements are compared and swapped if out of order, causing the <em>largest</em> element to bubble all the way to the end in one pass. After the first full pass, only the maximum value (9) is guaranteed in its final position. The smallest does not necessarily reach the front in one pass.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_4',this)" id="tab_notes_4"><span>✏️ Quick Notes</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_4"><ul>
+  <li>🔍 Binary search: MUST be sorted first — prerequisite!</li>
+  <li>🔀 Merge sort: split until single elements → merge back sorted</li>
+  <li>🫧 Bubble sort pass 1: LARGEST value moves to end</li>
+  <li>Show every step in exam — marks awarded per stage</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" onclick="goNext()">Next →</button></div>
+</div>
+
+
+<!-- S6 BOOLEAN LOGIC -->
+<div class="section" data-section="5">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">⚡ SECTION 06</span><h2>Boolean Logic &amp; Logic Gates</h2></div>
+  <p class="body">Reveal each gate, then the truth table method, then the evaluation technique.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-green" onclick="togglePanel('bl1',this)"><span class="rv-icon">⊓</span><span class="rv-label">AND Gate</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="bl1">
+      <div class="rv-hd c-green">AND GATE</div>
+      <p>Output is <strong>1</strong> only if <strong>both</strong> inputs are 1. If either input is 0, output is 0.</p>
+      <p style="font-family:'Courier New',monospace;font-size:13px;background:#06041a;padding:8px 12px;border-radius:6px;margin-top:8px;">0 AND 0 = 0 &nbsp;|&nbsp; 0 AND 1 = 0 &nbsp;|&nbsp; 1 AND 0 = 0 &nbsp;|&nbsp; 1 AND 1 = 1</p>
+      <p style="margin-top:8px;font-size:13px;color:var(--green);">Memory: AND = <strong>both must agree</strong> to output 1.</p>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-amber" onclick="togglePanel('bl2',this)"><span class="rv-icon">⊔</span><span class="rv-label">OR Gate</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="bl2">
+      <div class="rv-hd c-amber">OR GATE</div>
+      <p>Output is <strong>1</strong> if <strong>at least one</strong> input is 1. Output is 0 only when both inputs are 0.</p>
+      <p style="font-family:'Courier New',monospace;font-size:13px;background:#06041a;padding:8px 12px;border-radius:6px;margin-top:8px;">0 OR 0 = 0 &nbsp;|&nbsp; 0 OR 1 = 1 &nbsp;|&nbsp; 1 OR 0 = 1 &nbsp;|&nbsp; 1 OR 1 = 1</p>
+      <p style="margin-top:8px;font-size:13px;color:var(--amber);">Memory: OR = <strong>at least one</strong> is enough.</p>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-rose" onclick="togglePanel('bl3',this)"><span class="rv-icon">¬</span><span class="rv-label">NOT Gate</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="bl3">
+      <div class="rv-hd c-rose">NOT GATE</div>
+      <p><strong>Inverts</strong> a single input. Takes one input and flips it.</p>
+      <p style="font-family:'Courier New',monospace;font-size:13px;background:#06041a;padding:8px 12px;border-radius:6px;margin-top:8px;">NOT 0 = 1 &nbsp;|&nbsp; NOT 1 = 0</p>
+      <p style="margin-top:8px;font-size:13px;color:var(--rose);">Memory: NOT = <strong>opposite</strong>. Also written as a bar over the letter: Ā.</p>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pu" onclick="togglePanel('bl4',this)"><span class="rv-icon">📋</span><span class="rv-label">Truth Tables — How to Build Them</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="bl4">
+      <div class="rv-hd c-pu">TRUTH TABLE METHOD</div>
+      <ul>
+        <li>For n inputs, you need <strong>2ⁿ rows</strong> (2 inputs = 4 rows, 3 inputs = 8 rows)</li>
+        <li>List all combinations of 0s and 1s systematically</li>
+        <li><strong>Build intermediate columns</strong> for each operation — examiners expect these</li>
+        <li>Work inside-out: resolve brackets first, then outer operations</li>
+      </ul>
+      <p style="margin-top:10px;font-family:var(--font);font-size:11px;color:var(--muted);">EXAMPLE: Q = (A AND (NOT B)) OR C</p>
+      <div class="tt-grid">
+        <div class="tt-h">A</div><div class="tt-h">B</div><div class="tt-h">NOT B</div><div class="tt-h">A AND (NOT B)</div><div class="tt-h">OR C (C=1)</div>
+        <div class="tt-c v0">0</div><div class="tt-c v0">0</div><div class="tt-c v1 derived">1</div><div class="tt-c v0 derived">0</div><div class="tt-c v1 derived">1</div>
+        <div class="tt-c v0">0</div><div class="tt-c v1">1</div><div class="tt-c v0 derived">0</div><div class="tt-c v0 derived">0</div><div class="tt-c v1 derived">1</div>
+        <div class="tt-c v1">1</div><div class="tt-c v0">0</div><div class="tt-c v1 derived">1</div><div class="tt-c v1 derived">1</div><div class="tt-c v1 derived">1</div>
+        <div class="tt-c v1">1</div><div class="tt-c v1">1</div><div class="tt-c v0 derived">0</div><div class="tt-c v0 derived">0</div><div class="tt-c v1 derived">1</div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);font-family:var(--font);margin-top:4px;">Amber = intermediate columns — always show these in exam answers</p>
+    </div>
+  </div>
+
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q5</div>
+    <div class="q-text">Evaluate: Q = (A AND B) OR (NOT A), when A = 1 and B = 0.</div>
+    <div class="opt" onclick="checkQ(this,false,'q5')"><span class="ol">A</span>Q = 1, because A AND B produces 1 and OR keeps it at 1</div>
+    <div class="opt" onclick="checkQ(this,false,'q5')"><span class="ol">B</span>Q = 1, because A = 1 and any OR with 1 produces 1</div>
+    <div class="opt" onclick="checkQ(this,true,'q5')"><span class="ol">C</span>Q = 0 — (A AND B) = 0; NOT A = 0; 0 OR 0 = 0</div>
+    <div class="opt" onclick="checkQ(this,false,'q5')"><span class="ol">D</span>Q = 1, because NOT A inverts A to 0 and 0 OR 0 equals 1</div>
+    <div class="fb-msg fb-ok" id="q5-ok">✓ Correct. Work inside brackets first: (A AND B) = 1 AND 0 = 0. NOT A = NOT 1 = 0. Final: 0 OR 0 = 0. Q = 0. Option B is the common trap — A is 1, but the left bracket evaluates to 0 (AND requires both to be 1, and B=0). Option D is wrong: 0 OR 0 = 0, not 1.</div>
+    <div class="fb-msg fb-no" id="q5-no">✗ Work inside brackets: (A AND B) = (1 AND 0) = 0 (AND needs both to be 1). NOT A = NOT 1 = 0. Final OR: 0 OR 0 = 0. The trap is Option B — just because A=1 doesn't make the first bracket 1. AND requires <em>both</em> inputs to be 1.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_5',this)" id="tab_notes_5"><span>✏️ Quick Notes</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_5"><ul>
+  <li>⊓ AND: BOTH must be 1 · ⊔ OR: at least ONE must be 1 · ¬ NOT: inverts</li>
+  <li>Truth table: 2ⁿ rows for n inputs</li>
+  <li>Always build intermediate columns — examiners check these</li>
+  <li>Work inside brackets first, then outer operations</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" onclick="goNext()">Next →</button></div>
+</div>
+
+
+<!-- S7 DEFENSIVE DESIGN -->
+<div class="section" data-section="6">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">🛡️ SECTION 07</span><h2>Defensive Design, Testing &amp; Test Data</h2></div>
+  <p class="body">Reveal each concept below. The authentication vs validation distinction is heavily examined.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-amber" onclick="togglePanel('dd1',this)"><span class="rv-icon">🔐</span><span class="rv-label">Authentication</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="dd1">
+      <div class="rv-hd c-amber">AUTHENTICATION — WHO ARE YOU?</div>
+      <p>Checking that the user is <strong>who they claim to be</strong>. It verifies <em>identity</em>. Authentication happens <em>before</em> access is granted.</p>
+      <ul style="margin-top:8px;">
+        <li>Username and password login</li>
+        <li>PIN entry</li>
+        <li>Biometric scan (fingerprint, face ID)</li>
+        <li>Two-factor authentication (2FA)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-sky" onclick="togglePanel('dd2',this)"><span class="rv-icon">✅</span><span class="rv-label">Input Validation</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="dd2">
+      <div class="rv-hd c-sky">INPUT VALIDATION — IS THE DATA OK?</div>
+      <p>Checking that data entered is <strong>reasonable, complete, and in the correct format</strong>. It verifies <em>data quality</em>. Validation happens <em>during</em> data entry.</p>
+      <ul style="margin-top:8px;">
+        <li>Range check — is the value within allowed limits?</li>
+        <li>Presence check — has the field been filled in?</li>
+        <li>Type check — is it the correct data type?</li>
+        <li>Format check — does it match the expected pattern? (e.g. postcode)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-warn" onclick="togglePanel('warn_dd',this)"><span class="rv-icon">⚠️</span><span class="rv-label">Authentication vs Validation — Critical Distinction</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="warn_dd">
+      <div class="rv-hd c-rose">⚠️ EXAM TRAP — KNOW THE DIFFERENCE</div>
+      <p><strong>🔐 Authentication = who are you?</strong> (identity check) — happens <em>before</em> access is granted.</p>
+      <p style="margin-top:6px;"><strong>✅ Validation = is this data acceptable?</strong> (data check) — happens <em>during</em> data entry.</p>
+      <p style="margin-top:8px;color:var(--amber);">Example: A password check at login = <strong>authentication</strong>. Checking a password is ≥ 8 characters long = <strong>validation</strong>.</p>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-green" onclick="togglePanel('dd3',this)"><span class="rv-icon">🧪</span><span class="rv-label">Test Data — Three Categories</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="dd3">
+      <div class="rv-hd c-green">TEST DATA TYPES</div>
+      <div class="test-grid">
+        <div class="test-card tc-normal">
+          <h4>✅ Normal</h4>
+          <p>Valid and <strong>typical</strong> data — should be accepted.</p>
+          <ul><li>Range 1–10: use 5</li><li>Name field: use "Alice"</li></ul>
+        </div>
+        <div class="test-card tc-bound">
+          <h4>🔢 Boundary</h4>
+          <p>At or near the <strong>edge of the valid range</strong> — tests the limits.</p>
+          <ul><li>Range 1–10: test 1, 10, 0, 11</li><li>Test just-inside AND just-outside</li></ul>
+        </div>
+        <div class="test-card tc-err">
+          <h4>❌ Erroneous</h4>
+          <p><strong>Completely invalid</strong> — should be rejected.</p>
+          <ul><li>Wrong type: "hello" for a number</li><li>Wildly out of range: -999</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q6</div>
+    <div class="q-text">A system requires a year of birth. Valid range: 1900 to 2010. Which set of test data covers all three categories correctly?</div>
+    <div class="opt" onclick="checkQ(this,false,'q6')"><span class="ol">A</span>Normal: 1950 · Boundary: 1899 · Erroneous: 2011</div>
+    <div class="opt" onclick="checkQ(this,false,'q6')"><span class="ol">B</span>Normal: 1950 · Boundary: 1901 · Erroneous: "nineteen fifty"</div>
+    <div class="opt" onclick="checkQ(this,true,'q6')"><span class="ol">C</span>Normal: 1985 · Boundary: 1900 (or 2010) · Erroneous: "abc" or -500</div>
+    <div class="opt" onclick="checkQ(this,false,'q6')"><span class="ol">D</span>Normal: 2005 · Boundary: 2005 · Erroneous: 1899</div>
+    <div class="fb-msg fb-ok" id="q6-ok">✓ Correct. Normal: 1985 is typical and valid. Boundary: 1900 and 2010 are the exact limits (test both, and ideally 1899 and 2011 just outside). Erroneous: "abc" is wrong type; -500 is wildly out of range. Option A has boundary and erroneous swapped — 1899 is out of range (erroneous), not boundary.</div>
+    <div class="fb-msg fb-no" id="q6-no">✗ Boundary = at or near the edge of the valid range (1900 or 2010). Erroneous = completely invalid (wrong type or wildly out of range). Option A has these swapped: 1899 is erroneous (out of range), not boundary. Option B's boundary of 1901 is just inside the range, not at the actual boundary (1900). Option D uses the same value for normal and boundary.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_6',this)" id="tab_notes_6"><span>✏️ Quick Notes</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_6"><ul>
+  <li>🔐 Authentication = WHO are you? (identity) · ✅ Validation = is data OK?</li>
+  <li>✅ Normal = typical valid · 🔢 Boundary = at the edge · ❌ Erroneous = completely invalid</li>
+  <li>Boundary: test the limit itself AND just outside it</li>
+  <li>Erroneous: wrong data type OR far out of range</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" onclick="goNext()">Next →</button></div>
+</div>
+
+
+<!-- S8 TRANSLATORS & IDEs -->
+<div class="section" data-section="7">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">⚙️ SECTION 08</span><h2>Translators, Compilers &amp; IDEs</h2></div>
+  <p class="body">High-level code must be translated into machine code before it can run. Reveal each translator type and the IDE tools.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pu" onclick="togglePanel('tr8a',this)"><span class="rv-icon">⚙️</span><span class="rv-label">Compiler</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="tr8a">
+      <div class="rv-hd c-pu">COMPILER</div>
+      <ul>
+        <li>Translates the <strong>entire program at once</strong> before execution</li>
+        <li>Produces a standalone <strong>executable file</strong> — no translator needed to run it</li>
+        <li><strong>Faster execution</strong> — machine code runs directly</li>
+        <li>Errors reported all at once after compilation</li>
+        <li>Source code not needed by the end user</li>
+        <li>Best for <strong>final / deployed</strong> versions of software</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-teal" onclick="togglePanel('tr8b',this)"><span class="rv-icon">🔄</span><span class="rv-label">Interpreter</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="tr8b">
+      <div class="rv-hd c-teal">INTERPRETER</div>
+      <ul>
+        <li>Translates and executes the program <strong>line by line</strong></li>
+        <li>No standalone executable produced</li>
+        <li><strong>Slower execution</strong> — translation happens at run time</li>
+        <li>Stops at the <strong>first error</strong> — easy to pinpoint during development</li>
+        <li>Requires the interpreter to be installed to run the code</li>
+        <li>Best for <strong>development and testing</strong> phases</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-amber" onclick="togglePanel('tr8c',this)"><span class="rv-icon">🛠</span><span class="rv-label">IDE Tools — Know What Each Does</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="tr8c">
+      <div class="rv-hd c-amber">IDE TOOLS</div>
+      <table>
+        <thead><tr><th>Tool</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Run-time environment</strong></td><td>Executes the program and lets you observe behaviour — see variables, outputs, and errors as it runs</td></tr>
+          <tr><td><strong>Error diagnostics / debugger</strong></td><td>Highlights errors, shows which line caused the problem, may suggest fixes</td></tr>
+          <tr><td><strong>Breakpoints</strong></td><td>Pauses execution at a specific line so you can inspect variable values at that moment</td></tr>
+          <tr><td><strong>Syntax highlighting</strong></td><td>Colours keywords, strings, variables differently — makes code easier to read and spot errors</td></tr>
+          <tr><td><strong>Auto-completion</strong></td><td>Suggests completions as you type — speeds up development and reduces typing errors</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q7</div>
+    <div class="q-text">A software company is preparing the final, finished version of their application for distribution. Why is a compiler more appropriate than an interpreter for this stage?</div>
+    <div class="opt" onclick="checkQ(this,false,'q7')"><span class="ol">A</span>Compilers are easier to use, so less technical skill is needed to distribute the software</div>
+    <div class="opt" onclick="checkQ(this,true,'q7')"><span class="ol">B</span>A compiler produces a standalone executable that customers can run without the source code or a translator installed; compiled code also runs faster</div>
+    <div class="opt" onclick="checkQ(this,false,'q7')"><span class="ol">C</span>A compiler translates line by line, so errors are easier to find during the final testing phase</div>
+    <div class="opt" onclick="checkQ(this,false,'q7')"><span class="ol">D</span>Compilers automatically fix syntax errors in the code before producing the executable</div>
+    <div class="fb-msg fb-ok" id="q7-ok">✓ Correct. For a deployed product, the compiler's key advantages are: (1) standalone executable — customers don't need the translator installed; (2) compiled machine code runs faster. Option C describes how an <em>interpreter</em> works (line by line), not a compiler. Option D is wrong — compilers report errors but do not fix them.</div>
+    <div class="fb-msg fb-no" id="q7-no">✗ For a final product, compilers win because the output is a standalone executable (no translator needed by the user) and it runs faster. Option C is wrong — translating line by line and stopping at the first error is how an interpreter works. Option D is wrong — compilers report errors, they don't fix them.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_7',this)" id="tab_notes_7"><span>✏️ Quick Notes</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_7"><ul>
+  <li>⚙️ Compiler: whole program → executable · fast to run · errors all at once</li>
+  <li>🔄 Interpreter: line by line · stops at 1st error · needs interpreter every time</li>
+  <li>Final product → compiler · Development → interpreter</li>
+  <li>🛠 IDE: breakpoints (pause at line) · run-time env (observe execution)</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" onclick="goNext()">Next →</button></div>
+</div>
+
+
+<!-- S9 LOGIC ERRORS & ALGORITHMS -->
+<div class="section" data-section="8">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">🐛 SECTION 09</span><h2>Logic Errors, Debugging &amp; Writing Algorithms</h2></div>
+  <p class="body">Reveal each topic. Logic errors are the hardest to spot — make sure you know the common ones.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pu" onclick="togglePanel('le1',this)"><span class="rv-icon">🐛</span><span class="rv-label">Three Types of Error</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="le1">
+      <div class="rv-hd c-pu">ERROR TYPES</div>
+      <table>
+        <thead><tr><th>Type</th><th>What it is</th><th>When detected</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Syntax error</strong></td><td>Violation of the language's grammar rules</td><td>At compile/translation time</td><td>Missing colon, misspelled keyword</td></tr>
+          <tr><td><strong>Logic error</strong></td><td>Program runs but gives <em>wrong output</em></td><td>During testing only</td><td>Using &gt; instead of &gt;=, wrong loop condition</td></tr>
+          <tr><td><strong>Run-time error</strong></td><td>Program crashes during execution</td><td>When the error line is reached</td><td>Division by zero, index out of bounds</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-rose" onclick="togglePanel('le2',this)"><span class="rv-icon">⚠️</span><span class="rv-label">Common Logic Errors to Spot</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="le2">
+      <div class="rv-hd c-rose">COMMON LOGIC ERRORS</div>
+      <ul>
+        <li>🔢 Wrong comparison operator: <code>&gt;</code> instead of <code>&gt;=</code> — misses the boundary value</li>
+        <li>🔁 Wrong loop condition — terminates too early or runs one time too many (off-by-one)</li>
+        <li>Variable initialised to the wrong value</li>
+        <li><code>while x == target</code> instead of <code>while x != target</code> — inverted condition</li>
+        <li>Missing input re-prompt inside a loop — condition variable never updates</li>
+        <li>0-indexed array loop starting at 1 — misses the first element</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-green" onclick="togglePanel('le3',this)"><span class="rv-icon">✅</span><span class="rv-label">Writing Good Algorithms — Best Practices</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="le3">
+      <div class="rv-hd c-green">ALGORITHM BEST PRACTICES</div>
+      <div class="two-col">
+        <div class="tcol" style="border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.05);">
+          <h4 style="color:var(--green);">✅ Do</h4>
+          <ul>
+            <li>Declare and initialise all variables before use</li>
+            <li>Use meaningful variable names (age, day — not x, y)</li>
+            <li>Include input prompts for the user</li>
+            <li>Show the output statement explicitly</li>
+            <li>Use correct syntax for OCR ERL</li>
+          </ul>
+        </div>
+        <div class="tcol" style="border-color:rgba(251,113,133,.3);background:rgba(251,113,133,.05);">
+          <h4 style="color:var(--rose);">❌ Avoid</h4>
+          <ul>
+            <li>Forgetting the output statement</li>
+            <li>Inverted conditions (most common logic error)</li>
+            <li>Off-by-one errors in loop bounds</li>
+            <li>Not re-reading input inside a do-while</li>
+            <li>Using = (assignment) when you mean == (comparison)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-amber" onclick="togglePanel('le4',this)"><span class="rv-icon">🎲</span><span class="rv-label">Random Numbers in OCR ERL</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="le4">
+      <div class="rv-hd c-amber">RANDOM NUMBERS</div>
+      <pre class="code-block"><span class="cm">-- Generate a random integer between 1 and 20 (both inclusive):</span>
+<span class="kw">num</span> = <span class="fn">randint</span>(<span class="num">1</span>, <span class="num">20</span>)
+
+<span class="cm">-- Use it in a condition:</span>
+<span class="kw">if</span> num >= <span class="num">10</span> <span class="kw">then</span>
+    <span class="fn">print</span>(<span class="str">"High"</span>)
+<span class="kw">else</span>
+    <span class="fn">print</span>(<span class="str">"Low"</span>)
+<span class="kw">endif</span></pre>
+    </div>
+  </div>
+
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q8</div>
+    <div class="q-text">A while loop should keep asking for input until the user enters a valid positive number. The condition is: <code>while number &gt; 0</code>. What type of error is this, and what is the effect?</div>
+    <div class="opt" onclick="checkQ(this,false,'q8')"><span class="ol">A</span>Syntax error — the while keyword has been used incorrectly and the program will not compile</div>
+    <div class="opt" onclick="checkQ(this,true,'q8')"><span class="ol">B</span>Logic error — the condition is inverted; the loop runs when the number IS positive (the valid case), so it immediately exits when valid data is entered</div>
+    <div class="opt" onclick="checkQ(this,false,'q8')"><span class="ol">C</span>Run-time error — the program will crash when the user enters 0</div>
+    <div class="opt" onclick="checkQ(this,false,'q8')"><span class="ol">D</span>Logic error — the loop will run infinitely because the condition can never become false</div>
+    <div class="fb-msg fb-ok" id="q8-ok">✓ Correct. This is a logic error — the program runs without crashing, but behaviour is wrong. <code>while number &gt; 0</code> means "keep looping while positive" — the exact opposite of the intent. The correct condition should be <code>while number &lt;= 0</code> (keep looping while the input is NOT valid). The program exits the loop immediately when valid input is entered — perfectly backwards.</div>
+    <div class="fb-msg fb-no" id="q8-no">✗ This is a logic error — inverted condition. The syntax is valid (no compile error) and there's no crash. The problem is purely logical: <code>while number &gt; 0</code> means "repeat while positive" — but positive is the valid case we want to ACCEPT, not loop on. The correct condition is <code>while number &lt;= 0</code>. The program runs but does the opposite of what was intended.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_8',this)" id="tab_notes_8"><span>✏️ Quick Notes</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_8"><ul>
+  <li>Syntax = grammar broken · Logic = runs but wrong · Run-time = crashes</li>
+  <li>Logic errors: inverted condition, wrong operator (> vs >=), off-by-one</li>
+  <li>Always check: loop condition correct? Output statement present?</li>
+  <li>OCR ERL random: num = randint(1, 20)</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" onclick="goNext()">Next →</button></div>
+</div>
+
+
+<!-- S10 DATABASES & SQL -->
+<div class="section" data-section="9">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">🗃️ SECTION 10</span><h2>Databases &amp; SQL</h2></div>
+  <p class="body">A relational database stores data in tables. Reveal the SQL structure, examples, and data types below.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pu" onclick="togglePanel('sq1',this)"><span class="rv-icon">📝</span><span class="rv-label">SQL SELECT Structure &amp; Rules</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="sq1">
+      <div class="rv-hd c-pu">SQL STRUCTURE</div>
+      <div class="formula">
+        <div class="f-label">SQL SELECT Template</div>
+        <div class="f-eq"><span>SELECT</span> fieldName(s)
+<span>FROM</span> TableName
+<span>WHERE</span> condition <span>AND</span>/<span>OR</span> condition</div>
+      </div>
+      <ul style="margin-top:10px;">
+        <li>Use <strong>SELECT *</strong> to get all fields; list specific names to get only those</li>
+        <li>String values in WHERE must be in <strong>quotes</strong>: WHERE SeatType = "Premium"</li>
+        <li>Use <strong>AND</strong> when both conditions must be true; <strong>OR</strong> when either can be true</li>
+        <li>Separate multiple field names in SELECT with <strong>commas</strong> — NOT with AND</li>
+        <li>Boolean values use True / False — no quotes needed</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-green" onclick="togglePanel('sq2',this)"><span class="rv-icon">💡</span><span class="rv-label">Worked SQL Examples</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="sq2">
+      <div class="rv-hd c-green">SQL EXAMPLES</div>
+      <pre class="code-block"><span class="cm">-- Get names of customers who booked on a "Monday":</span>
+<span class="kw">SELECT</span> CustomerName
+<span class="kw">FROM</span> Bookings
+<span class="kw">WHERE</span> DayBooked = <span class="str">"Monday"</span>
+
+<span class="cm">-- Get names of customers who booked "Standard" AND are under 18:</span>
+<span class="kw">SELECT</span> CustomerName
+<span class="kw">FROM</span> Bookings
+<span class="kw">WHERE</span> SeatType = <span class="str">"Standard"</span> <span class="kw">AND</span> Age &lt; <span class="num">18</span>
+
+<span class="cm">-- Get ProductName and Quantity for undelivered orders:</span>
+<span class="kw">SELECT</span> ProductName, Quantity
+<span class="kw">FROM</span> Orders
+<span class="kw">WHERE</span> IsDelivered = <span class="num">False</span></pre>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-amber" onclick="togglePanel('sq3',this)"><span class="rv-icon">🗃️</span><span class="rv-label">Database Data Types</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="sq3">
+      <div class="rv-hd c-amber">DATA TYPES FOR DATABASE FIELDS</div>
+      <table>
+        <thead><tr><th>Data Type</th><th>Use when…</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Boolean</strong></td><td>Field can only be True or False (yes/no, active/inactive, delivered/not)</td></tr>
+          <tr><td><strong>Integer</strong></td><td>Whole numbers only (age, count, quantity)</td></tr>
+          <tr><td><strong>Real / Float</strong></td><td>Prices, measurements, decimal values</td></tr>
+          <tr><td><strong>String / Varchar</strong></td><td>Text (names, addresses, descriptions)</td></tr>
+          <tr><td><strong>Date</strong></td><td>A date value</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q9</div>
+    <div class="q-text">A table called Orders has: CustomerID (Integer), ProductName (String), Quantity (Integer), IsDelivered (Boolean). Write SQL to retrieve ProductName and Quantity for orders not yet delivered. Which is correct?</div>
+    <div class="opt" onclick="checkQ(this,false,'q9')"><span class="ol">A</span>SELECT * FROM Orders WHERE IsDelivered = "No"</div>
+    <div class="opt" onclick="checkQ(this,true,'q9')"><span class="ol">B</span>SELECT ProductName, Quantity FROM Orders WHERE IsDelivered = False</div>
+    <div class="opt" onclick="checkQ(this,false,'q9')"><span class="ol">C</span>SELECT ProductName, Quantity WHERE IsDelivered = 0 FROM Orders</div>
+    <div class="opt" onclick="checkQ(this,false,'q9')"><span class="ol">D</span>SELECT ProductName AND Quantity FROM Orders WHERE IsDelivered = False</div>
+    <div class="fb-msg fb-ok" id="q9-ok">✓ Correct. SELECT ProductName, Quantity — only those two fields (not *). FROM Orders — correct table. WHERE IsDelivered = False — Boolean comparison (no quotes). Option A uses * (all fields) and "No" (string, not Boolean). Option C has syntax wrong — FROM must come before WHERE. Option D uses AND to separate field names — field names need commas; AND is only for combining WHERE conditions.</div>
+    <div class="fb-msg fb-no" id="q9-no">✗ Option B is correct. Option A: * returns all fields and "No" is wrong for a Boolean field (use False). Option C: FROM must appear before WHERE — the order matters. Option D: field names in SELECT are separated by commas, not AND — AND is only used in the WHERE clause to combine conditions.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_9',this)" id="tab_notes_9"><span>✏️ Quick Notes</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_9"><ul>
+  <li>SELECT fields FROM table WHERE condition</li>
+  <li>String values in quotes · Boolean = True/False (no quotes)</li>
+  <li>AND = both conditions · Comma = multiple fields in SELECT</li>
+  <li>Boolean data type: any yes/no / true/false / on/off field</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" onclick="goNext()">Next →</button></div>
+</div>
+
+
+<!-- S11 ARRAYS, FUNCTIONS & MAINTAINABILITY -->
+<div class="section" data-section="10">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">🔢 SECTION 11</span><h2>Arrays, Sub-programs &amp; Maintainability</h2></div>
+  <p class="body">Section B of the exam requires writing code using 2D arrays, functions, procedures, nested loops, and code maintainability techniques. Reveal each topic below.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pu" onclick="togglePanel('ar1',this)"><span class="rv-icon">🔢</span><span class="rv-label">2D Arrays</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="ar1">
+      <div class="rv-hd c-pu">2D ARRAYS — arrayName[row][col]</div>
+      <p>A 2D array is a grid — rows and columns stored as a single variable. Access elements with two indices: <code>arrayName[row][col]</code>. Both indices are 0-based.</p>
+      <pre class="code-block"><span class="cm">-- Declare a 3x3 2D array:</span>
+<span class="kw">array</span> grid[<span class="num">3</span>][<span class="num">3</span>]
+
+<span class="cm">-- Assign a value to row 1, column 2:</span>
+grid[<span class="num">1</span>][<span class="num">2</span>] = <span class="str">"Hello"</span>
+
+<span class="cm">-- Loop through ALL elements using nested loops:</span>
+<span class="kw">for</span> row = <span class="num">0</span> <span class="kw">to</span> <span class="num">2</span>
+    <span class="kw">for</span> col = <span class="num">0</span> <span class="kw">to</span> <span class="num">2</span>
+        <span class="fn">print</span>(grid[row][col])
+    <span class="kw">next</span> col
+<span class="kw">next</span> row</pre>
+      <p style="font-size:13px;color:#c0b0e8;margin-top:6px;">Outer loop = rows · Inner loop = columns. A 10×10 grid needs 100 total iterations.</p>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-teal" onclick="togglePanel('ar2',this)"><span class="rv-icon">⚙️</span><span class="rv-label">Functions vs Procedures</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="ar2">
+      <div class="rv-hd c-teal">FUNCTIONS vs PROCEDURES</div>
+      <div class="two-col">
+        <div class="tcol" style="border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.06);">
+          <h4 style="color:var(--pu);">⚙️ Function</h4>
+          <ul>
+            <li>Sub-program that <em>returns a value</em></li>
+            <li>Uses the <code>return</code> keyword</li>
+            <li>Call: <code>result = myFunc(arg)</code></li>
+          </ul>
+        </div>
+        <div class="tcol" style="border-color:rgba(45,212,191,.3);background:rgba(45,212,191,.06);">
+          <h4 style="color:var(--teal);">📋 Procedure</h4>
+          <ul>
+            <li>Sub-program that performs a task</li>
+            <li><em>Does not return a value</em></li>
+            <li>Outputs directly or modifies globals</li>
+          </ul>
+        </div>
+      </div>
+      <pre class="code-block" style="margin-top:10px;"><span class="kw">function</span> <span class="fn">CheckValue</span>(row, col)
+    <span class="kw">if</span> myArray[row][col] == <span class="str">"Empty"</span> <span class="kw">then</span>
+        <span class="kw">return</span> <span class="num">True</span>
+    <span class="kw">else</span>
+        <span class="kw">return</span> <span class="num">False</span>
+    <span class="kw">endif</span>
+<span class="kw">endfunction</span>
+
+<span class="cm">-- Calling the function:</span>
+result = <span class="fn">CheckValue</span>(<span class="num">3</span>, <span class="num">5</span>)</pre>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-green" onclick="togglePanel('ar3',this)"><span class="rv-icon">♻️</span><span class="rv-label">Code Maintainability</span><span class="rv-chevron">▼</span></button>
+    <div class="rv-panel" id="ar3">
+      <div class="rv-hd c-green">MAINTAINABILITY TECHNIQUES</div>
+      <ul>
+        <li><strong>Comments</strong> — explain what sections do: <code># this counts empty seats</code></li>
+        <li><strong>Meaningful names</strong> — <code>totalSeats</code> not <code>t</code>, <code>playerScore</code> not <code>ps</code></li>
+        <li><strong>Modularisation</strong> — break code into reusable functions/procedures</li>
+        <li><strong>Indentation</strong> — consistent indentation makes structure clear</li>
+        <li><strong>Constants</strong> — use named constants for values that don't change: <code>MAX_SEATS = 100</code></li>
+      </ul>
+      <div style="background:rgba(251,113,133,.07);border-left:3px solid var(--rose);border-radius:6px;padding:12px 16px;margin-top:10px;">
+        <p style="font-family:var(--font);font-size:11px;font-weight:700;letter-spacing:1px;color:var(--rose);margin-bottom:6px;">⚠️ GLOBAL VARIABLES HARM MAINTAINABILITY</p>
+        <p style="font-size:13px;color:#c0b0e8;">Making all variables global is a <em>poor</em> practice. Any sub-program can change a global, making bugs very hard to track. Use local variables and pass data through parameters instead.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q10</div>
+    <div class="q-text">A programmer writes a procedure that uses a variable called <code>count</code> declared inside it. After the procedure completes, the main program tries to print <code>count</code>. What happens?</div>
+    <div class="opt" onclick="checkQ(this,false,'q10')"><span class="ol">A</span>The main program prints the final value — procedures share memory with the main program</div>
+    <div class="opt" onclick="checkQ(this,false,'q10')"><span class="ol">B</span>The main program prints 0 — local variables reset to 0 when the procedure ends</div>
+    <div class="opt" onclick="checkQ(this,true,'q10')"><span class="ol">C</span>An error occurs — count is a local variable, only accessible inside the procedure; it does not exist in the main program's scope</div>
+    <div class="opt" onclick="checkQ(this,false,'q10')"><span class="ol">D</span>It prints correctly if count was declared before the procedure was first called</div>
+    <div class="fb-msg fb-ok" id="q10-ok">✓ Correct. A local variable only exists within its sub-program. Once the procedure ends, count is destroyed — gone from memory. The main program has no reference to it. This is why local variables are safe: limited scope prevents accidental access from outside. To share a value with the main program, use a return statement (function) or a global variable.</div>
+    <div class="fb-msg fb-no" id="q10-no">✗ Local variables are strictly confined to their sub-program. Once the procedure returns, count is destroyed — not reset to 0, but completely gone. The main program cannot access it. To share a value, it would need to be returned from a function, or declared as a global variable.</div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="mcq-wrap" style="margin-top:12px;">
+    <div class="q-label">✓ CHECK — Q11</div>
+    <div class="q-text">A developer wants to improve code maintainability for future developers. Which of the following is NOT an effective technique?</div>
+    <div class="opt" onclick="checkQ(this,false,'q11')"><span class="ol">A</span>Using meaningful names like totalSeats instead of t</div>
+    <div class="opt" onclick="checkQ(this,false,'q11')"><span class="ol">B</span>Adding comments that explain what each section does</div>
+    <div class="opt" onclick="checkQ(this,true,'q11')"><span class="ol">C</span>Making all variables global so any future sub-program can access them without parameters</div>
+    <div class="opt" onclick="checkQ(this,false,'q11')"><span class="ol">D</span>Breaking the program into modular sub-programs with a clear purpose</div>
+    <div class="fb-msg fb-ok" id="q11-ok">✓ Correct. Making everything global is a poor practice that <em>harms</em> maintainability. Global variables can be changed from anywhere — when a bug appears, you have to search the entire codebase to find where the value changed. Good practice: use local variables and pass data through parameters, so each sub-program is self-contained.</div>
+    <div class="fb-msg fb-no" id="q11-no">✗ Options A, B, and D are all genuine maintainability improvements. C is NOT — global variables make code harder to maintain because any part of the code can change them, making bugs difficult to trace. Good maintainability means each sub-program is self-contained with limited, clear scope.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_10',this)" id="tab_notes_10"><span>✏️ Quick Notes</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_10"><ul>
+  <li>🔢 2D array: arrayName[row][col] · nested loops to iterate all cells</li>
+  <li>⚙️ Function = returns a value · 📋 Procedure = no return value</li>
+  <li>♻️ Maintainability: comments, meaningful names, modularisation, constants</li>
+  <li>Local vars only exist inside sub-program — safer than globals</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" onclick="goNext()">Next →</button></div>
+</div>
+
+
+<!-- S12 FINAL ASSESSMENT -->
+<div class="section" data-section="11">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">🎯 SECTION 12</span><h2>Final Assessment — All Topics</h2></div>
+  <p style="font-family:var(--font);font-size:12px;color:var(--muted);letter-spacing:1px;margin-bottom:18px;">Answer all 4 questions to unlock your badge.</p>
+
+  <div class="mcq-wrap" style="margin-bottom:12px;">
+    <div class="q-label">FINAL — Q12</div>
+    <div class="q-text">The pseudocode below is meant to calculate the average of all values in a 1D array called scores with 5 elements. Identify the logic error(s):</div>
+    <pre class="code-block" style="margin:10px 0;"><span class="kw">total</span> = <span class="num">0</span>
+<span class="kw">for</span> i = <span class="num">1</span> <span class="kw">to</span> <span class="num">5</span>
+    total = total + scores[i]
+<span class="kw">next</span> i
+<span class="fn">print</span>(total / <span class="num">4</span>)</pre>
+    <div class="opt" onclick="checkQ(this,false,'fq12')"><span class="ol">A</span>total should be initialised to 1, not 0, because arrays start at index 1</div>
+    <div class="opt" onclick="checkQ(this,true,'fq12')"><span class="ol">B</span>Two errors: loop should start at index 0 (not 1), skipping scores[0]; and average should divide by 5 (not 4)</div>
+    <div class="opt" onclick="checkQ(this,false,'fq12')"><span class="ol">C</span>The loop variable i should be called index to make the code more readable — this is a logic error</div>
+    <div class="opt" onclick="checkQ(this,false,'fq12')"><span class="ol">D</span>total / 4 is correct because 5 elements produce 4 gaps between them</div>
+    <div class="fb-msg fb-ok" id="fq12-ok">✓ Correct. Two logic errors: (1) Arrays are 0-indexed — the loop should run from 0 to 4 (not 1 to 5), otherwise scores[0] is never added to total. (2) The average of 5 values is total ÷ 5, not ÷ 4. Both are logic errors — the program runs without crashing but produces a wrong result. Option C is a naming convention issue, not a logic error. Option D's reasoning about "4 gaps" is nonsensical.</div>
+    <div class="fb-msg fb-no" id="fq12-no">✗ Two logic errors: (1) Arrays are 0-indexed — <code>for i = 1 to 5</code> skips index 0, missing the first element. The loop should be <code>for i = 0 to 4</code>. (2) The average of 5 values requires dividing by 5, not 4. These are logic errors — the program doesn't crash, it just produces the wrong answer.</div>
+  </div>
+
+  <div class="mcq-wrap" style="margin-bottom:12px;">
+    <div class="q-label">FINAL — Q13</div>
+    <div class="q-text">Which SQL statement correctly retrieves only the Name field from Members where Age is greater than 17 AND MembershipType is "Gold"?</div>
+    <div class="opt" onclick="checkQ(this,false,'fq13')"><span class="ol">A</span>SELECT * FROM Members WHERE Age &gt; 17 OR MembershipType = "Gold"</div>
+    <div class="opt" onclick="checkQ(this,true,'fq13')"><span class="ol">B</span>SELECT Name FROM Members WHERE Age &gt; 17 AND MembershipType = "Gold"</div>
+    <div class="opt" onclick="checkQ(this,false,'fq13')"><span class="ol">C</span>SELECT Name FROM Members WHERE Age &gt;= 17 AND MembershipType = "Gold"</div>
+    <div class="opt" onclick="checkQ(this,false,'fq13')"><span class="ol">D</span>SELECT Name AND Age FROM Members WHERE MembershipType = "Gold"</div>
+    <div class="fb-msg fb-ok" id="fq13-ok">✓ Correct. SELECT Name — only the Name field. FROM Members — correct table. WHERE Age &gt; 17 — strictly over 17 (not 17 itself). AND MembershipType = "Gold" — both conditions true. Option A uses * (all fields) and OR (only one condition needed). Option C uses &gt;= which includes 17-year-olds — the question says "greater than 17". Option D uses AND between field names in SELECT — field names need commas, not AND.</div>
+    <div class="fb-msg fb-no" id="fq13-no">✗ Option B is correct. Option A: * gets all fields (not just Name), and OR is wrong (both conditions must be true). Option C: &gt;= 17 includes 17-year-olds — the question asks for strictly greater than 17, so &gt; is correct. Option D: AND between field names in SELECT is wrong — use commas. AND is only for combining WHERE conditions.</div>
+  </div>
+
+  <div class="mcq-wrap" style="margin-bottom:12px;">
+    <div class="q-label">FINAL — Q14</div>
+    <div class="q-text">A function IsEven(n) should return True if n is even, False if odd. Which implementation is correct?</div>
+    <div class="opt" onclick="checkQ(this,false,'fq14')"><span class="ol">A</span>
+      <pre class="opt-pre"><span class="kw">function</span> <span class="fn">IsEven</span>(n)
+    <span class="kw">if</span> n / <span class="num">2</span> == <span class="num">0</span> <span class="kw">then</span>
+        <span class="kw">return</span> <span class="num">True</span>
+    <span class="kw">else</span>
+        <span class="kw">return</span> <span class="num">False</span>
+    <span class="kw">endif</span>
+<span class="kw">endfunction</span></pre>
+    </div>
+    <div class="opt" onclick="checkQ(this,true,'fq14')"><span class="ol">B</span>
+      <pre class="opt-pre"><span class="kw">function</span> <span class="fn">IsEven</span>(n)
+    <span class="kw">if</span> n <span class="kw">MOD</span> <span class="num">2</span> == <span class="num">0</span> <span class="kw">then</span>
+        <span class="kw">return</span> <span class="num">True</span>
+    <span class="kw">else</span>
+        <span class="kw">return</span> <span class="num">False</span>
+    <span class="kw">endif</span>
+<span class="kw">endfunction</span></pre>
+    </div>
+    <div class="opt" onclick="checkQ(this,false,'fq14')"><span class="ol">C</span>
+      <pre class="opt-pre"><span class="kw">procedure</span> <span class="fn">IsEven</span>(n)
+    <span class="kw">if</span> n <span class="kw">MOD</span> <span class="num">2</span> == <span class="num">0</span> <span class="kw">then</span>
+        <span class="fn">print</span>(<span class="num">True</span>)
+    <span class="kw">endif</span>
+<span class="kw">endprocedure</span></pre>
+    </div>
+    <div class="opt" onclick="checkQ(this,false,'fq14')"><span class="ol">D</span>
+      <pre class="opt-pre"><span class="kw">function</span> <span class="fn">IsEven</span>(n)
+    <span class="kw">return</span> n / <span class="num">2</span>
+<span class="kw">endfunction</span></pre>
+    </div>
+    <div class="fb-msg fb-ok" id="fq14-ok">✓ Correct. Use <strong>MOD</strong> (modulo — remainder after division) to check divisibility: n MOD 2 == 0 means n divides by 2 with no remainder, i.e. it's even. Option A uses n / 2 — for n=4, 4/2=2, which is not 0, so it incorrectly returns False for an even number. Option C is a procedure (no return value) — can't be used where True/False is needed. Option D returns a number, not a Boolean.</div>
+    <div class="fb-msg fb-no" id="fq14-no">✗ Use <strong>MOD</strong> for divisibility: n MOD 2 gives the remainder. If remainder is 0, n is even. Option A uses division (n / 2) — 4/2=2, not 0, so it would return False for 4 (wrong). Option C is a procedure that prints — it can't return True/False. Option D returns a number, not True/False.</div>
+  </div>
+
+  <div class="mcq-wrap" style="margin-bottom:20px;">
+    <div class="q-label">FINAL — Q15</div>
+    <div class="q-text">Which statement about compiler vs interpreter choice during the software development lifecycle is most accurate?</div>
+    <div class="opt" onclick="checkQ(this,false,'fq15')"><span class="ol">A</span>Interpreters should be used for the final product — they allow source code to be easily updated after deployment</div>
+    <div class="opt" onclick="checkQ(this,true,'fq15')"><span class="ol">B</span>Interpreters are more useful during development (errors reported line by line); compilers are better for the final product (faster execution, standalone executable)</div>
+    <div class="opt" onclick="checkQ(this,false,'fq15')"><span class="ol">C</span>Compilers should always be used throughout development — reporting all errors at once makes them easier to fix in one go</div>
+    <div class="opt" onclick="checkQ(this,false,'fq15')"><span class="ol">D</span>There is no meaningful difference — only the end user experiences any difference</div>
+    <div class="fb-msg fb-ok" id="fq15-ok">✓ Correct. Interpreters during development: stop at the first error, making it easy to pinpoint exactly which line failed. Compilers for the final product: the executable runs faster (no translation overhead) and customers don't need a translator installed. Option C sounds plausible but is wrong: getting all errors at once makes debugging harder, not easier. Option A is wrong — distributing source code requires an interpreter to be present and exposes your source code.</div>
+    <div class="fb-msg fb-no" id="fq15-no">✗ Interpreters during development (line-by-line error reporting helps pinpoint bugs); compilers for the final product (faster, standalone). Option A: distributing source code requires an interpreter to be installed — a security risk and complex to distribute. Option C: all errors at once from a compiler is harder to debug, not easier. Option D: the developer experiences a major difference in how errors are reported.</div>
+  </div>
+</div>
+
+<div class="badge-section">
+  <div class="badge-prog-txt" id="badgeProg">0 / 15 questions answered</div>
+  <div class="badge-bar-outer"><div class="badge-bar-inner" id="badgeBar"></div></div>
+  <div id="badgeWrapper" class="badge-locked">
+    <p style="font-family:var(--font);font-size:12px;color:var(--muted);margin-bottom:16px;">Answer all questions to unlock your badge</p>
+    <input class="name-input" id="studentName" type="text" placeholder="Enter your name" oninput="updateBadgeName()">
+    <div class="badge-visual">
+      <div class="badge-icon">🧮</div>
+      <div class="badge-hdr">GCSE Computer Science · OCR J277/02</div>
+      <div class="badge-topic">Algorithms &amp; Programming</div>
+      <div class="badge-spec">Computational Thinking · Logic · SQL · Arrays</div>
+      <div class="badge-score-disp" id="bScore">— / 15</div>
+      <div class="badge-name-disp" id="bName">—</div>
+      <div class="badge-ribbon">EXAM READY</div>
+    </div>
+    <p class="snip-hint">💡 Use Snipping Tool (Windows) or Screenshot (Mac) to save your badge</p>
+  </div>
+</div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" id="finishBtn" disabled style="opacity:.3;">Finish ✓</button></div>
+</div>
+
+</div>
+<script>
+const TOTAL_SEC=12, TOTAL_Q=15;
+const answered=new Set(), correct=new Set();
+let current=0;
+
+function buildDots(){
+  const nav=document.getElementById('progressNav');
+  for(let i=0;i<TOTAL_SEC;i++){
+    const b=document.createElement('button');
+    b.className='dot'+(i===0?' active':'');
+    b.onclick=()=>goTo(i);
+    nav.appendChild(b);
+  }
+}
+function goTo(i){
+  document.querySelectorAll('.section')[current].classList.remove('active');
+  current=i;
+  document.querySelectorAll('.section')[current].classList.add('active');
+  updateDots();window.scrollTo(0,0);
+}
+function goNext(){if(current<TOTAL_SEC-1)goTo(current+1);}
+function goPrev(){if(current>0)goTo(current-1);}
+function updateDots(){
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.className='dot';
+    if(i===current)d.classList.add('active');
+    else if(i<current)d.classList.add('completed');
+  });
+}
+function togglePanel(id,btn){
+  const panel=document.getElementById(id);
+  if(!panel)return;
+  const isOpen=panel.classList.contains('open');
+  panel.classList.toggle('open',!isOpen);
+  if(btn)btn.classList.toggle('open',!isOpen);
+}
+function checkQ(el,isOk,qid){
+  if(answered.has(qid))return;
+  answered.add(qid);
+  el.parentElement.querySelectorAll('.opt').forEach(o=>o.onclick=null);
+  if(isOk){el.classList.add('correct');document.getElementById(qid+'-ok').style.display='block';correct.add(qid);}
+  else{el.classList.add('wrong');document.getElementById(qid+'-no').style.display='block';}
+  updateBadge();
+}
+function updateBadge(){
+  const a=answered.size,c=correct.size;
+  document.getElementById('badgeProg').textContent=`${a} / ${TOTAL_Q} questions answered`;
+  document.getElementById('badgeBar').style.width=`${(a/TOTAL_Q)*100}%`;
+  document.getElementById('bScore').textContent=`${c} / ${TOTAL_Q} correct`;
+  if(a>=TOTAL_Q){
+    document.getElementById('badgeWrapper').classList.remove('badge-locked');
+    document.getElementById('badgeWrapper').classList.add('badge-unlocked');
+    document.getElementById('finishBtn').disabled=false;
+    document.getElementById('finishBtn').style.opacity='1';
+  }
+}
+function updateBadgeName(){
+  document.getElementById('bName').textContent=document.getElementById('studentName').value||'—';
+}
+buildDots();
+updateBadge();
+</script>
+</body>
+</html>

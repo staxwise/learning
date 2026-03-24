@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defensive Design & Input Validation | GCSE Computer Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --accent-red: #ff4757;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --text-muted: #555566;
+            --border-subtle: #2a2a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; line-height: 1.7; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        header { text-align: center; margin-bottom: 50px; }
+
+        .exam-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; font-weight: 300; }
+
+        /* Progress Dots */
+        .progress-container { margin-top: 30px; }
+        .progress-bar { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
+        .progress-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--border-subtle);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .progress-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 12px var(--accent-cyan);
+            transform: scale(1.2);
+        }
+        .progress-dot.completed { background: var(--accent-green); }
+        .progress-label { margin-top: 12px; font-size: 0.9rem; color: var(--text-muted); }
+
+        section { display: none; animation: fadeIn 0.5s ease; }
+        section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        .learning-objective {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.02));
+            border-left: 3px solid var(--accent-cyan);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 0 12px 12px 0;
+        }
+        .learning-objective-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-cyan); margin-bottom: 6px; }
+        .learning-objective ul { color: var(--text-primary); margin-top: 10px; padding-left: 20px; }
+        .learning-objective li { margin-bottom: 6px; }
+
+        h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--accent-cyan); }
+        h3 { font-size: 1.15rem; margin-bottom: 14px; color: var(--text-primary); margin-top: 20px; }
+        p { color: var(--text-secondary); margin-bottom: 14px; }
+
+        .highlight { color: var(--accent-yellow); font-weight: 600; }
+        .highlight-cyan { color: var(--accent-cyan); font-weight: 600; }
+        .highlight-green { color: var(--accent-green); font-weight: 600; }
+        .highlight-purple { color: var(--accent-purple); font-weight: 600; }
+        .highlight-orange { color: var(--accent-orange); font-weight: 600; }
+        .highlight-magenta { color: var(--accent-magenta); font-weight: 600; }
+        .highlight-red { color: var(--accent-red); font-weight: 600; }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+
+        /* Code Block */
+        .code-block {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            line-height: 1.8;
+            white-space: pre;
+        }
+        .code-block .keyword { color: var(--accent-magenta); }
+        .code-block .function { color: var(--accent-yellow); }
+        .code-block .variable { color: var(--accent-cyan); }
+        .code-block .string { color: var(--accent-green); }
+        .code-block .number { color: var(--accent-purple); }
+        .code-block .comment { color: var(--text-muted); font-style: italic; }
+        .code-block .operator { color: var(--accent-yellow); }
+        .code-block .builtin { color: var(--accent-magenta); }
+        .code-block .error { color: var(--accent-red); }
+
+        /* Key Term Box */
+        .key-term {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+        .key-term-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .key-term-badge {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+        .key-term-word { font-weight: 600; color: var(--accent-cyan); }
+        .key-term p { margin: 0; color: var(--text-secondary); }
+
+        /* Scenario Cards */
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .scenario-card {
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .scenario-card:hover {
+            border-color: var(--accent-magenta);
+            transform: translateY(-3px);
+        }
+        .scenario-card .scenario-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+        .scenario-card .scenario-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .scenario-card .scenario-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .scenario-card .scenario-risk {
+            margin-top: 12px;
+            padding: 8px 12px;
+            background: rgba(255, 0, 110, 0.1);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: var(--accent-magenta);
+        }
+
+        /* Validation Type Cards */
+        .validation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .validation-card {
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .validation-card:hover {
+            border-color: var(--accent-green);
+        }
+        .validation-card .val-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .validation-card .val-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: rgba(0, 255, 136, 0.15);
+        }
+        .validation-card .val-name {
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+        .validation-card .val-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        .validation-card .val-example {
+            background: var(--bg-card);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+        .validation-card .val-valid {
+            color: var(--accent-green);
+        }
+        .validation-card .val-invalid {
+            color: var(--accent-red);
+        }
+
+        /* Analogy Box */
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.02));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 16px 0;
+        }
+        .analogy-box-header {
+            font-weight: 600;
+            color: var(--accent-purple);
+            margin-bottom: 8px;
+        }
+        .analogy-box p { margin: 0; }
+
+        /* Warning Box */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.1), rgba(255, 0, 110, 0.02));
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 16px 0;
+        }
+        .warning-box-header {
+            font-weight: 600;
+            color: var(--accent-magenta);
+            margin-bottom: 8px;
+        }
+        .warning-box p { margin: 0; }
+
+        /* Tip Box */
+        .tip-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.02));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 16px 0;
+        }
+        .tip-box-header {
+            font-weight: 600;
+            color: var(--accent-green);
+            margin-bottom: 8px;
+        }
+        .tip-box p { margin: 0; }
+
+        /* Exam Tip Box */
+        .exam-tip-box {
+            background: linear-gradient(135deg, rgba(255, 214, 10, 0.1), rgba(255, 214, 10, 0.02));
+            border: 1px solid rgba(255, 214, 10, 0.3);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 16px 0;
+        }
+        .exam-tip-box-header {
+            font-weight: 600;
+            color: var(--accent-yellow);
+            margin-bottom: 8px;
+        }
+        .exam-tip-box p { margin: 0; }
+
+        /* Question Box */
+        .question-box {
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+        .question-box p { color: var(--text-primary); margin-bottom: 16px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            padding: 14px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+        .option-btn:hover:not(:disabled) { border-color: var(--accent-cyan); transform: translateX(4px); }
+        .option-btn.correct { border-color: var(--accent-green); background: rgba(0, 255, 136, 0.15); }
+        .option-btn.incorrect { border-color: var(--accent-magenta); background: rgba(255, 0, 110, 0.15); }
+        .option-btn:disabled { cursor: not-allowed; }
+
+        .feedback {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback.show { display: block; }
+        .feedback.success { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--accent-green); color: var(--accent-green); }
+        .feedback.error { background: rgba(255, 0, 110, 0.1); border: 1px solid var(--accent-magenta); color: var(--accent-magenta); }
+
+        /* Interactive Validator */
+        .validator-demo {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+        .validator-demo-title {
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .validator-input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .validator-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 16px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+        }
+        .validator-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+        .validator-input.valid { border-color: var(--accent-green); }
+        .validator-input.invalid { border-color: var(--accent-red); }
+        .validator-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .validator-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+        .validator-result {
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            display: none;
+        }
+        .validator-result.show { display: block; }
+        .validator-result.valid {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+        .validator-result.invalid {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        /* Authentication Demo */
+        .auth-demo {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .auth-demo-header {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .auth-demo-header span {
+            font-size: 1.3rem;
+        }
+        .auth-demo-header h4 {
+            color: white;
+            font-weight: 600;
+        }
+        .auth-demo-body {
+            padding: 24px;
+        }
+        .auth-field {
+            margin-bottom: 16px;
+        }
+        .auth-field label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        .auth-field input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+        }
+        .auth-field input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+        }
+        .auth-result {
+            margin-top: 16px;
+            padding: 14px 18px;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+        }
+        .auth-result.show { display: block; }
+        .auth-result.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+        .auth-result.failure {
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
+        }
+        .auth-hint {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Drag and Drop Exercise */
+        .matching-exercise {
+            margin: 20px 0;
+        }
+        .matching-instruction {
+            background: var(--bg-dark);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .matching-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 600px) {
+            .matching-grid { grid-template-columns: 1fr; }
+        }
+        .matching-column h4 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        .matching-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .matching-item:hover { border-color: var(--accent-cyan); }
+        .matching-item.selected { border-color: var(--accent-cyan); background: rgba(0, 212, 255, 0.1); }
+        .matching-item.correct { border-color: var(--accent-green); background: rgba(0, 255, 136, 0.1); }
+        .matching-item.incorrect { border-color: var(--accent-red); background: rgba(255, 71, 87, 0.1); }
+        .matching-item.locked { cursor: not-allowed; }
+        .matching-item .item-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background: var(--bg-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .matching-item.selected .item-letter { background: var(--accent-cyan); color: var(--bg-dark); }
+        .matching-item .item-text { flex: 1; font-size: 0.95rem; color: var(--text-primary); }
+
+        /* Controls */
+        .controls { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+        .control-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .control-btn.primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+        }
+        .control-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3); }
+        .control-btn.secondary {
+            background: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+        .control-btn.secondary:hover { border-color: var(--accent-cyan); color: var(--text-primary); }
+
+        /* Exercise Result */
+        .exercise-result {
+            margin-top: 16px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        .exercise-result.show { display: block; }
+        .exercise-result.success { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--accent-green); }
+        .exercise-result.partial { background: rgba(255, 214, 10, 0.1); border: 1px solid var(--accent-yellow); }
+        .exercise-result h4 { color: var(--accent-green); margin-bottom: 6px; }
+        .exercise-result.partial h4 { color: var(--accent-yellow); }
+        .exercise-result p { color: var(--text-secondary); margin: 0; }
+
+        /* Notes Summary */
+        .notes-summary {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(168, 85, 247, 0.05));
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 24px;
+        }
+        .notes-summary-header {
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 12px;
+        }
+        .notes-summary h4 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 8px;
+            margin-top: 14px;
+        }
+        .notes-summary h4:first-of-type { margin-top: 0; }
+        .notes-summary ul {
+            padding-left: 20px;
+            color: var(--text-secondary);
+        }
+        .notes-summary li { margin-bottom: 4px; }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 16px;
+        }
+        .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 14px 28px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .nav-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            color: white;
+        }
+        .nav-btn.next:hover {
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Badge Generator */
+        .badge-generator {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 2px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .badge-generator h3 {
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+        }
+
+        .badge-generator > p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .badge-input-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .badge-name-input {
+            padding: 12px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+
+        .badge-name-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        .badge-name-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .badge-display {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .badge-display.show {
+            display: flex;
+        }
+
+        .badge-container {
+            background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(0, 212, 255, 0.1);
+        }
+
+        .badge-hint {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .badge-locked-message {
+            padding: 20px;
+        }
+
+        .badge-locked-message .lock-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .badge-locked-message p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .badge-progress {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .badge-progress-bar {
+            height: 12px;
+            background: var(--bg-dark);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .badge-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .badge-progress-text {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        #badgeUnlocked > p {
+            color: var(--accent-green);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="exam-badge">OCR J277 · Section 2.3</div>
+            <h1>Defensive Design & Input Validation</h1>
+            <p class="subtitle">Building programs that handle the unexpected</p>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-dot active" onclick="goToSection(1)"></div>
+                    <div class="progress-dot" onclick="goToSection(2)"></div>
+                    <div class="progress-dot" onclick="goToSection(3)"></div>
+                    <div class="progress-dot" onclick="goToSection(4)"></div>
+                    <div class="progress-dot" onclick="goToSection(5)"></div>
+                    <div class="progress-dot" onclick="goToSection(6)"></div>
+                    <div class="progress-dot" onclick="goToSection(7)"></div>
+                    <div class="progress-dot" onclick="goToSection(8)"></div>
+                </div>
+                <p class="progress-label">Section <span id="currentSection">1</span> of 8</p>
+            </div>
+        </header>
+
+        <main>
+            <!-- Section 1: Introduction -->
+            <section id="section-1" class="active">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objectives</div>
+                        <ul>
+                            <li>Understand why programs need to anticipate misuse</li>
+                            <li>Explain the purpose of input validation</li>
+                            <li>Describe different validation techniques</li>
+                            <li>Understand authentication and its role in security</li>
+                        </ul>
+                    </div>
+
+                    <h2>🛡️ Why Do Programs Need Defending?</h2>
+
+                    <p>Imagine you've built an app that asks users to enter their age. You expect a number like <code>15</code> or <code>42</code>. But what happens when someone enters:</p>
+
+                    <ul style="color: var(--text-secondary); padding-left: 24px; margin-bottom: 16px;">
+                        <li><code>"fifteen"</code> — text instead of a number</li>
+                        <li><code>-50</code> — a negative age</li>
+                        <li><code>999</code> — an impossibly high age</li>
+                        <li><code>""</code> — nothing at all</li>
+                    </ul>
+
+                    <p>Without protection, your program might <span class="highlight-red">crash</span>, produce <span class="highlight-red">incorrect results</span>, or even be <span class="highlight-red">exploited by attackers</span>.</p>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Definition</span>
+                            <span class="key-term-word">Defensive Design</span>
+                        </div>
+                        <p>A programming approach that anticipates how things might go wrong and includes measures to prevent or handle problems before they cause harm.</p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">🏰 Think of it like building a castle...</div>
+                        <p>You don't just build walls — you add a moat, guards at the gate, and backup supplies. <strong>Defensive design</strong> means building your program to withstand attack and misuse, not just to work in perfect conditions.</p>
+                    </div>
+
+                    <h3>The Three Pillars We'll Cover</h3>
+                    <div class="scenario-grid">
+                        <div class="scenario-card" style="border-color: var(--accent-magenta);">
+                            <div class="scenario-icon">⚠️</div>
+                            <div class="scenario-title">Anticipating Misuse</div>
+                            <div class="scenario-desc">Thinking ahead about what could go wrong with user input and program flow.</div>
+                        </div>
+                        <div class="scenario-card" style="border-color: var(--accent-green);">
+                            <div class="scenario-icon">✅</div>
+                            <div class="scenario-title">Input Validation</div>
+                            <div class="scenario-desc">Checking that data meets requirements before accepting it into the program.</div>
+                        </div>
+                        <div class="scenario-card" style="border-color: var(--accent-purple);">
+                            <div class="scenario-icon">🔐</div>
+                            <div class="scenario-title">Authentication</div>
+                            <div class="scenario-desc">Confirming that users are who they claim to be before granting access.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <div></div>
+                    <button class="nav-btn next" onclick="nextSection()">Let's Begin →</button>
+                </div>
+            </section>
+
+            <!-- Section 2: Anticipating Misuse -->
+            <section id="section-2">
+                <div class="card">
+                    <h2>⚠️ Anticipating Misuse</h2>
+
+                    <p>Good programmers think like <span class="highlight">pessimists</span> — they assume users will make mistakes, enter weird data, and sometimes even try to break things on purpose.</p>
+
+                    <h3>What Could Go Wrong?</h3>
+                    <p>When designing a program, you should consider:</p>
+
+                    <div class="scenario-grid">
+                        <div class="scenario-card">
+                            <div class="scenario-icon">🤦</div>
+                            <div class="scenario-title">Accidental Errors</div>
+                            <div class="scenario-desc">Typos, wrong format, forgetting to fill in fields</div>
+                            <div class="scenario-risk">User enters "O" instead of "0"</div>
+                        </div>
+                        <div class="scenario-card">
+                            <div class="scenario-icon">🤷</div>
+                            <div class="scenario-title">Misunderstanding</div>
+                            <div class="scenario-desc">User doesn't know what format is expected</div>
+                            <div class="scenario-risk">Date entered as "5/3/24" vs "05-03-2024"</div>
+                        </div>
+                        <div class="scenario-card">
+                            <div class="scenario-icon">😈</div>
+                            <div class="scenario-title">Deliberate Attack</div>
+                            <div class="scenario-desc">Someone trying to crash or exploit the system</div>
+                            <div class="scenario-risk">Entering code instead of data</div>
+                        </div>
+                        <div class="scenario-card">
+                            <div class="scenario-icon">🔄</div>
+                            <div class="scenario-title">Edge Cases</div>
+                            <div class="scenario-desc">Extreme or boundary values that might break logic</div>
+                            <div class="scenario-risk">Quantity of 0 items, or 999999999</div>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <div class="tip-box-header">💡 The Golden Rule</div>
+                        <p><strong>Never trust user input.</strong> Always assume data coming from outside your program could be wrong, malformed, or malicious — and handle it accordingly.</p>
+                    </div>
+
+                    <h3>Real-World Example</h3>
+                    <p>A shopping website asks for quantity. Without defensive design:</p>
+
+                    <div class="code-block"><span class="variable">quantity</span> <span class="operator">=</span> <span class="builtin">input</span>(<span class="string">"How many items?"</span>)
+<span class="variable">total</span> <span class="operator">=</span> <span class="variable">price</span> <span class="operator">*</span> <span class="variable">quantity</span>    <span class="comment"># CRASH if quantity isn't a number!</span></div>
+
+                    <p>If someone enters <code>"five"</code> instead of <code>5</code>, the program crashes. If they enter <code>-10</code>, they might get money back instead of paying!</p>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-misuse">
+                        <p>Why should programmers "never trust user input"?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('misuse', this, false)">Users are always trying to hack systems</button>
+                            <button class="option-btn" onclick="checkAnswer('misuse', this, true)">Input could be wrong, malformed, or malicious — intentionally or by accident</button>
+                            <button class="option-btn" onclick="checkAnswer('misuse', this, false)">It makes the program run faster</button>
+                            <button class="option-btn" onclick="checkAnswer('misuse', this, false)">Users don't know how to type properly</button>
+                        </div>
+                        <div class="feedback" id="feedback-misuse"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 3: What is Input Validation? -->
+            <section id="section-3">
+                <div class="card">
+                    <h2>✅ What is Input Validation?</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Definition</span>
+                            <span class="key-term-word">Input Validation</span>
+                        </div>
+                        <p>The process of checking that data entered by a user meets specific criteria before the program accepts and processes it.</p>
+                    </div>
+
+                    <p>Validation acts as a <span class="highlight-green">gatekeeper</span> — it checks incoming data and only allows through what meets your requirements. Bad data gets rejected with a helpful error message.</p>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">🚪 Nightclub Bouncer Analogy</div>
+                        <p>Input validation is like a bouncer at a club. They check: Are you on the guest list? (presence) Are you old enough? (range) Is your ID valid? (format) Only if you pass all checks do you get in.</p>
+                    </div>
+
+                    <h3>The Validation Process</h3>
+                    <div class="code-block"><span class="comment"># WITHOUT validation - dangerous!</span>
+<span class="variable">age</span> <span class="operator">=</span> <span class="builtin">int</span>(<span class="builtin">input</span>(<span class="string">"Enter age: "</span>))   <span class="comment"># Crashes on non-numeric input</span>
+
+<span class="comment"># WITH validation - safe!</span>
+<span class="variable">age_input</span> <span class="operator">=</span> <span class="builtin">input</span>(<span class="string">"Enter age: "</span>)
+<span class="keyword">if</span> <span class="variable">age_input</span>.<span class="function">isdigit</span>():           <span class="comment"># Check it's a number</span>
+    <span class="variable">age</span> <span class="operator">=</span> <span class="builtin">int</span>(<span class="variable">age_input</span>)
+    <span class="keyword">if</span> <span class="number">0</span> <span class="operator">&lt;</span><span class="operator">=</span> <span class="variable">age</span> <span class="operator">&lt;</span><span class="operator">=</span> <span class="number">120</span>:           <span class="comment"># Check it's reasonable</span>
+        <span class="builtin">print</span>(<span class="string">"Age accepted"</span>)
+    <span class="keyword">else</span>:
+        <span class="builtin">print</span>(<span class="string">"Age must be 0-120"</span>)
+<span class="keyword">else</span>:
+    <span class="builtin">print</span>(<span class="string">"Please enter a number"</span>)</div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">⚠️ Validation ≠ Verification</div>
+                        <p>Don't confuse these terms! <strong>Validation</strong> checks if data is reasonable/correctly formatted. <strong>Verification</strong> checks if data is accurate (e.g., double-entry of an email). Both are important but serve different purposes.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-validation">
+                        <p>What is the main purpose of input validation?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('validation', this, false)">To make the program run faster</button>
+                            <button class="option-btn" onclick="checkAnswer('validation', this, false)">To verify the user's identity</button>
+                            <button class="option-btn" onclick="checkAnswer('validation', this, true)">To check that data meets specific criteria before processing it</button>
+                            <button class="option-btn" onclick="checkAnswer('validation', this, false)">To encrypt sensitive information</button>
+                        </div>
+                        <div class="feedback" id="feedback-validation"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 4: Validation Techniques -->
+            <section id="section-4">
+                <div class="card">
+                    <h2>🔧 Validation Techniques</h2>
+
+                    <p>There are several common validation checks you should know. Each one catches a different type of problem:</p>
+
+                    <div class="validation-grid">
+                        <div class="validation-card">
+                            <div class="val-header">
+                                <div class="val-icon">📋</div>
+                                <div class="val-name">Presence Check</div>
+                            </div>
+                            <div class="val-desc">Ensures a field hasn't been left empty</div>
+                            <div class="val-example">
+                                <span class="val-valid">✓ "John"</span><br>
+                                <span class="val-invalid">✗ "" (empty)</span>
+                            </div>
+                        </div>
+
+                        <div class="validation-card">
+                            <div class="val-header">
+                                <div class="val-icon">🔢</div>
+                                <div class="val-name">Type Check</div>
+                            </div>
+                            <div class="val-desc">Ensures data is the correct data type</div>
+                            <div class="val-example">
+                                <span class="val-valid">✓ 25 (integer)</span><br>
+                                <span class="val-invalid">✗ "twenty-five"</span>
+                            </div>
+                        </div>
+
+                        <div class="validation-card">
+                            <div class="val-header">
+                                <div class="val-icon">📏</div>
+                                <div class="val-name">Range Check</div>
+                            </div>
+                            <div class="val-desc">Ensures a number falls within acceptable limits</div>
+                            <div class="val-example">
+                                <span class="val-valid">✓ 45 (age 0-120)</span><br>
+                                <span class="val-invalid">✗ -5 or 200</span>
+                            </div>
+                        </div>
+
+                        <div class="validation-card">
+                            <div class="val-header">
+                                <div class="val-icon">📐</div>
+                                <div class="val-name">Length Check</div>
+                            </div>
+                            <div class="val-desc">Ensures text is within acceptable length</div>
+                            <div class="val-example">
+                                <span class="val-valid">✓ "ABC123" (6 chars)</span><br>
+                                <span class="val-invalid">✗ "AB" (too short)</span>
+                            </div>
+                        </div>
+
+                        <div class="validation-card">
+                            <div class="val-header">
+                                <div class="val-icon">📝</div>
+                                <div class="val-name">Format Check</div>
+                            </div>
+                            <div class="val-desc">Ensures data matches a required pattern</div>
+                            <div class="val-example">
+                                <span class="val-valid">✓ "AB12 3CD" (postcode)</span><br>
+                                <span class="val-invalid">✗ "12AB CD3"</span>
+                            </div>
+                        </div>
+
+                        <div class="validation-card">
+                            <div class="val-header">
+                                <div class="val-icon">📜</div>
+                                <div class="val-name">Lookup Check</div>
+                            </div>
+                            <div class="val-desc">Ensures value exists in a predefined list</div>
+                            <div class="val-example">
+                                <span class="val-valid">✓ "Red" (from list)</span><br>
+                                <span class="val-invalid">✗ "Banana"</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="exam-tip-box">
+                        <div class="exam-tip-box-header">📝 Exam Tip</div>
+                        <p>In exams, you may be asked to identify which validation type should be used for a given scenario, or to write pseudocode/code that implements a specific validation check. Make sure you can recognise AND implement each type.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-technique">
+                        <p>A program requires a password between 8 and 20 characters. Which validation check is most appropriate?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('technique', this, false)">Range check</button>
+                            <button class="option-btn" onclick="checkAnswer('technique', this, true)">Length check</button>
+                            <button class="option-btn" onclick="checkAnswer('technique', this, false)">Type check</button>
+                            <button class="option-btn" onclick="checkAnswer('technique', this, false)">Presence check</button>
+                        </div>
+                        <div class="feedback" id="feedback-technique"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Validation Techniques</h4>
+                    <ul>
+                        <li><strong>Presence check:</strong> Is there any data?</li>
+                        <li><strong>Type check:</strong> Is it the right data type?</li>
+                        <li><strong>Range check:</strong> Is the number within limits?</li>
+                        <li><strong>Length check:</strong> Is the text the right length?</li>
+                        <li><strong>Format check:</strong> Does it match the required pattern?</li>
+                        <li><strong>Lookup check:</strong> Is it in the allowed list?</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 5: Interactive Validator -->
+            <section id="section-5">
+                <div class="card">
+                    <h2>🎮 Try It: Build Validation Logic</h2>
+
+                    <p>Test your understanding by trying out these validators. See how different inputs are handled:</p>
+
+                    <!-- Age Validator -->
+                    <div class="validator-demo">
+                        <div class="validator-demo-title">
+                            <span>👤</span> Age Validator (Range + Type Check)
+                        </div>
+                        <p style="font-size: 0.9rem; margin-bottom: 16px;">Rules: Must be a whole number between 0 and 120</p>
+                        <div class="validator-input-group">
+                            <input type="text" class="validator-input" id="ageInput" placeholder="Enter an age...">
+                            <button class="validator-btn" onclick="validateAge()">Validate</button>
+                        </div>
+                        <div class="validator-result" id="ageResult"></div>
+                    </div>
+
+                    <!-- Email Validator -->
+                    <div class="validator-demo">
+                        <div class="validator-demo-title">
+                            <span>📧</span> Email Validator (Format + Presence Check)
+                        </div>
+                        <p style="font-size: 0.9rem; margin-bottom: 16px;">Rules: Must contain @ and a domain (e.g., .com, .co.uk)</p>
+                        <div class="validator-input-group">
+                            <input type="text" class="validator-input" id="emailInput" placeholder="Enter an email...">
+                            <button class="validator-btn" onclick="validateEmail()">Validate</button>
+                        </div>
+                        <div class="validator-result" id="emailResult"></div>
+                    </div>
+
+                    <!-- Password Validator -->
+                    <div class="validator-demo">
+                        <div class="validator-demo-title">
+                            <span>🔑</span> Password Validator (Length Check)
+                        </div>
+                        <p style="font-size: 0.9rem; margin-bottom: 16px;">Rules: Must be between 8 and 20 characters</p>
+                        <div class="validator-input-group">
+                            <input type="text" class="validator-input" id="passwordInput" placeholder="Enter a password...">
+                            <button class="validator-btn" onclick="validatePassword()">Validate</button>
+                        </div>
+                        <div class="validator-result" id="passwordResult"></div>
+                    </div>
+
+                    <div class="tip-box">
+                        <div class="tip-box-header">💡 Experiment!</div>
+                        <p>Try entering edge cases: empty values, negative numbers, extremely long text, symbols. See how robust validation catches all these issues.</p>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 6: Authentication -->
+            <section id="section-6">
+                <div class="card">
+                    <h2>🔐 Authentication</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Definition</span>
+                            <span class="key-term-word">Authentication</span>
+                        </div>
+                        <p>The process of confirming that a user is who they claim to be, typically before granting access to a system or data.</p>
+                    </div>
+
+                    <p>While validation checks if data is <em>valid</em>, authentication checks if the <em>person</em> is valid. It's about <span class="highlight-purple">identity</span>, not data format.</p>
+
+                    <h3>Common Authentication Methods</h3>
+                    <div class="scenario-grid">
+                        <div class="scenario-card" style="border-color: var(--accent-cyan);">
+                            <div class="scenario-icon">🔑</div>
+                            <div class="scenario-title">Something You Know</div>
+                            <div class="scenario-desc">Password, PIN, security question</div>
+                        </div>
+                        <div class="scenario-card" style="border-color: var(--accent-green);">
+                            <div class="scenario-icon">📱</div>
+                            <div class="scenario-title">Something You Have</div>
+                            <div class="scenario-desc">Phone, security key, ID card</div>
+                        </div>
+                        <div class="scenario-card" style="border-color: var(--accent-purple);">
+                            <div class="scenario-icon">👆</div>
+                            <div class="scenario-title">Something You Are</div>
+                            <div class="scenario-desc">Fingerprint, face scan, voice</div>
+                        </div>
+                    </div>
+
+                    <h3>Username & Password Authentication</h3>
+                    <p>The most common form of authentication. The system stores valid username/password combinations and checks if what the user enters matches:</p>
+
+                    <div class="code-block"><span class="comment"># Simple authentication example</span>
+<span class="variable">STORED_USERNAME</span> <span class="operator">=</span> <span class="string">"admin"</span>
+<span class="variable">STORED_PASSWORD</span> <span class="operator">=</span> <span class="string">"secret123"</span>
+
+<span class="variable">entered_user</span> <span class="operator">=</span> <span class="builtin">input</span>(<span class="string">"Username: "</span>)
+<span class="variable">entered_pass</span> <span class="operator">=</span> <span class="builtin">input</span>(<span class="string">"Password: "</span>)
+
+<span class="keyword">if</span> <span class="variable">entered_user</span> <span class="operator">==</span> <span class="variable">STORED_USERNAME</span> <span class="keyword">and</span> <span class="variable">entered_pass</span> <span class="operator">==</span> <span class="variable">STORED_PASSWORD</span>:
+    <span class="builtin">print</span>(<span class="string">"Access granted!"</span>)
+<span class="keyword">else</span>:
+    <span class="builtin">print</span>(<span class="string">"Access denied."</span>)</div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">⚠️ Security Note</div>
+                        <p>In real systems, passwords are <strong>never</strong> stored as plain text — they're encrypted (hashed). The example above is simplified for learning purposes. Also notice we don't tell the user <em>which</em> part was wrong — this prevents attackers from knowing if they got the username right.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-auth">
+                        <p>What does authentication confirm?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('auth', this, false)">That the data entered is in the correct format</button>
+                            <button class="option-btn" onclick="checkAnswer('auth', this, true)">That the user is who they claim to be</button>
+                            <button class="option-btn" onclick="checkAnswer('auth', this, false)">That the program is free of bugs</button>
+                            <button class="option-btn" onclick="checkAnswer('auth', this, false)">That the password is strong enough</button>
+                        </div>
+                        <div class="feedback" id="feedback-auth"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 7: Authentication Demo -->
+            <section id="section-7">
+                <div class="card">
+                    <h2>🎮 Try It: Login System Challenge</h2>
+
+                    <p>This company generates usernames using a formula. Can you use your <span class="highlight-cyan">string manipulation</span> knowledge to work out the credentials?</p>
+
+                    <div class="tip-box">
+                        <div class="tip-box-header">🧩 Username Formula</div>
+                        <p>Usernames are created by combining:<br>
+                        • <strong>First 2 characters</strong> of the employee's first name<br>
+                        • <strong>Last 2 characters</strong> of the employee's surname<br>
+                        • <strong>Last 2 digits</strong> of the year they joined<br>
+                        • All <strong>UPPERCASE</strong></p>
+                        <p style="margin-top: 12px;"><em>Example: <strong>Jennifer Dupington</strong> who joined in <strong>2024</strong> → JE + ON + 24 → <code>JEON24</code></em></p>
+                    </div>
+
+                    <div class="auth-demo">
+                        <div class="auth-demo-header">
+                            <span>🔒</span>
+                            <h4>Secure Login</h4>
+                        </div>
+                        <div class="auth-demo-body">
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 16px;">
+                                Employee: <strong>Samuel Richardson</strong> | Joined: <strong>2019</strong>
+                            </p>
+                            <div class="auth-field">
+                                <label for="loginUsername">Username</label>
+                                <input type="text" id="loginUsername" placeholder="Work out the username...">
+                            </div>
+                            <div class="auth-field">
+                                <label for="loginPassword">Password</label>
+                                <input type="password" id="loginPassword" placeholder="Enter password">
+                            </div>
+                            <button class="auth-btn" onclick="attemptLogin()">Login</button>
+                            <div class="auth-result" id="loginResult"></div>
+                            <div class="auth-hint">
+                                💡 <strong>Password hint:</strong> It's one of the most commonly used passwords in the world, but follows password policy (starts with capital letter, includes lowercase, ends with a number, 8+ characters).
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>What Makes Good Authentication?</h3>
+                    <ul style="color: var(--text-secondary); padding-left: 24px; margin-bottom: 16px;">
+                        <li><strong>Strong password requirements</strong> — minimum length, mix of characters</li>
+                        <li><strong>Limited login attempts</strong> — lock account after too many failures</li>
+                        <li><strong>Vague error messages</strong> — don't reveal which part was wrong</li>
+                        <li><strong>Secure storage</strong> — never store passwords in plain text</li>
+                        <li><strong>Two-factor authentication (2FA)</strong> — combine two methods for extra security</li>
+                    </ul>
+
+                    <div class="exam-tip-box">
+                        <div class="exam-tip-box-header">📝 Exam Tip</div>
+                        <p>You may be asked to write pseudocode for a simple username/password check. Remember to: get input, compare with stored values, give appropriate feedback, and consider using a loop for multiple attempts.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-login">
+                        <p>Why should a login system show "Invalid username or password" rather than "Invalid password"?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('login', this, false)">It's quicker to display</button>
+                            <button class="option-btn" onclick="checkAnswer('login', this, false)">It looks more professional</button>
+                            <button class="option-btn" onclick="checkAnswer('login', this, true)">It prevents attackers knowing which part they got right</button>
+                            <button class="option-btn" onclick="checkAnswer('login', this, false)">It saves memory</button>
+                        </div>
+                        <div class="feedback" id="feedback-login"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Authentication</h4>
+                    <ul>
+                        <li>Confirms <strong>identity</strong>, not data validity</li>
+                        <li>Three factors: know (password), have (device), are (biometric)</li>
+                        <li>Never store passwords as plain text</li>
+                        <li>Use vague error messages for security</li>
+                        <li>Consider limiting login attempts</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 8: Badge -->
+            <section id="section-8">
+                <div class="card">
+                    <h2>🏆 Resource Complete!</h2>
+
+                    <div class="notes-summary">
+                        <div class="notes-summary-header">📝 Full Summary</div>
+                        <h4>Defensive Design</h4>
+                        <ul>
+                            <li>Anticipate what could go wrong</li>
+                            <li>Never trust user input</li>
+                            <li>Handle errors gracefully</li>
+                        </ul>
+                        <h4>Input Validation</h4>
+                        <ul>
+                            <li>Presence check — not empty</li>
+                            <li>Type check — correct data type</li>
+                            <li>Range check — within limits</li>
+                            <li>Length check — correct length</li>
+                            <li>Format check — matches pattern</li>
+                            <li>Lookup check — in allowed list</li>
+                        </ul>
+                        <h4>Authentication</h4>
+                        <ul>
+                            <li>Confirms user identity</li>
+                            <li>Username + password is most common</li>
+                            <li>Use vague error messages</li>
+                            <li>Never store plain text passwords</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Final Quiz -->
+                <div class="card">
+                    <h2>📝 Final Quiz</h2>
+                    <p>Test your knowledge of everything covered in this resource:</p>
+
+                    <div class="question-box" id="q-final1">
+                        <p><strong>1.</strong> A user enters "abc" into a field that expects an age. Which validation check would catch this?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('final1', this, false)">Range check</button>
+                            <button class="option-btn" onclick="checkAnswer('final1', this, true)">Type check</button>
+                            <button class="option-btn" onclick="checkAnswer('final1', this, false)">Length check</button>
+                            <button class="option-btn" onclick="checkAnswer('final1', this, false)">Presence check</button>
+                        </div>
+                        <div class="feedback" id="feedback-final1"></div>
+                    </div>
+
+                    <div class="question-box" id="q-final2">
+                        <p><strong>2.</strong> A UK postcode must follow the pattern "AA00 0AA". Which validation check ensures this?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('final2', this, false)">Length check</button>
+                            <button class="option-btn" onclick="checkAnswer('final2', this, false)">Lookup check</button>
+                            <button class="option-btn" onclick="checkAnswer('final2', this, true)">Format check</button>
+                            <button class="option-btn" onclick="checkAnswer('final2', this, false)">Type check</button>
+                        </div>
+                        <div class="feedback" id="feedback-final2"></div>
+                    </div>
+
+                    <div class="question-box" id="q-final3">
+                        <p><strong>3.</strong> What is the key difference between validation and authentication?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('final3', this, false)">Validation is faster than authentication</button>
+                            <button class="option-btn" onclick="checkAnswer('final3', this, false)">Authentication checks data format, validation checks identity</button>
+                            <button class="option-btn" onclick="checkAnswer('final3', this, true)">Validation checks data is acceptable, authentication checks identity</button>
+                            <button class="option-btn" onclick="checkAnswer('final3', this, false)">They are the same thing with different names</button>
+                        </div>
+                        <div class="feedback" id="feedback-final3"></div>
+                    </div>
+
+                    <div class="question-box" id="q-final4">
+                        <p><strong>4.</strong> A dropdown menu only allows "Red", "Green", or "Blue" to be selected. Which validation check does this implement?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('final4', this, false)">Format check</button>
+                            <button class="option-btn" onclick="checkAnswer('final4', this, false)">Range check</button>
+                            <button class="option-btn" onclick="checkAnswer('final4', this, true)">Lookup check</button>
+                            <button class="option-btn" onclick="checkAnswer('final4', this, false)">Presence check</button>
+                        </div>
+                        <div class="feedback" id="feedback-final4"></div>
+                    </div>
+
+                    <div class="question-box" id="q-final5">
+                        <p><strong>5.</strong> Why is it bad practice to store passwords as plain text?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('final5', this, false)">It uses too much storage space</button>
+                            <button class="option-btn" onclick="checkAnswer('final5', this, false)">Plain text is slower to process</button>
+                            <button class="option-btn" onclick="checkAnswer('final5', this, true)">If the database is breached, all passwords are immediately exposed</button>
+                            <button class="option-btn" onclick="checkAnswer('final5', this, false)">Users prefer encrypted passwords</button>
+                        </div>
+                        <div class="feedback" id="feedback-final5"></div>
+                    </div>
+                </div>
+
+                <!-- Badge Generator -->
+                <div class="card badge-generator">
+                    <h3>🏆 Claim Your Badge</h3>
+                    
+                    <div id="badgeLocked">
+                        <div class="badge-locked-message">
+                            <span class="lock-icon">🔒</span>
+                            <p>Complete all questions to unlock your badge!</p>
+                            <div class="badge-progress">
+                                <div class="badge-progress-bar">
+                                    <div class="badge-progress-fill" id="badgeProgressFill"></div>
+                                </div>
+                                <span class="badge-progress-text" id="badgeProgressText">0 / 11 questions answered</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="badgeUnlocked" style="display: none;">
+                        <p>🎉 All questions completed! Enter your name:</p>
+                        
+                        <div class="badge-input-group">
+                            <input type="text" class="badge-name-input" id="badgeNameInput" placeholder="Enter your name..." maxlength="30">
+                            <button class="control-btn primary" onclick="generateBadge()">Generate Badge</button>
+                        </div>
+
+                        <div class="badge-display" id="badgeDisplay">
+                            <div class="badge-container">
+                                <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#00d4ff"/>
+                                            <stop offset="100%" style="stop-color:#a855f7"/>
+                                        </linearGradient>
+                                        <filter id="glow">
+                                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                        </filter>
+                                    </defs>
+                                    
+                                    <circle cx="160" cy="160" r="145" fill="none" stroke="url(#badgeGradient)" stroke-width="3" opacity="0.3"/>
+                                    <circle cx="160" cy="160" r="130" fill="#12121a" stroke="url(#badgeGradient)" stroke-width="4"/>
+                                    <circle cx="160" cy="160" r="115" fill="none" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="8 4"/>
+                                    
+                                    <!-- Shield Icon -->
+                                    <g transform="translate(160, 120)" filter="url(#glow)">
+                                        <path d="M0,-50 L40,-35 L40,15 C40,45 0,65 0,65 C0,65 -40,45 -40,15 L-40,-35 Z" 
+                                              fill="#1a1a2e" stroke="#00d4ff" stroke-width="3"/>
+                                        <path d="M0,-30 L-15,-10 L-8,-10 L-8,20 L8,20 L8,-10 L15,-10 Z" 
+                                              fill="#00ff88" transform="rotate(180)"/>
+                                        <circle cx="0" cy="5" r="8" fill="none" stroke="#a855f7" stroke-width="2"/>
+                                        <circle cx="0" cy="5" r="3" fill="#a855f7"/>
+                                    </g>
+                                    
+                                    <text x="160" y="215" text-anchor="middle" fill="#00d4ff" font-family="Outfit, sans-serif" font-size="11" font-weight="600" letter-spacing="2">GCSE COMPUTER SCIENCE</text>
+                                    <text x="160" y="245" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-size="18" font-weight="700">Defensive Design</text>
+                                    <text id="badgeScoreText" x="160" y="273" text-anchor="middle" fill="#00ff88" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700">6/6 correct</text>
+                                    
+                                    <path d="M60 295 L260 295 L250 315 L260 335 L60 335 L70 315 Z" fill="url(#badgeGradient)"/>
+                                    <text id="badgeStudentName" x="160" y="320" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-size="16" font-weight="700">Student Name</text>
+                                </svg>
+                            </div>
+                            <p class="badge-hint">📸 Screenshot to save your badge!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" disabled style="background: var(--accent-green);">Complete! 🎉</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // State
+        let currentSection = 1;
+        const totalSections = 8;
+        const totalQuestions = 11;
+        let answeredQuestions = new Set();
+        let correctAnswers = new Set();
+
+        // Feedback messages
+        const feedbackMessages = {
+            misuse: {
+                correct: "Correct! Input could be accidentally wrong OR deliberately malicious — we must handle both.",
+                incorrect: "Not quite. The point is that input might be wrong for many reasons — accidents, misunderstanding, or attacks."
+            },
+            validation: {
+                correct: "Correct! Validation checks that data meets our requirements before we process it.",
+                incorrect: "Not quite. Validation is about checking data meets criteria — format, range, type, etc."
+            },
+            technique: {
+                correct: "Correct! A length check ensures text is within a minimum and maximum character count.",
+                incorrect: "Think about what we're checking — the number of characters. Range check is for numerical values."
+            },
+            auth: {
+                correct: "Correct! Authentication confirms identity — that you are who you claim to be.",
+                incorrect: "Remember: Authentication is about identity (who you are), not data format (validation)."
+            },
+            login: {
+                correct: "Correct! Vague messages prevent attackers from knowing they guessed the username correctly.",
+                incorrect: "Think about security — if we say 'wrong password', the attacker knows the username was right."
+            },
+            final1: {
+                correct: "Correct! A type check ensures the data is the right data type — here we need a number, not text.",
+                incorrect: "Not quite. 'abc' is text, not a number. A type check catches when data is the wrong data type."
+            },
+            final2: {
+                correct: "Correct! A format check ensures data matches a specific pattern or structure.",
+                incorrect: "Think about what we're checking — the pattern/structure of the postcode, not just its length or type."
+            },
+            final3: {
+                correct: "Correct! Validation checks if data is acceptable, authentication confirms who the user is.",
+                incorrect: "Remember: Validation = checking data, Authentication = checking identity."
+            },
+            final4: {
+                correct: "Correct! A lookup check ensures the value exists in a predefined list of acceptable options.",
+                incorrect: "When values must come from a specific list, that's a lookup check."
+            },
+            final5: {
+                correct: "Correct! Plain text passwords mean anyone who accesses the database can read every password immediately.",
+                incorrect: "Think about what happens if hackers access the database — plain text means instant access to all passwords."
+            }
+        };
+
+        // Navigation
+        function updateProgress() {
+            const dots = document.querySelectorAll('.progress-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index + 1 === currentSection) dot.classList.add('active');
+                else if (index + 1 < currentSection) dot.classList.add('completed');
+            });
+            document.getElementById('currentSection').textContent = currentSection;
+        }
+
+        function showSection(num) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(`section-${num}`).classList.add('active');
+            currentSection = num;
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextSection() {
+            if (currentSection < totalSections) showSection(currentSection + 1);
+        }
+
+        function prevSection() {
+            if (currentSection > 1) showSection(currentSection - 1);
+        }
+
+        function goToSection(num) {
+            showSection(num);
+        }
+
+        // Answer checking
+        function checkAnswer(questionId, button, isCorrect) {
+            if (answeredQuestions.has(questionId)) return;
+            answeredQuestions.add(questionId);
+
+            const buttons = button.parentElement.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn === button) {
+                    btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+            });
+
+            const feedback = document.getElementById(`feedback-${questionId}`);
+            feedback.textContent = isCorrect ? feedbackMessages[questionId].correct : feedbackMessages[questionId].incorrect;
+            feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+
+            if (isCorrect) correctAnswers.add(questionId);
+            updateBadgeProgress();
+        }
+
+        // Validators
+        function validateAge() {
+            const input = document.getElementById('ageInput').value;
+            const result = document.getElementById('ageResult');
+            const inputEl = document.getElementById('ageInput');
+            
+            inputEl.classList.remove('valid', 'invalid');
+            result.classList.remove('show', 'valid', 'invalid');
+            
+            if (input.trim() === '') {
+                result.textContent = '❌ Presence check failed: Field cannot be empty';
+                result.classList.add('show', 'invalid');
+                inputEl.classList.add('invalid');
+            } else if (!/^\d+$/.test(input)) {
+                result.textContent = '❌ Type check failed: Must be a whole number (no letters or decimals)';
+                result.classList.add('show', 'invalid');
+                inputEl.classList.add('invalid');
+            } else {
+                const age = parseInt(input);
+                if (age < 0 || age > 120) {
+                    result.textContent = '❌ Range check failed: Age must be between 0 and 120';
+                    result.classList.add('show', 'invalid');
+                    inputEl.classList.add('invalid');
+                } else {
+                    result.textContent = '✓ All validation checks passed! Age accepted: ' + age;
+                    result.classList.add('show', 'valid');
+                    inputEl.classList.add('valid');
+                }
+            }
+        }
+
+        function validateEmail() {
+            const input = document.getElementById('emailInput').value;
+            const result = document.getElementById('emailResult');
+            const inputEl = document.getElementById('emailInput');
+            
+            inputEl.classList.remove('valid', 'invalid');
+            result.classList.remove('show', 'valid', 'invalid');
+            
+            if (input.trim() === '') {
+                result.textContent = '❌ Presence check failed: Email cannot be empty';
+                result.classList.add('show', 'invalid');
+                inputEl.classList.add('invalid');
+            } else if (!input.includes('@')) {
+                result.textContent = '❌ Format check failed: Must contain @ symbol';
+                result.classList.add('show', 'invalid');
+                inputEl.classList.add('invalid');
+            } else if (!input.includes('.')) {
+                result.textContent = '❌ Format check failed: Must contain a domain (e.g., .com)';
+                result.classList.add('show', 'invalid');
+                inputEl.classList.add('invalid');
+            } else if (input.indexOf('@') > input.lastIndexOf('.')) {
+                result.textContent = '❌ Format check failed: Domain must come after @';
+                result.classList.add('show', 'invalid');
+                inputEl.classList.add('invalid');
+            } else {
+                result.textContent = '✓ All validation checks passed! Email format accepted';
+                result.classList.add('show', 'valid');
+                inputEl.classList.add('valid');
+            }
+        }
+
+        function validatePassword() {
+            const input = document.getElementById('passwordInput').value;
+            const result = document.getElementById('passwordResult');
+            const inputEl = document.getElementById('passwordInput');
+            
+            inputEl.classList.remove('valid', 'invalid');
+            result.classList.remove('show', 'valid', 'invalid');
+            
+            if (input.length === 0) {
+                result.textContent = '❌ Presence check failed: Password cannot be empty';
+                result.classList.add('show', 'invalid');
+                inputEl.classList.add('invalid');
+            } else if (input.length < 8) {
+                result.textContent = '❌ Length check failed: Password must be at least 8 characters (currently ' + input.length + ')';
+                result.classList.add('show', 'invalid');
+                inputEl.classList.add('invalid');
+            } else if (input.length > 20) {
+                result.textContent = '❌ Length check failed: Password must be 20 characters or less (currently ' + input.length + ')';
+                result.classList.add('show', 'invalid');
+                inputEl.classList.add('invalid');
+            } else {
+                result.textContent = '✓ Length check passed! Password length acceptable (' + input.length + ' characters)';
+                result.classList.add('show', 'valid');
+                inputEl.classList.add('valid');
+            }
+        }
+
+        // Authentication Demo
+        function attemptLogin() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const result = document.getElementById('loginResult');
+            
+            result.classList.remove('show', 'success', 'failure');
+            
+            // Stored credentials: Samuel Richardson, joined 2019
+            // SA + ON + 19 = SAON19
+            const validUsername = 'SAON19';
+            const validPassword = 'Password1';
+            
+            if (username.toUpperCase() === validUsername && password === validPassword) {
+                result.innerHTML = '✓ <strong>Access Granted!</strong> Welcome, Samuel Richardson';
+                result.classList.add('show', 'success');
+                
+                // Count as answered question
+                if (!answeredQuestions.has('loginDemo')) {
+                    answeredQuestions.add('loginDemo');
+                    correctAnswers.add('loginDemo');
+                    updateBadgeProgress();
+                }
+            } else {
+                result.innerHTML = '✗ <strong>Access Denied.</strong> Invalid username or password.';
+                result.classList.add('show', 'failure');
+            }
+        }
+
+        // Badge System
+        function updateBadgeProgress() {
+            const count = answeredQuestions.size;
+            const pct = (count / totalQuestions) * 100;
+            document.getElementById('badgeProgressFill').style.width = pct + '%';
+            document.getElementById('badgeProgressText').textContent = `${count} / ${totalQuestions} questions answered`;
+            if (count >= totalQuestions) unlockBadge();
+        }
+
+        function unlockBadge() {
+            document.getElementById('badgeLocked').style.display = 'none';
+            document.getElementById('badgeUnlocked').style.display = 'block';
+        }
+
+        function generateBadge() {
+            const name = document.getElementById('badgeNameInput').value.trim();
+            if (!name) {
+                document.getElementById('badgeNameInput').style.borderColor = 'var(--accent-magenta)';
+                setTimeout(() => document.getElementById('badgeNameInput').style.borderColor = '', 2000);
+                return;
+            }
+            document.getElementById('badgeStudentName').textContent = name;
+            document.getElementById('badgeScoreText').textContent = `${correctAnswers.size}/${totalQuestions} correct`;
+            document.getElementById('badgeDisplay').classList.add('show');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgress();
+            updateBadgeProgress();
+            document.getElementById('badgeNameInput')?.addEventListener('keypress', e => { if (e.key === 'Enter') generateBadge(); });
+            
+            // Enter key for validators
+            document.getElementById('ageInput')?.addEventListener('keypress', e => { if (e.key === 'Enter') validateAge(); });
+            document.getElementById('emailInput')?.addEventListener('keypress', e => { if (e.key === 'Enter') validateEmail(); });
+            document.getElementById('passwordInput')?.addEventListener('keypress', e => { if (e.key === 'Enter') validatePassword(); });
+            document.getElementById('loginPassword')?.addEventListener('keypress', e => { if (e.key === 'Enter') attemptLogin(); });
+        });
+    </script>
+</body>
+</html>

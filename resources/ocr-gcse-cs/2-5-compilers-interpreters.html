@@ -1,0 +1,2263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compilers & Interpreters | GCSE Computer Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --text-muted: #555566;
+            --border-subtle: #2a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .exam-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-magenta));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .progress-container {
+            margin-top: 30px;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border-subtle);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .progress-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 12px var(--accent-cyan);
+            transform: scale(1.2);
+        }
+
+        .progress-dot.completed {
+            background: var(--accent-green);
+        }
+
+        .progress-label {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        .learning-objective {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.02));
+            border-left: 3px solid var(--accent-cyan);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .learning-objective-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-cyan);
+            margin-bottom: 6px;
+        }
+
+        .learning-objective p, .learning-objective ul {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .learning-objective ul {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .learning-objective li {
+            margin-bottom: 6px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: var(--accent-cyan);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            margin-bottom: 14px;
+            color: var(--text-primary);
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        .highlight {
+            color: var(--accent-yellow);
+            font-weight: 600;
+        }
+
+        .highlight-cyan {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .highlight-magenta {
+            color: var(--accent-magenta);
+            font-weight: 600;
+        }
+
+        .highlight-green {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .highlight-purple {
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+
+        /* Key Term Definition */
+        .key-term {
+            background: linear-gradient(135deg, rgba(255, 214, 10, 0.1), rgba(255, 149, 0, 0.05));
+            border: 1px solid rgba(255, 214, 10, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .key-term-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .key-term-badge {
+            background: var(--accent-yellow);
+            color: var(--bg-dark);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .key-term-word {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-yellow);
+        }
+
+        .key-term p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Analogy Box */
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .analogy-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .analogy-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .analogy-box p + p {
+            margin-top: 10px;
+        }
+
+        /* Think About It Box */
+        .think-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.03));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .think-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
+        .think-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Connect Box */
+        .connect-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 255, 136, 0.02));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .connect-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .connect-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Warning/Misconception Box */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.1), rgba(255, 0, 110, 0.03));
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-magenta);
+            font-weight: 600;
+        }
+
+        .warning-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Coming Up Box */
+        .coming-up-box {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.1), rgba(255, 149, 0, 0.03));
+            border: 1px solid rgba(255, 149, 0, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .coming-up-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        .coming-up-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Process Diagram */
+        .process-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .process-step {
+            padding: 14px 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            min-width: 120px;
+        }
+
+        .process-step.source {
+            background: rgba(0, 212, 255, 0.15);
+            border: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .process-step.compiler {
+            background: rgba(168, 85, 247, 0.15);
+            border: 2px solid var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .process-step.interpreter {
+            background: rgba(255, 149, 0, 0.15);
+            border: 2px solid var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .process-step.executable {
+            background: rgba(0, 255, 136, 0.15);
+            border: 2px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .process-step.output {
+            background: rgba(255, 0, 110, 0.15);
+            border: 2px solid var(--accent-magenta);
+            color: var(--accent-magenta);
+        }
+
+        .process-step.machine {
+            background: rgba(255, 214, 10, 0.15);
+            border: 2px solid var(--accent-yellow);
+            color: var(--accent-yellow);
+        }
+
+        .process-arrow {
+            color: var(--text-muted);
+            font-size: 1.5rem;
+        }
+
+        .process-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .comparison-table th {
+            background: var(--bg-card);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .comparison-table th:first-child {
+            color: var(--text-secondary);
+        }
+
+        .comparison-table th.compiler {
+            color: var(--accent-purple);
+        }
+
+        .comparison-table th.interpreter {
+            color: var(--accent-orange);
+        }
+
+        .comparison-table td {
+            color: var(--text-primary);
+        }
+
+        .comparison-table tr:hover td {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        /* Quiz Options */
+        .question-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .question-box p {
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            padding: 14px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--accent-cyan);
+            transform: translateX(4px);
+        }
+
+        .option-btn.correct {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.15);
+        }
+
+        .option-btn.incorrect {
+            border-color: var(--accent-magenta);
+            background: rgba(255, 0, 110, 0.15);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.85;
+        }
+
+        /* Feedback */
+        .feedback {
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-top: 14px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .feedback.error {
+            background: rgba(255, 0, 110, 0.1);
+            border: 1px solid var(--accent-magenta);
+            color: var(--accent-magenta);
+        }
+
+        /* Notes Summary */
+        .notes-summary {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.08), rgba(255, 214, 10, 0.05));
+            border: 1px solid rgba(255, 149, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 24px;
+        }
+
+        .notes-summary-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        .notes-summary h4 {
+            color: var(--accent-yellow);
+            font-size: 1rem;
+            margin: 16px 0 8px 0;
+        }
+
+        .notes-summary h4:first-of-type {
+            margin-top: 0;
+        }
+
+        .notes-summary p, .notes-summary ul {
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+
+        .notes-summary ul {
+            padding-left: 20px;
+        }
+
+        .notes-summary li {
+            margin-bottom: 4px;
+        }
+
+        /* Matching Exercise */
+        .matching-container {
+            margin: 20px 0;
+        }
+
+        .matching-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .matching-term {
+            min-width: 180px;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .matching-term.compiler {
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .matching-term.interpreter {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .matching-term.both {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .matching-arrow {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .matching-select {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 16px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .matching-select:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        .matching-select.correct {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .matching-select.incorrect {
+            border-color: var(--accent-magenta);
+            background: rgba(255, 0, 110, 0.1);
+        }
+
+        .matching-select:disabled {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .control-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn.primary {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        .control-btn.primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .control-btn.secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+
+        .control-btn.secondary:hover:not(:disabled) {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .matching-result {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .matching-result.show {
+            display: block;
+        }
+
+        .matching-result.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-green);
+        }
+
+        .matching-result.partial {
+            background: rgba(255, 214, 10, 0.1);
+            border: 1px solid var(--accent-yellow);
+        }
+
+        .matching-result h4 {
+            margin: 0 0 8px 0;
+        }
+
+        .matching-result.success h4 {
+            color: var(--accent-green);
+        }
+
+        .matching-result.partial h4 {
+            color: var(--accent-yellow);
+        }
+
+        .matching-result p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.prev {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+
+        .nav-btn.prev:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+        }
+
+        .nav-btn.next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Badge Generator */
+        .badge-generator {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 2px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .badge-generator h3 {
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+        }
+
+        .badge-generator > p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .badge-input-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .badge-name-input {
+            padding: 12px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+
+        .badge-name-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        .badge-name-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .badge-display {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .badge-display.show {
+            display: flex;
+        }
+
+        .badge-container {
+            background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(0, 212, 255, 0.1);
+        }
+
+        .badge-hint {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .badge-locked-message {
+            padding: 20px;
+        }
+
+        .badge-locked-message .lock-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .badge-locked-message p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .badge-progress {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .badge-progress-bar {
+            height: 12px;
+            background: var(--bg-dark);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .badge-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .badge-progress-text {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        #badgeUnlocked > p {
+            color: var(--accent-green);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            h1 {
+                font-size: 1.7rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .process-diagram {
+                flex-direction: column;
+            }
+
+            .process-arrow {
+                transform: rotate(90deg);
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+
+            .matching-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .matching-term {
+                width: 100%;
+            }
+
+            .matching-arrow {
+                transform: rotate(90deg);
+                text-align: center;
+            }
+
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="exam-badge">OCR GCSE Computer Science</div>
+            <h1>Compilers & Interpreters</h1>
+            <p class="subtitle">Translating human code into machine instructions</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <p class="progress-label" id="progressLabel">Section 1 of 10</p>
+            </div>
+        </header>
+
+        <main id="content">
+            <!-- Section 1: Welcome -->
+            <section id="section-1" class="active">
+                <div class="card">
+                    <h2>🎯 What You'll Learn</h2>
+                    
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objectives</div>
+                        <p>By the end of this resource, you will be able to:</p>
+                        <ul>
+                            <li>Explain why translators are needed</li>
+                            <li>Describe what a <span class="highlight-purple">compiler</span> does and how it works</li>
+                            <li>Describe what an <span class="highlight">interpreter</span> does and how it works</li>
+                            <li>Compare compilers and interpreters — advantages and disadvantages</li>
+                            <li>Explain when each type of translator is used</li>
+                        </ul>
+                    </div>
+
+                    <p>When you write code in Python, JavaScript, or any other programming language, the computer can't actually understand it directly. Computers only understand <strong>machine code</strong> — binary instructions. So how does your human-readable code get turned into something the CPU can execute?</p>
+
+                    <p>That's where <strong>translators</strong> come in.</p>
+
+                    <div class="connect-box">
+                        <div class="connect-box-header">
+                            🔗 Connect to What You Know
+                        </div>
+                        <p>You've learned that the CPU processes instructions and that programmers write code in high-level languages. This resource explains the crucial step in between — how that code gets translated into something the CPU can actually run.</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Overview</h4>
+                    <ul>
+                        <li>Computers only understand machine code (binary)</li>
+                        <li>Humans write in high-level languages</li>
+                        <li>Translators convert between the two</li>
+                        <li>Two main types: Compilers and Interpreters</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" disabled>← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 2: Why Translators? -->
+            <section id="section-2">
+                <div class="card">
+                    <h2>🌐 Why Do We Need Translators?</h2>
+
+                    <p>Programming languages like Python, Java, and C++ are called <strong>high-level languages</strong>. They're designed to be readable and writable by humans, using words like <code>print</code>, <code>if</code>, and <code>while</code>.</p>
+
+                    <p>But the CPU doesn't speak Python. It only understands <strong>machine code</strong> — raw binary instructions like <code>10110000 01100001</code>.</p>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Key Term</span>
+                            <span class="key-term-word">Translator</span>
+                        </div>
+                        <p>A program that converts source code written in a high-level language into machine code that the CPU can execute.</p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            📚 Book Translation Analogy
+                        </div>
+                        <p>Think of it like translating a book from one language to another. You've written a novel in English (high-level language), but your readers only understand Japanese (machine code). You need a translator to convert your book so they can read it.</p>
+                        <p>We'll use this analogy throughout — programming is like writing a book, and we need to translate it for our readers (the CPU).</p>
+                    </div>
+
+                    <h3>The Translation Problem</h3>
+                    <div class="process-diagram">
+                        <div class="process-step source">
+                            <div>Source Code</div>
+                            <div class="process-label">Human-readable</div>
+                        </div>
+                        <span class="process-arrow">→</span>
+                        <div class="process-step" style="background: rgba(255,255,255,0.05); border: 2px dashed var(--text-muted); color: var(--text-muted);">
+                            <div>???</div>
+                            <div class="process-label">Translator</div>
+                        </div>
+                        <span class="process-arrow">→</span>
+                        <div class="process-step machine">
+                            <div>Machine Code</div>
+                            <div class="process-label">CPU-executable</div>
+                        </div>
+                    </div>
+
+                    <p>There are two main approaches to this translation: <span class="highlight-purple">compilation</span> and <span class="highlight">interpretation</span>. Each has different advantages.</p>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-why">
+                        <p>Why do we need translators in computing?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('why', this, false)">To make programs run faster</button>
+                            <button class="option-btn" onclick="checkAnswer('why', this, false)">To connect computers to the internet</button>
+                            <button class="option-btn" onclick="checkAnswer('why', this, true)">To convert high-level code into machine code the CPU can execute</button>
+                            <button class="option-btn" onclick="checkAnswer('why', this, false)">To store programs on the hard drive</button>
+                        </div>
+                        <div class="feedback" id="feedback-why"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Why Translators?</h4>
+                    <ul>
+                        <li><strong>High-level languages:</strong> Human-readable (Python, Java, C++)</li>
+                        <li><strong>Machine code:</strong> Binary instructions the CPU executes</li>
+                        <li><strong>Translator:</strong> Converts source code → machine code</li>
+                        <li>Two types: Compilers and Interpreters</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 3: What is a Compiler? -->
+            <section id="section-3">
+                <div class="card">
+                    <h2>📘 What is a Compiler?</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Key Term</span>
+                            <span class="key-term-word">Compiler</span>
+                        </div>
+                        <p>A translator that converts the <strong>entire</strong> source code into machine code <strong>all at once</strong>, before the program runs. It produces a separate executable file.</p>
+                    </div>
+
+                    <p>A compiler reads through your entire program, translates it all into machine code, and saves the result as a new file (an <strong>executable</strong>). This executable can then be run whenever you want — without needing the original source code or the compiler.</p>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            📚 Book Translation Analogy
+                        </div>
+                        <p>A compiler is like hiring a translator to <strong>translate your entire book</strong> before publishing. They read the whole thing, translate every page, and produce a complete Japanese version. Once it's done, readers can buy and read the Japanese book whenever they want — they don't need the translator anymore.</p>
+                    </div>
+
+                    <h3>The Compilation Process</h3>
+                    <div class="process-diagram">
+                        <div class="process-step source">
+                            <div>Source Code</div>
+                            <div class="process-label">.c, .cpp, .java</div>
+                        </div>
+                        <span class="process-arrow">→</span>
+                        <div class="process-step compiler">
+                            <div>Compiler</div>
+                            <div class="process-label">Translates all</div>
+                        </div>
+                        <span class="process-arrow">→</span>
+                        <div class="process-step executable">
+                            <div>Executable</div>
+                            <div class="process-label">.exe file</div>
+                        </div>
+                    </div>
+
+                    <p>Languages that typically use compilers include: <strong>C</strong>, <strong>C++</strong>, <strong>Rust</strong>, and <strong>Go</strong>.</p>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            ⚠️ Common Misconception
+                        </div>
+                        <p>The compiler doesn't run your program — it just translates it. The executable file it produces is what actually gets run by the CPU later.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-compiler-def">
+                        <p>What does a compiler produce?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('compiler-def', this, false)">A line-by-line translation during runtime</button>
+                            <button class="option-btn" onclick="checkAnswer('compiler-def', this, true)">A separate executable file containing machine code</button>
+                            <button class="option-btn" onclick="checkAnswer('compiler-def', this, false)">A copy of the source code</button>
+                            <button class="option-btn" onclick="checkAnswer('compiler-def', this, false)">A connection to the internet</button>
+                        </div>
+                        <div class="feedback" id="feedback-compiler-def"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Compiler</h4>
+                    <ul>
+                        <li>Translates <strong>entire program at once</strong></li>
+                        <li>Produces a <strong>separate executable file</strong></li>
+                        <li>Translation happens <strong>before</strong> the program runs</li>
+                        <li>Examples: C, C++, Rust, Go</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 4: How Compilers Work -->
+            <section id="section-4">
+                <div class="card">
+                    <h2>⚙️ How Compilers Work</h2>
+
+                    <p>When you compile a program, several things happen:</p>
+
+                    <h3>1. The Entire Code is Analysed</h3>
+                    <p>The compiler reads through <strong>all</strong> your source code, checking for syntax errors (mistakes in how you've written the code). If it finds any errors, it stops and reports them — <strong>no executable is created</strong>.</p>
+
+                    <h3>2. Translation Happens Once</h3>
+                    <p>If there are no errors, the compiler translates everything into machine code in one go. This translation only needs to happen once.</p>
+
+                    <h3>3. An Executable is Created</h3>
+                    <p>The result is saved as an executable file (like a <code>.exe</code> on Windows). This file contains pure machine code — ready to run directly on the CPU.</p>
+
+                    <h3>4. Run Anytime, No Compiler Needed</h3>
+                    <p>Once compiled, the executable can be run as many times as you want. You don't need the compiler or the original source code anymore.</p>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            📚 Book Translation Analogy
+                        </div>
+                        <p>Once your book is translated and printed, readers don't need the translator anymore. They just pick up the Japanese book and read. The translation work was done once, upfront.</p>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">
+                            🤔 Think About It
+                        </div>
+                        <p>If you change even one line of your source code, you need to <strong>recompile the entire program</strong> to create a new executable. The old executable still contains the old version.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-compiler-process">
+                        <p>If a compiler finds a syntax error in your code, what happens?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('compiler-process', this, false)">It fixes the error automatically</button>
+                            <button class="option-btn" onclick="checkAnswer('compiler-process', this, false)">It skips that line and continues</button>
+                            <button class="option-btn" onclick="checkAnswer('compiler-process', this, true)">It stops and reports the error — no executable is created</button>
+                            <button class="option-btn" onclick="checkAnswer('compiler-process', this, false)">It creates the executable anyway</button>
+                        </div>
+                        <div class="feedback" id="feedback-compiler-process"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>How Compilers Work</h4>
+                    <ul>
+                        <li>Analyses entire code for errors first</li>
+                        <li>If errors found → stops, no executable created</li>
+                        <li>If no errors → translates all code at once</li>
+                        <li>Creates standalone executable file</li>
+                        <li>Executable runs without compiler/source code</li>
+                        <li>Any code change requires full recompilation</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 5: What is an Interpreter? -->
+            <section id="section-5">
+                <div class="card">
+                    <h2>📖 What is an Interpreter?</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Key Term</span>
+                            <span class="key-term-word">Interpreter</span>
+                        </div>
+                        <p>A translator that converts and executes source code <strong>one line at a time</strong>, during runtime. It does not produce a separate executable file.</p>
+                    </div>
+
+                    <p>An interpreter reads your code line by line, translates each line into machine code, executes it immediately, then moves to the next line. This happens every time you run the program — there's no saved translation.</p>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            📚 Book Translation Analogy
+                        </div>
+                        <p>An interpreter is like having a <strong>live translator at a conference</strong>. As the speaker says each sentence, the translator immediately speaks it in the other language. The audience hears it in real-time, but there's no written translation afterwards. Every time the speaker presents, they need the translator there again.</p>
+                    </div>
+
+                    <h3>The Interpretation Process</h3>
+                    <div class="process-diagram">
+                        <div class="process-step source">
+                            <div>Source Code</div>
+                            <div class="process-label">.py, .js</div>
+                        </div>
+                        <span class="process-arrow">→</span>
+                        <div class="process-step interpreter">
+                            <div>Interpreter</div>
+                            <div class="process-label">Line by line</div>
+                        </div>
+                        <span class="process-arrow">→</span>
+                        <div class="process-step output">
+                            <div>Output</div>
+                            <div class="process-label">Immediate</div>
+                        </div>
+                    </div>
+
+                    <p>Languages that typically use interpreters include: <strong>Python</strong>, <strong>JavaScript</strong>, <strong>Ruby</strong>, and <strong>PHP</strong>.</p>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            ⚠️ Key Difference
+                        </div>
+                        <p>Unlike a compiler, an interpreter <strong>does not create an executable file</strong>. Every time you want to run the program, you need both the interpreter and the source code.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-interpreter-def">
+                        <p>How does an interpreter translate code?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('interpreter-def', this, false)">All at once, before running</button>
+                            <button class="option-btn" onclick="checkAnswer('interpreter-def', this, true)">One line at a time, during runtime</button>
+                            <button class="option-btn" onclick="checkAnswer('interpreter-def', this, false)">It doesn't translate — it only checks for errors</button>
+                            <button class="option-btn" onclick="checkAnswer('interpreter-def', this, false)">By creating an executable file first</button>
+                        </div>
+                        <div class="feedback" id="feedback-interpreter-def"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Interpreter</h4>
+                    <ul>
+                        <li>Translates <strong>one line at a time</strong></li>
+                        <li>Executes each line <strong>immediately</strong> after translating</li>
+                        <li><strong>No executable file</strong> is created</li>
+                        <li>Need interpreter + source code every time you run</li>
+                        <li>Examples: Python, JavaScript, Ruby, PHP</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 6: How Interpreters Work -->
+            <section id="section-6">
+                <div class="card">
+                    <h2>⚙️ How Interpreters Work</h2>
+
+                    <p>When you run a program through an interpreter:</p>
+
+                    <h3>1. Read the First Line</h3>
+                    <p>The interpreter reads the first line of your source code.</p>
+
+                    <h3>2. Translate and Execute</h3>
+                    <p>It translates that line into machine code and immediately executes it.</p>
+
+                    <h3>3. Move to the Next Line</h3>
+                    <p>It then moves to the next line and repeats the process.</p>
+
+                    <h3>4. Stop on Error</h3>
+                    <p>If the interpreter encounters an error, it <strong>stops at that line</strong>. Any code before the error will have already run, but nothing after the error will execute.</p>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            📚 Book Translation Analogy
+                        </div>
+                        <p>The live translator speaks each sentence as they hear it. If the speaker says something confusing, the translator stops and asks for clarification — but the audience has already heard everything up to that point.</p>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">
+                            🤔 Why is This Useful for Development?
+                        </div>
+                        <p>When you're writing and testing code, you can run it immediately without waiting for compilation. If there's an error on line 50, you can see output from lines 1-49 first, which helps you understand what's happening.</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            ⚠️ Common Misconception
+                        </div>
+                        <p>Because an interpreter stops at the first error it encounters, some errors later in the code won't be discovered until you fix the earlier ones and run the program again.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-interpreter-process">
+                        <p>If an interpreter finds an error on line 10 of a 20-line program, what happens?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('interpreter-process', this, false)">The entire program fails to run</button>
+                            <button class="option-btn" onclick="checkAnswer('interpreter-process', this, false)">It skips line 10 and continues to line 11</button>
+                            <button class="option-btn" onclick="checkAnswer('interpreter-process', this, true)">Lines 1-9 run, then it stops at the error on line 10</button>
+                            <button class="option-btn" onclick="checkAnswer('interpreter-process', this, false)">It shows all errors in lines 10-20</button>
+                        </div>
+                        <div class="feedback" id="feedback-interpreter-process"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>How Interpreters Work</h4>
+                    <ul>
+                        <li>Reads, translates, and executes one line at a time</li>
+                        <li>Stops immediately when an error is found</li>
+                        <li>Code before the error has already executed</li>
+                        <li>Code after the error never runs</li>
+                        <li>Later errors only discovered after fixing earlier ones</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 7: Compilers vs Interpreters -->
+            <section id="section-7">
+                <div class="card">
+                    <h2>⚖️ Compilers vs Interpreters</h2>
+
+                    <p>Now that you understand both, let's compare them directly:</p>
+
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Feature</th>
+                            <th class="compiler">Compiler</th>
+                            <th class="interpreter">Interpreter</th>
+                        </tr>
+                        <tr>
+                            <td>Translation</td>
+                            <td>All at once, before running</td>
+                            <td>Line by line, during running</td>
+                        </tr>
+                        <tr>
+                            <td>Executable file?</td>
+                            <td>Yes — creates .exe</td>
+                            <td>No — runs from source</td>
+                        </tr>
+                        <tr>
+                            <td>Speed of execution</td>
+                            <td>Faster (already translated)</td>
+                            <td>Slower (translates each time)</td>
+                        </tr>
+                        <tr>
+                            <td>Error detection</td>
+                            <td>All errors before running</td>
+                            <td>Errors found one at a time</td>
+                        </tr>
+                        <tr>
+                            <td>Development speed</td>
+                            <td>Slower (must recompile)</td>
+                            <td>Faster (run immediately)</td>
+                        </tr>
+                        <tr>
+                            <td>Distribution</td>
+                            <td>Share executable only</td>
+                            <td>Must share source code</td>
+                        </tr>
+                    </table>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            📚 Book Translation Analogy — Summary
+                        </div>
+                        <p><strong>Compiler:</strong> Translate the entire book first, then print thousands of copies. Readers get a fast reading experience, but any changes mean reprinting everything.</p>
+                        <p><strong>Interpreter:</strong> Have a translator read aloud to the audience in real-time. Flexible and immediate, but slower for the listeners, and you need the translator every time.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-comparison">
+                        <p>Which statement about execution speed is correct?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('comparison', this, false)">Interpreted programs run faster because they don't need compilation</button>
+                            <button class="option-btn" onclick="checkAnswer('comparison', this, true)">Compiled programs run faster because translation is already done</button>
+                            <button class="option-btn" onclick="checkAnswer('comparison', this, false)">Both run at the same speed</button>
+                            <button class="option-btn" onclick="checkAnswer('comparison', this, false)">Speed depends only on the programming language used</button>
+                        </div>
+                        <div class="feedback" id="feedback-comparison"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Compiler Advantages</h4>
+                    <ul>
+                        <li>Faster execution (already translated)</li>
+                        <li>All errors found before running</li>
+                        <li>Can distribute without sharing source code</li>
+                        <li>No need for compiler on user's machine</li>
+                    </ul>
+                    <h4>Interpreter Advantages</h4>
+                    <ul>
+                        <li>Faster development (no recompilation)</li>
+                        <li>Easier debugging (see output up to error)</li>
+                        <li>Platform independent (runs anywhere with interpreter)</li>
+                        <li>Can test code immediately</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 8: When to Use Each -->
+            <section id="section-8">
+                <div class="card">
+                    <h2>🎯 When to Use Each</h2>
+
+                    <h3>Use a Compiler When...</h3>
+                    <ul style="color: var(--text-secondary); padding-left: 24px; margin-bottom: 20px;">
+                        <li><strong style="color: var(--text-primary);">Speed matters</strong> — games, operating systems, performance-critical software</li>
+                        <li><strong style="color: var(--text-primary);">Distributing to users</strong> — you can share the executable without revealing source code</li>
+                        <li><strong style="color: var(--text-primary);">The program is finished</strong> — no more changes needed, ready for release</li>
+                    </ul>
+
+                    <h3>Use an Interpreter When...</h3>
+                    <ul style="color: var(--text-secondary); padding-left: 24px; margin-bottom: 20px;">
+                        <li><strong style="color: var(--text-primary);">Developing and testing</strong> — quick iteration, see results immediately</li>
+                        <li><strong style="color: var(--text-primary);">Learning to program</strong> — easier to experiment and see what happens</li>
+                        <li><strong style="color: var(--text-primary);">Scripts and automation</strong> — small programs that run occasionally</li>
+                        <li><strong style="color: var(--text-primary);">Cross-platform needs</strong> — same code runs anywhere with the interpreter</li>
+                    </ul>
+
+                    <div class="think-box">
+                        <div class="think-box-header">
+                            🤔 Real-World Examples
+                        </div>
+                        <p><strong>Video games</strong> are typically compiled (C++, Rust) because every millisecond of performance matters.</p>
+                        <p style="margin-top: 10px;"><strong>Web development</strong> often uses interpreted languages (JavaScript, Python) because developers need to test changes quickly and the code runs on many different systems.</p>
+                    </div>
+
+                    <div class="coming-up-box">
+                        <div class="coming-up-box-header">
+                            📌 Did You Know?
+                        </div>
+                        <p>Some languages use <strong>both</strong>! Java compiles to "bytecode" which is then interpreted by the Java Virtual Machine. Python also compiles to bytecode internally. These are called <strong>hybrid approaches</strong>.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-when">
+                        <p>A game developer wants maximum performance for their new 3D game. Which approach would be most suitable?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('when', this, true)">Compiler — because compiled code runs faster</button>
+                            <button class="option-btn" onclick="checkAnswer('when', this, false)">Interpreter — because it's easier to develop with</button>
+                            <button class="option-btn" onclick="checkAnswer('when', this, false)">Either would work equally well</button>
+                            <button class="option-btn" onclick="checkAnswer('when', this, false)">Neither — games don't need translators</button>
+                        </div>
+                        <div class="feedback" id="feedback-when"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>When to Use a Compiler</h4>
+                    <ul>
+                        <li>Performance-critical applications (games, OS)</li>
+                        <li>Distributing without sharing source code</li>
+                        <li>Finished, release-ready software</li>
+                    </ul>
+                    <h4>When to Use an Interpreter</h4>
+                    <ul>
+                        <li>Development and testing</li>
+                        <li>Learning programming</li>
+                        <li>Scripts and automation</li>
+                        <li>Cross-platform applications</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 9: Summary -->
+            <section id="section-9">
+                <div class="card">
+                    <h2>📋 Summary</h2>
+
+                    <p>Let's bring everything together:</p>
+
+                    <div class="process-diagram" style="flex-direction: column; gap: 24px;">
+                        <div style="text-align: center;">
+                            <h3 style="color: var(--accent-purple); margin-bottom: 12px;">Compiler Approach</h3>
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                                <div class="process-step source">Source Code</div>
+                                <span class="process-arrow">→</span>
+                                <div class="process-step compiler">Compiler</div>
+                                <span class="process-arrow">→</span>
+                                <div class="process-step executable">Executable</div>
+                                <span class="process-arrow">→</span>
+                                <div class="process-step output">Output</div>
+                            </div>
+                            <p style="margin-top: 10px; font-size: 0.9rem;">Translate once → Run many times (fast)</p>
+                        </div>
+                        
+                        <div style="border-top: 1px solid var(--border-subtle); padding-top: 24px; text-align: center;">
+                            <h3 style="color: var(--accent-orange); margin-bottom: 12px;">Interpreter Approach</h3>
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                                <div class="process-step source">Source Code</div>
+                                <span class="process-arrow">→</span>
+                                <div class="process-step interpreter">Interpreter</div>
+                                <span class="process-arrow">→</span>
+                                <div class="process-step output">Output</div>
+                            </div>
+                            <p style="margin-top: 10px; font-size: 0.9rem;">Translate and run line by line (flexible)</p>
+                        </div>
+                    </div>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Remember</span>
+                            <span class="key-term-word">Key Differences</span>
+                        </div>
+                        <p><strong>Compiler:</strong> All at once → Executable file → Fast execution → All errors upfront</p>
+                        <p style="margin-top: 8px;"><strong>Interpreter:</strong> Line by line → No executable → Slower execution → Errors one at a time</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Complete Summary for Your Notes
+                    </div>
+                    
+                    <h4>Why Translators?</h4>
+                    <ul>
+                        <li>Convert high-level code (human-readable) to machine code (CPU-executable)</li>
+                    </ul>
+
+                    <h4>Compiler</h4>
+                    <ul>
+                        <li>Translates entire program at once</li>
+                        <li>Creates executable file</li>
+                        <li>Errors shown before running</li>
+                        <li>Fast execution</li>
+                        <li>Examples: C, C++, Rust</li>
+                    </ul>
+
+                    <h4>Interpreter</h4>
+                    <ul>
+                        <li>Translates line by line during runtime</li>
+                        <li>No executable created</li>
+                        <li>Errors found one at a time</li>
+                        <li>Slower execution but faster development</li>
+                        <li>Examples: Python, JavaScript</li>
+                    </ul>
+
+                    <h4>When to Use Each</h4>
+                    <ul>
+                        <li>Compiler: Performance, distribution, finished software</li>
+                        <li>Interpreter: Development, learning, scripting, cross-platform</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 10: Final Quiz -->
+            <section id="section-10">
+                <div class="card">
+                    <h2>✅ Final Assessment</h2>
+
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Assessment</div>
+                        <p>Complete the quiz questions and matching exercise to check your understanding.</p>
+                    </div>
+
+                    <!-- Question 1 -->
+                    <div class="question-box" id="q1">
+                        <p><strong>Question 1:</strong> What is the main purpose of a translator?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">To make programs run on the internet</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, true)">To convert high-level code into machine code</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">To store programs in memory</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">To connect the CPU to peripherals</button>
+                        </div>
+                        <div class="feedback" id="feedback1"></div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="question-box" id="q2">
+                        <p><strong>Question 2:</strong> A programmer wants to share their software without giving away the source code. Which translator type makes this easier?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, true)">Compiler — because it creates a standalone executable</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">Interpreter — because it runs code directly</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">Either would work the same</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">Neither — you always have to share source code</button>
+                        </div>
+                        <div class="feedback" id="feedback2"></div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="question-box" id="q3">
+                        <p><strong>Question 3:</strong> Python is typically interpreted. What does this mean for running a Python program?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">You compile it once and run the executable</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">It runs faster than compiled languages</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, true)">You need the Python interpreter installed to run it</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">It creates an .exe file automatically</button>
+                        </div>
+                        <div class="feedback" id="feedback3"></div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="question-box" id="q4">
+                        <p><strong>Question 4:</strong> Why might interpreted languages be preferred during development?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">They produce faster programs</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">They find all errors before running</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">They don't require any translator</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, true)">You can test changes immediately without recompiling</button>
+                        </div>
+                        <div class="feedback" id="feedback4"></div>
+                    </div>
+
+                    <div id="quizResult" style="display: none; margin-top: 20px; padding: 20px; background: var(--bg-card); border-radius: 12px; text-align: center;">
+                        <h3 id="quizScore" style="color: var(--accent-green);"></h3>
+                        <p id="quizMessage" style="color: var(--text-secondary);"></p>
+                    </div>
+                </div>
+
+                <!-- Matching Exercise -->
+                <div class="card">
+                    <h3>🔗 Match the Characteristic</h3>
+                    <p>Select whether each characteristic applies to a Compiler, Interpreter, or Both.</p>
+
+                    <div class="matching-container">
+                        <div class="matching-row">
+                            <div class="matching-term" style="border-color: var(--text-secondary); color: var(--text-primary);">Creates an executable file</div>
+                            <span class="matching-arrow">→</span>
+                            <select class="matching-select" id="match-1">
+                                <option value="">Select...</option>
+                                <option value="compiler">Compiler</option>
+                                <option value="interpreter">Interpreter</option>
+                                <option value="both">Both</option>
+                            </select>
+                        </div>
+                        <div class="matching-row">
+                            <div class="matching-term" style="border-color: var(--text-secondary); color: var(--text-primary);">Translates code line by line</div>
+                            <span class="matching-arrow">→</span>
+                            <select class="matching-select" id="match-2">
+                                <option value="">Select...</option>
+                                <option value="compiler">Compiler</option>
+                                <option value="interpreter">Interpreter</option>
+                                <option value="both">Both</option>
+                            </select>
+                        </div>
+                        <div class="matching-row">
+                            <div class="matching-term" style="border-color: var(--text-secondary); color: var(--text-primary);">Converts source code to machine code</div>
+                            <span class="matching-arrow">→</span>
+                            <select class="matching-select" id="match-3">
+                                <option value="">Select...</option>
+                                <option value="compiler">Compiler</option>
+                                <option value="interpreter">Interpreter</option>
+                                <option value="both">Both</option>
+                            </select>
+                        </div>
+                        <div class="matching-row">
+                            <div class="matching-term" style="border-color: var(--text-secondary); color: var(--text-primary);">Shows all errors before running</div>
+                            <span class="matching-arrow">→</span>
+                            <select class="matching-select" id="match-4">
+                                <option value="">Select...</option>
+                                <option value="compiler">Compiler</option>
+                                <option value="interpreter">Interpreter</option>
+                                <option value="both">Both</option>
+                            </select>
+                        </div>
+                        <div class="matching-row">
+                            <div class="matching-term" style="border-color: var(--text-secondary); color: var(--text-primary);">Better for quick testing during development</div>
+                            <span class="matching-arrow">→</span>
+                            <select class="matching-select" id="match-5">
+                                <option value="">Select...</option>
+                                <option value="compiler">Compiler</option>
+                                <option value="interpreter">Interpreter</option>
+                                <option value="both">Both</option>
+                            </select>
+                        </div>
+                        <div class="matching-row">
+                            <div class="matching-term" style="border-color: var(--text-secondary); color: var(--text-primary);">Produces faster-running programs</div>
+                            <span class="matching-arrow">→</span>
+                            <select class="matching-select" id="match-6">
+                                <option value="">Select...</option>
+                                <option value="compiler">Compiler</option>
+                                <option value="interpreter">Interpreter</option>
+                                <option value="both">Both</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <button class="control-btn primary" onclick="checkMatching()">Check Answers</button>
+                        <button class="control-btn secondary" onclick="resetMatching()">Reset</button>
+                    </div>
+
+                    <div class="matching-result" id="matchingResult">
+                        <h4 id="matchingResultTitle"></h4>
+                        <p id="matchingResultMessage"></p>
+                    </div>
+                </div>
+
+                <!-- Badge Generator -->
+                <div class="card badge-generator" id="badgeGenerator">
+                    <h3>🏆 Claim Your Badge</h3>
+                    
+                    <!-- Locked state -->
+                    <div id="badgeLocked">
+                        <div class="badge-locked-message">
+                            <span class="lock-icon">🔒</span>
+                            <p>Complete all questions throughout the resource to unlock your badge!</p>
+                            <div class="badge-progress">
+                                <div class="badge-progress-bar">
+                                    <div class="badge-progress-fill" id="badgeProgressFill"></div>
+                                </div>
+                                <span class="badge-progress-text" id="badgeProgressText">0 / 12 questions answered</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unlocked state -->
+                    <div id="badgeUnlocked" style="display: none;">
+                        <p>🎉 All questions completed! Enter your name to generate your badge.</p>
+                        
+                        <div class="badge-input-group">
+                            <input type="text" class="badge-name-input" id="badgeNameInput" placeholder="Enter your name..." maxlength="30">
+                            <button class="control-btn primary" onclick="generateBadge()">Generate Badge</button>
+                        </div>
+
+                        <div class="badge-display" id="badgeDisplay">
+                            <div class="badge-container">
+                                <svg id="badgeSvg" width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#00d4ff"/>
+                                            <stop offset="100%" style="stop-color:#a855f7"/>
+                                        </linearGradient>
+                                        <linearGradient id="codeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#a855f7"/>
+                                            <stop offset="100%" style="stop-color:#ff9500"/>
+                                        </linearGradient>
+                                        <filter id="glow">
+                                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                            <feMerge>
+                                                <feMergeNode in="coloredBlur"/>
+                                                <feMergeNode in="SourceGraphic"/>
+                                            </feMerge>
+                                        </filter>
+                                    </defs>
+                                    
+                                    <!-- Outer glow ring -->
+                                    <circle cx="160" cy="160" r="145" fill="none" stroke="url(#badgeGradient)" stroke-width="3" opacity="0.3"/>
+                                    
+                                    <!-- Main badge circle -->
+                                    <circle cx="160" cy="160" r="130" fill="#12121a" stroke="url(#badgeGradient)" stroke-width="4"/>
+                                    
+                                    <!-- Inner decorative ring -->
+                                    <circle cx="160" cy="160" r="115" fill="none" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="8 4"/>
+                                    
+                                    <!-- Translation Icon -->
+                                    <g transform="translate(160, 120)" filter="url(#glow)">
+                                        <!-- Source code bracket -->
+                                        <g transform="translate(-50, 0)">
+                                            <rect x="-20" y="-30" width="40" height="60" rx="6" fill="#1a1a2e" stroke="#00d4ff" stroke-width="2"/>
+                                            <text x="0" y="-8" text-anchor="middle" fill="#00d4ff" font-family="JetBrains Mono, monospace" font-size="10">{...}</text>
+                                            <text x="0" y="8" text-anchor="middle" fill="#00d4ff" font-family="JetBrains Mono, monospace" font-size="8">code</text>
+                                        </g>
+                                        
+                                        <!-- Arrow -->
+                                        <path d="M-5,0 L20,0" stroke="url(#codeGradient)" stroke-width="3" fill="none"/>
+                                        <polygon points="20,-6 32,0 20,6" fill="#ff9500"/>
+                                        
+                                        <!-- Binary output -->
+                                        <g transform="translate(50, 0)">
+                                            <rect x="-20" y="-30" width="40" height="60" rx="6" fill="#1a1a2e" stroke="#00ff88" stroke-width="2"/>
+                                            <text x="0" y="-8" text-anchor="middle" fill="#00ff88" font-family="JetBrains Mono, monospace" font-size="9">1010</text>
+                                            <text x="0" y="8" text-anchor="middle" fill="#00ff88" font-family="JetBrains Mono, monospace" font-size="9">0101</text>
+                                        </g>
+                                    </g>
+                                    
+                                    <!-- Title text -->
+                                    <text x="160" y="205" text-anchor="middle" fill="#00d4ff" font-family="Outfit, sans-serif" font-size="11" font-weight="600" letter-spacing="2">GCSE COMPUTER SCIENCE</text>
+                                    
+                                    <!-- Topic text -->
+                                    <text x="160" y="230" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-size="16" font-weight="700">Compilers &amp;</text>
+                                    <text x="160" y="252" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-size="16" font-weight="700">Interpreters</text>
+                                    
+                                    <!-- Score display -->
+                                    <text id="badgeScoreText" x="160" y="278" text-anchor="middle" fill="#00ff88" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700">12/12 correct</text>
+                                    
+                                    <!-- Ribbon banner -->
+                                    <path d="M60 300 L260 300 L250 320 L260 340 L60 340 L70 320 Z" fill="url(#badgeGradient)"/>
+                                    
+                                    <!-- Student name -->
+                                    <text id="badgeStudentName" x="160" y="325" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-size="16" font-weight="700">Student Name</text>
+                                </svg>
+                            </div>
+                            <p class="badge-hint">📸 Use Snipping Tool or screenshot to save your badge!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" disabled style="background: var(--accent-green);">Complete! 🎉</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // ============ Navigation ============
+        const totalSections = 10;
+        let currentSection = 1;
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.innerHTML = '';
+            
+            for (let i = 1; i <= totalSections; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                if (i === currentSection) dot.classList.add('active');
+                if (i < currentSection) dot.classList.add('completed');
+                dot.onclick = () => goToSection(i);
+                progressBar.appendChild(dot);
+            }
+            
+            document.getElementById('progressLabel').textContent = `Section ${currentSection} of ${totalSections}`;
+        }
+
+        function goToSection(num) {
+            document.getElementById(`section-${currentSection}`).classList.remove('active');
+            currentSection = num;
+            document.getElementById(`section-${currentSection}`).classList.add('active');
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextSection() {
+            if (currentSection < totalSections) {
+                goToSection(currentSection + 1);
+            }
+        }
+
+        function prevSection() {
+            if (currentSection > 1) {
+                goToSection(currentSection - 1);
+            }
+        }
+
+        // ============ Section Self-Check Questions ============
+        const sectionFeedback = {
+            'why': { 
+                correct: "Correct! Translators convert human-readable high-level code into machine code that the CPU can execute.", 
+                incorrect: "Think about the gap between what humans write (code) and what CPUs understand (binary)." 
+            },
+            'compiler-def': { 
+                correct: "Correct! A compiler produces a separate executable file containing machine code.", 
+                incorrect: "Remember: a compiler translates the whole program at once and saves the result as a new file." 
+            },
+            'compiler-process': { 
+                correct: "Correct! If there are syntax errors, the compiler stops and reports them — no executable is created until all errors are fixed.", 
+                incorrect: "A compiler checks the entire code first. If something's wrong, it won't create an executable." 
+            },
+            'interpreter-def': { 
+                correct: "Correct! An interpreter translates and executes code one line at a time, during runtime.", 
+                incorrect: "Think about the word 'interpret' — like a live interpreter translating speech in real-time." 
+            },
+            'interpreter-process': { 
+                correct: "Correct! The interpreter runs lines 1-9, then stops when it hits the error on line 10. Lines 11-20 never run.", 
+                incorrect: "An interpreter executes as it goes. Code before the error has already run; code after never gets reached." 
+            },
+            'comparison': { 
+                correct: "Correct! Compiled programs run faster because the translation is already done — the executable is pure machine code.", 
+                incorrect: "Think about when the translation happens: compiled = before running, interpreted = during running." 
+            },
+            'when': { 
+                correct: "Correct! For games where every millisecond matters, compilers produce faster-running code.", 
+                incorrect: "Games need maximum performance. Which approach produces code that runs faster?" 
+            }
+        };
+
+        function checkAnswer(section, button, isCorrect) {
+            const questionBox = button.closest('.question-box');
+            if (questionBox.classList.contains('answered')) return;
+            questionBox.classList.add('answered');
+            
+            const options = questionBox.querySelectorAll('.option-btn');
+            options.forEach(opt => {
+                opt.disabled = true;
+                if (opt === button) {
+                    opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+            });
+            
+            const feedback = document.getElementById(`feedback-${section}`);
+            feedback.textContent = isCorrect ? sectionFeedback[section].correct : sectionFeedback[section].incorrect;
+            feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+            
+            // Track for badge progress
+            answeredQuestions.add('section-' + section);
+            if (isCorrect) correctAnswers.add('section-' + section);
+            updateBadgeProgress();
+        }
+
+        // ============ Final Quiz ============
+        let finalAnswered = new Set();
+        let finalCorrect = 0;
+
+        const finalFeedback = {
+            1: { correct: "Correct! Translators convert high-level source code into machine code.", incorrect: "The key purpose is translation — from human-readable code to CPU-executable instructions." },
+            2: { correct: "Correct! A compiler creates an executable, so you can distribute it without sharing your source code.", incorrect: "Think about what each translator produces. Which one creates a file you can share independently?" },
+            3: { correct: "Correct! Python code needs the Python interpreter to run — it doesn't create a standalone executable.", incorrect: "Interpreted languages need their interpreter present to run. There's no separate executable file." },
+            4: { correct: "Correct! With an interpreter, you can run code immediately without waiting for compilation.", incorrect: "Think about the development workflow — which approach lets you test changes faster?" }
+        };
+
+        function checkFinalAnswer(qNum, button, isCorrect) {
+            if (finalAnswered.has(qNum)) return;
+            finalAnswered.add(qNum);
+            
+            const options = button.parentElement.querySelectorAll('.option-btn');
+            options.forEach(opt => {
+                opt.disabled = true;
+                if (opt === button) {
+                    opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+            });
+            
+            const feedback = document.getElementById(`feedback${qNum}`);
+            feedback.textContent = isCorrect ? finalFeedback[qNum].correct : finalFeedback[qNum].incorrect;
+            feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+            
+            if (isCorrect) finalCorrect++;
+            
+            // Track for badge progress
+            answeredQuestions.add('final-' + qNum);
+            if (isCorrect) correctAnswers.add('final-' + qNum);
+            updateBadgeProgress();
+            
+            if (finalAnswered.size === 4) {
+                showFinalResult();
+            }
+        }
+
+        function showFinalResult() {
+            const result = document.getElementById('quizResult');
+            const score = document.getElementById('quizScore');
+            const message = document.getElementById('quizMessage');
+            
+            result.style.display = 'block';
+            score.textContent = `${finalCorrect}/4 Correct`;
+            
+            if (finalCorrect === 4) {
+                score.style.color = 'var(--accent-green)';
+                message.textContent = "Excellent! You understand compilers and interpreters!";
+            } else if (finalCorrect >= 3) {
+                score.style.color = 'var(--accent-cyan)';
+                message.textContent = "Good work! Review the questions you missed.";
+            } else {
+                score.style.color = 'var(--accent-yellow)';
+                message.textContent = "Keep practising! Go back through the sections.";
+            }
+        }
+
+        // ============ Matching Exercise ============
+        const correctMatches = {
+            'match-1': 'compiler',
+            'match-2': 'interpreter',
+            'match-3': 'both',
+            'match-4': 'compiler',
+            'match-5': 'interpreter',
+            'match-6': 'compiler'
+        };
+
+        let matchingLocked = false;
+
+        function checkMatching() {
+            if (matchingLocked) return;
+            matchingLocked = true;
+
+            let correctCount = 0;
+            
+            Object.keys(correctMatches).forEach(id => {
+                const select = document.getElementById(id);
+                select.disabled = true;
+                
+                if (select.value === correctMatches[id]) {
+                    select.classList.add('correct');
+                    correctCount++;
+                } else {
+                    select.classList.add('incorrect');
+                }
+            });
+
+            const result = document.getElementById('matchingResult');
+            const title = document.getElementById('matchingResultTitle');
+            const message = document.getElementById('matchingResultMessage');
+
+            result.classList.add('show');
+
+            if (correctCount === 6) {
+                result.className = 'matching-result show success';
+                title.textContent = '✓ Perfect! All matches correct!';
+                message.textContent = 'You understand the differences between compilers and interpreters.';
+            } else {
+                result.className = 'matching-result show partial';
+                title.textContent = `${correctCount}/6 correct`;
+                message.textContent = 'Review the incorrect matches and check the comparison table in Section 7.';
+            }
+            
+            // Track for badge progress
+            answeredQuestions.add('matching');
+            if (correctCount === 6) correctAnswers.add('matching');
+            updateBadgeProgress();
+        }
+
+        function resetMatching() {
+            matchingLocked = false;
+            
+            Object.keys(correctMatches).forEach(id => {
+                const select = document.getElementById(id);
+                select.disabled = false;
+                select.value = '';
+                select.classList.remove('correct', 'incorrect');
+            });
+
+            document.getElementById('matchingResult').classList.remove('show');
+            
+            // Remove from badge tracking
+            answeredQuestions.delete('matching');
+            correctAnswers.delete('matching');
+            updateBadgeProgress();
+        }
+
+        // ============ Badge Progress Tracking ============
+        const totalQuestions = 12; // 7 section checks + 4 final quiz + 1 matching
+        const answeredQuestions = new Set();
+        const correctAnswers = new Set();
+
+        function updateBadgeProgress() {
+            const count = answeredQuestions.size;
+            const percentage = (count / totalQuestions) * 100;
+            
+            // Update progress bar
+            const progressFill = document.getElementById('badgeProgressFill');
+            const progressText = document.getElementById('badgeProgressText');
+            
+            if (progressFill) {
+                progressFill.style.width = percentage + '%';
+            }
+            if (progressText) {
+                progressText.textContent = count + ' / ' + totalQuestions + ' questions answered';
+            }
+            
+            // Check if all questions answered
+            if (count >= totalQuestions) {
+                unlockBadge();
+            }
+        }
+
+        function unlockBadge() {
+            const locked = document.getElementById('badgeLocked');
+            const unlocked = document.getElementById('badgeUnlocked');
+            
+            if (locked) locked.style.display = 'none';
+            if (unlocked) {
+                unlocked.style.display = 'block';
+                unlocked.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function generateBadge() {
+            const nameInput = document.getElementById('badgeNameInput');
+            const name = nameInput.value.trim();
+            
+            if (!name) {
+                nameInput.style.borderColor = 'var(--accent-magenta)';
+                nameInput.placeholder = 'Please enter your name!';
+                setTimeout(() => {
+                    nameInput.style.borderColor = 'var(--border-subtle)';
+                    nameInput.placeholder = 'Enter your name...';
+                }, 2000);
+                return;
+            }
+            
+            // Update the name in the SVG
+            document.getElementById('badgeStudentName').textContent = name;
+            
+            // Update the score in the SVG
+            const scoreText = document.getElementById('badgeScoreText');
+            if (scoreText) {
+                scoreText.textContent = correctAnswers.size + '/' + totalQuestions + ' correct';
+            }
+            
+            // Show the badge
+            document.getElementById('badgeDisplay').classList.add('show');
+            
+            // Scroll to badge
+            document.getElementById('badgeDisplay').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Allow Enter key to generate badge
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('badgeNameInput');
+            if (input) {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        generateBadge();
+                    }
+                });
+            }
+        });
+
+        // ============ Initialize ============
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            updateBadgeProgress();
+        });
+    </script>
+</body>
+</html>

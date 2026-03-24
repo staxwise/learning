@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper 1 Revision: Predicted Topics | GCSE Computer Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-card: #12121c;
+            --bg-elevated: #1a1a28;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd000;
+            --accent-green: #00ff88;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #ff8c00;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --border-default: #2a2a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background: var(--bg-dark); 
+            color: var(--text-primary); 
+            min-height: 100vh; 
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 24px 20px; }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-default);
+        }
+
+        .exam-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: var(--bg-dark);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle { color: var(--text-secondary); font-size: 1rem; }
+
+        /* Progress */
+        .progress-bar {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .progress-track {
+            flex: 1;
+            height: 8px;
+            background: var(--bg-elevated);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .progress-text { font-size: 0.85rem; color: var(--text-muted); }
+
+        .score-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            margin-top: 12px;
+            justify-content: center;
+        }
+
+        .score-display span { color: var(--accent-green); font-weight: 600; }
+
+        /* Navigation Dots */
+        .nav-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--bg-elevated);
+            border: 2px solid var(--border-default);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-dot:hover { border-color: var(--accent-cyan); }
+        .nav-dot.active { background: var(--accent-cyan); border-color: var(--accent-cyan); }
+        .nav-dot.completed { background: var(--accent-green); border-color: var(--accent-green); }
+
+        /* Sections */
+        section { display: none; animation: fadeIn 0.4s ease; }
+        section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-default);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin: 20px 0 12px;
+            color: var(--accent-cyan);
+        }
+
+        h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 16px 0 10px;
+            color: var(--text-primary);
+        }
+
+        p { color: var(--text-secondary); margin-bottom: 12px; }
+        strong { color: var(--text-primary); }
+
+        /* Topic Tags */
+        .topic-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .topic-tag.systems { background: rgba(0, 212, 255, 0.2); color: var(--accent-cyan); }
+        .topic-tag.memory { background: rgba(139, 92, 246, 0.2); color: var(--accent-purple); }
+        .topic-tag.networks { background: rgba(255, 0, 110, 0.2); color: var(--accent-magenta); }
+        .topic-tag.security { background: rgba(255, 140, 0, 0.2); color: var(--accent-orange); }
+        .topic-tag.software { background: rgba(0, 255, 136, 0.2); color: var(--accent-green); }
+        .topic-tag.ethics { background: rgba(255, 208, 0, 0.2); color: var(--accent-yellow); }
+
+        /* Key Points Box */
+        .key-points {
+            background: var(--bg-elevated);
+            border-left: 4px solid var(--accent-cyan);
+            padding: 16px 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 16px 0;
+        }
+
+        .key-points-header {
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .key-points ul {
+            padding-left: 20px;
+            color: var(--text-secondary);
+        }
+
+        .key-points li { margin-bottom: 6px; }
+
+        /* Definition Box */
+        .definition {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin: 12px 0;
+        }
+
+        .definition-term {
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 4px;
+        }
+
+        .definition-text { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.85rem;
+        }
+
+        .comparison-table th {
+            background: var(--bg-elevated);
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .comparison-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-default);
+            color: var(--text-secondary);
+        }
+
+        .comparison-table tr:hover td { background: var(--bg-elevated); }
+
+        /* Exam Tip */
+        .exam-tip {
+            background: linear-gradient(135deg, rgba(255, 208, 0, 0.1), rgba(255, 140, 0, 0.1));
+            border-left: 4px solid var(--accent-yellow);
+            padding: 14px 18px;
+            border-radius: 0 10px 10px 0;
+            margin: 16px 0;
+        }
+
+        .exam-tip-header {
+            font-weight: 600;
+            color: var(--accent-yellow);
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        .exam-tip p { margin: 0; font-size: 0.9rem; }
+
+        /* Question Box */
+        .question-box {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: 12px;
+            padding: 18px;
+            margin: 14px 0;
+        }
+
+        .question-box.correct { border-color: var(--accent-green); }
+
+        .question-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            color: var(--text-primary);
+            margin-bottom: 14px;
+            font-weight: 500;
+        }
+
+        /* Options */
+        .options-grid { display: flex; flex-direction: column; gap: 8px; }
+
+        .option-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            padding: 12px 16px;
+            border: 1px solid var(--border-default);
+            border-radius: 10px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+        }
+
+        .option-btn.correct {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+
+        .option-btn.incorrect {
+            border-color: var(--accent-magenta);
+            background: rgba(255, 0, 110, 0.15);
+            color: var(--accent-magenta);
+        }
+
+        .option-btn:disabled { cursor: not-allowed; opacity: 0.8; }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .feedback.show { display: block; }
+
+        .feedback.success {
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .feedback.error {
+            background: rgba(255, 0, 110, 0.15);
+            border: 1px solid var(--accent-magenta);
+            color: var(--accent-magenta);
+        }
+
+        /* Fill in Blank */
+        .fill-blank-container {
+            background: var(--bg-elevated);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 14px 0;
+        }
+
+        .fill-blank-text {
+            line-height: 2.2;
+            color: var(--text-primary);
+        }
+
+        .blank-input {
+            display: inline-block;
+            width: 120px;
+            padding: 4px 10px;
+            border: 2px dashed var(--border-default);
+            border-radius: 6px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            text-align: center;
+            margin: 0 4px;
+        }
+
+        .blank-input:focus { outline: none; border-color: var(--accent-cyan); }
+        .blank-input.correct { border-color: var(--accent-green); border-style: solid; background: rgba(0, 255, 136, 0.1); }
+        .blank-input.incorrect { border-color: var(--accent-magenta); border-style: solid; background: rgba(255, 0, 110, 0.1); }
+
+        /* Matching Activity */
+        .matching-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        @media (max-width: 600px) {
+            .matching-container { grid-template-columns: 1fr; }
+        }
+
+        .matching-item {
+            padding: 12px 16px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+
+        .matching-item:hover { border-color: var(--accent-cyan); }
+        .matching-item.selected { border-color: var(--accent-cyan); background: rgba(0, 212, 255, 0.15); }
+        .matching-item.matched { border-color: var(--accent-green); background: rgba(0, 255, 136, 0.15); opacity: 0.6; cursor: default; }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3); }
+
+        .btn-secondary {
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-default);
+        }
+
+        .btn-secondary:hover { border-color: var(--accent-cyan); color: var(--text-primary); }
+
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 24px;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 12px 28px;
+            border: 1px solid var(--border-default);
+            border-radius: 10px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover { border-color: var(--accent-cyan); color: var(--text-primary); }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+            border: none;
+            color: var(--bg-dark);
+        }
+
+        .nav-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3); }
+
+        /* Diagram */
+        .diagram-box {
+            background: var(--bg-elevated);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .cycle-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 16px 0;
+        }
+
+        .cycle-step {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 10px;
+            padding: 12px 20px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .cycle-step-title { font-weight: 600; color: var(--accent-cyan); font-size: 0.9rem; }
+        .cycle-step-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+        .cycle-arrow { color: var(--accent-cyan); font-size: 1.5rem; }
+
+        /* Badge */
+        .badge-section {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 110, 0.1));
+            border: 2px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .badge-locked { padding: 24px; }
+        .badge-locked .lock-icon { font-size: 3rem; margin-bottom: 16px; }
+
+        .badge-progress { max-width: 300px; margin: 20px auto 0; }
+
+        #badgeUnlocked { display: none; }
+
+        .badge-unlocked p { color: var(--accent-green); font-weight: 600; margin-bottom: 16px; }
+
+        .badge-input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .badge-input {
+            padding: 12px 16px;
+            border: 1px solid var(--border-default);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            min-width: 200px;
+        }
+
+        .badge-input:focus { outline: none; border-color: var(--accent-cyan); }
+
+        .badge-display { display: none; margin-top: 24px; }
+        .badge-display.show { display: block; animation: fadeIn 0.4s ease; }
+
+        .badge-card {
+            background: linear-gradient(145deg, var(--bg-card), var(--bg-elevated));
+            border: 2px solid var(--accent-green);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 340px;
+            margin: 0 auto;
+            box-shadow: 0 8px 32px rgba(0, 255, 136, 0.2);
+        }
+
+        .badge-icon { font-size: 4rem; margin-bottom: 16px; }
+        .badge-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent-cyan);
+            margin-bottom: 4px;
+        }
+        .badge-topic { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
+        .badge-name { color: var(--text-secondary); margin-bottom: 4px; }
+        .badge-date { font-size: 0.85rem; color: var(--text-muted); }
+        .badge-score {
+            margin-top: 16px;
+            padding: 8px 20px;
+            background: rgba(0, 255, 136, 0.2);
+            border-radius: 20px;
+            display: inline-block;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+        .badge-hint { margin-top: 20px; font-size: 0.85rem; color: var(--text-muted); }
+
+        /* Spec Reference */
+        .spec-ref {
+            display: inline-block;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            background: var(--bg-elevated);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+
+        .summary-box h4 {
+            color: var(--accent-green);
+            margin-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .summary-box ul {
+            padding-left: 20px;
+            color: var(--text-secondary);
+        }
+
+        .summary-box li { margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="exam-tag">📝 Mock Exam Preparation</div>
+            <h1>Paper 1: Predicted Topics</h1>
+            <p class="subtitle">Complete revision for Computer Systems</p>
+            
+            <div class="progress-bar">
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+                <span class="progress-text"><span id="currentSection">0</span>/8</span>
+            </div>
+
+            <div class="score-display">
+                Score: <span id="totalScore">0</span> / <span id="maxScore">60</span>
+            </div>
+
+            <div class="nav-dots" id="navDots">
+                <!-- Generated by JS -->
+            </div>
+        </header>
+
+        <main>
+            <!-- Section 0: Overview -->
+            <section id="section-0" class="active">
+                <div class="card">
+                    <h2>🎯 What's Covered</h2>
+                    <p>This revision resource covers the <strong>predicted high-priority topics</strong> for your Paper 1 mock. Work through each section, test yourself, and arrive at your exam fully prepared.</p>
+
+                    <div class="key-points">
+                        <div class="key-points-header">Topics Included</div>
+                        <ul>
+                            <li><strong>1.1 Systems Architecture:</strong> Cache Memory, CPU Components (ALU/CU), Fetch-Execute Cycle</li>
+                            <li><strong>1.2 Memory & Storage:</strong> Storage Technologies, Compression, Data Calculations</li>
+                            <li><strong>1.3 Networks & Protocols:</strong> Email/Web Protocols, Layers, The Cloud</li>
+                            <li><strong>1.4 Network Security:</strong> Phishing, Access Levels, Penetration Testing</li>
+                            <li><strong>1.5 Systems Software:</strong> OS Memory Management, Peripheral Management</li>
+                            <li><strong>1.6 Ethical & Legal:</strong> Cultural Impacts, Computer Misuse Act, Privacy</li>
+                        </ul>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Revision Strategy</div>
+                        <p>Don't just memorise definitions. For each topic, ask yourself: "Why does this matter?" and "How would I apply this in a scenario question?"</p>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <div></div>
+                    <button class="nav-btn primary" onclick="nextSection()">Start Revision →</button>
+                </div>
+            </section>
+
+            <!-- Section 1: Systems Architecture -->
+            <section id="section-1">
+                <div class="card">
+                    <h2><span class="topic-tag systems">1.1</span> Systems Architecture</h2>
+                    
+                    <h3>Cache Memory <span class="spec-ref">Spec 1.1.1</span></h3>
+                    
+                    <div class="definition">
+                        <div class="definition-term">Cache Memory</div>
+                        <div class="definition-text">A small amount of very fast memory located on or near the CPU that stores frequently used data and instructions.</div>
+                    </div>
+
+                    <div class="key-points">
+                        <div class="key-points-header">Key Facts</div>
+                        <ul>
+                            <li><strong>Purpose:</strong> Reduces the number of times the CPU needs to fetch data from slower RAM</li>
+                            <li><strong>Speed hierarchy:</strong> Registers (fastest) → Cache → RAM → Secondary Storage (slowest)</li>
+                            <li><strong>Levels:</strong> L1 (smallest, fastest, on CPU) → L2 → L3 (largest, slowest)</li>
+                            <li><strong>More cache = faster processing</strong> (fewer slow RAM fetches needed)</li>
+                        </ul>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Common Exam Question</div>
+                        <p>"Why don't computers just use cache instead of RAM?" — Answer: Cache is extremely expensive to manufacture. Having 16GB of cache would cost thousands of pounds.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>CPU Components <span class="spec-ref">Spec 1.1.1</span></h3>
+
+                    <div class="definition">
+                        <div class="definition-term">ALU (Arithmetic Logic Unit)</div>
+                        <div class="definition-text">Performs all arithmetic calculations (+, −, ×, ÷) and logical operations (AND, OR, NOT, comparisons like &gt; and =).</div>
+                    </div>
+
+                    <div class="definition">
+                        <div class="definition-term">CU (Control Unit)</div>
+                        <div class="definition-text">The "brain" of the CPU. Decodes instructions, sends control signals, and coordinates data movement between components.</div>
+                    </div>
+
+                    <h4>Key Registers</h4>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Register</th>
+                            <th>Full Name</th>
+                            <th>Purpose</th>
+                        </tr>
+                        <tr>
+                            <td><strong>MAR</strong></td>
+                            <td>Memory Address Register</td>
+                            <td>Holds the <em>address</em> of the memory location to read/write</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MDR</strong></td>
+                            <td>Memory Data Register</td>
+                            <td>Holds the <em>data</em> being transferred to/from memory</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PC</strong></td>
+                            <td>Program Counter</td>
+                            <td>Holds the address of the <em>next</em> instruction to fetch</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ACC</strong></td>
+                            <td>Accumulator</td>
+                            <td>Stores results of ALU calculations</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3>Fetch-Execute Cycle <span class="spec-ref">Spec 1.1.1</span></h3>
+                    
+                    <div class="diagram-box">
+                        <div class="cycle-diagram">
+                            <div class="cycle-step">
+                                <div class="cycle-step-title">FETCH</div>
+                                <div class="cycle-step-desc">Get instruction from memory</div>
+                            </div>
+                            <span class="cycle-arrow">→</span>
+                            <div class="cycle-step">
+                                <div class="cycle-step-title">DECODE</div>
+                                <div class="cycle-step-desc">CU interprets instruction</div>
+                            </div>
+                            <span class="cycle-arrow">→</span>
+                            <div class="cycle-step">
+                                <div class="cycle-step-title">EXECUTE</div>
+                                <div class="cycle-step-desc">Carry out the instruction</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="key-points">
+                        <div class="key-points-header">Detailed Steps</div>
+                        <ul>
+                            <li><strong>Fetch:</strong> PC sends address to MAR → Memory sends data to MDR → PC increments (+1)</li>
+                            <li><strong>Decode:</strong> CU reads the instruction and works out what operation is needed</li>
+                            <li><strong>Execute:</strong> The instruction is carried out (e.g., ALU performs calculation)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Questions for Section 1 -->
+                <div class="card">
+                    <h3>✅ Check Your Understanding</h3>
+
+                    <div class="question-box" id="q1-1">
+                        <div class="question-label">Question 1</div>
+                        <p class="question-text">What is the main purpose of cache memory?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('1-1', this, false)">To permanently store the operating system</button>
+                            <button class="option-btn" onclick="checkAnswer('1-1', this, true)">To store frequently used data closer to the CPU than RAM</button>
+                            <button class="option-btn" onclick="checkAnswer('1-1', this, false)">To provide backup storage if the hard drive fails</button>
+                            <button class="option-btn" onclick="checkAnswer('1-1', this, false)">To increase the clock speed of the processor</button>
+                        </div>
+                        <div class="feedback" id="fb-1-1"></div>
+                    </div>
+
+                    <div class="question-box" id="q1-2">
+                        <div class="question-label">Question 2</div>
+                        <p class="question-text">Which component performs the operation "IF score > 100 THEN..."?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('1-2', this, true)">ALU (Arithmetic Logic Unit)</button>
+                            <button class="option-btn" onclick="checkAnswer('1-2', this, false)">CU (Control Unit)</button>
+                            <button class="option-btn" onclick="checkAnswer('1-2', this, false)">MAR (Memory Address Register)</button>
+                            <button class="option-btn" onclick="checkAnswer('1-2', this, false)">Cache</button>
+                        </div>
+                        <div class="feedback" id="fb-1-2"></div>
+                    </div>
+
+                    <div class="question-box" id="q1-3">
+                        <div class="question-label">Question 3</div>
+                        <p class="question-text">During the Fetch stage, which register holds the ADDRESS of the data being fetched?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('1-3', this, false)">MDR</button>
+                            <button class="option-btn" onclick="checkAnswer('1-3', this, true)">MAR</button>
+                            <button class="option-btn" onclick="checkAnswer('1-3', this, false)">Accumulator</button>
+                            <button class="option-btn" onclick="checkAnswer('1-3', this, false)">Program Counter</button>
+                        </div>
+                        <div class="feedback" id="fb-1-3"></div>
+                    </div>
+
+                    <div class="question-box" id="q1-4">
+                        <div class="question-label">Question 4</div>
+                        <p class="question-text">A computer has 4MB of L2 cache upgraded to 8MB. Why might this improve performance?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('1-4', this, false)">The CPU clock speed increases automatically</button>
+                            <button class="option-btn" onclick="checkAnswer('1-4', this, false)">More programs can be installed on the computer</button>
+                            <button class="option-btn" onclick="checkAnswer('1-4', this, true)">More data can be stored close to the CPU, reducing slow RAM fetches</button>
+                            <button class="option-btn" onclick="checkAnswer('1-4', this, false)">The computer uses less electricity</button>
+                        </div>
+                        <div class="feedback" id="fb-1-4"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSection()">← Back</button>
+                    <button class="nav-btn primary" onclick="nextSection()">Continue →</button>
+                </div>
+            </section>
+
+            <!-- Section 2: Memory and Storage -->
+            <section id="section-2">
+                <div class="card">
+                    <h2><span class="topic-tag memory">1.2</span> Memory and Storage</h2>
+                    
+                    <h3>Storage Technologies <span class="spec-ref">Spec 1.2.2</span></h3>
+
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Type</th>
+                            <th>Magnetic (HDD)</th>
+                            <th>Solid State (SSD)</th>
+                            <th>Optical (DVD/Blu-ray)</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Speed</strong></td>
+                            <td>Slow (moving parts)</td>
+                            <td>Very fast (no moving parts)</td>
+                            <td>Slow</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Capacity</strong></td>
+                            <td>High (up to 20TB)</td>
+                            <td>Medium-High</td>
+                            <td>Low (4.7GB–50GB)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cost per GB</strong></td>
+                            <td>Low (cheapest)</td>
+                            <td>Higher</td>
+                            <td>Very low</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Durability</strong></td>
+                            <td>Fragile (moving parts can break)</td>
+                            <td>Durable (no moving parts)</td>
+                            <td>Can scratch</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Noise</strong></td>
+                            <td>Audible (spinning)</td>
+                            <td>Silent</td>
+                            <td>Audible when spinning</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best for</strong></td>
+                            <td>Servers, bulk storage</td>
+                            <td>Laptops, gaming, OS drives</td>
+                            <td>Distributing media</td>
+                        </tr>
+                    </table>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Scenario Questions</div>
+                        <p><strong>Recommend HDD when:</strong> Large capacity needed, budget is limited (e.g., backup server)<br>
+                        <strong>Recommend SSD when:</strong> Speed matters, device is portable (e.g., laptop), durability needed</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Compression <span class="spec-ref">Spec 1.2.3</span></h3>
+
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Lossy Compression</th>
+                            <th>Lossless Compression</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Data lost?</strong></td>
+                            <td>Yes – permanently removed</td>
+                            <td>No – all data retained</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Quality</strong></td>
+                            <td>Reduced (may be noticeable)</td>
+                            <td>Perfect (identical to original)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>File size reduction</strong></td>
+                            <td>Large reduction</td>
+                            <td>Smaller reduction</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Examples</strong></td>
+                            <td>JPEG, MP3, streaming video</td>
+                            <td>PNG, ZIP, FLAC</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best for</strong></td>
+                            <td>Web images, music streaming</td>
+                            <td>Text files, code, medical images</td>
+                        </tr>
+                    </table>
+
+                    <div class="key-points">
+                        <div class="key-points-header">Why Compress Files?</div>
+                        <ul>
+                            <li><strong>Faster transmission:</strong> Smaller files transfer quicker over networks</li>
+                            <li><strong>Less storage space:</strong> More files can fit on a drive</li>
+                            <li><strong>Lower bandwidth costs:</strong> Especially important for streaming services</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Data Calculations <span class="spec-ref">Spec 1.2.3</span></h3>
+
+                    <div class="definition">
+                        <div class="definition-term">Image File Size</div>
+                        <div class="definition-text">Width (pixels) × Height (pixels) × Colour Depth (bits per pixel)</div>
+                    </div>
+
+                    <div class="definition">
+                        <div class="definition-term">Sound File Size</div>
+                        <div class="definition-text">Sample Rate (Hz) × Duration (seconds) × Bit Depth × Channels</div>
+                    </div>
+
+                    <div class="key-points">
+                        <div class="key-points-header">Unit Conversions (OCR Standard)</div>
+                        <ul>
+                            <li>8 bits = 1 byte</li>
+                            <li>1000 bytes = 1 KB (kilobyte)</li>
+                            <li>1000 KB = 1 MB (megabyte)</li>
+                            <li>1000 MB = 1 GB (gigabyte)</li>
+                        </ul>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Calculation Example</div>
+                        <p>Image: 800 × 600 pixels, 24-bit colour depth<br>
+                        = 800 × 600 × 24 = 11,520,000 bits<br>
+                        = 11,520,000 ÷ 8 = 1,440,000 bytes<br>
+                        = 1,440,000 ÷ 1000 = 1,440 KB = 1.44 MB</p>
+                    </div>
+                </div>
+
+                <!-- Questions for Section 2 -->
+                <div class="card">
+                    <h3>✅ Check Your Understanding</h3>
+
+                    <div class="question-box" id="q2-1">
+                        <div class="question-label">Question 1</div>
+                        <p class="question-text">A company needs to store 50TB of backup data on a tight budget. Which storage type is most suitable?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('2-1', this, true)">Magnetic (HDD)</button>
+                            <button class="option-btn" onclick="checkAnswer('2-1', this, false)">Solid State (SSD)</button>
+                            <button class="option-btn" onclick="checkAnswer('2-1', this, false)">Optical (Blu-ray)</button>
+                            <button class="option-btn" onclick="checkAnswer('2-1', this, false)">USB Flash Drive</button>
+                        </div>
+                        <div class="feedback" id="fb-2-1"></div>
+                    </div>
+
+                    <div class="question-box" id="q2-2">
+                        <div class="question-label">Question 2</div>
+                        <p class="question-text">A photographer needs to edit images without any quality loss. Which compression type should they use?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('2-2', this, false)">Lossy – it makes files smaller</button>
+                            <button class="option-btn" onclick="checkAnswer('2-2', this, true)">Lossless – it retains all original data</button>
+                            <button class="option-btn" onclick="checkAnswer('2-2', this, false)">Either type gives the same quality</button>
+                            <button class="option-btn" onclick="checkAnswer('2-2', this, false)">No compression should ever be used</button>
+                        </div>
+                        <div class="feedback" id="fb-2-2"></div>
+                    </div>
+
+                    <div class="question-box" id="q2-3">
+                        <div class="question-label">Question 3</div>
+                        <p class="question-text">Calculate: A 1024 × 768 image with 8-bit colour depth. What is the file size in KB?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('2-3', this, false)">768 KB</button>
+                            <button class="option-btn" onclick="checkAnswer('2-3', this, true)">786 KB (approximately)</button>
+                            <button class="option-btn" onclick="checkAnswer('2-3', this, false)">6,291 KB</button>
+                            <button class="option-btn" onclick="checkAnswer('2-3', this, false)">98 KB</button>
+                        </div>
+                        <div class="feedback" id="fb-2-3"></div>
+                    </div>
+
+                    <div class="question-box" id="q2-4">
+                        <div class="question-label">Question 4</div>
+                        <p class="question-text">Why is SSD preferred over HDD in laptops?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('2-4', this, false)">SSDs have higher capacity than HDDs</button>
+                            <button class="option-btn" onclick="checkAnswer('2-4', this, false)">SSDs are cheaper per gigabyte</button>
+                            <button class="option-btn" onclick="checkAnswer('2-4', this, true)">SSDs are faster and more durable with no moving parts</button>
+                            <button class="option-btn" onclick="checkAnswer('2-4', this, false)">SSDs use magnetic platters for storage</button>
+                        </div>
+                        <div class="feedback" id="fb-2-4"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSection()">← Back</button>
+                    <button class="nav-btn primary" onclick="nextSection()">Continue →</button>
+                </div>
+            </section>
+
+            <!-- Section 3: Networks and Protocols -->
+            <section id="section-3">
+                <div class="card">
+                    <h2><span class="topic-tag networks">1.3</span> Networks, Connections & Protocols</h2>
+                    
+                    <h3>Key Protocols <span class="spec-ref">Spec 1.3.2</span></h3>
+
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Protocol</th>
+                            <th>Purpose</th>
+                            <th>Key Detail</th>
+                        </tr>
+                        <tr>
+                            <td><strong>SMTP</strong></td>
+                            <td>Sending emails</td>
+                            <td>Simple Mail Transfer Protocol</td>
+                        </tr>
+                        <tr>
+                            <td><strong>IMAP</strong></td>
+                            <td>Receiving emails</td>
+                            <td>Syncs with server – emails stay on server</td>
+                        </tr>
+                        <tr>
+                            <td><strong>POP</strong></td>
+                            <td>Receiving emails</td>
+                            <td>Downloads and deletes from server</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HTTP</strong></td>
+                            <td>Web browsing</td>
+                            <td>Insecure – data not encrypted</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HTTPS</strong></td>
+                            <td>Secure web browsing</td>
+                            <td>Encrypted – uses SSL/TLS certificates</td>
+                        </tr>
+                        <tr>
+                            <td><strong>FTP</strong></td>
+                            <td>Transferring files</td>
+                            <td>File Transfer Protocol – upload/download</td>
+                        </tr>
+                    </table>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 IMAP vs POP</div>
+                        <p><strong>IMAP:</strong> Better for accessing email on multiple devices (phone + laptop) – stays synced<br>
+                        <strong>POP:</strong> Better when you only use one device or have limited server storage</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>IP Addressing <span class="spec-ref">Spec 1.3.2</span></h3>
+
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Aspect</th>
+                            <th>IPv4</th>
+                            <th>IPv6</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Format</strong></td>
+                            <td>4 groups of decimal numbers</td>
+                            <td>8 groups of hexadecimal</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Example</strong></td>
+                            <td>192.168.1.1</td>
+                            <td>2001:0db8:85a3:0000:0000:8a2e:0370:7334</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Addresses available</strong></td>
+                            <td>~4.3 billion</td>
+                            <td>~340 undecillion (practically unlimited)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Why IPv6?</strong></td>
+                            <td colspan="2">We ran out of IPv4 addresses due to the growth of internet-connected devices</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3>Concept of Layers <span class="spec-ref">Spec 1.3.2</span></h3>
+
+                    <div class="definition">
+                        <div class="definition-term">Layered Architecture</div>
+                        <div class="definition-text">Dividing the complex task of networking into smaller, manageable layers where each layer has a specific job (e.g., the TCP/IP model).</div>
+                    </div>
+
+                    <div class="key-points">
+                        <div class="key-points-header">Benefits of Layers</div>
+                        <ul>
+                            <li><strong>Self-contained:</strong> Changes in one layer (e.g., new WiFi standard) don't break others</li>
+                            <li><strong>Interoperability:</strong> Hardware/software from different manufacturers can work together</li>
+                            <li><strong>Easier troubleshooting:</strong> Problems can be isolated to a specific layer</li>
+                            <li><strong>Specialisation:</strong> Developers can focus on one layer without understanding all others</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>The Cloud <span class="spec-ref">Spec 1.3.1</span></h3>
+
+                    <div class="definition">
+                        <div class="definition-term">Cloud Computing</div>
+                        <div class="definition-text">Using remote servers accessed via the internet to store, manage, and process data instead of local servers or personal computers.</div>
+                    </div>
+
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Advantages</th>
+                            <th>Disadvantages</th>
+                        </tr>
+                        <tr>
+                            <td>Access files from anywhere with internet</td>
+                            <td>Requires internet connection</td>
+                        </tr>
+                        <tr>
+                            <td>Automatic backups</td>
+                            <td>Security managed by third party (trust issues)</td>
+                        </tr>
+                        <tr>
+                            <td>Easy collaboration with others</td>
+                            <td>Ongoing subscription costs</td>
+                        </tr>
+                        <tr>
+                            <td>Scalable – increase storage easily</td>
+                            <td>Privacy concerns – who can access your data?</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Questions for Section 3 -->
+                <div class="card">
+                    <h3>✅ Check Your Understanding</h3>
+
+                    <div class="question-box" id="q3-1">
+                        <div class="question-label">Question 1</div>
+                        <p class="question-text">Which protocol is used to SEND an email?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('3-1', this, false)">IMAP</button>
+                            <button class="option-btn" onclick="checkAnswer('3-1', this, false)">POP</button>
+                            <button class="option-btn" onclick="checkAnswer('3-1', this, true)">SMTP</button>
+                            <button class="option-btn" onclick="checkAnswer('3-1', this, false)">HTTP</button>
+                        </div>
+                        <div class="feedback" id="fb-3-1"></div>
+                    </div>
+
+                    <div class="question-box" id="q3-2">
+                        <div class="question-label">Question 2</div>
+                        <p class="question-text">Why was IPv6 developed?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('3-2', this, false)">IPv4 was too slow for modern networks</button>
+                            <button class="option-btn" onclick="checkAnswer('3-2', this, true)">We ran out of IPv4 addresses</button>
+                            <button class="option-btn" onclick="checkAnswer('3-2', this, false)">IPv6 uses less bandwidth</button>
+                            <button class="option-btn" onclick="checkAnswer('3-2', this, false)">IPv4 wasn't secure enough</button>
+                        </div>
+                        <div class="feedback" id="fb-3-2"></div>
+                    </div>
+
+                    <div class="question-box" id="q3-3">
+                        <div class="question-label">Question 3</div>
+                        <p class="question-text">What is ONE benefit of using layers in network design?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('3-3', this, false)">It makes networks faster</button>
+                            <button class="option-btn" onclick="checkAnswer('3-3', this, false)">It reduces the cost of cables</button>
+                            <button class="option-btn" onclick="checkAnswer('3-3', this, true)">Changes in one layer don't break other layers</button>
+                            <button class="option-btn" onclick="checkAnswer('3-3', this, false)">It prevents all hacking attacks</button>
+                        </div>
+                        <div class="feedback" id="fb-3-3"></div>
+                    </div>
+
+                    <div class="question-box" id="q3-4">
+                        <div class="question-label">Question 4</div>
+                        <p class="question-text">A user accesses their email on both their phone and laptop. The same emails appear on both. Which protocol is being used?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('3-4', this, false)">POP – it downloads emails to all devices</button>
+                            <button class="option-btn" onclick="checkAnswer('3-4', this, true)">IMAP – it syncs with the server</button>
+                            <button class="option-btn" onclick="checkAnswer('3-4', this, false)">SMTP – it sends copies to each device</button>
+                            <button class="option-btn" onclick="checkAnswer('3-4', this, false)">FTP – it transfers files between devices</button>
+                        </div>
+                        <div class="feedback" id="fb-3-4"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSection()">← Back</button>
+                    <button class="nav-btn primary" onclick="nextSection()">Continue →</button>
+                </div>
+            </section>
+
+            <!-- Section 4: Network Security -->
+            <section id="section-4">
+                <div class="card">
+                    <h2><span class="topic-tag security">1.4</span> Network Security</h2>
+                    
+                    <h3>Phishing <span class="spec-ref">Spec 1.4</span></h3>
+
+                    <div class="definition">
+                        <div class="definition-term">Phishing</div>
+                        <div class="definition-text">A social engineering attack where criminals send emails or messages pretending to be from a reputable source (bank, HMRC, etc.) to trick people into revealing personal information.</div>
+                    </div>
+
+                    <div class="key-points">
+                        <div class="key-points-header">How to Identify Phishing</div>
+                        <ul>
+                            <li><strong>Poor spelling/grammar:</strong> Legitimate companies proofread communications</li>
+                            <li><strong>Urgent/threatening language:</strong> "Your account will be closed in 24 hours!"</li>
+                            <li><strong>Suspicious links:</strong> Hover over links to see the real URL</li>
+                            <li><strong>Unexpected attachments:</strong> Don't open files you weren't expecting</li>
+                            <li><strong>Generic greetings:</strong> "Dear Customer" instead of your actual name</li>
+                        </ul>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Prevention Methods</div>
+                        <p><strong>User training:</strong> Educate staff to recognise phishing attempts<br>
+                        <strong>Spam filters:</strong> Automatically block suspicious emails before they reach users<br>
+                        <strong>Two-factor authentication:</strong> Even if credentials are stolen, accounts remain protected</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>User Access Levels <span class="spec-ref">Spec 1.4</span></h3>
+
+                    <div class="definition">
+                        <div class="definition-term">Access Levels</div>
+                        <div class="definition-text">A security measure that restricts what files and systems each user can access based on their role. Not everyone needs access to everything.</div>
+                    </div>
+
+                    <div class="key-points">
+                        <div class="key-points-header">Permission Types</div>
+                        <ul>
+                            <li><strong>Read:</strong> Can view the file but not change it</li>
+                            <li><strong>Write:</strong> Can modify or add to the file</li>
+                            <li><strong>Execute:</strong> Can run the program/script</li>
+                            <li><strong>Delete:</strong> Can remove the file</li>
+                        </ul>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Example Scenario</div>
+                        <p>In a school: Students can READ assignment briefs but cannot WRITE to them. Teachers can READ and WRITE. Admins have full access including DELETE. This way, if a student's account is compromised, the hacker can't modify important files.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Penetration Testing <span class="spec-ref">Spec 1.4</span></h3>
+
+                    <div class="definition">
+                        <div class="definition-term">Penetration Testing</div>
+                        <div class="definition-text">A simulated cyber attack on a system to find security weaknesses before real hackers do. Often performed by "ethical hackers."</div>
+                    </div>
+
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Real-world analogy</th>
+                        </tr>
+                        <tr>
+                            <td><strong>White Box</strong></td>
+                            <td>Tester has full knowledge of the system (source code, network diagrams)</td>
+                            <td>Like a security guard testing their own building</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Black Box</strong></td>
+                            <td>Tester has no prior knowledge – simulates real external attack</td>
+                            <td>Like a burglar trying to break in with no inside info</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Grey Box</strong></td>
+                            <td>Tester has partial knowledge</td>
+                            <td>Like a former employee testing security</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Questions for Section 4 -->
+                <div class="card">
+                    <h3>✅ Check Your Understanding</h3>
+
+                    <div class="question-box" id="q4-1">
+                        <div class="question-label">Question 1</div>
+                        <p class="question-text">Which of these is a sign that an email might be a phishing attempt?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('4-1', this, false)">It comes from a known contact</button>
+                            <button class="option-btn" onclick="checkAnswer('4-1', this, false)">It has your correct name in the greeting</button>
+                            <button class="option-btn" onclick="checkAnswer('4-1', this, true)">It demands urgent action or your account will be closed</button>
+                            <button class="option-btn" onclick="checkAnswer('4-1', this, false)">The company logo matches the official website</button>
+                        </div>
+                        <div class="feedback" id="fb-4-1"></div>
+                    </div>
+
+                    <div class="question-box" id="q4-2">
+                        <div class="question-label">Question 2</div>
+                        <p class="question-text">Why are user access levels important for security?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('4-2', this, false)">They make the network run faster</button>
+                            <button class="option-btn" onclick="checkAnswer('4-2', this, true)">They limit the damage if an account is compromised</button>
+                            <button class="option-btn" onclick="checkAnswer('4-2', this, false)">They allow everyone to access all files easily</button>
+                            <button class="option-btn" onclick="checkAnswer('4-2', this, false)">They prevent phishing emails from being received</button>
+                        </div>
+                        <div class="feedback" id="fb-4-2"></div>
+                    </div>
+
+                    <div class="question-box" id="q4-3">
+                        <div class="question-label">Question 3</div>
+                        <p class="question-text">What type of penetration testing simulates an attack from someone with NO knowledge of the system?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('4-3', this, false)">White Box</button>
+                            <button class="option-btn" onclick="checkAnswer('4-3', this, true)">Black Box</button>
+                            <button class="option-btn" onclick="checkAnswer('4-3', this, false)">Grey Box</button>
+                            <button class="option-btn" onclick="checkAnswer('4-3', this, false)">Open Box</button>
+                        </div>
+                        <div class="feedback" id="fb-4-3"></div>
+                    </div>
+
+                    <div class="question-box" id="q4-4">
+                        <div class="question-label">Question 4</div>
+                        <p class="question-text">A company trains all staff to recognise suspicious emails. What threat are they primarily protecting against?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('4-4', this, true)">Phishing</button>
+                            <button class="option-btn" onclick="checkAnswer('4-4', this, false)">DDoS attacks</button>
+                            <button class="option-btn" onclick="checkAnswer('4-4', this, false)">SQL injection</button>
+                            <button class="option-btn" onclick="checkAnswer('4-4', this, false)">Brute force attacks</button>
+                        </div>
+                        <div class="feedback" id="fb-4-4"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSection()">← Back</button>
+                    <button class="nav-btn primary" onclick="nextSection()">Continue →</button>
+                </div>
+            </section>
+
+            <!-- Section 5: Systems Software -->
+            <section id="section-5">
+                <div class="card">
+                    <h2><span class="topic-tag software">1.5</span> Systems Software</h2>
+                    
+                    <h3>Operating System: Memory Management <span class="spec-ref">Spec 1.5.1</span></h3>
+
+                    <div class="definition">
+                        <div class="definition-term">Memory Management</div>
+                        <div class="definition-text">The OS function that controls how RAM is allocated to programs, ensuring efficient use and preventing programs from interfering with each other.</div>
+                    </div>
+
+                    <div class="key-points">
+                        <div class="key-points-header">Key Functions</div>
+                        <ul>
+                            <li><strong>RAM Allocation:</strong> OS decides where in RAM each program's data is stored</li>
+                            <li><strong>Protection:</strong> Prevents one program from accessing another program's memory space (security + stability)</li>
+                            <li><strong>Multitasking:</strong> Swaps data in and out of RAM to allow multiple programs to run "simultaneously"</li>
+                            <li><strong>Virtual Memory:</strong> Uses part of the hard drive as "overflow" RAM when physical RAM is full</li>
+                        </ul>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Why This Matters</div>
+                        <p>Without memory management, opening a new browser tab could corrupt your Word document! The OS keeps each program's data separate and manages the limited RAM space.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Peripheral Management <span class="spec-ref">Spec 1.5.1</span></h3>
+
+                    <div class="definition">
+                        <div class="definition-term">Device Drivers</div>
+                        <div class="definition-text">Small programs that allow the operating system to communicate with hardware devices (printers, graphics cards, webcams, etc.).</div>
+                    </div>
+
+                    <div class="definition">
+                        <div class="definition-term">Buffers</div>
+                        <div class="definition-text">Temporary memory areas used to manage the speed difference between fast components (CPU) and slow devices (printer). Data is held in the buffer until the device is ready.</div>
+                    </div>
+
+                    <div class="key-points">
+                        <div class="key-points-header">Example: Print Buffer</div>
+                        <ul>
+                            <li>You click "Print" – the document is sent to the print buffer instantly</li>
+                            <li>The CPU is now free to do other work</li>
+                            <li>The printer slowly takes data from the buffer at its own pace</li>
+                            <li>Without a buffer, you'd have to wait for the printer before doing anything else!</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Questions for Section 5 -->
+                <div class="card">
+                    <h3>✅ Check Your Understanding</h3>
+
+                    <div class="question-box" id="q5-1">
+                        <div class="question-label">Question 1</div>
+                        <p class="question-text">Why does the OS use memory protection?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('5-1', this, false)">To make RAM run faster</button>
+                            <button class="option-btn" onclick="checkAnswer('5-1', this, true)">To prevent programs from accessing each other's memory space</button>
+                            <button class="option-btn" onclick="checkAnswer('5-1', this, false)">To increase the total amount of RAM available</button>
+                            <button class="option-btn" onclick="checkAnswer('5-1', this, false)">To connect to peripheral devices</button>
+                        </div>
+                        <div class="feedback" id="fb-5-1"></div>
+                    </div>
+
+                    <div class="question-box" id="q5-2">
+                        <div class="question-label">Question 2</div>
+                        <p class="question-text">What is the purpose of a device driver?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('5-2', this, false)">To speed up the CPU</button>
+                            <button class="option-btn" onclick="checkAnswer('5-2', this, false)">To store files permanently</button>
+                            <button class="option-btn" onclick="checkAnswer('5-2', this, true)">To allow the OS to communicate with hardware devices</button>
+                            <button class="option-btn" onclick="checkAnswer('5-2', this, false)">To compress data for transmission</button>
+                        </div>
+                        <div class="feedback" id="fb-5-2"></div>
+                    </div>
+
+                    <div class="question-box" id="q5-3">
+                        <div class="question-label">Question 3</div>
+                        <p class="question-text">Why does a printer use a buffer?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('5-3', this, true)">To manage the speed difference between the fast CPU and slow printer</button>
+                            <button class="option-btn" onclick="checkAnswer('5-3', this, false)">To store printed documents permanently</button>
+                            <button class="option-btn" onclick="checkAnswer('5-3', this, false)">To connect to the internet wirelessly</button>
+                            <button class="option-btn" onclick="checkAnswer('5-3', this, false)">To reduce the cost of ink</button>
+                        </div>
+                        <div class="feedback" id="fb-5-3"></div>
+                    </div>
+
+                    <div class="question-box" id="q5-4">
+                        <div class="question-label">Question 4</div>
+                        <p class="question-text">How does the OS enable multitasking?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('5-4', this, false)">By adding more CPU cores automatically</button>
+                            <button class="option-btn" onclick="checkAnswer('5-4', this, true)">By rapidly swapping data in and out of RAM between programs</button>
+                            <button class="option-btn" onclick="checkAnswer('5-4', this, false)">By deleting unused programs</button>
+                            <button class="option-btn" onclick="checkAnswer('5-4', this, false)">By increasing the clock speed</button>
+                        </div>
+                        <div class="feedback" id="fb-5-4"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSection()">← Back</button>
+                    <button class="nav-btn primary" onclick="nextSection()">Continue →</button>
+                </div>
+            </section>
+
+            <!-- Section 6: Ethical, Legal, Cultural -->
+            <section id="section-6">
+                <div class="card">
+                    <h2><span class="topic-tag ethics">1.6</span> Ethical, Legal, Cultural & Environmental</h2>
+                    
+                    <h3>Cultural Impacts <span class="spec-ref">Spec 1.6</span></h3>
+
+                    <div class="definition">
+                        <div class="definition-term">Digital Divide</div>
+                        <div class="definition-text">The gap between those who have access to technology and those who don't. Caused by factors like age, wealth, location (rural vs urban), and education.</div>
+                    </div>
+
+                    <div class="key-points">
+                        <div class="key-points-header">Key Cultural Issues</div>
+                        <ul>
+                            <li><strong>Censorship:</strong> Governments controlling what citizens can access online (e.g., blocking social media)</li>
+                            <li><strong>Globalisation:</strong> Technology spreading Western culture globally – potentially eroding local cultures and languages</li>
+                            <li><strong>Monitoring/Surveillance:</strong> Cultural shift toward accepting tracking (CCTV, phone location) in exchange for convenience or security</li>
+                            <li><strong>Social isolation:</strong> Online interactions replacing face-to-face community connections</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Computer Misuse Act 1990 <span class="spec-ref">Spec 1.6</span></h3>
+
+                    <div class="definition">
+                        <div class="definition-term">Computer Misuse Act (1990)</div>
+                        <div class="definition-text">UK law designed to combat hacking and cybercrime. Makes it illegal to access or modify computer systems without authorisation.</div>
+                    </div>
+
+                    <div class="key-points">
+                        <div class="key-points-header">The 3 Offences</div>
+                        <ul>
+                            <li><strong>Section 1:</strong> Unauthorised access to computer material (basic hacking – accessing files you shouldn't)</li>
+                            <li><strong>Section 2:</strong> Unauthorised access with intent to commit further crime (hacking to steal money or data)</li>
+                            <li><strong>Section 3:</strong> Unauthorised modification of computer material (creating/spreading viruses, ransomware, deleting files)</li>
+                        </ul>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Common Exam Scenario</div>
+                        <p>"A student guesses their friend's password and reads their emails" = Section 1 offence<br>
+                        "A hacker installs ransomware on a hospital network" = Section 3 offence</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Privacy <span class="spec-ref">Spec 1.6</span></h3>
+
+                    <div class="key-points">
+                        <div class="key-points-header">Privacy Concerns</div>
+                        <ul>
+                            <li><strong>Cookies:</strong> Small files that track browsing behaviour – used for targeted advertising</li>
+                            <li><strong>Algorithms:</strong> Social media uses your data to show personalised content (filter bubbles)</li>
+                            <li><strong>Consent:</strong> Ethical requirement to inform users HOW their data is being collected and used</li>
+                            <li><strong>Data Protection:</strong> Users have the right to see what data is held about them and request deletion</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Questions for Section 6 -->
+                <div class="card">
+                    <h3>✅ Check Your Understanding</h3>
+
+                    <div class="question-box" id="q6-1">
+                        <div class="question-label">Question 1</div>
+                        <p class="question-text">What is the "digital divide"?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('6-1', this, false)">The difference between analog and digital signals</button>
+                            <button class="option-btn" onclick="checkAnswer('6-1', this, true)">The gap between those who have access to technology and those who don't</button>
+                            <button class="option-btn" onclick="checkAnswer('6-1', this, false)">The division between hardware and software</button>
+                            <button class="option-btn" onclick="checkAnswer('6-1', this, false)">The difference between Wi-Fi and Ethernet</button>
+                        </div>
+                        <div class="feedback" id="fb-6-1"></div>
+                    </div>
+
+                    <div class="question-box" id="q6-2">
+                        <div class="question-label">Question 2</div>
+                        <p class="question-text">Under the Computer Misuse Act, which section covers creating and spreading viruses?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('6-2', this, false)">Section 1 – Unauthorised access</button>
+                            <button class="option-btn" onclick="checkAnswer('6-2', this, false)">Section 2 – Access with intent</button>
+                            <button class="option-btn" onclick="checkAnswer('6-2', this, true)">Section 3 – Unauthorised modification</button>
+                            <button class="option-btn" onclick="checkAnswer('6-2', this, false)">Section 4 – Data theft</button>
+                        </div>
+                        <div class="feedback" id="fb-6-2"></div>
+                    </div>
+
+                    <div class="question-box" id="q6-3">
+                        <div class="question-label">Question 3</div>
+                        <p class="question-text">What are cookies used for on websites?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('6-3', this, false)">To speed up the internet connection</button>
+                            <button class="option-btn" onclick="checkAnswer('6-3', this, false)">To protect against viruses</button>
+                            <button class="option-btn" onclick="checkAnswer('6-3', this, true)">To track browsing behaviour for personalised content/ads</button>
+                            <button class="option-btn" onclick="checkAnswer('6-3', this, false)">To compress images on websites</button>
+                        </div>
+                        <div class="feedback" id="fb-6-3"></div>
+                    </div>
+
+                    <div class="question-box" id="q6-4">
+                        <div class="question-label">Question 4</div>
+                        <p class="question-text">A government blocks access to certain news websites for its citizens. This is an example of:</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('6-4', this, false)">Digital divide</button>
+                            <button class="option-btn" onclick="checkAnswer('6-4', this, true)">Censorship</button>
+                            <button class="option-btn" onclick="checkAnswer('6-4', this, false)">Globalisation</button>
+                            <button class="option-btn" onclick="checkAnswer('6-4', this, false)">Social engineering</button>
+                        </div>
+                        <div class="feedback" id="fb-6-4"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSection()">← Back</button>
+                    <button class="nav-btn primary" onclick="nextSection()">Continue →</button>
+                </div>
+            </section>
+
+            <!-- Section 7: Final Quiz -->
+            <section id="section-7">
+                <div class="card">
+                    <h2>🎯 Final Challenge: Mixed Questions</h2>
+                    <p>Test yourself with questions from across all topics. These are exam-style questions that require you to apply your knowledge.</p>
+                </div>
+
+                <div class="card">
+                    <div class="question-box" id="qf-1">
+                        <div class="question-label">Question 1 – Systems Architecture</div>
+                        <p class="question-text">Explain why a computer with more cache memory typically performs faster than one with less cache.</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('f-1', this, false)">More cache increases the CPU clock speed directly</button>
+                            <button class="option-btn" onclick="checkAnswer('f-1', this, true)">More frequently used data is stored closer to the CPU, reducing slow RAM accesses</button>
+                            <button class="option-btn" onclick="checkAnswer('f-1', this, false)">Cache memory is the same as RAM so more means more total memory</button>
+                            <button class="option-btn" onclick="checkAnswer('f-1', this, false)">Cache connects to more cores simultaneously</button>
+                        </div>
+                        <div class="feedback" id="fb-f-1"></div>
+                    </div>
+
+                    <div class="question-box" id="qf-2">
+                        <div class="question-label">Question 2 – Storage</div>
+                        <p class="question-text">A music streaming service uses lossy compression for its songs. Explain why lossy is chosen over lossless.</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('f-2', this, true)">Lossy creates much smaller files for faster streaming, and slight quality loss is acceptable for casual listening</button>
+                            <button class="option-btn" onclick="checkAnswer('f-2', this, false)">Lossy provides better audio quality than lossless</button>
+                            <button class="option-btn" onclick="checkAnswer('f-2', this, false)">Lossy files can be easily converted back to the original</button>
+                            <button class="option-btn" onclick="checkAnswer('f-2', this, false)">Lossy compression is required by copyright law</button>
+                        </div>
+                        <div class="feedback" id="fb-f-2"></div>
+                    </div>
+
+                    <div class="question-box" id="qf-3">
+                        <div class="question-label">Question 3 – Networks</div>
+                        <p class="question-text">A company's email system allows employees to access emails from home, the office, and their phone – all showing the same inbox. Which protocol enables this?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('f-3', this, false)">POP – downloads emails to all devices</button>
+                            <button class="option-btn" onclick="checkAnswer('f-3', this, true)">IMAP – synchronises with the server so all devices show the same state</button>
+                            <button class="option-btn" onclick="checkAnswer('f-3', this, false)">SMTP – sends copies to each device</button>
+                            <button class="option-btn" onclick="checkAnswer('f-3', this, false)">HTTPS – securely transfers emails</button>
+                        </div>
+                        <div class="feedback" id="fb-f-3"></div>
+                    </div>
+
+                    <div class="question-box" id="qf-4">
+                        <div class="question-label">Question 4 – Security</div>
+                        <p class="question-text">A hospital gives nurses read-only access to patient records, while doctors have read-write access. This is an example of:</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('f-4', this, false)">Penetration testing</button>
+                            <button class="option-btn" onclick="checkAnswer('f-4', this, false)">Phishing prevention</button>
+                            <button class="option-btn" onclick="checkAnswer('f-4', this, true)">User access levels</button>
+                            <button class="option-btn" onclick="checkAnswer('f-4', this, false)">Encryption</button>
+                        </div>
+                        <div class="feedback" id="fb-f-4"></div>
+                    </div>
+
+                    <div class="question-box" id="qf-5">
+                        <div class="question-label">Question 5 – Systems Software</div>
+                        <p class="question-text">A user installs a new webcam but it doesn't work until they download software from the manufacturer. What did they download?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('f-5', this, true)">A device driver</button>
+                            <button class="option-btn" onclick="checkAnswer('f-5', this, false)">An operating system update</button>
+                            <button class="option-btn" onclick="checkAnswer('f-5', this, false)">A buffer</button>
+                            <button class="option-btn" onclick="checkAnswer('f-5', this, false)">A compiler</button>
+                        </div>
+                        <div class="feedback" id="fb-f-5"></div>
+                    </div>
+
+                    <div class="question-box" id="qf-6">
+                        <div class="question-label">Question 6 – Ethics & Law</div>
+                        <p class="question-text">An employee uses their work login to access confidential salary files they shouldn't see. Which law have they broken?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('f-6', this, true)">Computer Misuse Act 1990 (Section 1)</button>
+                            <button class="option-btn" onclick="checkAnswer('f-6', this, false)">Data Protection Act</button>
+                            <button class="option-btn" onclick="checkAnswer('f-6', this, false)">Copyright, Designs and Patents Act</button>
+                            <button class="option-btn" onclick="checkAnswer('f-6', this, false)">Freedom of Information Act</button>
+                        </div>
+                        <div class="feedback" id="fb-f-6"></div>
+                    </div>
+
+                    <div class="question-box" id="qf-7">
+                        <div class="question-label">Question 7 – Fetch-Execute</div>
+                        <p class="question-text">During which stage of the fetch-execute cycle does the Control Unit interpret the instruction?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('f-7', this, false)">Fetch</button>
+                            <button class="option-btn" onclick="checkAnswer('f-7', this, true)">Decode</button>
+                            <button class="option-btn" onclick="checkAnswer('f-7', this, false)">Execute</button>
+                            <button class="option-btn" onclick="checkAnswer('f-7', this, false)">Store</button>
+                        </div>
+                        <div class="feedback" id="fb-f-7"></div>
+                    </div>
+
+                    <div class="question-box" id="qf-8">
+                        <div class="question-label">Question 8 – Networks</div>
+                        <p class="question-text">What is ONE benefit of using a layered approach to network design?</p>
+                        <div class="options-grid">
+                            <button class="option-btn" onclick="checkAnswer('f-8', this, false)">Networks become completely unhackable</button>
+                            <button class="option-btn" onclick="checkAnswer('f-8', this, false)">Data travels faster between computers</button>
+                            <button class="option-btn" onclick="checkAnswer('f-8', this, true)">Hardware and software from different manufacturers can work together</button>
+                            <button class="option-btn" onclick="checkAnswer('f-8', this, false)">WiFi signals reach further distances</button>
+                        </div>
+                        <div class="feedback" id="fb-f-8"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSection()">← Back</button>
+                    <button class="nav-btn primary" onclick="nextSection()">Finish & Get Badge →</button>
+                </div>
+            </section>
+
+            <!-- Section 8: Badge -->
+            <section id="section-8">
+                <div class="card">
+                    <h2>📋 Revision Summary</h2>
+                    
+                    <div class="summary-box">
+                        <h4>1.1 Systems Architecture</h4>
+                        <ul>
+                            <li>Cache: Fast memory near CPU, stores frequently used data</li>
+                            <li>ALU: Calculations & logic | CU: Decodes, sends signals</li>
+                            <li>MAR holds addresses | MDR holds data</li>
+                            <li>Fetch → Decode → Execute</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box">
+                        <h4>1.2 Memory & Storage</h4>
+                        <ul>
+                            <li>HDD: Cheap, high capacity, fragile | SSD: Fast, durable, expensive</li>
+                            <li>Lossy: Quality loss, small files | Lossless: Perfect quality, larger files</li>
+                            <li>Image size = W × H × Colour Depth</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box">
+                        <h4>1.3 Networks & Protocols</h4>
+                        <ul>
+                            <li>SMTP sends | IMAP syncs | POP downloads & deletes</li>
+                            <li>IPv6 created because IPv4 addresses ran out</li>
+                            <li>Layers allow interoperability and isolation of changes</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box">
+                        <h4>1.4 Security</h4>
+                        <ul>
+                            <li>Phishing: Fake emails to steal data | Prevent with training</li>
+                            <li>Access levels: Read/Write/Execute permissions</li>
+                            <li>Pen testing: White box (inside knowledge) vs Black box (external)</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box">
+                        <h4>1.5 Systems Software</h4>
+                        <ul>
+                            <li>OS manages memory allocation & protection</li>
+                            <li>Drivers let OS talk to hardware</li>
+                            <li>Buffers manage speed differences (fast CPU → slow printer)</li>
+                        </ul>
+                    </div>
+
+                    <div class="summary-box">
+                        <h4>1.6 Ethics & Law</h4>
+                        <ul>
+                            <li>Digital divide: Gap in tech access</li>
+                            <li>CMA 1990: S1 (access), S2 (intent), S3 (modification/viruses)</li>
+                            <li>Cookies track behaviour | Users must give consent</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="badge-section">
+                    <h2>🏆 Claim Your Badge</h2>
+                    
+                    <div id="badgeLocked" class="badge-locked">
+                        <div class="lock-icon">🔒</div>
+                        <p style="color: var(--text-secondary);">Complete more questions to unlock your badge</p>
+                        <div class="badge-progress">
+                            <div class="progress-track">
+                                <div class="progress-fill" id="badgeProgress" style="width: 0%"></div>
+                            </div>
+                            <p class="progress-text" style="margin-top: 8px;"><span id="badgeScoreText">0</span>/60 points</p>
+                        </div>
+                    </div>
+
+                    <div id="badgeUnlocked">
+                        <p>🎉 Congratulations! You're ready for your mock!</p>
+                        
+                        <div class="badge-input-group">
+                            <input type="text" class="badge-input" id="badgeNameInput" placeholder="Enter your name" maxlength="25">
+                            <button class="btn btn-primary" onclick="generateBadge()">Generate Badge</button>
+                        </div>
+
+                        <div class="badge-display" id="badgeDisplay">
+                            <div class="badge-card">
+                                <div class="badge-icon">🖥️</div>
+                                <div class="badge-title">GCSE Computer Science</div>
+                                <div class="badge-topic">Paper 1 Predicted Topics</div>
+                                <div class="badge-name" id="badgeName"></div>
+                                <div class="badge-date" id="badgeDate"></div>
+                                <div class="badge-score" id="badgeScore"></div>
+                            </div>
+                            <div class="badge-hint">📸 Screenshot to save your badge!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSection()">← Back</button>
+                    <button class="nav-btn primary" disabled style="opacity: 0.6;">Revision Complete! 🎉</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // State
+        let currentSection = 0;
+        const totalSections = 9;
+        let score = 0;
+        const maxScore = 60;
+        let answeredQuestions = new Set();
+        let completedSections = new Set();
+
+        // Feedback messages
+        const feedback = {
+            '1-1': { correct: "Cache stores frequently used data close to the CPU, reducing slow RAM fetches.", incorrect: "Think about where cache sits in the speed hierarchy – faster than RAM, closer to the CPU." },
+            '1-2': { correct: "The ALU handles both arithmetic AND logical comparisons like > and =.", incorrect: "Comparisons (>, <, =) are logical operations – which component handles logic?" },
+            '1-3': { correct: "MAR = Memory Address Register – it holds the ADDRESS of data to fetch.", incorrect: "MAR holds the Address, MDR holds the Data. Think: A for Address." },
+            '1-4': { correct: "More cache = more frequently used data stored fast = fewer slow RAM accesses.", incorrect: "Cache improves performance by reducing how often the CPU needs to access slower RAM." },
+            '2-1': { correct: "HDDs offer the lowest cost per GB – ideal for bulk storage on a budget.", incorrect: "For large capacity on a budget, magnetic (HDD) is cheapest per GB." },
+            '2-2': { correct: "Lossless compression keeps ALL original data – perfect for editing.", incorrect: "Photographers need perfect quality – lossy would permanently remove data." },
+            '2-3': { correct: "1024 × 768 × 8 = 6,291,456 bits ÷ 8 = 786,432 bytes ≈ 786 KB", incorrect: "Calculate: Width × Height × Colour Depth, then convert bits to bytes to KB." },
+            '2-4': { correct: "SSDs are faster (no moving parts) and more durable – important for portable devices.", incorrect: "Laptops need durability (dropped!) and speed – SSDs have no moving parts." },
+            '3-1': { correct: "SMTP = Simple Mail Transfer Protocol – used for SENDING emails.", incorrect: "SMTP sends, IMAP/POP receive. Think: S for Sending." },
+            '3-2': { correct: "IPv4 only has ~4.3 billion addresses – we needed more for all internet devices.", incorrect: "IPv6 was created because we ran out of IPv4 addresses." },
+            '3-3': { correct: "Layers are self-contained – changes in one don't affect others.", incorrect: "Layers provide modularity – one can change without breaking the rest." },
+            '3-4': { correct: "IMAP syncs with the server – same inbox appears on all devices.", incorrect: "IMAP keeps emails on the server and syncs; POP downloads and deletes." },
+            '4-1': { correct: "Urgency and threats are classic phishing tactics to make you act without thinking.", incorrect: "Phishing uses urgency and fear to bypass your critical thinking." },
+            '4-2': { correct: "If an account is hacked, access levels limit what the attacker can reach.", incorrect: "Access levels follow 'least privilege' – users only get what they need." },
+            '4-3': { correct: "Black Box = no knowledge, simulating a real external attacker.", incorrect: "Black box testers have no inside info – just like real hackers." },
+            '4-4': { correct: "User training is the primary defence against social engineering like phishing.", incorrect: "Phishing is a social engineering attack – training helps users recognise it." },
+            '5-1': { correct: "Memory protection stops programs crashing each other by accessing wrong memory.", incorrect: "Without protection, one buggy program could corrupt another's data." },
+            '5-2': { correct: "Drivers are translators between the OS and specific hardware devices.", incorrect: "Device drivers let the OS communicate with hardware like printers/webcams." },
+            '5-3': { correct: "The buffer holds data while the slow printer catches up with the fast CPU.", incorrect: "Buffers manage speed differences between fast and slow components." },
+            '5-4': { correct: "The OS rapidly switches between programs, giving the illusion of simultaneous running.", incorrect: "Multitasking = OS quickly swapping programs in and out of RAM." },
+            '6-1': { correct: "The digital divide is the inequality in technology access between different groups.", incorrect: "Digital divide = gap between tech haves and have-nots." },
+            '6-2': { correct: "Section 3 covers unauthorised modification – including creating malware.", incorrect: "Creating viruses modifies systems without permission = Section 3." },
+            '6-3': { correct: "Cookies track your browsing to personalise ads and content.", incorrect: "Cookies are used for tracking behaviour and personalisation." },
+            '6-4': { correct: "Government blocking websites is censorship – controlling what citizens can access.", incorrect: "Blocking access to information is censorship." },
+            'f-1': { correct: "More cache = more frequently used data stored close to CPU = fewer slow RAM fetches.", incorrect: "Cache reduces the need to access slower RAM." },
+            'f-2': { correct: "Streaming needs small files; slight quality loss is acceptable for most listeners.", incorrect: "Lossy = smaller files for streaming; quality loss acceptable for casual use." },
+            'f-3': { correct: "IMAP keeps emails on the server, syncing all devices to show the same inbox.", incorrect: "IMAP syncs; POP would download to one device and delete from server." },
+            'f-4': { correct: "Different permissions for different roles = user access levels.", incorrect: "Access levels restrict what users can do based on their role." },
+            'f-5': { correct: "Device drivers let the OS communicate with new hardware.", incorrect: "Drivers are needed for the OS to talk to hardware devices." },
+            'f-6': { correct: "Accessing files without authorisation = CMA Section 1.", incorrect: "Unauthorised access to computer material = CMA Section 1." },
+            'f-7': { correct: "Decode stage = CU interprets the instruction fetched from memory.", incorrect: "The Control Unit decodes instructions during the Decode stage." },
+            'f-8': { correct: "Layered design allows interoperability between different manufacturers' equipment.", incorrect: "Layers enable different manufacturers' products to work together." }
+        };
+
+        // Navigation
+        function updateProgress() {
+            const pct = (currentSection / (totalSections - 1)) * 100;
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('currentSection').textContent = currentSection;
+            updateNavDots();
+        }
+
+        function updateScore() {
+            document.getElementById('totalScore').textContent = score;
+            document.getElementById('badgeScoreText').textContent = score;
+            document.getElementById('badgeProgress').style.width = (score / maxScore * 100) + '%';
+            
+            // Unlock badge at 30+ points
+            if (score >= 30) {
+                document.getElementById('badgeLocked').style.display = 'none';
+                document.getElementById('badgeUnlocked').style.display = 'block';
+            }
+        }
+
+        function updateNavDots() {
+            const container = document.getElementById('navDots');
+            container.innerHTML = '';
+            for (let i = 0; i < totalSections; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'nav-dot';
+                if (i === currentSection) dot.classList.add('active');
+                if (completedSections.has(i)) dot.classList.add('completed');
+                dot.onclick = () => showSection(i);
+                container.appendChild(dot);
+            }
+        }
+
+        function showSection(num) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(`section-${num}`).classList.add('active');
+            
+            if (currentSection < num) completedSections.add(currentSection);
+            currentSection = num;
+            
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextSection() {
+            if (currentSection < totalSections - 1) showSection(currentSection + 1);
+        }
+
+        function prevSection() {
+            if (currentSection > 0) showSection(currentSection - 1);
+        }
+
+        // Questions
+        function checkAnswer(id, btn, isCorrect) {
+            if (answeredQuestions.has(id)) return;
+            answeredQuestions.add(id);
+
+            btn.parentElement.querySelectorAll('.option-btn').forEach(b => {
+                b.disabled = true;
+                if (b === btn) b.classList.add(isCorrect ? 'correct' : 'incorrect');
+            });
+
+            const fb = document.getElementById(`fb-${id}`);
+            fb.textContent = isCorrect ? '✓ ' + feedback[id].correct : '✗ ' + feedback[id].incorrect;
+            fb.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+
+            if (isCorrect) score += 2;
+            else score += 1; // Partial credit for attempting
+            
+            updateScore();
+        }
+
+        // Badge
+        function generateBadge() {
+            const name = document.getElementById('badgeNameInput').value.trim();
+            if (!name) {
+                document.getElementById('badgeNameInput').style.borderColor = 'var(--accent-magenta)';
+                return;
+            }
+
+            document.getElementById('badgeName').textContent = name;
+            document.getElementById('badgeDate').textContent = new Date().toLocaleDateString('en-GB', {
+                day: 'numeric', month: 'long', year: 'numeric'
+            });
+            document.getElementById('badgeScore').textContent = `Score: ${score}/${maxScore}`;
+            document.getElementById('badgeDisplay').classList.add('show');
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgress();
+            updateScore();
+        });
+    </script>
+</body>
+</html>

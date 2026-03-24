@@ -1,0 +1,1978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variables, Constants & Data Types | GCSE Computer Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --text-muted: #555566;
+            --border-subtle: #2a2a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; line-height: 1.7; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        header { text-align: center; margin-bottom: 50px; }
+
+        .exam-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; font-weight: 300; }
+
+        /* Progress Dots */
+        .progress-container { margin-top: 30px; }
+        .progress-bar { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
+        .progress-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--border-subtle);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .progress-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 12px var(--accent-cyan);
+            transform: scale(1.2);
+        }
+        .progress-dot.completed { background: var(--accent-green); }
+        .progress-label { margin-top: 12px; font-size: 0.9rem; color: var(--text-muted); }
+
+        section { display: none; animation: fadeIn 0.5s ease; }
+        section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        .learning-objective {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.02));
+            border-left: 3px solid var(--accent-cyan);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 0 12px 12px 0;
+        }
+        .learning-objective-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-cyan); margin-bottom: 6px; }
+        .learning-objective ul { color: var(--text-primary); margin-top: 10px; padding-left: 20px; }
+        .learning-objective li { margin-bottom: 6px; }
+
+        h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--accent-cyan); }
+        h3 { font-size: 1.15rem; margin-bottom: 14px; color: var(--text-primary); }
+        p { color: var(--text-secondary); margin-bottom: 14px; }
+
+        .highlight { color: var(--accent-yellow); font-weight: 600; }
+        .highlight-cyan { color: var(--accent-cyan); font-weight: 600; }
+        .highlight-green { color: var(--accent-green); font-weight: 600; }
+        .highlight-purple { color: var(--accent-purple); font-weight: 600; }
+        .highlight-orange { color: var(--accent-orange); font-weight: 600; }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+
+        /* Storage Box Visual */
+        .storage-visual {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .storage-box {
+            width: 160px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .storage-box:hover {
+            transform: translateY(-5px);
+        }
+        .storage-box.variable {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 212, 255, 0.05));
+            border: 3px solid var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+        .storage-box.constant {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.15), rgba(255, 149, 0, 0.05));
+            border: 3px solid var(--accent-orange);
+            box-shadow: 0 0 20px rgba(255, 149, 0, 0.2);
+        }
+        .storage-box .box-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        .storage-box .box-label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .storage-box.variable .box-label { color: var(--accent-cyan); }
+        .storage-box.constant .box-label { color: var(--accent-orange); }
+        .storage-box .box-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            margin-top: 8px;
+            color: var(--text-primary);
+        }
+        .storage-box .box-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+        .storage-box.variable .box-value { color: var(--accent-cyan); }
+        .storage-box.constant .box-value { color: var(--accent-orange); }
+        .storage-box .box-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Code Block with Syntax Highlighting */
+        .code-block {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            overflow-x: auto;
+            line-height: 1.8;
+            white-space: pre;
+        }
+        .code-block .keyword { color: var(--accent-magenta); }
+        .code-block .variable { color: var(--accent-cyan); }
+        .code-block .string { color: var(--accent-green); }
+        .code-block .number { color: var(--accent-purple); }
+        .code-block .comment { color: var(--text-muted); font-style: italic; }
+        .code-block .operator { color: var(--accent-yellow); }
+        .code-block .constant { color: var(--accent-orange); }
+        .code-block .boolean { color: var(--accent-yellow); }
+
+        /* Data Type Cards */
+        .type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .type-card {
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .type-card:hover {
+            transform: translateY(-4px);
+        }
+        .type-card.string {
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);
+        }
+        .type-card.string:hover { box-shadow: 0 0 25px rgba(0, 212, 255, 0.3); }
+        .type-card.integer {
+            border: 2px solid var(--accent-purple);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.1);
+        }
+        .type-card.integer:hover { box-shadow: 0 0 25px rgba(168, 85, 247, 0.3); }
+        .type-card.float {
+            border: 2px solid var(--accent-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+        }
+        .type-card.float:hover { box-shadow: 0 0 25px rgba(0, 255, 136, 0.3); }
+        .type-card.boolean {
+            border: 2px solid var(--accent-yellow);
+            box-shadow: 0 0 15px rgba(255, 214, 10, 0.1);
+        }
+        .type-card.boolean:hover { box-shadow: 0 0 25px rgba(255, 214, 10, 0.3); }
+        .type-card.character {
+            border: 2px solid var(--accent-magenta);
+            box-shadow: 0 0 15px rgba(255, 0, 110, 0.1);
+        }
+        .type-card.character:hover { box-shadow: 0 0 25px rgba(255, 0, 110, 0.3); }
+        .type-card .type-icon { font-size: 2rem; margin-bottom: 10px; }
+        .type-card .type-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 6px; }
+        .type-card.string .type-name { color: var(--accent-cyan); }
+        .type-card.integer .type-name { color: var(--accent-purple); }
+        .type-card.float .type-name { color: var(--accent-green); }
+        .type-card.boolean .type-name { color: var(--accent-yellow); }
+        .type-card.character .type-name { color: var(--accent-magenta); }
+        .type-card .type-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px; }
+        .type-card .type-example {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            background: var(--bg-card);
+            border-radius: 6px;
+        }
+        .type-card.string .type-example { color: var(--accent-cyan); }
+        .type-card.integer .type-example { color: var(--accent-purple); }
+        .type-card.float .type-example { color: var(--accent-green); }
+        .type-card.boolean .type-example { color: var(--accent-yellow); }
+        .type-card.character .type-example { color: var(--accent-magenta); }
+
+        /* Key Term Box */
+        .key-term {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+        .key-term-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .key-term-badge {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+        .key-term-word { font-weight: 600; color: var(--accent-cyan); }
+        .key-term p { margin: 0; color: var(--text-secondary); }
+
+        /* Analogy Box */
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(255, 214, 10, 0.15), rgba(255, 149, 0, 0.08));
+            border: 2px solid rgba(255, 214, 10, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .analogy-box-header {
+            font-weight: 600;
+            color: var(--accent-yellow);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        .analogy-box p { margin: 0; color: var(--text-primary); }
+
+        /* Think Box */
+        .think-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(168, 85, 247, 0.05));
+            border: 2px solid rgba(168, 85, 247, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .think-box-header { font-weight: 600; color: var(--accent-purple); margin-bottom: 10px; font-size: 1.1rem; }
+        .think-box p { margin: 0; color: var(--text-primary); }
+
+        /* Warning Box */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.15), rgba(255, 0, 110, 0.05));
+            border: 2px solid rgba(255, 0, 110, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .warning-box-header { font-weight: 600; color: var(--accent-magenta); margin-bottom: 10px; font-size: 1.1rem; }
+        .warning-box p { margin: 0; color: var(--text-primary); }
+
+        /* Syntax Box */
+        .syntax-box {
+            background: var(--bg-dark);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .syntax-box h4 {
+            color: var(--accent-cyan);
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .syntax-box code {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            background: none;
+            padding: 0;
+        }
+        .syntax-box .note { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+
+        /* Naming Rules Grid */
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .rule-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+        }
+        .rule-icon { font-size: 1.2rem; }
+        .rule-icon.valid { color: var(--accent-green); }
+        .rule-icon.invalid { color: var(--accent-magenta); }
+        .rule-text { font-size: 0.9rem; }
+        .rule-text code { font-size: 0.85rem; }
+
+        /* Interactive Classifier */
+        .classifier-container { margin: 20px 0; }
+        .classifier-instruction {
+            background: linear-gradient(135deg, rgba(255, 214, 10, 0.1), rgba(255, 149, 0, 0.05));
+            border: 1px solid rgba(255, 214, 10, 0.3);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            color: var(--accent-yellow);
+            font-weight: 500;
+        }
+        .classifier-items { display: flex; flex-direction: column; gap: 10px; }
+        .classifier-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 14px 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .classifier-item:hover { transform: translateX(4px); }
+        .classifier-item.variable {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+        .classifier-item.constant {
+            border-color: var(--accent-orange);
+            background: rgba(255, 149, 0, 0.1);
+        }
+        .classifier-item.correct { box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
+        .classifier-item.incorrect { box-shadow: 0 0 15px rgba(255, 0, 110, 0.3); border-color: var(--accent-magenta); }
+        .classifier-item.locked { cursor: not-allowed; }
+        .classifier-badge {
+            min-width: 90px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .classifier-badge.none { background: var(--border-subtle); color: var(--text-muted); }
+        .classifier-badge.variable { background: var(--accent-cyan); color: var(--bg-dark); }
+        .classifier-badge.constant { background: var(--accent-orange); color: var(--bg-dark); }
+        .classifier-text { flex: 1; color: var(--text-primary); }
+        .classifier-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Data Type Matcher */
+        .matcher-container { margin: 20px 0; }
+        .matcher-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 18px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+        }
+        .matcher-item.correct { border-color: var(--accent-green); background: rgba(0, 255, 136, 0.1); }
+        .matcher-item.incorrect { border-color: var(--accent-magenta); background: rgba(255, 0, 110, 0.1); }
+        .matcher-value {
+            flex: 1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+        .matcher-select {
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            cursor: pointer;
+            min-width: 130px;
+        }
+        .matcher-select:focus { outline: none; border-color: var(--accent-cyan); }
+        .matcher-select.correct { border-color: var(--accent-green); background: rgba(0, 255, 136, 0.1); }
+        .matcher-select.incorrect { border-color: var(--accent-magenta); background: rgba(255, 0, 110, 0.1); }
+
+        /* Question Box */
+        .question-box {
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+        .question-box p { color: var(--text-primary); margin-bottom: 16px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            padding: 14px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+        .option-btn:hover:not(:disabled) { border-color: var(--accent-cyan); transform: translateX(4px); }
+        .option-btn.correct { border-color: var(--accent-green); background: rgba(0, 255, 136, 0.15); }
+        .option-btn.incorrect { border-color: var(--accent-magenta); background: rgba(255, 0, 110, 0.15); }
+        .option-btn:disabled { cursor: not-allowed; }
+
+        .feedback {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback.show { display: block; }
+        .feedback.success { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--accent-green); color: var(--accent-green); }
+        .feedback.error { background: rgba(255, 0, 110, 0.1); border: 1px solid var(--accent-magenta); color: var(--accent-magenta); }
+
+        /* Controls */
+        .controls { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+        .control-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .control-btn.primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+        }
+        .control-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3); }
+        .control-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+        .control-btn.secondary:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+
+        .exercise-result {
+            margin-top: 16px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        .exercise-result.show { display: block; }
+        .exercise-result.success { background: rgba(0, 255, 136, 0.1); border: 2px solid var(--accent-green); }
+        .exercise-result.partial { background: rgba(255, 214, 10, 0.1); border: 2px solid var(--accent-yellow); }
+        .exercise-result h4 { margin-bottom: 4px; }
+        .exercise-result.success h4 { color: var(--accent-green); }
+        .exercise-result.partial h4 { color: var(--accent-yellow); }
+        .exercise-result p { margin: 0; color: var(--text-secondary); }
+
+        /* ORANGE Notes Summary */
+        .notes-summary {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.12), rgba(255, 214, 10, 0.06));
+            border: 2px solid rgba(255, 149, 0, 0.4);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 24px;
+        }
+        .notes-summary-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            color: var(--accent-orange);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .notes-summary h4 {
+            color: var(--accent-yellow);
+            font-size: 1rem;
+            margin: 16px 0 8px 0;
+        }
+        .notes-summary h4:first-of-type { margin-top: 0; }
+        .notes-summary ul { color: var(--text-primary); margin: 0; padding-left: 20px; }
+        .notes-summary li { margin-bottom: 6px; }
+
+        /* Navigation */
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; gap: 12px; }
+        .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .nav-btn.prev {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+        .nav-btn.prev:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+        .nav-btn.next { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); color: white; }
+        .nav-btn.next:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3); }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
+
+        /* Badge Generator */
+        .badge-generator {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 2px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+        .badge-generator h3 { color: var(--accent-cyan); margin-bottom: 8px; }
+        .badge-generator > p { color: var(--text-secondary); margin-bottom: 20px; }
+        .badge-progress { max-width: 300px; margin: 0 auto 20px; }
+        .badge-progress-bar {
+            height: 12px;
+            background: var(--bg-dark);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+        }
+        .badge-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .badge-progress-text { display: block; margin-top: 8px; font-size: 0.85rem; color: var(--text-muted); }
+        .badge-locked-message { color: var(--text-muted); font-style: italic; }
+        #badgeLocked { display: block; }
+        #badgeUnlocked { display: none; }
+        #badgeUnlocked > p { color: var(--accent-green); font-weight: 500; margin-bottom: 20px; }
+        .badge-input-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+        .badge-name-input {
+            padding: 12px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+        .badge-name-input:focus { outline: none; border-color: var(--accent-cyan); }
+        .badge-display { display: none; flex-direction: column; align-items: center; gap: 16px; margin-top: 20px; animation: fadeIn 0.5s ease; }
+        .badge-display.show { display: flex; }
+        .badge-container {
+            background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(0, 212, 255, 0.1);
+        }
+        .badge-hint { color: var(--text-muted); font-size: 0.85rem; }
+        .generate-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+            transition: all 0.2s ease;
+        }
+        .generate-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 20px 16px; }
+            h1 { font-size: 1.7rem; }
+            .card { padding: 20px; }
+            .storage-visual { flex-direction: column; align-items: center; }
+            .type-grid { grid-template-columns: 1fr 1fr; }
+            .rules-grid { grid-template-columns: 1fr; }
+            .nav-buttons { flex-direction: column; }
+            .nav-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="exam-badge">OCR GCSE J277</div>
+            <h1>Variables, Constants & Data Types</h1>
+            <p class="subtitle">Storing and managing data in programs</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <p class="progress-label" id="progressLabel">Section 1 of 10</p>
+            </div>
+        </header>
+        <main>
+            <!-- Section 1: Welcome -->
+            <section id="section-1" class="active">
+                <div class="card">
+                    <h2>👋 Welcome</h2>
+                    
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objectives</div>
+                        <ul>
+                            <li>Define variables and constants and explain their purpose</li>
+                            <li>Apply naming conventions and assignment correctly</li>
+                            <li>Identify and use the four main data types</li>
+                            <li>Choose appropriate data types for different scenarios</li>
+                        </ul>
+                    </div>
+
+                    <p>Every program needs to <span class="highlight">store and work with data</span>. Whether it's a player's score, a user's name, or the price of an item, we need somewhere to keep this information. That's where <span class="highlight-cyan">variables</span>, <span class="highlight-orange">constants</span>, and <span class="highlight-purple">data types</span> come in.</p>
+
+                    <div class="storage-visual">
+                        <div class="storage-box variable">
+                            <div class="box-icon">📦</div>
+                            <div class="box-label">Variable</div>
+                            <div class="box-name">score</div>
+                            <div class="box-value">150</div>
+                            <div class="box-hint">Can change ✏️</div>
+                        </div>
+                        <div class="storage-box constant">
+                            <div class="box-icon">🔒</div>
+                            <div class="box-label">Constant</div>
+                            <div class="box-name">MAX_LIVES</div>
+                            <div class="box-value">3</div>
+                            <div class="box-hint">Fixed value 🔐</div>
+                        </div>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">📦 Storage Box Analogy</div>
+                        <p>Think of variables and constants as <strong>labelled storage boxes</strong>. A <strong>variable</strong> is like a box you can open and change the contents. A <strong>constant</strong> is like a sealed box — once you put something in, it stays there forever!</p>
+                    </div>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Key Concept</span>
+                            <span class="key-term-word">Why This Matters</span>
+                        </div>
+                        <p>Without variables, programs couldn't remember anything between steps. Without constants, important values like tax rates or maximum limits could accidentally change. Without data types, computers wouldn't know how to handle different kinds of information.</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Overview</h4>
+                    <ul>
+                        <li><strong>Variables:</strong> Named storage that can change</li>
+                        <li><strong>Constants:</strong> Named storage that stays fixed</li>
+                        <li><strong>Data Types:</strong> Define what kind of data is stored</li>
+                        <li>Storage box analogy: Variables = open box, Constants = sealed box</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" disabled>← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 2: What Are Variables? -->
+            <section id="section-2">
+                <div class="card">
+                    <h2>📦 What Are Variables?</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Definition</span>
+                            <span class="key-term-word">Variable</span>
+                        </div>
+                        <p>A named location in memory where data can be stored and <strong>changed</strong> during program execution.</p>
+                    </div>
+
+                    <p>Variables are the <span class="highlight-cyan">workhorses</span> of programming. They let your program remember information and update it as things change.</p>
+
+                    <div class="code-block">
+<span class="comment"># Creating variables and changing their values</span>
+<span class="variable">score</span> <span class="operator">=</span> <span class="number">0</span>          <span class="comment"># Start with 0</span>
+<span class="variable">score</span> <span class="operator">=</span> <span class="number">100</span>        <span class="comment"># Player earns points</span>
+<span class="variable">score</span> <span class="operator">=</span> <span class="number">150</span>        <span class="comment"># Player earns more points</span>
+
+<span class="variable">playerName</span> <span class="operator">=</span> <span class="string">"Alex"</span>
+<span class="variable">isAlive</span> <span class="operator">=</span> <span class="boolean">True</span>
+                    </div>
+
+                    <h3>What Can Variables Store?</h3>
+                    <div class="type-grid">
+                        <div class="type-card string">
+                            <div class="type-icon">📝</div>
+                            <div class="type-name">Text</div>
+                            <div class="type-desc">Names, messages, addresses</div>
+                            <div class="type-example">"Hello"</div>
+                        </div>
+                        <div class="type-card integer">
+                            <div class="type-icon">🔢</div>
+                            <div class="type-name">Numbers</div>
+                            <div class="type-desc">Scores, counts, ages</div>
+                            <div class="type-example">42</div>
+                        </div>
+                        <div class="type-card float">
+                            <div class="type-icon">💰</div>
+                            <div class="type-name">Decimals</div>
+                            <div class="type-desc">Prices, measurements</div>
+                            <div class="type-example">19.99</div>
+                        </div>
+                        <div class="type-card boolean">
+                            <div class="type-icon">✅</div>
+                            <div class="type-name">True/False</div>
+                            <div class="type-desc">Yes/no states</div>
+                            <div class="type-example">True</div>
+                        </div>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">📦 Storage Box Analogy</div>
+                        <p>A variable is like a <strong>labelled box you can open</strong>. You write the name on the outside (e.g., "score"), put a value inside (e.g., 100), and later you can open it, take out the old value, and put in a new one.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-variable1">
+                        <p>What makes a variable different from a constant?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('variable1', this, false)">Variables use letters, constants use numbers</button>
+                            <button class="option-btn" onclick="checkAnswer('variable1', this, true)">A variable's value can change; a constant's cannot</button>
+                            <button class="option-btn" onclick="checkAnswer('variable1', this, false)">Variables are faster than constants</button>
+                            <button class="option-btn" onclick="checkAnswer('variable1', this, false)">There is no difference</button>
+                        </div>
+                        <div class="feedback" id="feedback-variable1"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Variables</h4>
+                    <ul>
+                        <li><strong>Definition:</strong> Named memory location that can change</li>
+                        <li><strong>Purpose:</strong> Store data that may need updating</li>
+                        <li><strong>Examples:</strong> score, playerName, currentLevel</li>
+                        <li>Can store text, numbers, decimals, or true/false values</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 3: Naming & Assignment -->
+            <section id="section-3">
+                <div class="card">
+                    <h2>✏️ Naming Variables & Assignment</h2>
+
+                    <p>Choosing good variable names and understanding assignment is <span class="highlight">essential</span> for writing clear, working code.</p>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Definition</span>
+                            <span class="key-term-word">Identifier</span>
+                        </div>
+                        <p>The name given to a variable, constant, or other element in a program. Must follow specific rules.</p>
+                    </div>
+
+                    <h3>Naming Rules</h3>
+                    <div class="rules-grid">
+                        <div class="rule-item">
+                            <span class="rule-icon valid">✓</span>
+                            <span class="rule-text">Start with a letter: <code>score</code></span>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-icon invalid">✗</span>
+                            <span class="rule-text">Start with number: <code>1stPlace</code></span>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-icon valid">✓</span>
+                            <span class="rule-text">Use underscores: <code>player_name</code></span>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-icon invalid">✗</span>
+                            <span class="rule-text">Use spaces: <code>player name</code></span>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-icon valid">✓</span>
+                            <span class="rule-text">Use camelCase: <code>playerName</code></span>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-icon invalid">✗</span>
+                            <span class="rule-text">Use symbols: <code>player@name</code></span>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-icon valid">✓</span>
+                            <span class="rule-text">Be descriptive: <code>totalScore</code></span>
+                        </div>
+                        <div class="rule-item">
+                            <span class="rule-icon invalid">✗</span>
+                            <span class="rule-text">Use keywords: <code>print</code></span>
+                        </div>
+                    </div>
+
+                    <div class="syntax-box">
+                        <h4>Assignment Operator</h4>
+                        <code><span class="variable">variableName</span> <span class="operator">=</span> <span class="number">value</span></code>
+                        <p class="note">The <code>=</code> sign means "assign" or "store this value in". It does NOT mean "equals" in programming!</p>
+                    </div>
+
+                    <div class="code-block">
+<span class="comment"># Assignment examples</span>
+<span class="variable">age</span> <span class="operator">=</span> <span class="number">25</span>                  <span class="comment"># Assign 25 to age</span>
+<span class="variable">name</span> <span class="operator">=</span> <span class="string">"Sam"</span>              <span class="comment"># Assign "Sam" to name</span>
+<span class="variable">price</span> <span class="operator">=</span> <span class="number">9.99</span>              <span class="comment"># Assign 9.99 to price</span>
+<span class="variable">age</span> <span class="operator">=</span> <span class="variable">age</span> <span class="operator">+</span> <span class="number">1</span>             <span class="comment"># Add 1 to age (now 26)</span>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">⚠️ Common Mistake</div>
+                        <p>In programming, <code>x = x + 1</code> is valid! It means "take the current value of x, add 1, and store the result back in x". This looks strange mathematically but makes perfect sense as an instruction.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-naming">
+                        <p>Which of these is a VALID variable name?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('naming', this, false)"><code>2ndPlayer</code></button>
+                            <button class="option-btn" onclick="checkAnswer('naming', this, false)"><code>player name</code></button>
+                            <button class="option-btn" onclick="checkAnswer('naming', this, true)"><code>playerScore</code></button>
+                            <button class="option-btn" onclick="checkAnswer('naming', this, false)"><code>player@1</code></button>
+                        </div>
+                        <div class="feedback" id="feedback-naming"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Naming Rules</h4>
+                    <ul>
+                        <li>Must start with a letter (not a number)</li>
+                        <li>No spaces — use camelCase or underscores</li>
+                        <li>No special symbols (except underscore)</li>
+                        <li>Can't use reserved keywords (print, if, while)</li>
+                        <li>Make names <strong>descriptive</strong></li>
+                    </ul>
+                    <h4>Assignment</h4>
+                    <ul>
+                        <li><code>=</code> means "assign/store", not "equals"</li>
+                        <li><code>x = x + 1</code> is valid — it updates x</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+            <!-- Section 4: What Are Constants? -->
+            <section id="section-4">
+                <div class="card">
+                    <h2>🔒 What Are Constants?</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Definition</span>
+                            <span class="key-term-word">Constant</span>
+                        </div>
+                        <p>A named location in memory where data is stored and <strong>cannot be changed</strong> after it is set.</p>
+                    </div>
+
+                    <p>Constants store values that should <span class="highlight-orange">never change</span> during program execution. They protect important values from accidental modification.</p>
+
+                    <div class="code-block">
+<span class="comment"># Constants are typically written in UPPERCASE</span>
+<span class="constant">MAX_LIVES</span> <span class="operator">=</span> <span class="number">3</span>
+<span class="constant">TAX_RATE</span> <span class="operator">=</span> <span class="number">0.20</span>
+<span class="constant">PI</span> <span class="operator">=</span> <span class="number">3.14159</span>
+<span class="constant">SCHOOL_NAME</span> <span class="operator">=</span> <span class="string">"Oakwood Academy"</span>
+<span class="constant">GRAVITY</span> <span class="operator">=</span> <span class="number">9.8</span>
+                    </div>
+
+                    <h3>Why Use Constants?</h3>
+                    <div class="type-grid">
+                        <div class="type-card" style="border-color: var(--accent-orange);">
+                            <div class="type-icon">🛡️</div>
+                            <div class="type-name" style="color: var(--accent-orange);">Protection</div>
+                            <div class="type-desc">Prevents accidental changes to important values</div>
+                        </div>
+                        <div class="type-card" style="border-color: var(--accent-orange);">
+                            <div class="type-icon">📖</div>
+                            <div class="type-name" style="color: var(--accent-orange);">Readability</div>
+                            <div class="type-desc">TAX_RATE is clearer than 0.20</div>
+                        </div>
+                        <div class="type-card" style="border-color: var(--accent-orange);">
+                            <div class="type-icon">🔧</div>
+                            <div class="type-name" style="color: var(--accent-orange);">Maintenance</div>
+                            <div class="type-desc">Change once, updates everywhere</div>
+                        </div>
+                        <div class="type-card" style="border-color: var(--accent-orange);">
+                            <div class="type-icon">🎯</div>
+                            <div class="type-name" style="color: var(--accent-orange);">Clarity</div>
+                            <div class="type-desc">UPPERCASE shows it shouldn't change</div>
+                        </div>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">📦 Storage Box Analogy</div>
+                        <p>A constant is like a <strong>sealed, labelled box</strong>. Once you put the value inside and seal it, you can read what's in it, but you can't change it. If tax rate is 20%, you don't want code accidentally changing it to 200%!</p>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">🤔 When to Use Constants?</div>
+                        <p>Use constants for values that are:<br>
+                        • <strong>Fixed by rules:</strong> MAX_PLAYERS = 4, PASSING_GRADE = 40<br>
+                        • <strong>Mathematical:</strong> PI = 3.14159, GRAVITY = 9.8<br>
+                        • <strong>Configuration:</strong> TAX_RATE = 0.20, SCHOOL_NAME = "..."</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-constant">
+                        <p>Why should TAX_RATE be a constant rather than a variable?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('constant', this, false)">Constants are faster to process</button>
+                            <button class="option-btn" onclick="checkAnswer('constant', this, false)">Variables can't store decimal numbers</button>
+                            <button class="option-btn" onclick="checkAnswer('constant', this, true)">To prevent the tax rate being accidentally changed</button>
+                            <button class="option-btn" onclick="checkAnswer('constant', this, false)">Constants use less memory</button>
+                        </div>
+                        <div class="feedback" id="feedback-constant"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Constants</h4>
+                    <ul>
+                        <li><strong>Definition:</strong> Named value that cannot change</li>
+                        <li><strong>Convention:</strong> Use UPPERCASE_WITH_UNDERSCORES</li>
+                        <li><strong>Purpose:</strong> Protect fixed values, improve readability</li>
+                        <li><strong>Examples:</strong> MAX_LIVES, TAX_RATE, PI</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 5: Interactive - Variables vs Constants -->
+            <section id="section-5">
+                <div class="card">
+                    <h2>🎯 Interactive: Variable or Constant?</h2>
+
+                    <p>Click each item to classify it as a <span class="highlight-cyan">Variable</span> or a <span class="highlight-orange">Constant</span>.</p>
+
+                    <div class="classifier-instruction">
+                        💡 Think: Should this value change during the program? If yes → Variable. If no → Constant.
+                    </div>
+
+                    <div class="classifier-container">
+                        <div class="classifier-items" id="classifierItems">
+                            <div class="classifier-item" data-correct="variable" data-current="none" onclick="cycleClassifier(this)">
+                                <span class="classifier-badge none">Click me</span>
+                                <span class="classifier-text">Player's current score</span>
+                                <span class="classifier-code">score = 1500</span>
+                            </div>
+                            <div class="classifier-item" data-correct="constant" data-current="none" onclick="cycleClassifier(this)">
+                                <span class="classifier-badge none">Click me</span>
+                                <span class="classifier-text">Maximum number of lives</span>
+                                <span class="classifier-code">MAX_LIVES = 3</span>
+                            </div>
+                            <div class="classifier-item" data-correct="variable" data-current="none" onclick="cycleClassifier(this)">
+                                <span class="classifier-badge none">Click me</span>
+                                <span class="classifier-text">User's entered username</span>
+                                <span class="classifier-code">username = "Alex"</span>
+                            </div>
+                            <div class="classifier-item" data-correct="constant" data-current="none" onclick="cycleClassifier(this)">
+                                <span class="classifier-badge none">Click me</span>
+                                <span class="classifier-text">VAT rate for calculations</span>
+                                <span class="classifier-code">VAT_RATE = 0.20</span>
+                            </div>
+                            <div class="classifier-item" data-correct="variable" data-current="none" onclick="cycleClassifier(this)">
+                                <span class="classifier-badge none">Click me</span>
+                                <span class="classifier-text">Current temperature reading</span>
+                                <span class="classifier-code">temperature = 21.5</span>
+                            </div>
+                            <div class="classifier-item" data-correct="constant" data-current="none" onclick="cycleClassifier(this)">
+                                <span class="classifier-badge none">Click me</span>
+                                <span class="classifier-text">Value of Pi</span>
+                                <span class="classifier-code">PI = 3.14159</span>
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button class="control-btn primary" onclick="checkClassifier()">Check Answers</button>
+                            <button class="control-btn secondary" onclick="resetClassifier()">Reset</button>
+                        </div>
+
+                        <div class="exercise-result" id="classifierResult">
+                            <h4 id="classifierResultTitle"></h4>
+                            <p id="classifierResultMessage"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Quick Reference</div>
+                    <h4>Variable vs Constant</h4>
+                    <ul>
+                        <li><strong style="color: var(--accent-cyan);">Variable:</strong> Value changes — scores, names, inputs, readings</li>
+                        <li><strong style="color: var(--accent-orange);">Constant:</strong> Value fixed — rates, limits, mathematical values</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 6: Introduction to Data Types -->
+            <section id="section-6">
+                <div class="card">
+                    <h2>🏷️ Introduction to Data Types</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Definition</span>
+                            <span class="key-term-word">Data Type</span>
+                        </div>
+                        <p>A classification that specifies what kind of value a variable can hold and what operations can be performed on it.</p>
+                    </div>
+
+                    <p>Just like containers come in different shapes for different items, <span class="highlight">data types</span> tell the computer what kind of data to expect and how to handle it.</p>
+
+                    <h3>The Five Main Data Types</h3>
+                    <div class="type-grid">
+                        <div class="type-card string" onclick="showTypeInfo('string')">
+                            <div class="type-icon">📝</div>
+                            <div class="type-name">String</div>
+                            <div class="type-desc">Text characters</div>
+                            <div class="type-example">"Hello World"</div>
+                        </div>
+                        <div class="type-card character" onclick="showTypeInfo('character')">
+                            <div class="type-icon">🔤</div>
+                            <div class="type-name">Character</div>
+                            <div class="type-desc">Single character</div>
+                            <div class="type-example">"A"</div>
+                        </div>
+                        <div class="type-card integer" onclick="showTypeInfo('integer')">
+                            <div class="type-icon">🔢</div>
+                            <div class="type-name">Integer</div>
+                            <div class="type-desc">Whole numbers</div>
+                            <div class="type-example">42</div>
+                        </div>
+                        <div class="type-card float" onclick="showTypeInfo('float')">
+                            <div class="type-icon">🔣</div>
+                            <div class="type-name">Float / Real</div>
+                            <div class="type-desc">Decimal numbers</div>
+                            <div class="type-example">3.14159</div>
+                        </div>
+                        <div class="type-card boolean" onclick="showTypeInfo('boolean')">
+                            <div class="type-icon">✅</div>
+                            <div class="type-name">Boolean</div>
+                            <div class="type-desc">True or False</div>
+                            <div class="type-example">True</div>
+                        </div>
+                    </div>
+
+                    <div id="typeInfoPopup" class="think-box" style="display: none;">
+                        <div class="think-box-header" id="typeInfoTitle"></div>
+                        <p id="typeInfoText"></p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">📦 Storage Box Analogy</div>
+                        <p>Data types are like <strong>different shaped containers</strong>. You wouldn't put liquid in a cardboard box or books in a jar! Similarly, you can't do maths with text or spell-check a number. The right type for the right data.</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">⚠️ Why Types Matter</div>
+                        <p><code>"5" + "3"</code> gives <code>"53"</code> (joining text), but <code>5 + 3</code> gives <code>8</code> (adding numbers). The data type determines what operations do!</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-typeintro">
+                        <p>Why do we need different data types?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('typeintro', this, false)">To make programs look more colourful</button>
+                            <button class="option-btn" onclick="checkAnswer('typeintro', this, true)">So the computer knows how to handle and operate on the data</button>
+                            <button class="option-btn" onclick="checkAnswer('typeintro', this, false)">To make programs run slower</button>
+                            <button class="option-btn" onclick="checkAnswer('typeintro', this, false)">Data types are optional</button>
+                        </div>
+                        <div class="feedback" id="feedback-typeintro"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Data Types Overview</h4>
+                    <ul>
+                        <li><strong style="color: var(--accent-cyan);">String:</strong> Text in quotes — "Hello"</li>
+                        <li><strong style="color: var(--accent-magenta);">Character:</strong> Single character in quotes — "A"</li>
+                        <li><strong style="color: var(--accent-purple);">Integer:</strong> Whole numbers — 42, -7, 0</li>
+                        <li><strong style="color: var(--accent-green);">Float:</strong> Decimals — 3.14, 19.99</li>
+                        <li><strong style="color: var(--accent-yellow);">Boolean:</strong> True or False only</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+            <!-- Section 7: Strings, Characters & Integers -->
+            <section id="section-7">
+                <div class="card">
+                    <h2>📝 Strings, Characters & Integers</h2>
+
+                    <div class="key-term" style="border-color: rgba(0, 212, 255, 0.4);">
+                        <div class="key-term-header">
+                            <span class="key-term-badge" style="background: var(--accent-cyan);">Data Type</span>
+                            <span class="key-term-word">String</span>
+                        </div>
+                        <p>A sequence of characters (text) enclosed in quotation marks. Can include letters, numbers, symbols, and spaces.</p>
+                    </div>
+
+                    <div class="code-block">
+<span class="comment"># String examples</span>
+<span class="variable">name</span> <span class="operator">=</span> <span class="string">"Alice"</span>
+<span class="variable">message</span> <span class="operator">=</span> <span class="string">"Hello, World!"</span>
+<span class="variable">postcode</span> <span class="operator">=</span> <span class="string">"SW1A 1AA"</span>         <span class="comment"># Numbers as text!</span>
+<span class="variable">phone</span> <span class="operator">=</span> <span class="string">"07123456789"</span>        <span class="comment"># Stored as text</span>
+<span class="variable">empty</span> <span class="operator">=</span> <span class="string">""</span>                    <span class="comment"># Empty string</span>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">🤔 When to Use Strings</div>
+                        <p>Use strings for: names, addresses, messages, postcodes, phone numbers (you don't do maths with them!), and any text the user enters or sees.</p>
+                    </div>
+
+                    <div class="key-term" style="border-color: rgba(255, 0, 110, 0.4); margin-top: 24px;">
+                        <div class="key-term-header">
+                            <span class="key-term-badge" style="background: var(--accent-magenta);">Data Type</span>
+                            <span class="key-term-word" style="color: var(--accent-magenta);">Character</span>
+                        </div>
+                        <p>A <strong>single</strong> character enclosed in quotation marks. Just one letter, digit, or symbol.</p>
+                    </div>
+
+                    <div class="code-block">
+<span class="comment"># Character examples</span>
+<span class="variable">grade</span> <span class="operator">=</span> <span class="string">"A"</span>
+<span class="variable">initial</span> <span class="operator">=</span> <span class="string">"J"</span>
+<span class="variable">symbol</span> <span class="operator">=</span> <span class="string">"@"</span>
+<span class="variable">digit</span> <span class="operator">=</span> <span class="string">"7"</span>                   <span class="comment"># Single digit as character</span>
+<span class="variable">space</span> <span class="operator">=</span> <span class="string">" "</span>                   <span class="comment"># A space is a character</span>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">🤔 String vs Character</div>
+                        <p>A <strong>string</strong> is a sequence of characters (any length), while a <strong>character</strong> is exactly one symbol. Think of a character as a string with length 1. In Python, there's no separate character type — single characters are just strings of length 1.</p>
+                    </div>
+
+                    <div class="key-term" style="border-color: rgba(168, 85, 247, 0.4); margin-top: 24px;">
+                        <div class="key-term-header">
+                            <span class="key-term-badge" style="background: var(--accent-purple);">Data Type</span>
+                            <span class="key-term-word">Integer</span>
+                        </div>
+                        <p>A whole number (positive, negative, or zero) without any decimal point.</p>
+                    </div>
+
+                    <div class="code-block">
+<span class="comment"># Integer examples</span>
+<span class="variable">age</span> <span class="operator">=</span> <span class="number">25</span>
+<span class="variable">score</span> <span class="operator">=</span> <span class="number">1500</span>
+<span class="variable">lives</span> <span class="operator">=</span> <span class="number">3</span>
+<span class="variable">temperature</span> <span class="operator">=</span> <span class="number">-5</span>             <span class="comment"># Negative integer</span>
+<span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>                    <span class="comment"># Zero is an integer</span>
+<span class="variable">year</span> <span class="operator">=</span> <span class="number">2024</span>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">🤔 When to Use Integers</div>
+                        <p>Use integers for: counting things, ages, scores, years, quantities, and any whole number you might do calculations with.</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">⚠️ String vs Integer Trap</div>
+                        <p><code>"25"</code> is a STRING (text), but <code>25</code> is an INTEGER (number).<br>
+                        <code>"25" + "10"</code> = <code>"2510"</code> (joins text)<br>
+                        <code>25 + 10</code> = <code>35</code> (adds numbers)</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-stringint">
+                        <p>Why should a phone number be stored as a STRING, not an integer?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('stringint', this, false)">Phone numbers are too big for integers</button>
+                            <button class="option-btn" onclick="checkAnswer('stringint', this, true)">You don't do maths with phone numbers, and leading zeros matter</button>
+                            <button class="option-btn" onclick="checkAnswer('stringint', this, false)">Strings are faster to process</button>
+                            <button class="option-btn" onclick="checkAnswer('stringint', this, false)">Integers can't store numbers that long</button>
+                        </div>
+                        <div class="feedback" id="feedback-stringint"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Strings</h4>
+                    <ul>
+                        <li>Text in quotation marks: <code>"Hello"</code></li>
+                        <li>Use for: names, messages, postcodes, phone numbers</li>
+                        <li>Can be joined (concatenated): <code>"Hi" + "!"</code> = <code>"Hi!"</code></li>
+                    </ul>
+                    <h4>Integers</h4>
+                    <ul>
+                        <li>Whole numbers: <code>42</code>, <code>-7</code>, <code>0</code></li>
+                        <li>Use for: counting, ages, scores, years, quantities</li>
+                        <li>Can do maths: <code>5 + 3</code> = <code>8</code></li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 8: Floats & Booleans -->
+            <section id="section-8">
+                <div class="card">
+                    <h2>🔣 Floats & Booleans</h2>
+
+                    <div class="key-term" style="border-color: rgba(0, 255, 136, 0.4);">
+                        <div class="key-term-header">
+                            <span class="key-term-badge" style="background: var(--accent-green); color: #0a0a0f;">Data Type</span>
+                            <span class="key-term-word" style="color: var(--accent-green);">Float (Real)</span>
+                        </div>
+                        <p>A number that contains a decimal point. Also called a "real number" in some contexts.</p>
+                    </div>
+
+                    <div class="code-block">
+<span class="comment"># Float examples</span>
+<span class="variable">price</span> <span class="operator">=</span> <span class="number">19.99</span>
+<span class="variable">temperature</span> <span class="operator">=</span> <span class="number">21.5</span>
+<span class="variable">pi</span> <span class="operator">=</span> <span class="number">3.14159</span>
+<span class="variable">percentage</span> <span class="operator">=</span> <span class="number">85.5</span>
+<span class="variable">weight</span> <span class="operator">=</span> <span class="number">72.3</span>
+<span class="variable">balance</span> <span class="operator">=</span> <span class="number">-15.50</span>            <span class="comment"># Negative float</span>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">🤔 When to Use Floats</div>
+                        <p>Use floats for: prices (£19.99), measurements (72.3 kg), temperatures (21.5°C), percentages (85.5%), and any value that needs decimal precision.</p>
+                    </div>
+
+                    <div class="key-term" style="border-color: rgba(255, 214, 10, 0.4); margin-top: 24px;">
+                        <div class="key-term-header">
+                            <span class="key-term-badge" style="background: var(--accent-yellow); color: #0a0a0f;">Data Type</span>
+                            <span class="key-term-word" style="color: var(--accent-yellow);">Boolean</span>
+                        </div>
+                        <p>A data type with only TWO possible values: <code>True</code> or <code>False</code>.</p>
+                    </div>
+
+                    <div class="code-block">
+<span class="comment"># Boolean examples</span>
+<span class="variable">isLoggedIn</span> <span class="operator">=</span> <span class="boolean">True</span>
+<span class="variable">gameOver</span> <span class="operator">=</span> <span class="boolean">False</span>
+<span class="variable">hasDiscount</span> <span class="operator">=</span> <span class="boolean">True</span>
+<span class="variable">isAdult</span> <span class="operator">=</span> <span class="variable">age</span> <span class="operator">>=</span> <span class="number">18</span>         <span class="comment"># True if age is 18+</span>
+<span class="variable">isEmpty</span> <span class="operator">=</span> <span class="variable">stock</span> <span class="operator">==</span> <span class="number">0</span>        <span class="comment"># True if stock is 0</span>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">🤔 When to Use Booleans</div>
+                        <p>Use booleans for: yes/no questions, on/off states, conditions (isLoggedIn, hasPermission, gameOver), and anything that's either true or false.</p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">📦 Storage Box Analogy</div>
+                        <p>A boolean is like a <strong>light switch box</strong> — it can only be ON (True) or OFF (False). There's no in-between, no "maybe", just two states.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-floatbool">
+                        <p>What data type should store whether a user is logged in?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('floatbool', this, false)">String</button>
+                            <button class="option-btn" onclick="checkAnswer('floatbool', this, false)">Integer</button>
+                            <button class="option-btn" onclick="checkAnswer('floatbool', this, false)">Float</button>
+                            <button class="option-btn" onclick="checkAnswer('floatbool', this, true)">Boolean</button>
+                        </div>
+                        <div class="feedback" id="feedback-floatbool"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Floats (Real Numbers)</h4>
+                    <ul>
+                        <li>Numbers with decimals: <code>3.14</code>, <code>19.99</code></li>
+                        <li>Use for: prices, measurements, percentages</li>
+                        <li>Also called "Real" in OCR pseudocode</li>
+                    </ul>
+                    <h4>Booleans</h4>
+                    <ul>
+                        <li>Only two values: <code>True</code> or <code>False</code></li>
+                        <li>Use for: yes/no conditions, on/off states</li>
+                        <li>Named after George Boole (mathematician)</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+            <!-- Section 9: Interactive - Data Type Matcher -->
+            <section id="section-9">
+                <div class="card">
+                    <h2>🎮 Interactive: Match the Data Type</h2>
+
+                    <p>For each value, select the correct data type from the dropdown.</p>
+
+                    <div class="classifier-instruction">
+                        💡 Remember: Strings have quotes (multiple chars), characters are single symbols in quotes, integers are whole numbers, floats have decimals, booleans are True/False.
+                    </div>
+
+                    <div class="matcher-container">
+                        <div class="matcher-item" id="match1">
+                            <span class="matcher-value">"Hello World"</span>
+                            <select class="matcher-select" id="select1">
+                                <option value="">Select type...</option>
+                                <option value="string">String</option>
+                                <option value="character">Character</option>
+                                <option value="integer">Integer</option>
+                                <option value="float">Float</option>
+                                <option value="boolean">Boolean</option>
+                            </select>
+                        </div>
+                        <div class="matcher-item" id="match2">
+                            <span class="matcher-value">42</span>
+                            <select class="matcher-select" id="select2">
+                                <option value="">Select type...</option>
+                                <option value="string">String</option>
+                                <option value="character">Character</option>
+                                <option value="integer">Integer</option>
+                                <option value="float">Float</option>
+                                <option value="boolean">Boolean</option>
+                            </select>
+                        </div>
+                        <div class="matcher-item" id="match3">
+                            <span class="matcher-value">True</span>
+                            <select class="matcher-select" id="select3">
+                                <option value="">Select type...</option>
+                                <option value="string">String</option>
+                                <option value="character">Character</option>
+                                <option value="integer">Integer</option>
+                                <option value="float">Float</option>
+                                <option value="boolean">Boolean</option>
+                            </select>
+                        </div>
+                        <div class="matcher-item" id="match4">
+                            <span class="matcher-value">3.14159</span>
+                            <select class="matcher-select" id="select4">
+                                <option value="">Select type...</option>
+                                <option value="string">String</option>
+                                <option value="character">Character</option>
+                                <option value="integer">Integer</option>
+                                <option value="float">Float</option>
+                                <option value="boolean">Boolean</option>
+                            </select>
+                        </div>
+                        <div class="matcher-item" id="match5">
+                            <span class="matcher-value">"A"</span>
+                            <select class="matcher-select" id="select5">
+                                <option value="">Select type...</option>
+                                <option value="string">String</option>
+                                <option value="character">Character</option>
+                                <option value="integer">Integer</option>
+                                <option value="float">Float</option>
+                                <option value="boolean">Boolean</option>
+                            </select>
+                        </div>
+                        <div class="matcher-item" id="match6">
+                            <span class="matcher-value">-15</span>
+                            <select class="matcher-select" id="select6">
+                                <option value="">Select type...</option>
+                                <option value="string">String</option>
+                                <option value="character">Character</option>
+                                <option value="integer">Integer</option>
+                                <option value="float">Float</option>
+                                <option value="boolean">Boolean</option>
+                            </select>
+                        </div>
+                        <div class="matcher-item" id="match7">
+                            <span class="matcher-value">False</span>
+                            <select class="matcher-select" id="select7">
+                                <option value="">Select type...</option>
+                                <option value="string">String</option>
+                                <option value="character">Character</option>
+                                <option value="integer">Integer</option>
+                                <option value="float">Float</option>
+                                <option value="boolean">Boolean</option>
+                            </select>
+                        </div>
+                        <div class="matcher-item" id="match8">
+                            <span class="matcher-value">19.99</span>
+                            <select class="matcher-select" id="select8">
+                                <option value="">Select type...</option>
+                                <option value="string">String</option>
+                                <option value="character">Character</option>
+                                <option value="integer">Integer</option>
+                                <option value="float">Float</option>
+                                <option value="boolean">Boolean</option>
+                            </select>
+                        </div>
+
+                        <div class="controls">
+                            <button class="control-btn primary" onclick="checkMatcher()">Check Answers</button>
+                            <button class="control-btn secondary" onclick="resetMatcher()">Reset</button>
+                        </div>
+
+                        <div class="exercise-result" id="matcherResult">
+                            <h4 id="matcherResultTitle"></h4>
+                            <p id="matcherResultMessage"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Data Type Quick Reference</div>
+                    <h4>How to Identify</h4>
+                    <ul>
+                        <li><strong style="color: var(--accent-cyan);">String:</strong> Has quotes around it</li>
+                        <li><strong style="color: var(--accent-purple);">Integer:</strong> Whole number, no decimal</li>
+                        <li><strong style="color: var(--accent-green);">Float:</strong> Has a decimal point</li>
+                        <li><strong style="color: var(--accent-yellow);">Boolean:</strong> True or False</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 10: Final Assessment -->
+            <section id="section-10">
+                <div class="card">
+                    <h2>✅ Final Assessment</h2>
+
+                    <!-- Question 1 -->
+                    <div class="question-box" id="q1">
+                        <p><strong>Question 1:</strong> What is the key difference between a variable and a constant?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">Variables use letters, constants use numbers</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, true)">A variable's value can change; a constant's value cannot</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">Constants are faster to process</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">Variables are written in uppercase</button>
+                        </div>
+                        <div class="feedback" id="feedback1"></div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="question-box" id="q2">
+                        <p><strong>Question 2:</strong> Which is a valid variable name?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)"><code>3rdPlace</code></button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)"><code>user name</code></button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, true)"><code>totalScore</code></button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)"><code>my-score</code></button>
+                        </div>
+                        <div class="feedback" id="feedback2"></div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="question-box" id="q3">
+                        <p><strong>Question 3:</strong> What data type is <code>"25"</code>?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, true)">String (it has quotes)</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">Integer (it's a number)</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">Float (it could have decimals)</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">Boolean (it's a value)</button>
+                        </div>
+                        <div class="feedback" id="feedback3"></div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="question-box" id="q4">
+                        <p><strong>Question 4:</strong> What data type should store a product price like £12.99?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">String</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">Integer</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, true)">Float</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">Boolean</button>
+                        </div>
+                        <div class="feedback" id="feedback4"></div>
+                    </div>
+
+                    <div id="quizResult" style="display: none; margin-top: 20px; padding: 20px; background: var(--bg-card); border-radius: 12px; text-align: center; border: 2px solid var(--accent-green);">
+                        <h3 id="quizScore" style="font-size: 1.5rem;"></h3>
+                        <p id="quizMessage" style="color: var(--text-secondary);"></p>
+                    </div>
+                </div>
+
+                <!-- Badge Generator -->
+                <div class="card badge-generator">
+                    <h3>🏆 Claim Your Badge</h3>
+                    
+                    <div id="badgeLocked">
+                        <div class="badge-progress">
+                            <div class="badge-progress-bar">
+                                <div class="badge-progress-fill" id="badgeProgressFill"></div>
+                            </div>
+                            <span class="badge-progress-text" id="badgeProgressText">0 / 12 questions answered</span>
+                        </div>
+                        <p class="badge-locked-message">Complete all questions to unlock your badge!</p>
+                    </div>
+
+                    <div id="badgeUnlocked">
+                        <p>🎉 Badge unlocked! Enter your name:</p>
+                        <div class="badge-input-group">
+                            <input type="text" class="badge-name-input" id="badgeNameInput" placeholder="Enter your name..." maxlength="30">
+                            <button class="generate-btn" onclick="generateBadge()">Generate Badge</button>
+                        </div>
+
+                        <div class="badge-display" id="badgeDisplay">
+                            <div class="badge-container">
+                                <svg width="320" height="360" viewBox="0 0 320 360" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#a855f7"/>
+                                            <stop offset="100%" style="stop-color:#00d4ff"/>
+                                        </linearGradient>
+                                        <filter id="glow">
+                                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                        </filter>
+                                    </defs>
+                                    
+                                    <circle cx="160" cy="160" r="145" fill="none" stroke="url(#badgeGradient)" stroke-width="3" opacity="0.3"/>
+                                    <circle cx="160" cy="160" r="130" fill="#12121a" stroke="url(#badgeGradient)" stroke-width="4"/>
+                                    <circle cx="160" cy="160" r="115" fill="none" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="8 4"/>
+                                    
+                                    <!-- Variable/Constant Icons -->
+                                    <g transform="translate(160, 95)" filter="url(#glow)">
+                                        <!-- Variable Box -->
+                                        <rect x="-70" y="-30" width="55" height="50" rx="8" fill="rgba(0, 212, 255, 0.2)" stroke="#00d4ff" stroke-width="2"/>
+                                        <text x="-42" y="-8" text-anchor="middle" fill="#00d4ff" font-family="JetBrains Mono" font-size="8">var</text>
+                                        <text x="-42" y="10" text-anchor="middle" fill="#00d4ff" font-family="JetBrains Mono" font-size="14" font-weight="700">x</text>
+                                        
+                                        <!-- Constant Box -->
+                                        <rect x="15" y="-30" width="55" height="50" rx="8" fill="rgba(255, 149, 0, 0.2)" stroke="#ff9500" stroke-width="2"/>
+                                        <text x="42" y="-8" text-anchor="middle" fill="#ff9500" font-family="JetBrains Mono" font-size="8">const</text>
+                                        <text x="42" y="10" text-anchor="middle" fill="#ff9500" font-family="JetBrains Mono" font-size="12" font-weight="700">🔒</text>
+                                    </g>
+                                    
+                                    <!-- Data Type Icons -->
+                                    <g transform="translate(160, 155)" filter="url(#glow)">
+                                        <circle cx="-50" cy="0" r="15" fill="rgba(0, 212, 255, 0.3)" stroke="#00d4ff" stroke-width="1.5"/>
+                                        <text x="-50" y="5" text-anchor="middle" fill="#00d4ff" font-size="10">Aa</text>
+                                        
+                                        <circle cx="-15" cy="0" r="15" fill="rgba(168, 85, 247, 0.3)" stroke="#a855f7" stroke-width="1.5"/>
+                                        <text x="-15" y="5" text-anchor="middle" fill="#a855f7" font-size="10">42</text>
+                                        
+                                        <circle cx="20" cy="0" r="15" fill="rgba(0, 255, 136, 0.3)" stroke="#00ff88" stroke-width="1.5"/>
+                                        <text x="20" y="5" text-anchor="middle" fill="#00ff88" font-size="10">3.14</text>
+                                        
+                                        <circle cx="55" cy="0" r="15" fill="rgba(255, 214, 10, 0.3)" stroke="#ffd60a" stroke-width="1.5"/>
+                                        <text x="55" y="5" text-anchor="middle" fill="#ffd60a" font-size="10">T/F</text>
+                                    </g>
+                                    
+                                    <text x="160" y="205" text-anchor="middle" fill="#00d4ff" font-family="Outfit" font-size="11" font-weight="600" letter-spacing="2">GCSE COMPUTER SCIENCE</text>
+                                    <text x="160" y="232" text-anchor="middle" fill="#ffffff" font-family="Outfit" font-size="15" font-weight="700">Variables, Constants</text>
+                                    <text x="160" y="254" text-anchor="middle" fill="#ffffff" font-family="Outfit" font-size="15" font-weight="700">& Data Types</text>
+                                    <text id="badgeScoreText" x="160" y="282" text-anchor="middle" fill="#00ff88" font-family="JetBrains Mono" font-size="14" font-weight="700">12/12 correct</text>
+                                    
+                                    <path d="M60 300 L260 300 L250 320 L260 340 L60 340 L70 320 Z" fill="url(#badgeGradient)"/>
+                                    <text id="badgeStudentName" x="160" y="325" text-anchor="middle" fill="#ffffff" font-family="Outfit" font-size="16" font-weight="700">Student Name</text>
+                                </svg>
+                            </div>
+                            <p class="badge-hint">📸 Screenshot to save your badge!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" disabled style="background: var(--accent-green);">Complete! 🎉</button>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+        // Navigation
+        const totalSections = 10;
+        let currentSection = 1;
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.innerHTML = '';
+            for (let i = 1; i <= totalSections; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                if (i === currentSection) dot.classList.add('active');
+                if (i < currentSection) dot.classList.add('completed');
+                dot.onclick = () => goToSection(i);
+                progressBar.appendChild(dot);
+            }
+            document.getElementById('progressLabel').textContent = `Section ${currentSection} of ${totalSections}`;
+        }
+
+        function goToSection(num) {
+            document.getElementById(`section-${currentSection}`).classList.remove('active');
+            currentSection = num;
+            document.getElementById(`section-${currentSection}`).classList.add('active');
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextSection() { if (currentSection < totalSections) goToSection(currentSection + 1); }
+        function prevSection() { if (currentSection > 1) goToSection(currentSection - 1); }
+
+        // Question Tracking
+        const totalQuestions = 12;
+        const answeredQuestions = new Set();
+        const correctAnswers = new Set();
+
+        // Data type info popup
+        const typeInfo = {
+            string: { title: '📝 String', text: 'Text data in quotes. Use for names, messages, addresses. "Hello" is a string, even "123" is a string if it has quotes!' },
+            integer: { title: '🔢 Integer', text: 'Whole numbers without decimals. Use for counting, ages, scores. Can be positive, negative, or zero.' },
+            float: { title: '🔣 Float', text: 'Numbers with decimal points. Use for prices, measurements, percentages. Also called "Real" in OCR pseudocode.' },
+            boolean: { title: '✅ Boolean', text: 'Only True or False. Use for yes/no conditions, on/off states. Named after mathematician George Boole.' }
+        };
+
+        function showTypeInfo(type) {
+            const popup = document.getElementById('typeInfoPopup');
+            document.getElementById('typeInfoTitle').textContent = typeInfo[type].title;
+            document.getElementById('typeInfoText').textContent = typeInfo[type].text;
+            popup.style.display = 'block';
+        }
+
+        // Section Self-Checks with custom feedback
+        const sectionFeedback = {
+            'variable1': { 
+                correct: "Correct! Variables can be changed during program execution; constants cannot.", 
+                incorrect: "The key difference is that variables CAN change, while constants stay fixed once set." 
+            },
+            'naming': { 
+                correct: "Correct! playerScore follows all the rules: starts with a letter, no spaces, uses camelCase.", 
+                incorrect: "Variable names must start with a letter, have no spaces, and avoid special symbols. playerScore is the valid option." 
+            },
+            'constant': { 
+                correct: "Correct! Making TAX_RATE a constant prevents bugs where it might accidentally be changed.", 
+                incorrect: "Constants protect important values from accidental changes. A tax rate shouldn't change during the program!" 
+            },
+            'typeintro': { 
+                correct: "Correct! Data types tell the computer how to store data and what operations are valid.", 
+                incorrect: "Data types are essential — they tell the computer how to handle data. '5' + '3' = '53' but 5 + 3 = 8!" 
+            },
+            'stringint': { 
+                correct: "Correct! Phone numbers can have leading zeros (07...) and you never add or multiply them, so string is right.", 
+                incorrect: "Phone numbers should be strings because: leading zeros matter (07123...), and you don't do maths with them." 
+            },
+            'floatbool': { 
+                correct: "Correct! Logged in status is either True or False — a perfect use case for boolean.", 
+                incorrect: "A user is either logged in (True) or not (False). This yes/no state is exactly what booleans are for." 
+            }
+        };
+
+        function checkAnswer(section, button, isCorrect) {
+            const questionBox = button.closest('.question-box');
+            if (questionBox.classList.contains('answered')) return;
+            questionBox.classList.add('answered');
+            
+            questionBox.querySelectorAll('.option-btn').forEach(opt => {
+                opt.disabled = true;
+                if (opt === button) opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+            });
+            
+            const feedback = document.getElementById(`feedback-${section}`);
+            feedback.textContent = isCorrect ? sectionFeedback[section].correct : sectionFeedback[section].incorrect;
+            feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+            
+            answeredQuestions.add('section-' + section);
+            if (isCorrect) correctAnswers.add('section-' + section);
+            updateBadgeProgress();
+        }
+
+        // Variable vs Constant Classifier
+        function cycleClassifier(item) {
+            if (item.classList.contains('locked')) return;
+            
+            const current = item.dataset.current;
+            const badge = item.querySelector('.classifier-badge');
+            
+            const cycle = ['none', 'variable', 'constant'];
+            const currentIndex = cycle.indexOf(current);
+            const nextIndex = (currentIndex + 1) % cycle.length;
+            const next = cycle[nextIndex];
+            
+            item.dataset.current = next;
+            item.className = `classifier-item ${next !== 'none' ? next : ''}`;
+            badge.className = `classifier-badge ${next}`;
+            badge.textContent = next === 'none' ? 'Click me' : next.charAt(0).toUpperCase() + next.slice(1);
+        }
+
+        let classifierLocked = false;
+        function checkClassifier() {
+            if (classifierLocked) return;
+            classifierLocked = true;
+            
+            const items = document.querySelectorAll('#classifierItems .classifier-item');
+            let correct = 0;
+            
+            items.forEach(item => {
+                item.classList.add('locked');
+                const isCorrect = item.dataset.current === item.dataset.correct;
+                item.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (isCorrect) correct++;
+            });
+            
+            const result = document.getElementById('classifierResult');
+            result.classList.add('show');
+            result.className = correct === 6 ? 'exercise-result show success' : 'exercise-result show partial';
+            document.getElementById('classifierResultTitle').textContent = correct === 6 ? '✓ Perfect!' : `${correct}/6 correct`;
+            document.getElementById('classifierResultMessage').textContent = correct === 6 ? 
+                'You understand the difference between variables and constants!' : 
+                'Variables change (score, username, temperature). Constants stay fixed (MAX_LIVES, VAT_RATE, PI).';
+            
+            answeredQuestions.add('classifierExercise');
+            if (correct === 6) correctAnswers.add('classifierExercise');
+            updateBadgeProgress();
+        }
+
+        function resetClassifier() {
+            classifierLocked = false;
+            const items = document.querySelectorAll('#classifierItems .classifier-item');
+            items.forEach(item => {
+                item.dataset.current = 'none';
+                item.className = 'classifier-item';
+                item.classList.remove('locked', 'correct', 'incorrect');
+                const badge = item.querySelector('.classifier-badge');
+                badge.className = 'classifier-badge none';
+                badge.textContent = 'Click me';
+            });
+            document.getElementById('classifierResult').classList.remove('show');
+            answeredQuestions.delete('classifierExercise');
+            correctAnswers.delete('classifierExercise');
+            updateBadgeProgress();
+        }
+
+        // Data Type Matcher
+        const matcherAnswers = {
+            'select1': 'string',
+            'select2': 'integer',
+            'select3': 'boolean',
+            'select4': 'float',
+            'select5': 'character',
+            'select6': 'integer',
+            'select7': 'boolean',
+            'select8': 'float'
+        };
+        let matcherLocked = false;
+
+        function checkMatcher() {
+            if (matcherLocked) return;
+            matcherLocked = true;
+            
+            let correct = 0;
+            Object.keys(matcherAnswers).forEach((id, index) => {
+                const select = document.getElementById(id);
+                const item = document.getElementById(`match${index + 1}`);
+                const isCorrect = select.value === matcherAnswers[id];
+                select.disabled = true;
+                select.classList.add(isCorrect ? 'correct' : 'incorrect');
+                item.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (isCorrect) correct++;
+            });
+            
+            const result = document.getElementById('matcherResult');
+            result.classList.add('show');
+            result.className = correct === 8 ? 'exercise-result show success' : 'exercise-result show partial';
+            document.getElementById('matcherResultTitle').textContent = correct === 8 ? '✓ Perfect!' : `${correct}/8 correct`;
+            document.getElementById('matcherResultMessage').textContent = correct === 8 ? 
+                'Excellent data type identification!' : 
+                'Strings have quotes (multiple chars), characters are single symbols in quotes, integers are whole numbers, floats have decimals, booleans are True/False.';
+            
+            answeredQuestions.add('matcherExercise');
+            if (correct === 8) correctAnswers.add('matcherExercise');
+            updateBadgeProgress();
+        }
+
+        function resetMatcher() {
+            matcherLocked = false;
+            Object.keys(matcherAnswers).forEach((id, index) => {
+                const select = document.getElementById(id);
+                const item = document.getElementById(`match${index + 1}`);
+                select.disabled = false;
+                select.value = '';
+                select.classList.remove('correct', 'incorrect');
+                item.classList.remove('correct', 'incorrect');
+            });
+            document.getElementById('matcherResult').classList.remove('show');
+            answeredQuestions.delete('matcherExercise');
+            correctAnswers.delete('matcherExercise');
+            updateBadgeProgress();
+        }
+
+        // Final Quiz
+        let finalAnswered = new Set();
+        let finalCorrect = 0;
+        const finalFeedback = {
+            1: { correct: "Correct! Variables can change; constants stay fixed.", incorrect: "Remember: Variables CAN change their value. Constants CANNOT change after being set." },
+            2: { correct: "Correct! totalScore follows all naming rules.", incorrect: "Variable names must: start with a letter, have no spaces or special characters. totalScore is valid." },
+            3: { correct: "Correct! The quotes make it a string, even though it looks like a number.", incorrect: "The quotes around \"25\" make it a STRING. Without quotes, 25 would be an integer." },
+            4: { correct: "Correct! Prices have decimals (pence), so float is the right choice.", incorrect: "Prices like £12.99 have decimal places, so we need a Float (not Integer which is whole numbers only)." }
+        };
+
+        function checkFinalAnswer(qNum, button, isCorrect) {
+            if (finalAnswered.has(qNum)) return;
+            finalAnswered.add(qNum);
+            
+            button.parentElement.querySelectorAll('.option-btn').forEach(opt => {
+                opt.disabled = true;
+                if (opt === button) opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+            });
+            
+            const feedback = document.getElementById(`feedback${qNum}`);
+            feedback.textContent = isCorrect ? finalFeedback[qNum].correct : finalFeedback[qNum].incorrect;
+            feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+            
+            if (isCorrect) finalCorrect++;
+            answeredQuestions.add('final-' + qNum);
+            if (isCorrect) correctAnswers.add('final-' + qNum);
+            updateBadgeProgress();
+            
+            if (finalAnswered.size === 4) {
+                const result = document.getElementById('quizResult');
+                result.style.display = 'block';
+                document.getElementById('quizScore').textContent = `${finalCorrect}/4 Correct`;
+                document.getElementById('quizScore').style.color = finalCorrect >= 3 ? 'var(--accent-green)' : 'var(--accent-yellow)';
+                document.getElementById('quizMessage').textContent = finalCorrect === 4 ? 'Excellent work!' : 'Review the questions above.';
+            }
+        }
+
+        // Badge System
+        function updateBadgeProgress() {
+            const count = answeredQuestions.size;
+            const pct = (count / totalQuestions) * 100;
+            document.getElementById('badgeProgressFill').style.width = pct + '%';
+            document.getElementById('badgeProgressText').textContent = `${count} / ${totalQuestions} questions answered`;
+            if (count >= totalQuestions) unlockBadge();
+        }
+
+        function unlockBadge() {
+            document.getElementById('badgeLocked').style.display = 'none';
+            document.getElementById('badgeUnlocked').style.display = 'block';
+        }
+
+        function generateBadge() {
+            const name = document.getElementById('badgeNameInput').value.trim();
+            if (!name) {
+                document.getElementById('badgeNameInput').style.borderColor = 'var(--accent-magenta)';
+                setTimeout(() => document.getElementById('badgeNameInput').style.borderColor = '', 2000);
+                return;
+            }
+            document.getElementById('badgeStudentName').textContent = name;
+            document.getElementById('badgeScoreText').textContent = `${correctAnswers.size}/${totalQuestions} correct`;
+            document.getElementById('badgeDisplay').classList.add('show');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgress();
+            updateBadgeProgress();
+            document.getElementById('badgeNameInput')?.addEventListener('keypress', e => { if (e.key === 'Enter') generateBadge(); });
+        });
+    </script>
+</body>
+</html>

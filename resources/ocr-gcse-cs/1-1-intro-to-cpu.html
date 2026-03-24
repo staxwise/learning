@@ -1,0 +1,2152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to the CPU | GCSE Computer Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --text-muted: #555566;
+            --border-subtle: #2a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .exam-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-magenta));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .progress-container {
+            margin-top: 30px;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border-subtle);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .progress-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 12px var(--accent-cyan);
+            transform: scale(1.2);
+        }
+
+        .progress-dot.completed {
+            background: var(--accent-green);
+        }
+
+        .progress-label {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        .learning-objective {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.02));
+            border-left: 3px solid var(--accent-cyan);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .learning-objective-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-cyan);
+            margin-bottom: 6px;
+        }
+
+        .learning-objective p, .learning-objective ul {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .learning-objective ul {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .learning-objective li {
+            margin-bottom: 6px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: var(--accent-cyan);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            margin-bottom: 14px;
+            color: var(--text-primary);
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        .highlight {
+            color: var(--accent-yellow);
+            font-weight: 600;
+        }
+
+        .highlight-cyan {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .highlight-magenta {
+            color: var(--accent-magenta);
+            font-weight: 600;
+        }
+
+        .highlight-green {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .highlight-purple {
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
+        /* Key Term Definition */
+        .key-term {
+            background: linear-gradient(135deg, rgba(255, 214, 10, 0.1), rgba(255, 149, 0, 0.05));
+            border: 1px solid rgba(255, 214, 10, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .key-term-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .key-term-badge {
+            background: var(--accent-yellow);
+            color: var(--bg-dark);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .key-term-word {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-yellow);
+        }
+
+        .key-term p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Analogy Box */
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .analogy-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .analogy-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .analogy-box p + p {
+            margin-top: 10px;
+        }
+
+        /* Think About It Box */
+        .think-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.03));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .think-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
+        .think-box p, .think-box ul {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Connect Box */
+        .connect-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 255, 136, 0.02));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .connect-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .connect-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Warning/Misconception Box */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.1), rgba(255, 0, 110, 0.03));
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-magenta);
+            font-weight: 600;
+        }
+
+        .warning-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Coming Up Box */
+        .coming-up-box {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.1), rgba(255, 149, 0, 0.03));
+            border: 1px solid rgba(255, 149, 0, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .coming-up-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        .coming-up-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* CPU Diagram */
+        .cpu-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 600px;
+            margin: 24px auto;
+            padding: 24px;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 16px;
+        }
+
+        .cpu-diagram-label {
+            text-align: center;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .cpu-row {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cpu-component {
+            flex: 1;
+            min-width: 120px;
+            max-width: 200px;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .cpu-component:hover {
+            transform: translateY(-4px);
+        }
+
+        .cpu-component.cu {
+            background: rgba(0, 255, 136, 0.15);
+            border: 2px solid var(--accent-green);
+        }
+
+        .cpu-component.alu {
+            background: rgba(255, 0, 110, 0.15);
+            border: 2px solid var(--accent-magenta);
+        }
+
+        .cpu-component.cache {
+            background: rgba(255, 214, 10, 0.15);
+            border: 2px solid var(--accent-yellow);
+        }
+
+        .cpu-component.registers {
+            background: rgba(168, 85, 247, 0.15);
+            border: 2px solid var(--accent-purple);
+        }
+
+        .cpu-component-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+        }
+
+        .cpu-component.cu .cpu-component-name { color: var(--accent-green); }
+        .cpu-component.alu .cpu-component-name { color: var(--accent-magenta); }
+        .cpu-component.cache .cpu-component-name { color: var(--accent-yellow); }
+        .cpu-component.registers .cpu-component-name { color: var(--accent-purple); }
+
+        .cpu-component-role {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .comparison-table th {
+            background: var(--bg-card);
+            color: var(--accent-cyan);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .comparison-table td {
+            color: var(--text-primary);
+        }
+
+        .comparison-table tr:hover td {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        /* Quiz Options */
+        .question-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .question-box p {
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            padding: 14px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--accent-cyan);
+            transform: translateX(4px);
+        }
+
+        .option-btn.correct {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.15);
+        }
+
+        .option-btn.incorrect {
+            border-color: var(--accent-magenta);
+            background: rgba(255, 0, 110, 0.15);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.85;
+        }
+
+        /* Feedback */
+        .feedback {
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-top: 14px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .feedback.error {
+            background: rgba(255, 0, 110, 0.1);
+            border: 1px solid var(--accent-magenta);
+            color: var(--accent-magenta);
+        }
+
+        /* Notes Summary */
+        .notes-summary {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.08), rgba(255, 214, 10, 0.05));
+            border: 1px solid rgba(255, 149, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 24px;
+        }
+
+        .notes-summary-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        .notes-summary h4 {
+            color: var(--accent-yellow);
+            font-size: 1rem;
+            margin: 16px 0 8px 0;
+        }
+
+        .notes-summary h4:first-of-type {
+            margin-top: 0;
+        }
+
+        .notes-summary p, .notes-summary ul {
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+
+        .notes-summary ul {
+            padding-left: 20px;
+        }
+
+        .notes-summary li {
+            margin-bottom: 4px;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.prev {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+
+        .nav-btn.prev:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+        }
+
+        .nav-btn.next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Matching Exercise */
+        .matching-container {
+            margin: 20px 0;
+        }
+
+        .matching-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .matching-term {
+            min-width: 140px;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .matching-term.cu { border-color: var(--accent-green); color: var(--accent-green); }
+        .matching-term.alu { border-color: var(--accent-magenta); color: var(--accent-magenta); }
+        .matching-term.cache { border-color: var(--accent-yellow); color: var(--accent-yellow); }
+        .matching-term.registers { border-color: var(--accent-purple); color: var(--accent-purple); }
+
+        .matching-arrow {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .matching-select {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 16px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .matching-select:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        .matching-select.correct {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .matching-select.incorrect {
+            border-color: var(--accent-magenta);
+            background: rgba(255, 0, 110, 0.1);
+        }
+
+        .matching-select:disabled {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .control-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn.primary {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        .control-btn.primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .control-btn.secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+
+        .control-btn.secondary:hover:not(:disabled) {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .matching-result {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .matching-result.show {
+            display: block;
+        }
+
+        .matching-result.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-green);
+        }
+
+        .matching-result.partial {
+            background: rgba(255, 214, 10, 0.1);
+            border: 1px solid var(--accent-yellow);
+        }
+
+        .matching-result h4 {
+            margin: 0 0 8px 0;
+        }
+
+        .matching-result.success h4 {
+            color: var(--accent-green);
+        }
+
+        .matching-result.partial h4 {
+            color: var(--accent-yellow);
+        }
+
+        .matching-result p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Badge Generator */
+        .badge-generator {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 2px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .badge-generator h3 {
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+        }
+
+        .badge-generator > p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .badge-input-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .badge-name-input {
+            padding: 12px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+
+        .badge-name-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        .badge-name-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .badge-display {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .badge-display.show {
+            display: flex;
+        }
+
+        .badge-container {
+            background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(0, 212, 255, 0.1);
+        }
+
+        .badge-hint {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .badge-locked-message {
+            padding: 20px;
+        }
+
+        .badge-locked-message .lock-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .badge-locked-message p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .badge-progress {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .badge-progress-bar {
+            height: 12px;
+            background: var(--bg-dark);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .badge-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .badge-progress-text {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        #badgeUnlocked > p {
+            color: var(--accent-green);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            h1 {
+                font-size: 1.7rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .cpu-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cpu-component {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+
+            .matching-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .matching-term {
+                width: 100%;
+            }
+
+            .matching-arrow {
+                transform: rotate(90deg);
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="exam-badge">OCR GCSE Computer Science</div>
+            <h1>Introduction to the CPU</h1>
+            <p class="subtitle">The brain of every computer</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <p class="progress-label" id="progressLabel">Section 1 of 9</p>
+            </div>
+        </header>
+
+        <main id="content">
+            <!-- Section 1: Welcome -->
+            <section id="section-1" class="active">
+                <div class="card">
+                    <h2>🎯 What You'll Learn</h2>
+                    
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objectives</div>
+                        <p>By the end of this resource, you will be able to:</p>
+                        <ul>
+                            <li>Explain the main purpose of the <span class="highlight-cyan">CPU</span></li>
+                            <li>Describe where instructions come from</li>
+                            <li>Identify the four key components inside the CPU: <span class="highlight-green">CU</span>, <span class="highlight-magenta">ALU</span>, <span class="highlight-purple">Registers</span>, and <span class="highlight">Cache</span></li>
+                            <li>Explain the relationship between cache and RAM</li>
+                        </ul>
+                    </div>
+
+                    <p>Every time you open an app, type a message, or play a game, the CPU is working behind the scenes. It's the component that actually <em>does</em> things — processing your instructions millions of times per second.</p>
+
+                    <div class="connect-box">
+                        <div class="connect-box-header">
+                            🔗 Connect to What You Know
+                        </div>
+                        <p>You've probably heard the CPU called the "brain" of the computer. This resource explores what that actually means — what's inside this "brain" and how does it work?</p>
+                    </div>
+
+                    <div class="coming-up-box">
+                        <div class="coming-up-box-header">
+                            📌 What This Resource Covers
+                        </div>
+                        <p>This is an <strong>introduction</strong> to the CPU. We'll learn what's inside and what each part does at a high level. Later resources will go deeper into how the CPU actually processes instructions step-by-step.</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Overview</h4>
+                    <ul>
+                        <li>CPU = Central Processing Unit</li>
+                        <li>Often called the "brain" of the computer</li>
+                        <li>Four key internal components: CU, ALU, Registers, Cache</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" disabled>← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 2: What is the CPU? -->
+            <section id="section-2">
+                <div class="card">
+                    <h2>🧠 What is the CPU?</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Key Term</span>
+                            <span class="key-term-word">CPU (Central Processing Unit)</span>
+                        </div>
+                        <p>The component that <strong>processes instructions</strong> and <strong>controls</strong> all other parts of the computer. It fetches instructions, works out what they mean, and carries them out.</p>
+                    </div>
+
+                    <p>The CPU has two main jobs:</p>
+
+                    <ol style="color: var(--text-secondary); padding-left: 24px; margin-bottom: 16px;">
+                        <li><strong style="color: var(--text-primary);">Processing instructions</strong> — carrying out the operations that programs need to run</li>
+                        <li><strong style="color: var(--text-primary);">Controlling the computer</strong> — coordinating all other components (memory, storage, input/output devices)</li>
+                    </ol>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            🍳 Kitchen Analogy
+                        </div>
+                        <p>Think of the CPU as the <strong>head chef</strong> in a restaurant kitchen. The head chef:</p>
+                        <p style="margin-top: 10px;">• Reads orders (instructions) and works out what needs to be done</p>
+                        <p>• Actually prepares the food (processes data)</p>
+                        <p>• Coordinates the whole kitchen — telling other staff what to do and when</p>
+                        <p style="margin-top: 10px;">Without the head chef, nothing gets made. Without the CPU, nothing happens.</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            ⚠️ Common Misconception
+                        </div>
+                        <p>The CPU doesn't store your files or remember things long-term — that's the job of storage (like an SSD or hard drive) and RAM. The CPU just <em>processes</em> things in the moment.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-cpu">
+                        <p>What are the two main jobs of the CPU?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('cpu', this, false)">Storing files and connecting to the internet</button>
+                            <button class="option-btn" onclick="checkAnswer('cpu', this, true)">Processing instructions and controlling the computer</button>
+                            <button class="option-btn" onclick="checkAnswer('cpu', this, false)">Displaying graphics and playing sound</button>
+                            <button class="option-btn" onclick="checkAnswer('cpu', this, false)">Saving data and managing memory</button>
+                        </div>
+                        <div class="feedback" id="feedback-cpu"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>CPU Purpose</h4>
+                    <ul>
+                        <li><strong>Process instructions:</strong> Carry out operations from programs</li>
+                        <li><strong>Control the computer:</strong> Coordinate all other components</li>
+                        <li>Does NOT store files or data long-term</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 3: Where Do Instructions Come From? -->
+            <section id="section-3">
+                <div class="card">
+                    <h2>📝 Where Do Instructions Come From?</h2>
+
+                    <p>The CPU processes <strong>instructions</strong> — but where do these instructions come from?</p>
+
+                    <p>Every instruction the CPU follows was originally written by a <strong>human programmer</strong>. When programmers write code (in languages like Python, JavaScript, or C++), that code eventually gets converted into simple instructions the CPU can understand.</p>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Key Term</span>
+                            <span class="key-term-word">Program</span>
+                        </div>
+                        <p>A set of instructions that tells the computer what to do. Programs are written by humans using programming languages, then translated into a form the CPU can execute.</p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            🍳 Kitchen Analogy
+                        </div>
+                        <p>Instructions are like <strong>orders from customers</strong>. Someone (the programmer) writes down what they want. The kitchen (computer) receives the order, and the head chef (CPU) follows the instructions to make it happen.</p>
+                        <p style="margin-top: 10px;">Just as a chef follows recipes written by humans, the CPU follows programs written by humans.</p>
+                    </div>
+
+                    <h3>The Journey of an Instruction</h3>
+                    <ol style="color: var(--text-secondary); padding-left: 24px; margin-bottom: 16px;">
+                        <li>A programmer writes code (e.g., <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px;">print("Hello")</code>)</li>
+                        <li>The code is translated into simple CPU instructions</li>
+                        <li>Instructions are stored in memory (RAM)</li>
+                        <li>The CPU fetches and executes each instruction, one by one</li>
+                    </ol>
+
+                    <div class="think-box">
+                        <div class="think-box-header">
+                            🤔 Think About It
+                        </div>
+                        <p>Every app on your phone, every website you visit, every game you play — they all started as code written by humans. The CPU is just following those instructions, incredibly fast.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-instructions">
+                        <p>Where do the instructions that the CPU processes originally come from?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('instructions', this, false)">They are built into the CPU at the factory</button>
+                            <button class="option-btn" onclick="checkAnswer('instructions', this, false)">They are created automatically by the computer</button>
+                            <button class="option-btn" onclick="checkAnswer('instructions', this, true)">They are written by human programmers</button>
+                            <button class="option-btn" onclick="checkAnswer('instructions', this, false)">They come from the internet</button>
+                        </div>
+                        <div class="feedback" id="feedback-instructions"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>Instructions come from <strong>programs</strong> written by humans</li>
+                        <li>Programmers write code in programming languages</li>
+                        <li>Code is translated into simple CPU instructions</li>
+                        <li>Instructions are stored in RAM, then fetched by the CPU</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 4: Inside the CPU -->
+            <section id="section-4">
+                <div class="card">
+                    <h2>🔍 Inside the CPU</h2>
+
+                    <p>The CPU isn't just one thing — it contains several specialised components that work together. For GCSE, you need to know four key parts:</p>
+
+                    <div class="cpu-diagram">
+                        <div class="cpu-diagram-label">Inside the CPU</div>
+                        <div class="cpu-row">
+                            <div class="cpu-component cu">
+                                <div class="cpu-component-name">Control Unit (CU)</div>
+                                <div class="cpu-component-role">The Manager</div>
+                            </div>
+                            <div class="cpu-component alu">
+                                <div class="cpu-component-name">ALU</div>
+                                <div class="cpu-component-role">The Calculator</div>
+                            </div>
+                        </div>
+                        <div class="cpu-row">
+                            <div class="cpu-component cache">
+                                <div class="cpu-component-name">Cache</div>
+                                <div class="cpu-component-role">Quick-Access Storage</div>
+                            </div>
+                            <div class="cpu-component registers">
+                                <div class="cpu-component-name">Registers</div>
+                                <div class="cpu-component-role">Instant Storage</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>Each component has a specific job. In the next few sections, we'll look at each one.</p>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            🍳 Kitchen Analogy Overview
+                        </div>
+                        <p><strong>Control Unit:</strong> The kitchen manager who reads orders and tells everyone what to do</p>
+                        <p><strong>ALU:</strong> The cooking station where the actual food preparation happens</p>
+                        <p><strong>Registers:</strong> The chef's hands — holding ingredients they're working with right now</p>
+                        <p><strong>Cache:</strong> The prep station with ready-to-use ingredients (faster than going to the pantry)</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-components">
+                        <p>How many key components inside the CPU do you need to know for GCSE?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('components', this, false)">2 — CU and ALU</button>
+                            <button class="option-btn" onclick="checkAnswer('components', this, false)">3 — CU, ALU, and RAM</button>
+                            <button class="option-btn" onclick="checkAnswer('components', this, true)">4 — CU, ALU, Cache, and Registers</button>
+                            <button class="option-btn" onclick="checkAnswer('components', this, false)">5 — CU, ALU, Cache, Registers, and GPU</button>
+                        </div>
+                        <div class="feedback" id="feedback-components"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Four CPU Components</h4>
+                    <ul>
+                        <li><strong>Control Unit (CU):</strong> Manages and coordinates</li>
+                        <li><strong>ALU:</strong> Arithmetic and Logic Unit — does calculations</li>
+                        <li><strong>Cache:</strong> Small, fast memory inside the CPU</li>
+                        <li><strong>Registers:</strong> Tiny, fastest storage for immediate use</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 5: Control Unit -->
+            <section id="section-5">
+                <div class="card">
+                    <h2>🎛️ The Control Unit (CU)</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Key Term</span>
+                            <span class="key-term-word">Control Unit (CU)</span>
+                        </div>
+                        <p>The component that <strong>manages and coordinates</strong> all CPU operations. It fetches instructions from memory, decodes them to understand what to do, and directs other components to carry out the work.</p>
+                    </div>
+
+                    <p>The Control Unit is like the <strong>manager</strong> of the CPU. It doesn't do the actual calculations — instead, it:</p>
+
+                    <ul style="color: var(--text-secondary); padding-left: 24px; margin-bottom: 16px;">
+                        <li>Fetches instructions from memory</li>
+                        <li>Decodes instructions (works out what they mean)</li>
+                        <li>Tells other components what to do and when</li>
+                        <li>Controls the flow of data between CPU components</li>
+                    </ul>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            🍳 Kitchen Analogy
+                        </div>
+                        <p>The Control Unit is like the <strong>kitchen manager</strong> who:</p>
+                        <p style="margin-top: 8px;">• Reads the order tickets (fetches instructions)</p>
+                        <p>• Understands what each order needs (decodes)</p>
+                        <p>• Tells the chef which station to use (directs the ALU)</p>
+                        <p>• Coordinates timing so everything comes together</p>
+                        <p style="margin-top: 10px;">The manager doesn't cook — they <em>organise</em>.</p>
+                    </div>
+
+                    <div class="coming-up-box">
+                        <div class="coming-up-box-header">
+                            📌 Coming Up Later
+                        </div>
+                        <p>The way the CU fetches, decodes, and executes instructions is called the <strong>Fetch-Decode-Execute cycle</strong>. You'll learn about this in detail in a later resource.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-cu">
+                        <p>What is the main role of the Control Unit?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('cu', this, false)">To perform calculations and comparisons</button>
+                            <button class="option-btn" onclick="checkAnswer('cu', this, false)">To store data permanently</button>
+                            <button class="option-btn" onclick="checkAnswer('cu', this, true)">To manage and coordinate CPU operations</button>
+                            <button class="option-btn" onclick="checkAnswer('cu', this, false)">To display output on the screen</button>
+                        </div>
+                        <div class="feedback" id="feedback-cu"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Control Unit (CU)</h4>
+                    <ul>
+                        <li>Manages and coordinates all CPU operations</li>
+                        <li>Fetches instructions from memory</li>
+                        <li>Decodes instructions (works out what they mean)</li>
+                        <li>Directs other components (like the ALU)</li>
+                        <li>Does NOT do calculations itself</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 6: ALU -->
+            <section id="section-6">
+                <div class="card">
+                    <h2>🔢 The Arithmetic Logic Unit (ALU)</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Key Term</span>
+                            <span class="key-term-word">ALU (Arithmetic Logic Unit)</span>
+                        </div>
+                        <p>The component that performs <strong>calculations</strong> (arithmetic) and <strong>logical comparisons</strong>. This is where the actual "processing" happens.</p>
+                    </div>
+
+                    <p>The ALU handles two types of operations:</p>
+
+                    <h3>Arithmetic Operations</h3>
+                    <p>Mathematical calculations: addition, subtraction, multiplication, division.</p>
+
+                    <h3>Logical Operations</h3>
+                    <p>Comparisons and decisions: Is A greater than B? Is this value equal to zero? AND, OR, NOT operations.</p>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            🍳 Kitchen Analogy
+                        </div>
+                        <p>The ALU is like the <strong>cooking station</strong> where the actual food gets made. The manager (CU) tells the chef what to cook, but the cooking station is where the work actually happens.</p>
+                        <p style="margin-top: 10px;">When the manager says "make a calculation," the ALU is what actually does it.</p>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">
+                            🤔 Why "Logic" Unit?
+                        </div>
+                        <p>Programs constantly make decisions: "If the score is greater than 100, show a bonus." The ALU handles these comparisons. Every <code style="background: var(--bg-card); padding: 2px 6px; border-radius: 4px;">if</code> statement in code relies on the ALU to check if the condition is true or false.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-alu">
+                        <p>Which of these operations would the ALU perform?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('alu', this, false)">Fetching an instruction from memory</button>
+                            <button class="option-btn" onclick="checkAnswer('alu', this, false)">Storing a file on the hard drive</button>
+                            <button class="option-btn" onclick="checkAnswer('alu', this, true)">Calculating 25 + 17 or checking if x > 10</button>
+                            <button class="option-btn" onclick="checkAnswer('alu', this, false)">Displaying pixels on the screen</button>
+                        </div>
+                        <div class="feedback" id="feedback-alu"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>ALU (Arithmetic Logic Unit)</h4>
+                    <ul>
+                        <li>Performs <strong>arithmetic:</strong> +, −, ×, ÷</li>
+                        <li>Performs <strong>logic:</strong> comparisons (>, <, ==), AND, OR, NOT</li>
+                        <li>Where the actual "processing" happens</li>
+                        <li>Directed by the Control Unit</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 7: Registers -->
+            <section id="section-7">
+                <div class="card">
+                    <h2>⚡ Registers</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Key Term</span>
+                            <span class="key-term-word">Registers</span>
+                        </div>
+                        <p>Tiny, extremely fast storage locations <strong>inside the CPU</strong>. They hold the data and instructions the CPU is actively working with at that exact moment.</p>
+                    </div>
+
+                    <p>Registers are the <strong>fastest</strong> type of memory in the entire computer — even faster than cache. But they're also the <strong>smallest</strong> — a CPU might only have a handful of registers, each holding just a few bytes.</p>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            🍳 Kitchen Analogy
+                        </div>
+                        <p>Registers are like the <strong>chef's hands</strong>. Whatever the chef is working on <em>right now</em> is in their hands — an ingredient being chopped, a pan being stirred. It's the most immediate, instant-access "storage" possible.</p>
+                        <p style="margin-top: 10px;">You can only hold a few things at once, but access is instant — no reaching for a shelf.</p>
+                    </div>
+
+                    <h3>Why So Fast?</h3>
+                    <p>Registers are built directly into the CPU chip itself. There's no delay — the CPU can read from or write to a register instantly. RAM is outside the CPU, so it takes longer to access.</p>
+
+                    <div class="coming-up-box">
+                        <div class="coming-up-box-header">
+                            📌 Coming Up Later
+                        </div>
+                        <p>You'll learn about specific registers (like the Program Counter and Accumulator) in a later resource on the Fetch-Decode-Execute cycle.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-registers">
+                        <p>What is the key characteristic of registers?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('registers', this, false)">They are very large but slow</button>
+                            <button class="option-btn" onclick="checkAnswer('registers', this, true)">They are very small but extremely fast</button>
+                            <button class="option-btn" onclick="checkAnswer('registers', this, false)">They store data permanently</button>
+                            <button class="option-btn" onclick="checkAnswer('registers', this, false)">They are located outside the CPU</button>
+                        </div>
+                        <div class="feedback" id="feedback-registers"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Registers</h4>
+                    <ul>
+                        <li>Tiny storage locations <strong>inside</strong> the CPU</li>
+                        <li><strong>Fastest</strong> memory in the computer</li>
+                        <li><strong>Smallest</strong> capacity — just a few bytes each</li>
+                        <li>Hold data the CPU is working with right now</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 8: Cache and RAM -->
+            <section id="section-8">
+                <div class="card">
+                    <h2>💾 Cache: The Bridge to RAM</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Key Term</span>
+                            <span class="key-term-word">Cache</span>
+                        </div>
+                        <p>A small amount of <strong>high-speed memory</strong> inside (or very close to) the CPU. It stores copies of frequently used data and instructions so the CPU doesn't have to wait for slower RAM.</p>
+                    </div>
+
+                    <p>The problem: RAM is useful (it holds all your running programs) but it's <strong>slower</strong> than the CPU. If the CPU had to wait for RAM every time, it would waste time.</p>
+
+                    <p>The solution: <strong>Cache</strong> acts as a middle ground — faster than RAM, but larger than registers.</p>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            🍳 Kitchen Analogy
+                        </div>
+                        <p>Cache is like the <strong>prep station</strong> next to the chef. Commonly used ingredients are kept here, already washed and chopped, ready to grab.</p>
+                        <p style="margin-top: 10px;"><strong>RAM is like the pantry</strong> — it has much more storage, but you have to walk over to get things. The prep station (cache) keeps the most-used items within arm's reach.</p>
+                    </div>
+
+                    <h3>Speed vs Size Trade-off</h3>
+                    <table class="comparison-table">
+                        <tr>
+                            <th>Memory Type</th>
+                            <th>Speed</th>
+                            <th>Size</th>
+                            <th>Location</th>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--accent-purple);">Registers</td>
+                            <td>Fastest</td>
+                            <td>Smallest (bytes)</td>
+                            <td>Inside CPU</td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--accent-yellow);">Cache</td>
+                            <td>Very Fast</td>
+                            <td>Small (MB)</td>
+                            <td>Inside/near CPU</td>
+                        </tr>
+                        <tr>
+                            <td style="color: var(--accent-cyan);">RAM</td>
+                            <td>Fast</td>
+                            <td>Large (GB)</td>
+                            <td>Separate chip</td>
+                        </tr>
+                    </table>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            ⚠️ Important Relationship
+                        </div>
+                        <p><strong>Cache copies data from RAM.</strong> When the CPU needs something, it checks cache first. If it's there (a "cache hit"), great — instant access. If not (a "cache miss"), it has to fetch from slower RAM.</p>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">
+                            🤔 Why Not Make Cache Bigger?
+                        </div>
+                        <p>Fast memory is expensive and takes up physical space on the CPU chip. There's always a trade-off: you can have fast OR large, but not both. That's why we have a hierarchy: registers → cache → RAM.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-cache">
+                        <p>Why does the CPU use cache instead of just accessing RAM directly?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('cache', this, false)">RAM is too small to hold all the data</button>
+                            <button class="option-btn" onclick="checkAnswer('cache', this, false)">Cache can store data permanently</button>
+                            <button class="option-btn" onclick="checkAnswer('cache', this, true)">Cache is faster than RAM, reducing wait time</button>
+                            <button class="option-btn" onclick="checkAnswer('cache', this, false)">RAM is inside the CPU and cache is outside</button>
+                        </div>
+                        <div class="feedback" id="feedback-cache"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Cache</h4>
+                    <ul>
+                        <li>Small, high-speed memory inside/near the CPU</li>
+                        <li>Faster than RAM, but smaller</li>
+                        <li>Stores copies of frequently used data from RAM</li>
+                        <li>Reduces wait time for the CPU</li>
+                    </ul>
+                    <h4>Memory Hierarchy (fastest to slowest)</h4>
+                    <ul>
+                        <li>Registers → Cache → RAM</li>
+                        <li>Trade-off: faster = smaller, larger = slower</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 9: Final Quiz -->
+            <section id="section-9">
+                <div class="card">
+                    <h2>✅ Final Check</h2>
+
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Assessment</div>
+                        <p>Complete the quiz questions and the matching exercise to check your understanding.</p>
+                    </div>
+
+                    <!-- Question 1 -->
+                    <div class="question-box" id="q1">
+                        <p><strong>Question 1:</strong> What is the main purpose of the CPU?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">To store files and documents</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, true)">To process instructions and control the computer</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">To connect to the internet</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">To display graphics on screen</button>
+                        </div>
+                        <div class="feedback" id="feedback1"></div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="question-box" id="q2">
+                        <p><strong>Question 2:</strong> Instructions that the CPU processes come from:</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">The CPU itself — it generates its own instructions</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, true)">Programs written by human programmers</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">The monitor and keyboard</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">The power supply</button>
+                        </div>
+                        <div class="feedback" id="feedback2"></div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="question-box" id="q3">
+                        <p><strong>Question 3:</strong> Which component performs calculations like addition and comparisons like "is A > B"?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">Control Unit (CU)</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, true)">Arithmetic Logic Unit (ALU)</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">Cache</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">Registers</button>
+                        </div>
+                        <div class="feedback" id="feedback3"></div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="question-box" id="q4">
+                        <p><strong>Question 4:</strong> Put these memory types in order from fastest to slowest:</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">RAM → Cache → Registers</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">Cache → Registers → RAM</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, true)">Registers → Cache → RAM</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">RAM → Registers → Cache</button>
+                        </div>
+                        <div class="feedback" id="feedback4"></div>
+                    </div>
+
+                    <div id="quizResult" style="display: none; margin-top: 20px; padding: 20px; background: var(--bg-card); border-radius: 12px; text-align: center;">
+                        <h3 id="quizScore" style="color: var(--accent-green);"></h3>
+                        <p id="quizMessage" style="color: var(--text-secondary);"></p>
+                    </div>
+                </div>
+
+                <!-- Matching Exercise -->
+                <div class="card">
+                    <h3>🔗 Match the Component to Its Role</h3>
+                    <p>Select the correct role for each CPU component.</p>
+
+                    <div class="matching-container">
+                        <div class="matching-row">
+                            <div class="matching-term cu">Control Unit</div>
+                            <span class="matching-arrow">→</span>
+                            <select class="matching-select" id="match-cu">
+                                <option value="">Select a role...</option>
+                                <option value="manager">Manages and coordinates operations</option>
+                                <option value="calculator">Performs calculations and comparisons</option>
+                                <option value="fast-storage">Quick-access storage for frequent data</option>
+                                <option value="instant-storage">Instant storage for current data</option>
+                            </select>
+                        </div>
+                        <div class="matching-row">
+                            <div class="matching-term alu">ALU</div>
+                            <span class="matching-arrow">→</span>
+                            <select class="matching-select" id="match-alu">
+                                <option value="">Select a role...</option>
+                                <option value="manager">Manages and coordinates operations</option>
+                                <option value="calculator">Performs calculations and comparisons</option>
+                                <option value="fast-storage">Quick-access storage for frequent data</option>
+                                <option value="instant-storage">Instant storage for current data</option>
+                            </select>
+                        </div>
+                        <div class="matching-row">
+                            <div class="matching-term cache">Cache</div>
+                            <span class="matching-arrow">→</span>
+                            <select class="matching-select" id="match-cache">
+                                <option value="">Select a role...</option>
+                                <option value="manager">Manages and coordinates operations</option>
+                                <option value="calculator">Performs calculations and comparisons</option>
+                                <option value="fast-storage">Quick-access storage for frequent data</option>
+                                <option value="instant-storage">Instant storage for current data</option>
+                            </select>
+                        </div>
+                        <div class="matching-row">
+                            <div class="matching-term registers">Registers</div>
+                            <span class="matching-arrow">→</span>
+                            <select class="matching-select" id="match-registers">
+                                <option value="">Select a role...</option>
+                                <option value="manager">Manages and coordinates operations</option>
+                                <option value="calculator">Performs calculations and comparisons</option>
+                                <option value="fast-storage">Quick-access storage for frequent data</option>
+                                <option value="instant-storage">Instant storage for current data</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <button class="control-btn primary" onclick="checkMatching()">Check Answers</button>
+                        <button class="control-btn secondary" onclick="resetMatching()">Reset</button>
+                    </div>
+
+                    <div class="matching-result" id="matchingResult">
+                        <h4 id="matchingResultTitle"></h4>
+                        <p id="matchingResultMessage"></p>
+                    </div>
+                </div>
+
+                <!-- Badge Generator -->
+                <div class="card badge-generator" id="badgeGenerator">
+                    <h3>🏆 Claim Your Badge</h3>
+                    
+                    <!-- Locked state -->
+                    <div id="badgeLocked">
+                        <div class="badge-locked-message">
+                            <span class="lock-icon">🔒</span>
+                            <p>Complete all questions throughout the resource to unlock your badge!</p>
+                            <div class="badge-progress">
+                                <div class="badge-progress-bar">
+                                    <div class="badge-progress-fill" id="badgeProgressFill"></div>
+                                </div>
+                                <span class="badge-progress-text" id="badgeProgressText">0 / 12 questions answered</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unlocked state -->
+                    <div id="badgeUnlocked" style="display: none;">
+                        <p>🎉 All questions completed! Enter your name to generate your badge.</p>
+                        
+                        <div class="badge-input-group">
+                            <input type="text" class="badge-name-input" id="badgeNameInput" placeholder="Enter your name..." maxlength="30">
+                            <button class="control-btn primary" onclick="generateBadge()">Generate Badge</button>
+                        </div>
+
+                        <div class="badge-display" id="badgeDisplay">
+                            <div class="badge-container">
+                                <svg id="badgeSvg" width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Background -->
+                                    <defs>
+                                        <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#1a1a2e"/>
+                                            <stop offset="100%" style="stop-color:#0f0f1a"/>
+                                        </linearGradient>
+                                        <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#00d4ff"/>
+                                            <stop offset="100%" style="stop-color:#a855f7"/>
+                                        </linearGradient>
+                                        <linearGradient id="cpuGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#00d4ff"/>
+                                            <stop offset="50%" style="stop-color:#a855f7"/>
+                                            <stop offset="100%" style="stop-color:#ff006e"/>
+                                        </linearGradient>
+                                        <filter id="glow">
+                                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                            <feMerge>
+                                                <feMergeNode in="coloredBlur"/>
+                                                <feMergeNode in="SourceGraphic"/>
+                                            </feMerge>
+                                        </filter>
+                                    </defs>
+                                    
+                                    <!-- Outer glow ring -->
+                                    <circle cx="160" cy="160" r="145" fill="none" stroke="url(#badgeGradient)" stroke-width="3" opacity="0.3"/>
+                                    
+                                    <!-- Main badge circle -->
+                                    <circle cx="160" cy="160" r="130" fill="#12121a" stroke="url(#badgeGradient)" stroke-width="4"/>
+                                    
+                                    <!-- Inner decorative ring -->
+                                    <circle cx="160" cy="160" r="115" fill="none" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="8 4"/>
+                                    
+                                    <!-- CPU Icon -->
+                                    <g transform="translate(160, 130)" filter="url(#glow)">
+                                        <!-- CPU main body -->
+                                        <rect x="-35" y="-35" width="70" height="70" rx="8" fill="#1a1a2e" stroke="url(#cpuGradient)" stroke-width="3"/>
+                                        
+                                        <!-- CPU inner chip -->
+                                        <rect x="-20" y="-20" width="40" height="40" rx="4" fill="url(#cpuGradient)" opacity="0.3"/>
+                                        <rect x="-15" y="-15" width="30" height="30" rx="2" fill="none" stroke="url(#cpuGradient)" stroke-width="1.5"/>
+                                        
+                                        <!-- CPU pins - top -->
+                                        <rect x="-25" y="-45" width="4" height="12" fill="#00d4ff"/>
+                                        <rect x="-10" y="-45" width="4" height="12" fill="#00d4ff"/>
+                                        <rect x="6" y="-45" width="4" height="12" fill="#00d4ff"/>
+                                        <rect x="21" y="-45" width="4" height="12" fill="#00d4ff"/>
+                                        
+                                        <!-- CPU pins - bottom -->
+                                        <rect x="-25" y="33" width="4" height="12" fill="#a855f7"/>
+                                        <rect x="-10" y="33" width="4" height="12" fill="#a855f7"/>
+                                        <rect x="6" y="33" width="4" height="12" fill="#a855f7"/>
+                                        <rect x="21" y="33" width="4" height="12" fill="#a855f7"/>
+                                        
+                                        <!-- CPU pins - left -->
+                                        <rect x="-45" y="-25" width="12" height="4" fill="#00d4ff"/>
+                                        <rect x="-45" y="-10" width="12" height="4" fill="#00d4ff"/>
+                                        <rect x="-45" y="6" width="12" height="4" fill="#a855f7"/>
+                                        <rect x="-45" y="21" width="12" height="4" fill="#a855f7"/>
+                                        
+                                        <!-- CPU pins - right -->
+                                        <rect x="33" y="-25" width="12" height="4" fill="#00d4ff"/>
+                                        <rect x="33" y="-10" width="12" height="4" fill="#00d4ff"/>
+                                        <rect x="33" y="6" width="12" height="4" fill="#a855f7"/>
+                                        <rect x="33" y="21" width="12" height="4" fill="#a855f7"/>
+                                    </g>
+                                    
+                                    <!-- Title text -->
+                                    <text x="160" y="215" text-anchor="middle" fill="#00d4ff" font-family="Outfit, sans-serif" font-size="11" font-weight="600" letter-spacing="2">GCSE COMPUTER SCIENCE</text>
+                                    
+                                    <!-- Topic text -->
+                                    <text x="160" y="238" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-size="16" font-weight="700">Introduction to the CPU</text>
+                                    
+                                    <!-- Completed text -->
+                                    <text x="160" y="262" text-anchor="middle" fill="#00ff88" font-family="Outfit, sans-serif" font-size="12" font-weight="600">✓ COMPLETED</text>
+                                    
+                                    <!-- Ribbon banner -->
+                                    <path d="M60 310 L260 310 L250 330 L260 350 L60 350 L70 330 Z" fill="url(#badgeGradient)"/>
+                                    
+                                    <!-- Student name (will be updated by JS) -->
+                                    <text id="badgeStudentName" x="160" y="335" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-size="16" font-weight="700">Student Name</text>
+                                </svg>
+                            </div>
+                            <p class="badge-hint">📸 Use Snipping Tool or screenshot to save your badge!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Complete Summary for Your Notes
+                    </div>
+                    
+                    <h4>The CPU</h4>
+                    <ul>
+                        <li><strong>CPU = Central Processing Unit</strong></li>
+                        <li>Processes instructions from programs written by humans</li>
+                        <li>Controls and coordinates all other computer components</li>
+                    </ul>
+
+                    <h4>Four Key Components</h4>
+                    <ul>
+                        <li><strong>Control Unit (CU):</strong> Manages operations, fetches and decodes instructions</li>
+                        <li><strong>ALU:</strong> Performs arithmetic (+, −, ×, ÷) and logic (comparisons, AND, OR)</li>
+                        <li><strong>Registers:</strong> Smallest, fastest storage — inside CPU, holds current data</li>
+                        <li><strong>Cache:</strong> Small, fast memory — bridge between CPU and RAM</li>
+                    </ul>
+
+                    <h4>Memory Hierarchy</h4>
+                    <ul>
+                        <li>Registers → Cache → RAM (fastest to slowest)</li>
+                        <li>Registers → Cache → RAM (smallest to largest)</li>
+                        <li>Trade-off: faster memory is smaller; larger memory is slower</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" disabled style="background: var(--accent-green);">Complete! 🎉</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // ============ Navigation ============
+        const totalSections = 9;
+        let currentSection = 1;
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.innerHTML = '';
+            
+            for (let i = 1; i <= totalSections; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                if (i === currentSection) dot.classList.add('active');
+                if (i < currentSection) dot.classList.add('completed');
+                dot.onclick = () => goToSection(i);
+                progressBar.appendChild(dot);
+            }
+            
+            document.getElementById('progressLabel').textContent = `Section ${currentSection} of ${totalSections}`;
+        }
+
+        function goToSection(num) {
+            document.getElementById(`section-${currentSection}`).classList.remove('active');
+            currentSection = num;
+            document.getElementById(`section-${currentSection}`).classList.add('active');
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextSection() {
+            if (currentSection < totalSections) {
+                goToSection(currentSection + 1);
+            }
+        }
+
+        function prevSection() {
+            if (currentSection > 1) {
+                goToSection(currentSection - 1);
+            }
+        }
+
+        // ============ Section Self-Check Questions ============
+        const sectionFeedback = {
+            'cpu': { 
+                correct: "Correct! The CPU processes instructions and controls all other parts of the computer.", 
+                incorrect: "Not quite. Think about what the CPU actually does — it's called the 'Central Processing Unit' for a reason." 
+            },
+            'instructions': { 
+                correct: "Correct! All instructions come from programs, which are written by human programmers.", 
+                incorrect: "Remember: every app, every program — they all started as code written by people." 
+            },
+            'components': { 
+                correct: "Correct! For GCSE you need to know: Control Unit, ALU, Cache, and Registers.", 
+                incorrect: "Check the diagram — there are four boxes inside the CPU." 
+            },
+            'cu': { 
+                correct: "Correct! The Control Unit manages and coordinates — it's like the manager who organises everything.", 
+                incorrect: "Think about the word 'Control' — what does a controller do? They manage and coordinate." 
+            },
+            'alu': { 
+                correct: "Correct! The ALU handles all arithmetic (maths) and logical (comparison) operations.", 
+                incorrect: "Remember: Arithmetic Logic Unit — it does arithmetic and logic operations." 
+            },
+            'registers': { 
+                correct: "Correct! Registers are tiny but incredibly fast — the fastest memory in the computer.", 
+                incorrect: "Think about the trade-off: smaller = faster. Registers are the smallest and fastest." 
+            },
+            'cache': { 
+                correct: "Correct! Cache is faster than RAM, so the CPU doesn't have to wait as long for data.", 
+                incorrect: "Think about why cache exists — what problem does it solve? The CPU is fast, RAM is slower..." 
+            }
+        };
+
+        function checkAnswer(section, button, isCorrect) {
+            const questionBox = button.closest('.question-box');
+            if (questionBox.classList.contains('answered')) return;
+            questionBox.classList.add('answered');
+            
+            const options = questionBox.querySelectorAll('.option-btn');
+            options.forEach(opt => {
+                opt.disabled = true;
+                if (opt === button) {
+                    opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+            });
+            
+            const feedback = document.getElementById(`feedback-${section}`);
+            feedback.textContent = isCorrect ? sectionFeedback[section].correct : sectionFeedback[section].incorrect;
+            feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+            
+            // Track for badge progress
+            answeredQuestions.add('section-' + section);
+            updateBadgeProgress();
+        }
+
+        // ============ Final Quiz ============
+        let finalAnswered = new Set();
+        let finalCorrect = 0;
+
+        const finalFeedback = {
+            1: { correct: "Correct! Processing instructions and controlling the computer are the CPU's two main jobs.", incorrect: "Think about what 'Central Processing Unit' means — what does it process? What does it control?" },
+            2: { correct: "Correct! Every instruction starts as code written by a human programmer.", incorrect: "Remember: apps, games, websites — they all start as code written by people." },
+            3: { correct: "Correct! The ALU (Arithmetic Logic Unit) handles all calculations and comparisons.", incorrect: "Which component has 'Arithmetic' and 'Logic' in its name?" },
+            4: { correct: "Correct! Registers are fastest, then cache, then RAM. Smaller = faster.", incorrect: "Remember the trade-off: the smaller the memory, the faster it is." }
+        };
+
+        function checkFinalAnswer(qNum, button, isCorrect) {
+            if (finalAnswered.has(qNum)) return;
+            finalAnswered.add(qNum);
+            
+            const options = button.parentElement.querySelectorAll('.option-btn');
+            options.forEach(opt => {
+                opt.disabled = true;
+                if (opt === button) {
+                    opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+            });
+            
+            const feedback = document.getElementById(`feedback${qNum}`);
+            feedback.textContent = isCorrect ? finalFeedback[qNum].correct : finalFeedback[qNum].incorrect;
+            feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+            
+            if (isCorrect) finalCorrect++;
+            
+            // Track for badge progress
+            answeredQuestions.add('final-' + qNum);
+            updateBadgeProgress();
+            
+            if (finalAnswered.size === 4) {
+                showFinalResult();
+            }
+        }
+
+        function showFinalResult() {
+            const result = document.getElementById('quizResult');
+            const score = document.getElementById('quizScore');
+            const message = document.getElementById('quizMessage');
+            
+            result.style.display = 'block';
+            score.textContent = `${finalCorrect}/4 Correct`;
+            
+            if (finalCorrect === 4) {
+                score.style.color = 'var(--accent-green)';
+                message.textContent = "Excellent! You understand the CPU and its components!";
+            } else if (finalCorrect >= 3) {
+                score.style.color = 'var(--accent-cyan)';
+                message.textContent = "Good work! Review the questions you missed.";
+            } else {
+                score.style.color = 'var(--accent-yellow)';
+                message.textContent = "Keep practising! Go back through the sections.";
+            }
+        }
+
+        // ============ Matching Exercise ============
+        const correctMatches = {
+            'match-cu': 'manager',
+            'match-alu': 'calculator',
+            'match-cache': 'fast-storage',
+            'match-registers': 'instant-storage'
+        };
+
+        let matchingLocked = false;
+
+        function checkMatching() {
+            if (matchingLocked) return;
+            matchingLocked = true;
+
+            let correctCount = 0;
+            
+            Object.keys(correctMatches).forEach(id => {
+                const select = document.getElementById(id);
+                select.disabled = true;
+                
+                if (select.value === correctMatches[id]) {
+                    select.classList.add('correct');
+                    correctCount++;
+                } else {
+                    select.classList.add('incorrect');
+                }
+            });
+
+            const result = document.getElementById('matchingResult');
+            const title = document.getElementById('matchingResultTitle');
+            const message = document.getElementById('matchingResultMessage');
+
+            result.classList.add('show');
+
+            if (correctCount === 4) {
+                result.className = 'matching-result show success';
+                title.textContent = '✓ Perfect! All matches correct!';
+                message.textContent = 'You understand the role of each CPU component.';
+            } else {
+                result.className = 'matching-result show partial';
+                title.textContent = `${correctCount}/4 correct`;
+                message.textContent = 'Review the incorrect matches (marked in red) and check your notes.';
+            }
+            
+            // Track for badge progress
+            answeredQuestions.add('matching');
+            updateBadgeProgress();
+        }
+
+        function resetMatching() {
+            matchingLocked = false;
+            
+            Object.keys(correctMatches).forEach(id => {
+                const select = document.getElementById(id);
+                select.disabled = false;
+                select.value = '';
+                select.classList.remove('correct', 'incorrect');
+            });
+
+            document.getElementById('matchingResult').classList.remove('show');
+            
+            // Remove from badge tracking
+            answeredQuestions.delete('matching');
+            updateBadgeProgress();
+        }
+
+        // ============ Badge Progress Tracking ============
+        const totalQuestions = 12; // 7 section checks + 4 final quiz + 1 matching
+        const answeredQuestions = new Set();
+
+        function updateBadgeProgress() {
+            const count = answeredQuestions.size;
+            const percentage = (count / totalQuestions) * 100;
+            
+            // Update progress bar
+            const progressFill = document.getElementById('badgeProgressFill');
+            const progressText = document.getElementById('badgeProgressText');
+            
+            if (progressFill) {
+                progressFill.style.width = percentage + '%';
+            }
+            if (progressText) {
+                progressText.textContent = count + ' / ' + totalQuestions + ' questions answered';
+            }
+            
+            // Check if all questions answered
+            if (count >= totalQuestions) {
+                unlockBadge();
+            }
+        }
+
+        function unlockBadge() {
+            const locked = document.getElementById('badgeLocked');
+            const unlocked = document.getElementById('badgeUnlocked');
+            
+            if (locked) locked.style.display = 'none';
+            if (unlocked) {
+                unlocked.style.display = 'block';
+                unlocked.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        // ============ Badge Generator ============
+        function generateBadge() {
+            const nameInput = document.getElementById('badgeNameInput');
+            const name = nameInput.value.trim();
+            
+            if (!name) {
+                nameInput.style.borderColor = 'var(--accent-magenta)';
+                nameInput.placeholder = 'Please enter your name!';
+                setTimeout(() => {
+                    nameInput.style.borderColor = 'var(--border-subtle)';
+                    nameInput.placeholder = 'Enter your name...';
+                }, 2000);
+                return;
+            }
+            
+            // Update the name in the SVG
+            document.getElementById('badgeStudentName').textContent = name;
+            
+            // Show the badge
+            document.getElementById('badgeDisplay').classList.add('show');
+            
+            // Scroll to badge
+            document.getElementById('badgeDisplay').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Allow Enter key to generate badge
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('badgeNameInput');
+            if (input) {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        generateBadge();
+                    }
+                });
+            }
+        });
+
+        // ============ Initialize ============
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            updateBadgeProgress();
+        });
+    </script>
+</body>
+</html>

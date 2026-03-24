@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1.2.4 Data Storage: Numbers — GCSE Computer Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Source+Serif+4:wght@300;400;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080610;--card:#0d0a1e;--card2:#120e26;--bd:#1e1840;--bd2:#2a2055;
+  --pu:#a78bfa;--pu2:#c4b5fd;--rose:#fb7185;--green:#4ade80;--teal:#2dd4bf;
+  --sky:#38bdf8;--amber:#fbbf24;--yellow:#fde047;--pink:#f472b6;
+  --text:#d4c8f5;--muted:#3d3470;
+  --font:'Syne',sans-serif;--serif:'Source Serif 4',serif;--hand:'Caveat',cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--serif);background:var(--bg);color:var(--text);overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 55% 35% at 15% 0%,rgba(167,139,250,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 30% at 85% 85%,rgba(45,212,191,.04) 0%,transparent 60%);
+  pointer-events:none;z-index:0;}
+.container{max-width:900px;margin:0 auto;padding:20px 20px 80px;position:relative;z-index:1;}
+
+/* ── HEADER ── */
+.site-header{text-align:center;padding:52px 0 34px;}
+.subject-tag{font-family:var(--font);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--teal);background:rgba(45,212,191,.08);border:1px solid rgba(45,212,191,.22);padding:6px 18px;border-radius:3px;display:inline-block;margin-bottom:22px;}
+.site-header h1{font-family:var(--font);font-size:clamp(26px,5vw,48px);font-weight:800;color:#fff;line-height:1.07;margin-bottom:12px;}
+.site-header h1 .acc{color:var(--teal);}
+.site-header p{color:var(--muted);font-family:var(--font);font-size:13px;max-width:560px;margin:0 auto;}
+.topics-strip{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:20px;}
+.topic-pill{font-family:var(--font);font-size:11px;padding:5px 12px;border-radius:4px;background:rgba(45,212,191,.07);border:1px solid rgba(45,212,191,.18);color:#99f6e4;}
+
+/* ── PROGRESS ── */
+.progress-nav{display:flex;justify-content:center;gap:7px;padding:22px 0;flex-wrap:wrap;}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--bd2);cursor:pointer;transition:all .3s;border:none;padding:0;}
+.dot.active{background:var(--teal);transform:scale(1.35);box-shadow:0 0 8px rgba(45,212,191,.5);}
+.dot.completed{background:var(--green);}
+
+/* ── SECTIONS ── */
+.section{display:none;animation:fadeUp .35s ease;}
+.section.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── CARD ── */
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:28px 30px;margin-bottom:14px;}
+.sec-tag{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.sec-num{font-family:var(--font);font-size:10px;letter-spacing:3px;color:var(--muted);background:var(--card2);padding:4px 10px;border-radius:3px;white-space:nowrap;}
+.sec-tag h2{font-family:var(--font);font-size:20px;font-weight:700;color:#fff;}
+p.body{font-size:15px;line-height:1.8;color:#c0b0e8;margin-bottom:12px;}
+p.body strong{color:#fff;}
+ul.bl{padding-left:20px;margin:8px 0 12px;}
+ul.bl li{font-size:14px;line-height:1.75;color:#c0b0e8;margin-bottom:6px;}
+ul.bl li strong{color:#fff;}
+
+/* ── REVEAL ── */
+.rv-hint{font-family:var(--font);font-size:11px;color:var(--muted);letter-spacing:.5px;margin-bottom:14px;}
+.rv-group{margin:10px 0;}
+.rv-btn{font-family:var(--font);font-size:13px;font-weight:700;padding:11px 18px;border-radius:9px;cursor:pointer;border:2px solid;transition:all .22s;background:transparent;display:inline-flex;align-items:center;gap:9px;width:100%;text-align:left;margin-bottom:6px;}
+.rv-btn .ri{font-size:16px;flex-shrink:0;}.rv-btn .rl{flex:1;}.rv-btn .rc{font-size:11px;transition:transform .22s;margin-left:auto;flex-shrink:0;}
+.rv-btn.open .rc{transform:rotate(180deg);}
+.rv-pu{border-color:rgba(167,139,250,.4);color:var(--pu2);}.rv-pu:hover,.rv-pu.open{background:rgba(167,139,250,.09);border-color:var(--pu);}
+.rv-green{border-color:rgba(74,222,128,.4);color:#86efac;}.rv-green:hover,.rv-green.open{background:rgba(74,222,128,.09);border-color:var(--green);}
+.rv-rose{border-color:rgba(251,113,133,.4);color:#fca5b4;}.rv-rose:hover,.rv-rose.open{background:rgba(251,113,133,.09);border-color:var(--rose);}
+.rv-amber{border-color:rgba(251,191,36,.4);color:#fde68a;}.rv-amber:hover,.rv-amber.open{background:rgba(251,191,36,.09);border-color:var(--amber);}
+.rv-teal{border-color:rgba(45,212,191,.4);color:#99f6e4;}.rv-teal:hover,.rv-teal.open{background:rgba(45,212,191,.09);border-color:var(--teal);}
+.rv-sky{border-color:rgba(56,189,248,.4);color:#bae6fd;}.rv-sky:hover,.rv-sky.open{background:rgba(56,189,248,.09);border-color:var(--sky);}
+.rv-pink{border-color:rgba(244,114,182,.4);color:#fbcfe8;}.rv-pink:hover,.rv-pink.open{background:rgba(244,114,182,.09);border-color:var(--pink);}
+.rv-panel{display:none;background:var(--card2);border:1px solid var(--bd2);border-radius:0 0 10px 10px;padding:18px 20px;margin-top:-4px;margin-bottom:8px;animation:panelIn .25s ease;}
+.rv-panel.open{display:block;}
+@keyframes panelIn{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+.rv-panel ul{padding-left:18px;margin:4px 0;}
+.rv-panel li{font-size:14px;line-height:1.75;color:#c0b0e8;margin-bottom:5px;}
+.rv-panel li strong{color:#fff;}
+.rv-panel p{font-size:14px;line-height:1.7;color:#c0b0e8;margin-bottom:8px;}
+.rv-panel p:last-child{margin-bottom:0;}
+.rv-panel p strong{color:#fff;}
+.rv-hd{font-family:var(--font);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.rv-hd.c-pu{color:var(--pu);}.rv-hd.c-green{color:var(--green);}.rv-hd.c-rose{color:var(--rose);}.rv-hd.c-amber{color:var(--amber);}.rv-hd.c-teal{color:var(--teal);}.rv-hd.c-sky{color:var(--sky);}.rv-hd.c-pink{color:var(--pink);}
+
+/* ── BOXES ── */
+.box{border-radius:10px;padding:16px 20px;margin:14px 0;border-left:4px solid;}
+.box-hd{font-family:var(--font);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.box p,.box li{font-size:14px;line-height:1.65;color:#c0b0e8;}
+.box ul{padding-left:16px;}.box li{margin-bottom:5px;}
+.box p strong,.box li strong{color:#fff;}
+.bx-warn{background:rgba(251,113,133,.07);border-color:var(--rose);}.bx-warn .box-hd{color:var(--rose);}
+.bx-tip{background:rgba(251,191,36,.07);border-color:var(--amber);}.bx-tip .box-hd{color:var(--amber);}
+.bx-teal{background:rgba(45,212,191,.06);border-color:var(--teal);}.bx-teal .box-hd{color:var(--teal);}
+.bx-sky{background:rgba(56,189,248,.06);border-color:var(--sky);}.bx-sky .box-hd{color:var(--sky);}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0;}
+th{background:var(--card2);padding:9px 13px;text-align:left;font-family:var(--font);font-size:11px;letter-spacing:.5px;color:var(--muted);border:1px solid var(--bd);}
+td{padding:10px 13px;border:1px solid var(--bd);vertical-align:top;line-height:1.55;color:#c0b0e8;}
+tr:nth-child(even) td{background:rgba(255,255,255,.013);}
+td strong{color:#fff;}
+td.ok{color:var(--green);font-weight:700;}
+td.hl{color:var(--teal);font-weight:700;}
+td.am{color:var(--amber);font-weight:700;}
+td.pk{color:var(--pink);font-weight:700;}
+td.cy{color:var(--sky);font-weight:700;}
+th.hl{color:var(--teal);}
+
+/* ── FORMULA ── */
+.formula{background:var(--card2);border:2px solid rgba(45,212,191,.3);border-radius:10px;padding:14px 20px;text-align:center;margin:12px 0;}
+.formula .f-label{font-family:var(--font);font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;}
+.formula .f-eq{font-family:'Courier New',monospace;font-size:17px;font-weight:700;color:#fff;line-height:1.8;white-space:pre-wrap;}
+.formula .f-eq span{color:var(--teal);}
+code{background:rgba(45,212,191,.1);padding:2px 7px;border-radius:4px;font-family:'Courier New',monospace;font-size:12.5px;color:#99f6e4;}
+
+/* ── MCQ ── */
+.mcq-wrap{background:var(--card2);border:1px solid var(--bd2);border-radius:10px;padding:20px;margin-top:18px;}
+.q-label{font-family:var(--font);font-size:10px;letter-spacing:2.5px;color:var(--teal);text-transform:uppercase;margin-bottom:10px;}
+.q-text{font-family:var(--font);font-weight:600;font-size:15px;color:#fff;margin-bottom:14px;line-height:1.5;}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border:1px solid var(--bd);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all .2s;font-size:14px;color:#c0b0e8;line-height:1.5;}
+.opt:hover{border-color:var(--teal);background:rgba(45,212,191,.04);}
+.opt.correct{border-color:var(--green);background:rgba(74,222,128,.08);color:#fff;}
+.opt.wrong{border-color:var(--rose);background:rgba(251,113,133,.08);}
+.opt .ol{font-family:var(--font);font-size:11px;color:var(--muted);min-width:20px;margin-top:1px;flex-shrink:0;}
+.fb-msg{display:none;padding:12px 16px;border-radius:8px;font-size:13px;margin-top:10px;line-height:1.55;}
+.fb-ok{background:rgba(74,222,128,.09);border:1px solid rgba(74,222,128,.3);color:var(--green);}
+.fb-no{background:rgba(251,113,133,.09);border:1px solid rgba(251,113,133,.3);color:#fca5b4;}
+
+/* ── NAV ── */
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:10px;}
+.btn{font-family:var(--font);font-weight:700;font-size:13px;padding:12px 26px;border-radius:8px;cursor:pointer;border:none;transition:all .2s;}
+.btn-p{background:var(--teal);color:#030f0e;}
+.btn-p:hover:not(:disabled){background:#5eead4;transform:translateY(-1px);}
+.btn-g{background:transparent;color:var(--muted);border:1px solid var(--bd2);}
+.btn-g:hover{border-color:var(--teal);color:var(--teal);}
+.btn:disabled{opacity:.3;cursor:not-allowed;transform:none!important;}
+
+/* ── LINED NOTES ── */
+.lined-notes{margin-top:18px;}
+.lined-tab{display:inline-flex;align-items:center;gap:7px;background:#0a1a1a;padding:7px 18px 7px 14px;border-radius:8px;font-family:var(--hand);font-size:17px;color:#99f6e4;font-weight:600;cursor:pointer;user-select:none;border:none;width:100%;transition:all .2s;}
+.lined-tab:hover{background:#0f2525;}
+.lined-tab .note-chevron{margin-left:auto;font-size:12px;transition:transform .22s;font-family:var(--font);}
+.lined-tab.open{border-radius:8px 8px 0 0;}
+.lined-tab.open .note-chevron{transform:rotate(180deg);}
+.lined-paper{display:none;background:#f0fdfb;background-image:linear-gradient(90deg,#a7f3d0 0,#a7f3d0 2px,transparent 2px),repeating-linear-gradient(transparent,transparent 31px,#b2e8dc 31px,#b2e8dc 32px);background-size:100% 32px;background-position:0 0,0 8px;padding:16px 20px 16px 36px;min-height:130px;border-radius:0 0 8px 8px;}
+.lined-paper.open{display:block;animation:panelIn .25s ease;}
+.lined-paper ul{list-style:none;padding:0;margin:0;}
+.lined-paper li{font-family:var(--hand);font-size:18px;color:#0d2020;line-height:32px;display:flex;align-items:center;gap:8px;}
+.lined-paper li::before{content:'•';color:#2d9e8a;font-size:14px;flex-shrink:0;}
+
+/* ── BADGE ── */
+.badge-section{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:32px;text-align:center;margin-top:18px;}
+.badge-prog-txt{font-family:var(--font);font-size:12px;color:var(--muted);letter-spacing:1px;margin-bottom:8px;}
+.badge-bar-outer{background:var(--bd2);border-radius:6px;height:8px;max-width:360px;margin:8px auto 22px;overflow:hidden;}
+.badge-bar-inner{height:100%;background:linear-gradient(90deg,var(--teal),var(--pu));border-radius:6px;transition:width .5s ease;width:0%;}
+.badge-locked{opacity:.3;pointer-events:none;filter:grayscale(1);}
+.badge-unlocked{animation:badgePop .6s ease forwards;}
+@keyframes badgePop{0%{transform:scale(.8);opacity:0;}70%{transform:scale(1.06);}100%{transform:scale(1);opacity:1;}}
+.badge-visual{width:260px;margin:0 auto 20px;background:linear-gradient(150deg,#030a0c,#060f18);border:2px solid var(--teal);border-radius:16px;padding:26px 20px;box-shadow:0 0 50px rgba(45,212,191,.12);}
+.badge-icon{font-size:52px;margin-bottom:10px;}
+.badge-hdr{font-family:var(--font);font-size:9px;letter-spacing:3px;color:var(--teal);text-transform:uppercase;margin-bottom:5px;}
+.badge-topic{font-family:var(--font);font-size:13px;font-weight:800;color:#fff;margin-bottom:4px;}
+.badge-spec{font-family:var(--font);font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:8px;}
+.badge-score-disp{font-family:var(--font);font-size:24px;color:var(--yellow);font-weight:700;margin-bottom:8px;}
+.badge-name-disp{font-size:14px;color:var(--teal);font-weight:600;font-family:var(--font);}
+.badge-ribbon{background:var(--teal);color:#030f0e;font-family:var(--font);font-size:10px;font-weight:800;padding:4px 18px;margin-top:12px;border-radius:3px;display:inline-block;letter-spacing:2px;}
+.name-input{padding:10px 16px;background:var(--card2);border:1px solid var(--bd2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:14px;width:250px;text-align:center;display:block;margin:0 auto 14px;}
+.name-input:focus{outline:none;border-color:var(--teal);}
+.snip-hint{font-size:12px;color:var(--muted);margin-top:12px;font-style:italic;font-family:var(--font);}
+
+/* ── INTERACTIVE: BIT BOARD ── */
+.bit-board{background:var(--card2);border:1px solid var(--bd2);border-radius:12px;padding:22px;margin:16px 0;}
+.bit-board-label{font-family:var(--font);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:16px;}
+.bits-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.bit-col{text-align:center;}
+.bit-pv{font-family:var(--font);font-size:11px;color:var(--muted);margin-bottom:5px;}
+.bit-cell{width:52px;height:52px;border-radius:8px;border:2px solid var(--bd2);background:var(--card);color:#c0b0e8;font-family:'Courier New',monospace;font-size:20px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;user-select:none;}
+.bit-cell.on{background:rgba(45,212,191,.18);border-color:var(--teal);color:var(--teal);box-shadow:0 0 12px rgba(45,212,191,.2);}
+.bit-cell:hover{border-color:var(--teal);}
+.bit-pos{font-family:var(--font);font-size:10px;color:var(--muted);margin-top:4px;}
+.bit-result{text-align:center;margin-top:18px;border-top:1px solid var(--bd);padding-top:16px;}
+.bit-result .result-label{font-family:var(--font);font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.bit-result .result-val{font-family:var(--font);font-size:28px;font-weight:800;color:var(--teal);}
+.bit-result .result-eq{font-family:'Courier New',monospace;font-size:13px;color:#c0b0e8;margin-top:6px;}
+.bit-msb-lsb{display:flex;justify-content:space-between;margin-bottom:6px;padding:0 4px;}
+.bit-msb-lsb span{font-family:var(--font);font-size:10px;letter-spacing:1px;text-transform:uppercase;}
+.msb-tag{color:var(--rose);}
+.lsb-tag{color:var(--sky);}
+.bit-reset{font-family:var(--font);font-size:11px;font-weight:700;padding:7px 16px;border-radius:6px;background:transparent;border:1px solid var(--bd2);color:var(--muted);cursor:pointer;transition:all .2s;margin-top:10px;}
+.bit-reset:hover{border-color:var(--rose);color:var(--rose);}
+
+/* ── INTERACTIVE: BINARY ADDER ── */
+.adder-wrap{background:var(--card2);border:1px solid var(--bd2);border-radius:12px;padding:22px;margin:16px 0;}
+.adder-label{font-family:var(--font);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:16px;}
+.adder-inputs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.adder-field label{font-family:var(--font);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px;}
+.adder-field input{width:100%;padding:10px 14px;background:var(--card);border:1px solid var(--bd2);border-radius:8px;color:#fff;font-family:'Courier New',monospace;font-size:16px;letter-spacing:4px;transition:border-color .2s;}
+.adder-field input:focus{outline:none;border-color:var(--amber);}
+.adder-btn{font-family:var(--font);font-size:12px;font-weight:700;padding:10px 22px;border-radius:8px;background:rgba(251,191,36,.15);border:1px solid var(--amber);color:var(--amber);cursor:pointer;transition:all .2s;width:100%;margin-bottom:12px;}
+.adder-btn:hover{background:rgba(251,191,36,.25);}
+.adder-working{font-family:'Courier New',monospace;font-size:14px;line-height:2.2;color:#c0b0e8;background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:16px 20px;min-height:80px;white-space:pre;}
+.adder-working .aw-carry{color:var(--amber);}
+.adder-working .aw-a{color:var(--sky);}
+.adder-working .aw-b{color:var(--pu2);}
+.adder-working .aw-sum{color:var(--green);}
+.adder-working .aw-overflow{color:var(--rose);}
+.adder-err{font-family:var(--font);font-size:12px;color:var(--rose);margin-top:8px;display:none;}
+
+/* ── INTERACTIVE: HEX CONVERTER ── */
+.hex-conv{background:var(--card2);border:1px solid var(--bd2);border-radius:12px;padding:22px;margin:16px 0;}
+.hex-conv-label{font-family:var(--font);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin-bottom:16px;}
+.hex-fields{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+@media(max-width:560px){.hex-fields{grid-template-columns:1fr;}}
+.hex-field label{font-family:var(--font);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px;}
+.hex-field input{width:100%;padding:10px 14px;background:var(--card);border:1px solid var(--bd2);border-radius:8px;color:#fff;font-family:'Courier New',monospace;font-size:16px;letter-spacing:2px;transition:border-color .2s;}
+.hex-field input:focus{outline:none;border-color:var(--pink);}
+.hex-field input.hf-bin{color:var(--sky);}
+.hex-field input.hf-dec{color:var(--amber);}
+.hex-field input.hf-hex{color:var(--pink);}
+.hex-note{font-family:var(--font);font-size:11px;color:var(--muted);margin-top:10px;text-align:center;}
+
+/* ── INTERACTIVE: SHIFT DEMO ── */
+.shift-demo{background:var(--card2);border:1px solid var(--bd2);border-radius:12px;padding:22px;margin:16px 0;}
+.shift-label{font-family:var(--font);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--sky);margin-bottom:16px;}
+.shift-display{display:flex;gap:6px;justify-content:center;margin:14px 0;flex-wrap:wrap;}
+.shift-bit{width:44px;height:44px;border-radius:6px;border:1px solid var(--bd2);background:var(--card);color:#c0b0e8;font-family:'Courier New',monospace;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .35s;position:relative;}
+.shift-bit.on{background:rgba(56,189,248,.15);border-color:var(--sky);color:var(--sky);}
+.shift-bit.new-zero{background:rgba(251,113,133,.1);border-color:var(--rose);color:var(--rose);}
+.shift-bit.lost{opacity:.25;}
+.shift-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
+.shift-btn{font-family:var(--font);font-size:13px;font-weight:700;padding:10px 20px;border-radius:8px;cursor:pointer;border:1px solid;transition:all .2s;}
+.shift-left{background:rgba(56,189,248,.1);border-color:var(--sky);color:var(--sky);}
+.shift-left:hover{background:rgba(56,189,248,.2);}
+.shift-right{background:rgba(167,139,250,.1);border-color:var(--pu);color:var(--pu2);}
+.shift-right:hover{background:rgba(167,139,250,.2);}
+.shift-reset-btn{background:transparent;border-color:var(--bd2);color:var(--muted);}
+.shift-reset-btn:hover{border-color:var(--rose);color:var(--rose);}
+.shift-vals{display:flex;gap:16px;justify-content:center;font-family:var(--font);font-size:14px;flex-wrap:wrap;margin-top:4px;}
+.sv-bin{color:var(--sky);}
+.sv-dec{color:var(--amber);}
+.sv-hex{color:var(--pink);}
+.shift-log{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:12px 16px;font-family:var(--font);font-size:12px;color:#c0b0e8;margin-top:12px;min-height:50px;line-height:1.8;}
+.shift-log .sl-entry{color:var(--text);}
+.shift-log .sl-overflow{color:var(--rose);}
+
+/* ── WORKED EXAMPLES ── */
+.worked{background:var(--card2);border:1px solid var(--bd2);border-radius:10px;padding:18px 20px;margin:14px 0;}
+.worked-hd{font-family:var(--font);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.w-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px;font-size:14px;color:#c0b0e8;line-height:1.6;}
+.w-num{font-family:var(--font);font-size:11px;font-weight:700;background:var(--card);border:1px solid var(--bd);border-radius:4px;padding:2px 8px;color:var(--muted);flex-shrink:0;margin-top:2px;}
+.w-step strong{color:#fff;}
+.w-step code{font-size:13px;}
+
+/* ── TWO COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:10px 0;}
+@media(max-width:520px){.two-col{grid-template-columns:1fr;}}
+.tcol{border-radius:10px;border:2px solid;padding:16px;}
+.tcol h4{font-family:var(--font);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;}
+.tcol ul{padding-left:14px;font-size:13px;color:#c0b0e8;line-height:1.75;}
+.tcol li{margin-bottom:4px;}
+.tcol li strong{color:#fff;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ─── HEADER ─── -->
+<div class="site-header">
+  <div class="subject-tag">GCSE Computer Science · 1.2.4</div>
+  <h1>Data Storage:<br><span class="acc">Numbers</span></h1>
+  <p>Binary, hexadecimal, binary addition, overflow and binary shifts — all the number work for 1.2.4.</p>
+  <div class="topics-strip">
+    <span class="topic-pill">Denary ↔ Binary</span>
+    <span class="topic-pill">MSB &amp; LSB</span>
+    <span class="topic-pill">Binary Addition</span>
+    <span class="topic-pill">Overflow</span>
+    <span class="topic-pill">Hexadecimal</span>
+    <span class="topic-pill">Base Conversion</span>
+    <span class="topic-pill">Binary Shifts</span>
+  </div>
+</div>
+
+<div class="progress-nav" id="progressNav"></div>
+
+
+<!-- ══════════════════════════════════════════════
+     S1 — RECALL RAMP (1.2.3)
+══════════════════════════════════════════════ -->
+<div class="section active" data-section="0">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">🧠 RECALL</span><h2>Recall Ramp — 1.2.3 Units of Data</h2></div>
+  <p class="body">Before we work with numbers at the binary level, let's confirm the foundations from <strong>1.2.3 Units of Data Storage</strong>. Answer all five correctly to unlock today's content.</p>
+
+  <!-- R1 -->
+  <div class="mcq-wrap">
+    <div class="q-label">Recall — Q1</div>
+    <div class="q-text">Starting from the smallest, place these units of data in the correct order:<br><em>Gigabyte · Kilobyte · Terabyte · Bit · Byte · Megabyte</em></div>
+    <div class="opt" onclick="checkRecall(this,false,'r1')"><span class="ol">A</span>Bit → Byte → Megabyte → Kilobyte → Gigabyte → Terabyte</div>
+    <div class="opt" onclick="checkRecall(this,true,'r1')"><span class="ol">B</span>Bit → Byte → Kilobyte → Megabyte → Gigabyte → Terabyte</div>
+    <div class="opt" onclick="checkRecall(this,false,'r1')"><span class="ol">C</span>Bit → Byte → Kilobyte → Gigabyte → Megabyte → Terabyte</div>
+    <div class="opt" onclick="checkRecall(this,false,'r1')"><span class="ol">D</span>Byte → Bit → Kilobyte → Megabyte → Gigabyte → Terabyte</div>
+    <div class="fb-msg fb-ok" id="r1-ok">✅ Correct! Bit → Byte → KB → MB → GB → TB. Each step is ×1,000. Remember: a bit is a single binary digit (0 or 1), and 8 bits = 1 byte.</div>
+    <div class="fb-msg fb-no" id="r1-no">❌ The correct order (smallest to largest) is: Bit → Byte → Kilobyte → Megabyte → Gigabyte → Terabyte. Note: Megabyte comes before Gigabyte — mega = million, giga = billion.</div>
+  </div>
+
+  <!-- R2 -->
+  <div class="mcq-wrap">
+    <div class="q-label">Recall — Q2</div>
+    <div class="q-text">A file is 3 MB in size. How large is this in KB?</div>
+    <div class="opt" onclick="checkRecall(this,true,'r2')"><span class="ol">A</span>3,000 KB — because 1 MB = 1,000 KB, so 3 × 1,000 = 3,000</div>
+    <div class="opt" onclick="checkRecall(this,false,'r2')"><span class="ol">B</span>300 KB — because each megabyte equals 100 kilobytes</div>
+    <div class="opt" onclick="checkRecall(this,false,'r2')"><span class="ol">C</span>3,072 KB — because 1 MB = 1,024 KB, which is the incorrect binary-based multiplier</div>
+    <div class="opt" onclick="checkRecall(this,false,'r2')"><span class="ol">D</span>30,000 KB — because 1 MB = 10,000 KB</div>
+    <div class="fb-msg fb-ok" id="r2-ok">✅ Correct! 1 MB = 1,000 KB, so 3 MB = 3 × 1,000 = 3,000 KB. Going up the scale you divide by 1,000; going down you multiply by 1,000.</div>
+    <div class="fb-msg fb-no" id="r2-no">❌ Each unit step in the data scale is ×1,000. So 1 MB = 1,000 KB, meaning 3 MB = 3 × 1,000 = 3,000 KB. Option C (3,072) uses the old binary multiplier of 1,024 — that's not the definition used here.</div>
+  </div>
+
+  <!-- R3 -->
+  <div class="mcq-wrap">
+    <div class="q-label">Recall — Q3</div>
+    <div class="q-text">Why does a computer use binary (base 2) rather than decimal (base 10) to store data?</div>
+    <div class="opt" onclick="checkRecall(this,false,'r3')"><span class="ol">A</span>Binary is faster to process because numbers with fewer digits require fewer clock cycles to read</div>
+    <div class="opt" onclick="checkRecall(this,false,'r3')"><span class="ol">B</span>Binary was invented before decimal, so early engineers built computers around the system they already knew</div>
+    <div class="opt" onclick="checkRecall(this,true,'r3')"><span class="ol">C</span>Transistors — the physical switches inside chips — have exactly two states (on/off), which maps directly onto the two binary digits 1 and 0</div>
+    <div class="opt" onclick="checkRecall(this,false,'r3')"><span class="ol">D</span>Binary uses less storage space than decimal because representing a number requires fewer symbols in base 2 than in base 10</div>
+    <div class="fb-msg fb-ok" id="r3-ok">✅ Correct! It's a hardware constraint. A transistor is a switch — it's either on or off. That maps perfectly to 1 and 0. You can't have a transistor "40% on" to represent the digit 4, so decimal is physically impossible at the circuit level.</div>
+    <div class="fb-msg fb-no" id="r3-no">❌ The reason is physical: transistors (the switches that make up chips) have only two states — on or off. Binary maps directly onto this: on = 1, off = 0. There's no stable "40% on" state to represent decimal digits like 4 or 7.</div>
+  </div>
+
+  <!-- R4 -->
+  <div class="mcq-wrap">
+    <div class="q-label">Recall — Q4</div>
+    <div class="q-text">How many different values can be represented by 8 bits?</div>
+    <div class="opt" onclick="checkRecall(this,false,'r4')"><span class="ol">A</span>8 — one value per bit</div>
+    <div class="opt" onclick="checkRecall(this,false,'r4')"><span class="ol">B</span>16 — 8 × 2</div>
+    <div class="opt" onclick="checkRecall(this,false,'r4')"><span class="ol">C</span>128 — 2⁷</div>
+    <div class="opt" onclick="checkRecall(this,true,'r4')"><span class="ol">D</span>256 — 2⁸, giving values from 0 to 255</div>
+    <div class="fb-msg fb-ok" id="r4-ok">✅ Correct! 2⁸ = 256 possible combinations, representing decimal values 0 to 255. This is exactly the denary range for 1.2.4 — you'll be working within 0–255 throughout today's lesson.</div>
+    <div class="fb-msg fb-no" id="r4-no">❌ With n bits you can represent 2ⁿ different values. For 8 bits: 2⁸ = 256 values (0 to 255). This is a key fact for 1.2.4 — the 8-bit denary range is always 0–255.</div>
+  </div>
+
+  <!-- R5 -->
+  <div class="mcq-wrap">
+    <div class="q-label">Recall — Q5</div>
+    <div class="q-text">A hard drive is advertised as 2 TB. Using 1 TB = 1,000 GB and 1 GB = 1,000 MB, how many MB is this?</div>
+    <div class="opt" onclick="checkRecall(this,false,'r5')"><span class="ol">A</span>2,000 MB — because 1 TB = 1,000 MB directly</div>
+    <div class="opt" onclick="checkRecall(this,false,'r5')"><span class="ol">B</span>200,000 MB — because 1 TB = 100,000 MB</div>
+    <div class="opt" onclick="checkRecall(this,true,'r5')"><span class="ol">C</span>2,000,000 MB — because 2 TB × 1,000 = 2,000 GB, then × 1,000 = 2,000,000 MB</div>
+    <div class="opt" onclick="checkRecall(this,false,'r5')"><span class="ol">D</span>2,048,000 MB — because 1 TB = 1,024 GB and 1 GB = 1,000 MB</div>
+    <div class="fb-msg fb-ok" id="r5-ok">✅ Correct! Each step down the scale multiplies by 1,000. 2 TB → GB: 2 × 1,000 = 2,000 GB. 2,000 GB → MB: 2,000 × 1,000 = 2,000,000 MB. Always apply the ×1,000 multiplier once per step.</div>
+    <div class="fb-msg fb-no" id="r5-no">❌ Each unit step = ×1,000. To go from TB to MB is two steps down: 2 TB × 1,000 = 2,000 GB, then 2,000 GB × 1,000 = 2,000,000 MB. Option D uses 1,024 — that's not the multiplier we use here.</div>
+  </div>
+
+  <div class="box bx-teal" style="margin-top:18px;">
+    <div class="box-hd">🎯 Today's Focus</div>
+    <p>All five correct? Great — now we go deeper. Today is about <strong>how numbers are actually represented in binary</strong>, how to convert between bases, how binary addition works (and when it breaks), and how to use hexadecimal as a shorthand for binary.</p>
+  </div>
+</div>
+<div class="nav-row">
+  <button class="btn btn-g" disabled>← Back</button>
+  <button class="btn btn-p" id="startBtn" onclick="goNext()" disabled>Start → <span id="recallProgress" style="font-size:11px;opacity:.7;">(0/5 correct)</span></button>
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     S2 — BINARY NUMBER SYSTEM
+══════════════════════════════════════════════ -->
+<div class="section" data-section="1">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">01 · BINARY</span><h2>The Binary Number System</h2></div>
+  <p class="body">Binary is <strong>base 2</strong> — the only digits are 0 and 1. Each position (column) has a place value that is double the previous one, giving the sequence: <strong>128 · 64 · 32 · 16 · 8 · 4 · 2 · 1</strong>.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-teal" onclick="togglePanel('b1',this)"><span class="ri">📐</span><span class="rl">Place Values, MSB &amp; LSB</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="b1">
+      <div class="rv-hd c-teal">PLACE VALUES</div>
+      <table>
+        <tr><th class="hl">Bit position</th><th>8 (MSB)</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1 (LSB)</th></tr>
+        <tr><td><strong>Place value</strong></td><td class="hl">128</td><td class="hl">64</td><td class="hl">32</td><td class="hl">16</td><td class="hl">8</td><td class="hl">4</td><td class="hl">2</td><td class="hl">1</td></tr>
+        <tr><td><strong>Power of 2</strong></td><td>2⁷</td><td>2⁶</td><td>2⁵</td><td>2⁴</td><td>2³</td><td>2²</td><td>2¹</td><td>2⁰</td></tr>
+      </table>
+      <ul style="margin-top:8px;">
+        <li><strong>MSB</strong> (Most Significant Bit) = leftmost bit = highest place value (128). Changing it has the biggest impact on the number.</li>
+        <li><strong>LSB</strong> (Least Significant Bit) = rightmost bit = lowest place value (1). Changing it has the smallest impact.</li>
+        <li>The spec requires you to work with numbers containing between <strong>1 and 8 bits</strong> — e.g. <code>11010</code> is the same as <code>00011010</code> (pad with leading zeros to make 8 bits).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-sky" onclick="togglePanel('b2',this)"><span class="ri">🔢</span><span class="rl">Binary → Denary Conversion</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="b2">
+      <div class="rv-hd c-sky">BINARY TO DENARY</div>
+      <p>Write the place values above each bit. For every bit that is <strong>1</strong>, add its place value. Bits that are <strong>0</strong> contribute nothing.</p>
+      <div class="worked">
+        <div class="worked-hd">Worked Example — Convert 10110100 to denary</div>
+        <div class="w-step"><span class="w-num">1</span><div>Write the place values: <code>128 | 64 | 32 | 16 | 8 | 4 | 2 | 1</code></div></div>
+        <div class="w-step"><span class="w-num">2</span><div>Write the binary number underneath: <code>&nbsp;1 &nbsp;| &nbsp;0 | &nbsp;1 | &nbsp;1 | &nbsp;0 | &nbsp;1 | &nbsp;0 | &nbsp;0</code></div></div>
+        <div class="w-step"><span class="w-num">3</span><div>Identify which bits are 1: positions <strong>128, 32, 16, 4</strong></div></div>
+        <div class="w-step"><span class="w-num">4</span><div>Add those place values: <strong>128 + 32 + 16 + 4 = 180</strong></div></div>
+        <div class="w-step"><span class="w-num">✓</span><div><code>10110100</code> in binary = <strong style="color:var(--teal);">180</strong> in denary</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pu" onclick="togglePanel('b3',this)"><span class="ri">🔄</span><span class="rl">Denary → Binary Conversion</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="b3">
+      <div class="rv-hd c-pu">DENARY TO BINARY</div>
+      <p>Work from the <strong>largest place value down to 1</strong>. Ask: "Does this place value fit into my remaining number?" If yes, write 1 and subtract it; if no, write 0.</p>
+      <div class="worked">
+        <div class="worked-hd">Worked Example — Convert 217 to binary</div>
+        <div class="w-step"><span class="w-num">1</span><div><strong>128 fits into 217?</strong> Yes (217 − 128 = 89) → write <strong style="color:var(--teal);">1</strong></div></div>
+        <div class="w-step"><span class="w-num">2</span><div><strong>64 fits into 89?</strong> Yes (89 − 64 = 25) → write <strong style="color:var(--teal);">1</strong></div></div>
+        <div class="w-step"><span class="w-num">3</span><div><strong>32 fits into 25?</strong> No → write <strong style="color:var(--rose);">0</strong></div></div>
+        <div class="w-step"><span class="w-num">4</span><div><strong>16 fits into 25?</strong> Yes (25 − 16 = 9) → write <strong style="color:var(--teal);">1</strong></div></div>
+        <div class="w-step"><span class="w-num">5</span><div><strong>8 fits into 9?</strong> Yes (9 − 8 = 1) → write <strong style="color:var(--teal);">1</strong></div></div>
+        <div class="w-step"><span class="w-num">6</span><div><strong>4 fits into 1?</strong> No → write <strong style="color:var(--rose);">0</strong>. <strong>2 fits into 1?</strong> No → write <strong style="color:var(--rose);">0</strong></div></div>
+        <div class="w-step"><span class="w-num">7</span><div><strong>1 fits into 1?</strong> Yes (1 − 1 = 0) → write <strong style="color:var(--teal);">1</strong></div></div>
+        <div class="w-step"><span class="w-num">✓</span><div>217 in denary = <strong style="color:var(--teal);">11011001</strong> in binary</div></div>
+      </div>
+      <div class="box bx-tip" style="margin-top:10px;">
+        <div class="box-hd">💡 Exam Tip</div>
+        <p>Always show your place value row in the exam. Write <code>128 64 32 16 8 4 2 1</code> first, then fill in the 1s and 0s. Examiners award method marks even if you make an arithmetic error.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE BIT BOARD -->
+  <div class="bit-board">
+    <div class="bit-board-label">🎮 Interactive — Binary Click Board</div>
+    <p style="font-size:13px;color:#c0b0e8;margin-bottom:14px;font-family:var(--font);">Click the bits to toggle them ON (1) or OFF (0). Watch the denary and hex values update instantly.</p>
+    <div class="bit-msb-lsb"><span class="msb-tag">◀ MSB (Most Significant)</span><span class="lsb-tag">(Least Significant) LSB ▶</span></div>
+    <div class="bits-row" id="bitRow">
+      <!-- Injected by JS -->
+    </div>
+    <div class="bit-result">
+      <div class="result-label">Denary Value</div>
+      <div class="result-val" id="bitDenary">0</div>
+      <div class="result-eq" id="bitEquation">No bits are on</div>
+      <div style="margin-top:8px;"><span style="font-family:var(--font);font-size:11px;color:var(--muted);">HEX: </span><span id="bitHex" style="font-family:'Courier New',monospace;font-size:14px;color:var(--pink);">00</span></div>
+    </div>
+    <button class="bit-reset" onclick="resetBits()">Reset all to 0</button>
+  </div>
+
+  <!-- CHECK Q -->
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q1</div>
+    <div class="q-text">What is the denary value of the binary number <code>01101011</code>?</div>
+    <div class="opt" onclick="checkQ(this,false,'q1')"><span class="ol">A</span>97</div>
+    <div class="opt" onclick="checkQ(this,false,'q1')"><span class="ol">B</span>101</div>
+    <div class="opt" onclick="checkQ(this,true,'q1')"><span class="ol">C</span>107</div>
+    <div class="opt" onclick="checkQ(this,false,'q1')"><span class="ol">D</span>111</div>
+    <div class="fb-msg fb-ok" id="q1-ok">✅ Correct! 01101011: 0+64+32+0+8+0+2+1 = 107. Remember to work through every column — the three 1s at the end give 8+2+1=11, then +32+64=107. You can verify this on the Click Board above!</div>
+    <div class="fb-msg fb-no" id="q1-no">❌ Place values: 0×128 + 1×64 + 1×32 + 0×16 + 1×8 + 0×4 + 1×2 + 1×1 = 0+64+32+0+8+0+2+1 = 107. Use the click board above to check — toggle the bits that match 01101011.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_1',this)" id="tab_notes_1"><span>✏️ Quick Notes — Binary &amp; Place Values</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_1"><ul>
+  <li>Binary = base 2: only 0 and 1. Place values (right to left): 1, 2, 4, 8, 16, 32, 64, 128</li>
+  <li>MSB = leftmost bit (value 128). LSB = rightmost bit (value 1)</li>
+  <li>Denary range with 8 bits: 0 to 255 (2⁸ = 256 possible values)</li>
+  <li>Binary → Denary: add up place values where bit = 1</li>
+  <li>Denary → Binary: subtract largest fitting place value, work down to 1</li>
+  <li>Pad short binary numbers with leading zeros e.g. 11010 = 00011010</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" id="next1" onclick="goNext()" disabled>Next →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     S3 — BINARY ADDITION & OVERFLOW
+══════════════════════════════════════════════ -->
+<div class="section" data-section="2">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">02 · ADDITION</span><h2>Binary Addition &amp; Overflow</h2></div>
+  <p class="body">Adding binary numbers works exactly like denary addition — you work column by column from right to left, carrying when the sum exceeds the number of digits available.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-amber" onclick="togglePanel('add1',this)"><span class="ri">➕</span><span class="rl">The Four Binary Addition Rules</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="add1">
+      <div class="rv-hd c-amber">ADDITION RULES</div>
+      <table>
+        <tr><th>A</th><th>B</th><th>Sum</th><th>Carry</th><th>In plain English</th></tr>
+        <tr><td>0</td><td>0</td><td class="ok">0</td><td class="ok">0</td><td>Zero plus zero is zero</td></tr>
+        <tr><td>0</td><td>1</td><td class="ok">1</td><td class="ok">0</td><td>Zero plus one is one</td></tr>
+        <tr><td>1</td><td>0</td><td class="ok">1</td><td class="ok">0</td><td>One plus zero is one</td></tr>
+        <tr><td>1</td><td>1</td><td class="ok">0</td><td class="am">1</td><td>One plus one = 2 in denary = <code>10</code> in binary (write 0, carry 1)</td></tr>
+        <tr><td>1</td><td>1 + carry 1</td><td class="ok">1</td><td class="am">1</td><td>1+1+1 = 3 in denary = <code>11</code> in binary (write 1, carry 1)</td></tr>
+      </table>
+      <div class="box bx-tip" style="margin-top:10px;">
+        <div class="box-hd">💡 The Key Rule</div>
+        <p>In binary, <strong>1 + 1 = 10</strong> (not 2!). Read it as "zero, carry one". And <strong>1 + 1 + 1 = 11</strong>. These are the two cases where a carry is generated.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-sky" onclick="togglePanel('add2',this)"><span class="ri">📝</span><span class="rl">Worked Example — 00110101 + 01001110</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="add2">
+      <div class="rv-hd c-sky">STEP-BY-STEP WORKED EXAMPLE</div>
+      <p style="margin-bottom:10px;">Convert to check: <code>00110101</code> = 53, <code>01001110</code> = 78. Expected answer: 53 + 78 = <strong>131</strong> = <code>10000011</code></p>
+      <table>
+        <tr><th>Column</th><th>128</th><th>64</th><th>32</th><th>16</th><th>8</th><th>4</th><th>2</th><th>1</th></tr>
+        <tr><td><strong>Carry</strong></td><td class="am">1</td><td class="am">0</td><td class="am">0</td><td class="am">0</td><td class="am">1</td><td class="am">1</td><td class="am">1</td><td class="am">—</td></tr>
+        <tr><td><strong>A (53)</strong></td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+        <tr><td><strong>B (78)</strong></td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+        <tr><td><strong>Result</strong></td><td class="ok">1</td><td class="ok">0</td><td class="ok">0</td><td class="ok">0</td><td class="ok">0</td><td class="ok">0</td><td class="ok">1</td><td class="ok">1</td></tr>
+      </table>
+      <p style="margin-top:10px;">Result: <code>10000011</code> = 128 + 2 + 1 = <strong style="color:var(--teal);">131</strong> ✓</p>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-rose" onclick="togglePanel('add3',this)"><span class="ri">⚠️</span><span class="rl">Overflow Errors</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="add3">
+      <div class="rv-hd c-rose">OVERFLOW</div>
+      <p>With 8 bits, the maximum value you can store is <strong>255 (11111111)</strong>. If the result of an addition exceeds 255, it doesn't fit — this is an <strong>overflow error</strong>.</p>
+      <div class="worked">
+        <div class="worked-hd">Overflow Example — 11000000 + 11000000 (192 + 192 = 384)</div>
+        <div class="w-step"><span class="w-num">1</span><div>192 + 192 = 384 — but 384 &gt; 255, so it cannot fit in 8 bits</div></div>
+        <div class="w-step"><span class="w-num">2</span><div>The result would be <code>110000000</code> — a <strong>9-bit number</strong></div></div>
+        <div class="w-step"><span class="w-num">3</span><div>The 9th bit (the carry out of the MSB column) has <strong>nowhere to go</strong> — it is lost</div></div>
+        <div class="w-step"><span class="w-num">⚠️</span><div>The 8-bit result stored is <code>10000000</code> = <strong style="color:var(--rose);">128</strong> — completely wrong! This is an overflow error.</div></div>
+      </div>
+      <div class="box bx-warn" style="margin-top:10px;">
+        <div class="box-hd">⚠️ Exam Definition</div>
+        <p><strong>Overflow</strong> occurs when the result of a binary calculation is too large to be stored in the available number of bits, causing the most significant carry bit to be lost and producing an incorrect result.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE ADDER -->
+  <div class="adder-wrap">
+    <div class="adder-label">🎮 Interactive — Binary Adder</div>
+    <p style="font-size:13px;color:#c0b0e8;margin-bottom:14px;font-family:var(--font);">Enter two 8-bit binary numbers (use only 0s and 1s) and click Add to see the full column-by-column working — including any overflow.</p>
+    <div class="adder-inputs">
+      <div class="adder-field"><label>Number A (8 bits)</label><input type="text" id="addA" value="10110100" maxlength="8" placeholder="e.g. 10110100" oninput="clampBin('addA')"></div>
+      <div class="adder-field"><label>Number B (8 bits)</label><input type="text" id="addB" value="01001101" maxlength="8" placeholder="e.g. 01001101" oninput="clampBin('addB')"></div>
+    </div>
+    <button class="adder-btn" onclick="doAdd()">➕ Add Binary Numbers</button>
+    <div class="adder-working" id="adderOutput">Press Add to see the full working...</div>
+    <div class="adder-err" id="adderErr">⚠️ Please enter valid 8-bit binary numbers (only 0s and 1s, exactly 8 digits each).</div>
+  </div>
+
+  <!-- CHECK Q -->
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q2</div>
+    <div class="q-text">A computer adds two 8-bit values: 11100000 (224) and 00110000 (48). The result is 256. What happens?</div>
+    <div class="opt" onclick="checkQ(this,false,'q2')"><span class="ol">A</span>The computer automatically increases its storage to 9 bits to accommodate the larger result</div>
+    <div class="opt" onclick="checkQ(this,false,'q2')"><span class="ol">B</span>The result wraps around and is stored as 255, the largest 8-bit value</div>
+    <div class="opt" onclick="checkQ(this,true,'q2')"><span class="ol">C</span>An overflow error occurs — the carry bit from the MSB column is lost, and the 8-bit result stored is 00000000 (0), which is incorrect</div>
+    <div class="opt" onclick="checkQ(this,false,'q2')"><span class="ol">D</span>The operation is rejected and neither number is stored, because the sum exceeds the maximum byte value</div>
+    <div class="fb-msg fb-ok" id="q2-ok">✅ Correct! 224 + 48 = 256 = 100000000 in binary — that's a 9-bit result. The 9th bit (the leading 1) is lost, leaving 00000000. An overflow error has occurred: the stored result (0) is completely incorrect.</div>
+    <div class="fb-msg fb-no" id="q2-no">❌ 224 + 48 = 256 = 100000000 (9 bits). With only 8 bits available, the leading 1 (the carry out of the MSB column) is lost. The remaining 8 bits are 00000000. This is an overflow error — the stored result (0) is wrong.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_2',this)"><span>✏️ Quick Notes — Binary Addition &amp; Overflow</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_2"><ul>
+  <li>Binary addition rules: 0+0=0, 0+1=1, 1+1=0 carry 1, 1+1+1=1 carry 1</li>
+  <li>Work right to left, carrying into the next column when sum ≥ 2</li>
+  <li>Maximum 8-bit value = 255 (11111111). Range is 0–255</li>
+  <li>Overflow = result exceeds 8 bits; the carry out of the MSB is lost; the stored result is wrong</li>
+  <li>Always check by converting to denary first — if sum > 255, overflow will occur</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" id="next2" onclick="goNext()" disabled>Next →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     S4 — HEXADECIMAL
+══════════════════════════════════════════════ -->
+<div class="section" data-section="3">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">03 · HEX</span><h2>Hexadecimal</h2></div>
+  <p class="body">Hexadecimal is <strong>base 16</strong>. Instead of reading long binary strings, computer scientists use hex as a compact shorthand — 4 bits collapse into just 1 hex digit.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pink" onclick="togglePanel('h1',this)"><span class="ri">🔢</span><span class="rl">Why Hexadecimal? The 16 Digits</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="h1">
+      <div class="rv-hd c-pink">HEX DIGITS</div>
+      <p>Base 16 needs 16 symbols. Digits 0–9 aren't enough on their own, so we borrow letters A–F:</p>
+      <table>
+        <tr><th>Hex</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+        <tr><td><strong>Denary</strong></td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td class="pk">10</td><td class="pk">11</td><td class="pk">12</td><td class="pk">13</td><td class="pk">14</td><td class="pk">15</td></tr>
+        <tr><td><strong>Binary</strong></td><td>0000</td><td>0001</td><td>0010</td><td>0011</td><td>0100</td><td>0101</td><td>0110</td><td>0111</td><td>1000</td><td>1001</td><td>1010</td><td>1011</td><td>1100</td><td>1101</td><td>1110</td><td>1111</td></tr>
+      </table>
+      <p style="margin-top:10px;">The spec range for 2-digit hex is <strong>00 to FF</strong> (= 0 to 255 in denary). That exactly matches the 8-bit binary range.</p>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pu" onclick="togglePanel('h2',this)"><span class="ri">❓</span><span class="rl">Why Do We Use Hexadecimal?</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="h2">
+      <div class="rv-hd c-pu">THE PURPOSE OF HEX</div>
+      <div class="two-col">
+        <div class="tcol" style="border-color:rgba(251,113,133,.3);background:rgba(251,113,133,.06);">
+          <h4 style="color:var(--rose);">❌ Binary — Hard to Read</h4>
+          <ul>
+            <li>A memory address: <code>11001010111100001010000000000001</code></li>
+            <li>32 digits — easy to misread, very error-prone</li>
+            <li>No compact representation</li>
+          </ul>
+        </div>
+        <div class="tcol" style="border-color:rgba(244,114,182,.3);background:rgba(244,114,182,.06);">
+          <h4 style="color:var(--pink);">✅ Hex — Compact &amp; Clear</h4>
+          <ul>
+            <li>Same address: <code>CAF0A001</code></li>
+            <li>8 characters — much shorter, less error-prone</li>
+            <li>Every 4 bits → 1 hex digit, exactly</li>
+          </ul>
+        </div>
+      </div>
+      <ul style="margin-top:10px;">
+        <li><strong>Memory addresses</strong> — displayed in hex in debuggers and OS tools</li>
+        <li><strong>Colour codes</strong> — HTML/CSS colours use 6-digit hex e.g. <code>#FF5733</code></li>
+        <li><strong>MAC addresses</strong> — network hardware identifiers e.g. <code>A4:C3:F0:85:AC:2D</code></li>
+        <li><strong>Error codes</strong> — Windows BSODs show hex error codes (e.g. <code>0x0000007B</code>)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-amber" onclick="togglePanel('h3',this)"><span class="ri">🔄</span><span class="rl">Denary ↔ Hex Conversion</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="h3">
+      <div class="rv-hd c-amber">CONVERTING DENARY TO HEX (2-DIGIT)</div>
+      <p>With 2-digit hex: the <strong>left digit</strong> = how many 16s, the <strong>right digit</strong> = the remainder.</p>
+      <div class="worked">
+        <div class="worked-hd">Worked Example — Convert 197 to hex</div>
+        <div class="w-step"><span class="w-num">1</span><div>Divide by 16: 197 ÷ 16 = <strong>12 remainder 5</strong></div></div>
+        <div class="w-step"><span class="w-num">2</span><div>Left hex digit = 12 in denary = <strong style="color:var(--pink);">C</strong> in hex</div></div>
+        <div class="w-step"><span class="w-num">3</span><div>Right hex digit = remainder 5 = <strong style="color:var(--pink);">5</strong> in hex</div></div>
+        <div class="w-step"><span class="w-num">✓</span><div>197 in denary = <strong style="color:var(--pink);">C5</strong> in hex</div></div>
+      </div>
+      <div class="worked" style="margin-top:10px;">
+        <div class="worked-hd">Worked Example — Convert B3 (hex) to denary</div>
+        <div class="w-step"><span class="w-num">1</span><div>Hex place values for 2-digit hex: left digit = ×16, right digit = ×1</div></div>
+        <div class="w-step"><span class="w-num">2</span><div>Left digit B = <strong>11</strong> in denary → 11 × 16 = <strong>176</strong></div></div>
+        <div class="w-step"><span class="w-num">3</span><div>Right digit 3 = 3 × 1 = <strong>3</strong></div></div>
+        <div class="w-step"><span class="w-num">✓</span><div>B3 (hex) = 176 + 3 = <strong style="color:var(--teal);">179</strong> in denary</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEX CONVERTER INTERACTIVE -->
+  <div class="hex-conv">
+    <div class="hex-conv-label">🎮 Interactive — Tri-Base Converter</div>
+    <p style="font-size:13px;color:#c0b0e8;margin-bottom:16px;font-family:var(--font);">Type into any field — binary, denary, or hex — and the other two update automatically.</p>
+    <div class="hex-fields">
+      <div class="hex-field"><label>Binary (8-bit)</label><input type="text" id="hfBin" class="hf-bin" maxlength="8" placeholder="00000000" oninput="convertFrom('bin')"></div>
+      <div class="hex-field"><label>Denary (0–255)</label><input type="number" id="hfDec" class="hf-dec" min="0" max="255" placeholder="0" oninput="convertFrom('dec')"></div>
+      <div class="hex-field"><label>Hexadecimal (00–FF)</label><input type="text" id="hfHex" class="hf-hex" maxlength="2" placeholder="00" oninput="convertFrom('hex')" style="text-transform:uppercase;"></div>
+    </div>
+    <p class="hex-note">Changes in any field update the other two. Binary accepts 1–8 digits (padded to 8). Hex accepts 0–9 and A–F only.</p>
+  </div>
+
+  <!-- CHECK Q -->
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q3</div>
+    <div class="q-text">Convert the hexadecimal value <code>A7</code> to denary. Show your reasoning.</div>
+    <div class="opt" onclick="checkQ(this,false,'q3')"><span class="ol">A</span>107 — treating A as 1 and 7 as 7, so 100 + 7</div>
+    <div class="opt" onclick="checkQ(this,false,'q3')"><span class="ol">B</span>147 — placing A (=10) in the tens column: 10×10 + 7×1</div>
+    <div class="opt" onclick="checkQ(this,true,'q3')"><span class="ol">C</span>167 — A (=10) × 16 = 160, plus 7 × 1 = 7. Total: 160 + 7 = 167</div>
+    <div class="opt" onclick="checkQ(this,false,'q3')"><span class="ol">D</span>177 — A (=11) × 16 = 176, plus 1</div>
+    <div class="fb-msg fb-ok" id="q3-ok">✅ Correct! In 2-digit hex: left digit × 16, right digit × 1. A = 10 in denary. So: 10 × 16 = 160, plus 7 × 1 = 7. Total = 167. You can verify this in the tri-base converter above!</div>
+    <div class="fb-msg fb-no" id="q3-no">❌ For 2-digit hex, the left digit is worth ×16 and the right is worth ×1. A in hex = 10 in denary. So A7 = (10 × 16) + (7 × 1) = 160 + 7 = 167. Don't confuse the base-16 column value (16) with base-10 (10).</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_3',this)"><span>✏️ Quick Notes — Hexadecimal</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_3"><ul>
+  <li>Hexadecimal = base 16. Digits: 0–9, then A=10, B=11, C=12, D=13, E=14, F=15</li>
+  <li>2-digit hex range: 00 to FF = 0 to 255 in denary (same as 8-bit binary)</li>
+  <li>Hex → Denary: left digit × 16, right digit × 1. Add the results.</li>
+  <li>Denary → Hex: divide by 16. Quotient = left digit, remainder = right digit</li>
+  <li>Used for: memory addresses, HTML colour codes, MAC addresses, error codes</li>
+  <li>Reason: 4 binary bits = 1 hex digit — compact and unambiguous shorthand for binary</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" id="next3" onclick="goNext()" disabled>Next →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     S5 — BINARY ↔ HEX
+══════════════════════════════════════════════ -->
+<div class="section" data-section="4">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">04 · CONVERSION</span><h2>Binary ↔ Hexadecimal</h2></div>
+  <p class="body">The most important relationship in this topic: <strong>4 binary bits = 1 hex digit, exactly</strong>. This makes binary↔hex conversion fast and mechanical — no arithmetic needed.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-sky" onclick="togglePanel('bh1',this)"><span class="ri">⚡</span><span class="rl">The Key Insight: 4 Bits = 1 Hex Digit</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="bh1">
+      <div class="rv-hd c-sky">WHY IT WORKS</div>
+      <p>4 bits can represent 2⁴ = 16 values (0000 to 1111). Hex has exactly 16 symbols (0–F). So every possible 4-bit combination maps to exactly one hex digit — and vice versa.</p>
+      <div class="formula">
+        <div class="f-label">The Rule</div>
+        <div class="f-eq">8-bit binary = <span>2 hex digits</span>
+Split the 8 bits into two groups of 4:
+<span>LEFT 4 BITS</span> → hex digit 1 (left)
+<span>RIGHT 4 BITS</span> → hex digit 2 (right)</div>
+      </div>
+      <div class="box bx-teal">
+        <div class="box-hd">✅ No Arithmetic Required</div>
+        <p>Converting between binary and hex never requires division or subtraction — just split into nibbles (groups of 4) and look up the hex value. This is much faster than going through denary.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-green" onclick="togglePanel('bh2',this)"><span class="ri">🔄</span><span class="rl">Binary → Hex (Split into Nibbles)</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="bh2">
+      <div class="rv-hd c-green">BINARY TO HEX</div>
+      <div class="worked">
+        <div class="worked-hd">Example 1 — Convert 10110111 to hex</div>
+        <div class="w-step"><span class="w-num">1</span><div>Split into two nibbles: <code>1011</code> | <code>0111</code></div></div>
+        <div class="w-step"><span class="w-num">2</span><div>Left nibble <code>1011</code>: 8+2+1 = 11 = <strong style="color:var(--pink);">B</strong></div></div>
+        <div class="w-step"><span class="w-num">3</span><div>Right nibble <code>0111</code>: 4+2+1 = 7 = <strong style="color:var(--pink);">7</strong></div></div>
+        <div class="w-step"><span class="w-num">✓</span><div><code>10110111</code> = <strong style="color:var(--pink);">B7</strong> in hex</div></div>
+      </div>
+      <div class="worked" style="margin-top:12px;">
+        <div class="worked-hd">Example 2 — Convert 11010 to hex (less than 8 bits)</div>
+        <div class="w-step"><span class="w-num">1</span><div>Pad to 8 bits with leading zeros: <code>11010</code> → <code>00011010</code></div></div>
+        <div class="w-step"><span class="w-num">2</span><div>Split: <code>0001</code> | <code>1010</code></div></div>
+        <div class="w-step"><span class="w-num">3</span><div><code>0001</code> = 1 = <strong style="color:var(--pink);">1</strong>. <code>1010</code> = 8+2 = 10 = <strong style="color:var(--pink);">A</strong></div></div>
+        <div class="w-step"><span class="w-num">✓</span><div><code>11010</code> = <strong style="color:var(--pink);">1A</strong> in hex</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pink" onclick="togglePanel('bh3',this)"><span class="ri">🔄</span><span class="rl">Hex → Binary (Expand Each Digit)</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="bh3">
+      <div class="rv-hd c-pink">HEX TO BINARY</div>
+      <p>The reverse: convert each hex digit independently into its 4-bit equivalent, then join them together.</p>
+      <div class="worked">
+        <div class="worked-hd">Example — Convert 3F to binary</div>
+        <div class="w-step"><span class="w-num">1</span><div>Left digit <strong>3</strong> → 4-bit binary: <code>0011</code></div></div>
+        <div class="w-step"><span class="w-num">2</span><div>Right digit <strong>F</strong> (=15) → 4-bit binary: <code>1111</code></div></div>
+        <div class="w-step"><span class="w-num">✓</span><div><code>3F</code> = <strong style="color:var(--sky);">00111111</strong> in binary</div></div>
+      </div>
+      <div class="box bx-tip" style="margin-top:10px;">
+        <div class="box-hd">💡 Always Use 4 Bits Per Digit</div>
+        <p>When expanding a hex digit, always write exactly <strong>4 binary digits</strong>. For hex digit 3, write <code>0011</code> — not <code>11</code>. Leaving out the leading zeros will merge nibbles incorrectly.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECK Q -->
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q4</div>
+    <div class="q-text">Convert the binary number <code>11001110</code> to hexadecimal, showing the nibble split.</div>
+    <div class="opt" onclick="checkQ(this,false,'q4')"><span class="ol">A</span>CD — split: 1100 = C (=12), but 1110 = E not D</div>
+    <div class="opt" onclick="checkQ(this,false,'q4')"><span class="ol">B</span>C13 — treating it as three groups rather than two nibbles of 4</div>
+    <div class="opt" onclick="checkQ(this,true,'q4')"><span class="ol">C</span>CE — left nibble 1100 = 12 = C; right nibble 1110 = 14 = E</div>
+    <div class="opt" onclick="checkQ(this,false,'q4')"><span class="ol">D</span>EC — the nibbles are in the correct order but placed in the wrong position</div>
+    <div class="fb-msg fb-ok" id="q4-ok">✅ Correct! Split 11001110 into nibbles: 1100 | 1110. Left: 8+4=12=C. Right: 8+4+2=14=E. Result: CE. Always split from the left — the leftmost nibble gives the leftmost hex digit.</div>
+    <div class="fb-msg fb-no" id="q4-no">❌ Split 11001110 into two nibbles of 4: left = 1100, right = 1110. Left: 8+4+0+0 = 12 → C. Right: 8+4+2+0 = 14 → E. Answer = CE. Don't mix up nibble order — left nibble maps to left hex digit.</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_4',this)"><span>✏️ Quick Notes — Binary ↔ Hex</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_4"><ul>
+  <li>4 binary bits = 1 hex digit (a "nibble"). 8 bits = 2 hex digits</li>
+  <li>Binary → Hex: split 8 bits into two groups of 4 (left nibble, right nibble). Convert each nibble to one hex digit</li>
+  <li>Hex → Binary: convert each hex digit independently to a 4-bit binary group. Join the groups</li>
+  <li>Always pad to 4 bits per nibble — write 0011 not 11 for hex digit 3</li>
+  <li>Numbers with fewer than 8 bits: pad with leading zeros first (11010 = 00011010)</li>
+  <li>No arithmetic needed — binary↔hex is a direct substitution, digit by digit</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" id="next4" onclick="goNext()" disabled>Next →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     S6 — BINARY SHIFTS
+══════════════════════════════════════════════ -->
+<div class="section" data-section="5">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">05 · SHIFTS</span><h2>Binary Shifts</h2></div>
+  <p class="body">A <strong>binary shift</strong> moves all the bits in a number left or right by a given number of positions. It's the most efficient way to multiply or divide by powers of 2.</p>
+  <p class="rv-hint">CLICK EACH BUTTON TO REVEAL ▼</p>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-sky" onclick="togglePanel('sh1',this)"><span class="ri">◀</span><span class="rl">Left Shift — Multiply by Powers of 2</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="sh1">
+      <div class="rv-hd c-sky">LEFT SHIFT</div>
+      <p>Shifting all bits <strong>n positions to the left</strong> multiplies the value by <strong>2ⁿ</strong>. Zeros fill in on the right. Bits that fall off the left end are lost (potential overflow).</p>
+      <div class="worked">
+        <div class="worked-hd">Example — Left shift 00000110 (6) by 2 positions</div>
+        <div class="w-step"><span class="w-num">1</span><div>Original: <code>0 0 0 0 0 1 1 0</code> = 6</div></div>
+        <div class="w-step"><span class="w-num">2</span><div>Shift left by 2: each bit moves 2 positions left, two <strong style="color:var(--rose);">0s fill from the right</strong></div></div>
+        <div class="w-step"><span class="w-num">3</span><div>Result: <code>0 0 0 1 1 0 <strong style="color:var(--rose);">0 0</strong></code> = 24</div></div>
+        <div class="w-step"><span class="w-num">✓</span><div>6 × 2² = 6 × 4 = <strong style="color:var(--teal);">24</strong> ✓</div></div>
+      </div>
+      <div class="box bx-warn" style="margin-top:10px;">
+        <div class="box-hd">⚠️ Left Shift Overflow</div>
+        <p>If a 1-bit is shifted off the left end (past the MSB), it is lost — this is an overflow. E.g. shifting <code>11000000</code> (192) left by 1 gives <code>10000000</code> (128), not 384 — the leading 1 was lost.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-pu" onclick="togglePanel('sh2',this)"><span class="ri">▶</span><span class="rl">Right Shift — Divide by Powers of 2</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="sh2">
+      <div class="rv-hd c-pu">RIGHT SHIFT</div>
+      <p>Shifting all bits <strong>n positions to the right</strong> divides the value by <strong>2ⁿ</strong> (integer division — remainders are lost). Zeros fill in on the left.</p>
+      <div class="worked">
+        <div class="worked-hd">Example — Right shift 01011000 (88) by 3 positions</div>
+        <div class="w-step"><span class="w-num">1</span><div>Original: <code>0 1 0 1 1 0 0 0</code> = 88</div></div>
+        <div class="w-step"><span class="w-num">2</span><div>Shift right by 3: each bit moves 3 positions right, three <strong style="color:var(--rose);">0s fill from the left</strong></div></div>
+        <div class="w-step"><span class="w-num">3</span><div>Result: <code><strong style="color:var(--rose);">0 0 0</strong> 0 1 0 1 1</code> = 11</div></div>
+        <div class="w-step"><span class="w-num">✓</span><div>88 ÷ 2³ = 88 ÷ 8 = <strong style="color:var(--teal);">11</strong> ✓</div></div>
+      </div>
+      <div class="box bx-tip" style="margin-top:10px;">
+        <div class="box-hd">💡 Right Shift and Remainders</div>
+        <p>Right shifts perform <strong>integer division</strong>. If the bits shifted off the right are not all zero, information is lost. E.g. right-shifting <code>00000111</code> (7) by 1 gives <code>00000011</code> (3), not 3.5 — the remainder is discarded.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="rv-group">
+    <button class="rv-btn rv-amber" onclick="togglePanel('sh3',this)"><span class="ri">📊</span><span class="rl">Summary Table — Shift Effects</span><span class="rc">▼</span></button>
+    <div class="rv-panel" id="sh3">
+      <div class="rv-hd c-amber">SHIFT EFFECTS AT A GLANCE</div>
+      <table>
+        <tr><th>Operation</th><th>Effect on Value</th><th>Bits Added</th><th>Bits Removed</th><th>Potential Problem</th></tr>
+        <tr><td><strong>Left shift ×1</strong></td><td class="ok">× 2</td><td class="cy">0 from right</td><td class="am">MSB lost</td><td class="no">Overflow if MSB was 1</td></tr>
+        <tr><td><strong>Left shift ×2</strong></td><td class="ok">× 4</td><td class="cy">2 zeros from right</td><td class="am">2 MSBs lost</td><td class="no">Overflow if any lost bit was 1</td></tr>
+        <tr><td><strong>Right shift ×1</strong></td><td class="ok">÷ 2</td><td class="cy">0 from left</td><td class="am">LSB lost</td><td class="no">Remainder lost if LSB was 1</td></tr>
+        <tr><td><strong>Right shift ×2</strong></td><td class="ok">÷ 4</td><td class="cy">2 zeros from left</td><td class="am">2 LSBs lost</td><td class="no">Remainder lost if any lost bit was 1</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- SHIFT INTERACTIVE -->
+  <div class="shift-demo">
+    <div class="shift-label">🎮 Interactive — Binary Shift Demonstrator</div>
+    <p style="font-size:13px;color:#c0b0e8;margin-bottom:16px;font-family:var(--font);">Click the bits to set your starting value, then use the shift buttons to see the effect. Overflow and bit loss are flagged in red.</p>
+    <div class="shift-display" id="shiftRow"><!-- JS --></div>
+    <div class="shift-vals">
+      <span>Binary: <span id="shiftBin" class="sv-bin">00000000</span></span>
+      <span>Denary: <span id="shiftDec" class="sv-dec">0</span></span>
+      <span>Hex: <span id="shiftHex" class="sv-hex">00</span></span>
+    </div>
+    <div class="shift-controls" style="margin-top:14px;">
+      <button class="shift-btn shift-left" onclick="doShift('left')">◀ Shift Left (×2)</button>
+      <button class="shift-btn shift-right" onclick="doShift('right')">Shift Right (÷2) ▶</button>
+      <button class="shift-btn shift-reset-btn" onclick="resetShift()">Reset</button>
+    </div>
+    <div class="shift-log" id="shiftLog">Operations will appear here...</div>
+  </div>
+
+  <!-- CHECK Q -->
+  <div class="mcq-wrap">
+    <div class="q-label">✓ CHECK — Q5</div>
+    <div class="q-text">The binary value <code>00010100</code> (20 in denary) is left-shifted by 2 positions. What is the result in both binary and denary?</div>
+    <div class="opt" onclick="checkQ(this,false,'q5')"><span class="ol">A</span>Binary: 00000101 — Denary: 5 (divided by 4)</div>
+    <div class="opt" onclick="checkQ(this,false,'q5')"><span class="ol">B</span>Binary: 01010000 — Denary: 22 (added 2)</div>
+    <div class="opt" onclick="checkQ(this,true,'q5')"><span class="ol">C</span>Binary: 01010000 — Denary: 80 (multiplied by 4)</div>
+    <div class="opt" onclick="checkQ(this,false,'q5')"><span class="ol">D</span>Binary: 00101000 — Denary: 40 (multiplied by 2)</div>
+    <div class="fb-msg fb-ok" id="q5-ok">✅ Correct! Left shift by 2 = multiply by 2² = ×4. 20 × 4 = 80. Binary: 00010100 → shift each bit 2 left, fill 2 zeros from right → 01010000. Check: 64 + 16 = 80 ✓. Use the shift demo above to verify!</div>
+    <div class="fb-msg fb-no" id="q5-no">❌ Left shift by n positions multiplies by 2ⁿ. Shift by 2 = ×4. 20 × 4 = 80. Binary: move each bit 2 places left → 00010100 becomes 01010000. Fill 2 zeros from the right. Check: 64 + 16 = 80 ✓</div>
+  </div>
+</div>
+<div class="lined-notes"><button class="lined-tab" onclick="togglePanel('notes_5',this)"><span>✏️ Quick Notes — Binary Shifts</span><span class="note-chevron">▼</span></button><div class="lined-paper" id="notes_5"><ul>
+  <li>Left shift by n places = multiply the value by 2ⁿ. Zeros fill from the right</li>
+  <li>Right shift by n places = divide the value by 2ⁿ (integer division). Zeros fill from the left</li>
+  <li>Bits shifted off the end are LOST — they cannot be recovered</li>
+  <li>Left shift overflow: a 1-bit lost from the left means the result is too large for 8 bits</li>
+  <li>Right shift: if any 1-bit falls off the right, the remainder is discarded (not a true division)</li>
+  <li>Shifts are faster than multiplication/division circuits — used heavily in low-level code</li>
+</ul></div></div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" id="next5" onclick="goNext()" disabled>Next →</button></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     S7 — FINAL ASSESSMENT
+══════════════════════════════════════════════ -->
+<div class="section" data-section="6">
+<div class="card">
+  <div class="sec-tag"><span class="sec-num">🎯 ASSESSMENT</span><h2>Final Assessment — 1.2.4 Numbers</h2></div>
+  <p style="font-family:var(--font);font-size:13px;color:var(--muted);margin-bottom:8px;letter-spacing:.5px;">5 QUESTIONS · ONE ATTEMPT EACH · ANSWERS BELOW AFTER SUBMISSION</p>
+
+  <!-- FQ1 -->
+  <div class="mcq-wrap" style="margin-bottom:12px;">
+    <div class="q-label">Final — Q1</div>
+    <div class="q-text">What is the denary value of the binary number <code>10101010</code>?</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq1')"><span class="ol">A</span>160 — only counting the 128 and 32 columns</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq1')"><span class="ol">B</span>162 — adding 128, 32, and 2</div>
+    <div class="opt" onclick="checkFinal(this,true,'fq1')"><span class="ol">C</span>170 — the alternating 1s are in positions 128, 32, 8, and 2: 128+32+8+2 = 170</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq1')"><span class="ol">D</span>175 — adding all even-positioned place values including position 4</div>
+    <div class="fb-msg fb-ok" id="fq1-ok">✅ 10101010 = 128+0+32+0+8+0+2+0 = 170. The alternating pattern with 1s at positions 128, 32, 8, 2 gives 170. A quick pattern to remember: 10101010 is always 170.</div>
+    <div class="fb-msg fb-no" id="fq1-no">❌ Work through each position: 1×128 + 0×64 + 1×32 + 0×16 + 1×8 + 0×4 + 1×2 + 0×1 = 128+32+8+2 = 170.</div>
+  </div>
+
+  <!-- FQ2 -->
+  <div class="mcq-wrap" style="margin-bottom:12px;">
+    <div class="q-label">Final — Q2</div>
+    <div class="q-text">Add the binary numbers <code>01110101</code> (117) and <code>01100100</code> (100). What is the 8-bit result, and has overflow occurred?</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq2')"><span class="ol">A</span>11011001 (217) — no overflow, as the result fits in 8 bits and denary 217 ≤ 255</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq2')"><span class="ol">B</span>10111001 (185) — no overflow, the carry was absorbed correctly into the 8-bit result</div>
+    <div class="opt" onclick="checkFinal(this,true,'fq2')"><span class="ol">C</span>11011001 (217) — no overflow, since 117 + 100 = 217 which is within the 0–255 range and the result is correct</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq2')"><span class="ol">D</span>01011001 (89) — overflow has occurred because a carry was generated in the addition process</div>
+    <div class="fb-msg fb-ok" id="fq2-ok">✅ Correct! 117 + 100 = 217 ≤ 255, so no overflow. The 8-bit result is 11011001 = 128+64+16+8+1 = 217 ✓. Overflow only occurs when the true result exceeds 255 — generating a carry out of the MSB column.</div>
+    <div class="fb-msg fb-no" id="fq2-no">❌ 117 + 100 = 217. Since 217 ≤ 255, the result fits in 8 bits and there is no overflow. 217 in binary = 11011001 (128+64+16+8+1). Overflow would only occur if the sum exceeded 255.</div>
+  </div>
+
+  <!-- FQ3 -->
+  <div class="mcq-wrap" style="margin-bottom:12px;">
+    <div class="q-label">Final — Q3</div>
+    <div class="q-text">Convert the denary number 254 to hexadecimal, showing your method.</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq3')"><span class="ol">A</span>EF — because 254 ÷ 16 = 15 remainder 14, giving E then F in the wrong order</div>
+    <div class="opt" onclick="checkFinal(this,true,'fq3')"><span class="ol">B</span>FE — because 254 ÷ 16 = 15 remainder 14; left digit = 15 = F, right digit = 14 = E</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq3')"><span class="ol">C</span>FF — because 254 is the second largest 8-bit value, one less than 255 = FF, so it must round to FF</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq3')"><span class="ol">D</span>9E — because 254 ÷ 16 = 9 remainder 14; giving 9 in the left column</div>
+    <div class="fb-msg fb-ok" id="fq3-ok">✅ Correct! 254 ÷ 16 = 15 remainder 14. Left digit = 15 → F. Right digit = 14 → E. Answer = FE. Check: (15×16) + 14 = 240+14 = 254 ✓. Note: FF = 255, so FE = 254 makes sense — one below the maximum.</div>
+    <div class="fb-msg fb-no" id="fq3-no">❌ Method: divide by 16. 254 ÷ 16 = 15 remainder 14. Quotient (15) → left digit = F. Remainder (14) → right digit = E. Answer = FE. (NOT EF — the quotient always goes left, remainder goes right.)</div>
+  </div>
+
+  <!-- FQ4 -->
+  <div class="mcq-wrap" style="margin-bottom:12px;">
+    <div class="q-label">Final — Q4</div>
+    <div class="q-text">Convert the hexadecimal value <code>6C</code> to binary, showing your nibble method.</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq4')"><span class="ol">A</span>01101011 — expanding 6 as 0110 and C (=12) incorrectly as 1011</div>
+    <div class="opt" onclick="checkFinal(this,true,'fq4')"><span class="ol">B</span>01101100 — expanding 6 as 0110 and C (=12) correctly as 1100</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq4')"><span class="ol">C</span>11000110 — reversing the nibble order (C then 6 instead of 6 then C)</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq4')"><span class="ol">D</span>0110 1110 — expanding 6 as 0110 and C as 1110 (confusing C=12 with E=14)</div>
+    <div class="fb-msg fb-ok" id="fq4-ok">✅ Correct! Expand each hex digit to 4 bits: 6 → 0110, C (=12) → 1100. Join: 01101100. Check: 64+32+8+4 = 108. Verify: 6C = (6×16)+12 = 96+12 = 108 ✓</div>
+    <div class="fb-msg fb-no" id="fq4-no">❌ Convert each hex digit to its 4-bit equivalent separately. 6 → 0110. C = 12 in denary → 8+4 = 12 → 1100. Join left-to-right: 0110 1100 = 01101100. Remember: always write 4 bits per digit.</div>
+  </div>
+
+  <!-- FQ5 -->
+  <div class="mcq-wrap" style="margin-bottom:12px;">
+    <div class="q-label">Final — Q5</div>
+    <div class="q-text">The 8-bit binary value <code>00011000</code> (24) is right-shifted by 3 positions. What is the result, and what arithmetic operation does this represent?</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq5')"><span class="ol">A</span>11000000 (192) — which represents a multiplication by 8, because right shift moves bits toward the MSB</div>
+    <div class="opt" onclick="checkFinal(this,true,'fq5')"><span class="ol">B</span>00000011 (3) — which represents integer division by 8 (2³), since 24 ÷ 8 = 3</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq5')"><span class="ol">C</span>00000110 (6) — which represents a division by 4 (2²), since only 2 positions were shifted</div>
+    <div class="opt" onclick="checkFinal(this,false,'fq5')"><span class="ol">D</span>00001100 (12) — which represents a division by 2 (2¹), since right-shifting once always divides by 2</div>
+    <div class="fb-msg fb-ok" id="fq5-ok">✅ Correct! Right shift by 3 = divide by 2³ = divide by 8. 24 ÷ 8 = 3. Binary: 00011000 → shift right 3 → 00000011 (3 zeros fill from left, 000 fall off the right). Check: 2+1=3 ✓</div>
+    <div class="fb-msg fb-no" id="fq5-no">❌ Right shift by n = divide by 2ⁿ. Right shift by 3 = ÷2³ = ÷8. 24÷8=3. In binary: 00011000 → move all bits 3 places right, 3 zeros enter from the left → 00000011 = 2+1 = 3.</div>
+  </div>
+</div>
+
+<!-- BADGE -->
+<div class="badge-section">
+  <div class="badge-prog-txt" id="badgeProg">Final questions: 0 / 5 answered</div>
+  <div class="badge-bar-outer"><div class="badge-bar-inner" id="badgeBar"></div></div>
+  <div id="badgeWrapper" class="badge-locked">
+    <p style="font-family:var(--font);font-size:12px;color:var(--muted);margin-bottom:16px;letter-spacing:.5px;">COMPLETE ALL FINAL QUESTIONS TO UNLOCK YOUR BADGE</p>
+    <input class="name-input" id="studentName" type="text" placeholder="Enter your name" oninput="updateBadgeName()">
+    <div class="badge-visual">
+      <div class="badge-icon">01</div>
+      <div class="badge-hdr">GCSE Computer Science</div>
+      <div class="badge-topic">1.2.4 Data Storage: Numbers</div>
+      <div class="badge-spec">Binary · Hex · Addition · Shifts</div>
+      <div class="badge-score-disp" id="bScore">— / 10</div>
+      <div class="badge-name-disp" id="bName">—</div>
+      <div class="badge-ribbon">NUMBER SYSTEMS ◈</div>
+    </div>
+    <p style="font-family:var(--font);font-size:11px;color:var(--muted);margin-bottom:4px;">Score = 5 section checks + 5 final questions (first attempt only)</p>
+    <p class="snip-hint">📸 Use Snipping Tool (Win+Shift+S) or screenshot to save your badge.</p>
+  </div>
+</div>
+<div class="nav-row"><button class="btn btn-g" onclick="goPrev()">← Back</button><button class="btn btn-p" id="finishBtn" disabled>Done ✓</button></div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ══ STATE ══
+const TOTAL_SEC = 7;
+const recallIds  = ['r1','r2','r3','r4','r5'];
+const checkIds   = ['q1','q2','q3','q4','q5'];
+const finalIds   = ['fq1','fq2','fq3','fq4','fq5'];
+const recallPass = new Set();
+const recallDone = new Set();
+const checkDone  = {};
+const finalDone  = new Set();
+const finalPass  = new Set();
+let current = 0;
+
+// ══ DOTS ══
+function buildDots(){
+  const nav = document.getElementById('progressNav');
+  const labels=['🧠 Recall','01 Binary','02 Addition','03 Hex','04 Bin↔Hex','05 Shifts','🎯 Assessment'];
+  for(let i=0;i<TOTAL_SEC;i++){
+    const b=document.createElement('button');
+    b.className='dot'+(i===0?' active':'');
+    b.title=labels[i]; b.onclick=()=>goTo(i);
+    nav.appendChild(b);
+  }
+}
+function goTo(i){
+  document.querySelectorAll('.section')[current].classList.remove('active');
+  current=i;
+  document.querySelectorAll('.section')[current].classList.add('active');
+  updateDots(); window.scrollTo(0,0);
+}
+function goNext(){if(current<TOTAL_SEC-1)goTo(current+1);}
+function goPrev(){if(current>0)goTo(current-1);}
+function updateDots(){
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.className='dot';
+    if(i===current) d.classList.add('active');
+    else if(i<current) d.classList.add('completed');
+  });
+}
+
+// ══ PANELS ══
+function togglePanel(id,btn){
+  const p=document.getElementById(id); if(!p) return;
+  const open=p.classList.toggle('open');
+  if(btn) btn.classList.toggle('open',open);
+}
+
+// ══ RECALL (must all pass, one attempt) ══
+function checkRecall(el,ok,qid){
+  if(recallDone.has(qid)) return;
+  recallDone.add(qid);
+  el.parentElement.querySelectorAll('.opt').forEach(o=>o.onclick=null);
+  if(ok){
+    el.classList.add('correct');
+    document.getElementById(qid+'-ok').style.display='block';
+    recallPass.add(qid);
+  } else {
+    el.classList.add('wrong');
+    document.getElementById(qid+'-no').style.display='block';
+  }
+  const n=recallPass.size;
+  document.getElementById('recallProgress').textContent=`(${n}/5 correct)`;
+  if(recallIds.every(id=>recallPass.has(id))){
+    const b=document.getElementById('startBtn');
+    b.disabled=false; b.innerHTML='Start Lesson →';
+  }
+}
+
+// ══ SECTION CHECKS (one attempt, unlocks next) ══
+function checkQ(el,ok,qid){
+  if(checkDone[qid]) return;
+  checkDone[qid]={correct:ok};
+  el.parentElement.querySelectorAll('.opt').forEach(o=>o.onclick=null);
+  if(ok){
+    el.classList.add('correct');
+    document.getElementById(qid+'-ok').style.display='block';
+  } else {
+    el.classList.add('wrong');
+    document.getElementById(qid+'-no').style.display='block';
+  }
+  const idx=checkIds.indexOf(qid);
+  const nb=document.getElementById('next'+(idx+1));
+  if(nb) nb.disabled=false;
+  updateBadgeScore();
+}
+
+// ══ FINAL (one attempt) ══
+function checkFinal(el,ok,qid){
+  if(finalDone.has(qid)) return;
+  finalDone.add(qid);
+  el.parentElement.querySelectorAll('.opt').forEach(o=>o.onclick=null);
+  if(ok){ el.classList.add('correct'); document.getElementById(qid+'-ok').style.display='block'; finalPass.add(qid); }
+  else   { el.classList.add('wrong');   document.getElementById(qid+'-no').style.display='block'; }
+  updateBadgeScore();
+  if(finalDone.size>=5){
+    document.getElementById('badgeWrapper').classList.remove('badge-locked');
+    document.getElementById('badgeWrapper').classList.add('badge-unlocked');
+    document.getElementById('finishBtn').disabled=false;
+  }
+}
+
+// ══ BADGE ══
+function updateBadgeScore(){
+  const sc=checkIds.filter(id=>checkDone[id]&&checkDone[id].correct).length;
+  const fc=finalPass.size, fd=finalDone.size;
+  document.getElementById('badgeProg').textContent=`Final questions: ${fd} / 5 answered`;
+  document.getElementById('badgeBar').style.width=`${(fd/5)*100}%`;
+  document.getElementById('bScore').textContent=`${sc+fc} / 10`;
+}
+function updateBadgeName(){
+  document.getElementById('bName').textContent=document.getElementById('studentName').value||'—';
+}
+
+// ══ BIT BOARD ══
+const bitVals=[128,64,32,16,8,4,2,1];
+let bits=[0,0,0,0,0,0,0,0];
+function buildBitBoard(){
+  const row=document.getElementById('bitRow'); if(!row) return;
+  row.innerHTML='';
+  bits.forEach((v,i)=>{
+    const col=document.createElement('div'); col.className='bit-col';
+    col.innerHTML=`<div class="bit-pv">${bitVals[i]}</div>
+      <div class="bit-cell${v?' on':''}" id="bc${i}" onclick="toggleBit(${i})">${v}</div>
+      <div class="bit-pos">${i===0?'MSB':i===7?'LSB':''}</div>`;
+    row.appendChild(col);
+  });
+  updateBitResult();
+}
+function toggleBit(i){
+  bits[i]=bits[i]?0:1;
+  const cell=document.getElementById('bc'+i);
+  cell.textContent=bits[i];
+  cell.classList.toggle('on',bits[i]===1);
+  updateBitResult();
+}
+function updateBitResult(){
+  const val=bits.reduce((s,b,i)=>s+b*bitVals[i],0);
+  document.getElementById('bitDenary').textContent=val;
+  const hex=val.toString(16).toUpperCase().padStart(2,'0');
+  document.getElementById('bitHex').textContent=hex;
+  const active=bits.map((b,i)=>b?bitVals[i]:0).filter(v=>v>0);
+  document.getElementById('bitEquation').textContent=active.length?active.join(' + ')+' = '+val:'No bits are on';
+  // also sync hex converter
+  document.getElementById('hfBin').value=bits.join('');
+  document.getElementById('hfDec').value=val;
+  document.getElementById('hfHex').value=hex;
+}
+function resetBits(){bits=[0,0,0,0,0,0,0,0];buildBitBoard();}
+
+// ══ HEX CONVERTER ══
+function convertFrom(src){
+  try{
+    let val;
+    if(src==='bin'){
+      const b=document.getElementById('hfBin').value.replace(/[^01]/g,'').slice(0,8);
+      document.getElementById('hfBin').value=b;
+      if(!b) return;
+      val=parseInt(b,2); if(isNaN(val)||val<0||val>255) return;
+    } else if(src==='dec'){
+      val=parseInt(document.getElementById('hfDec').value);
+      if(isNaN(val)||val<0||val>255) return;
+    } else {
+      const h=document.getElementById('hfHex').value.replace(/[^0-9a-fA-F]/g,'').slice(0,2);
+      document.getElementById('hfHex').value=h.toUpperCase();
+      if(!h) return;
+      val=parseInt(h,16); if(isNaN(val)||val<0||val>255) return;
+    }
+    if(src!=='bin') document.getElementById('hfBin').value=val.toString(2).padStart(8,'0');
+    if(src!=='dec') document.getElementById('hfDec').value=val;
+    if(src!=='hex') document.getElementById('hfHex').value=val.toString(16).toUpperCase().padStart(2,'0');
+    // sync bit board
+    bits=val.toString(2).padStart(8,'0').split('').map(Number);
+    buildBitBoard();
+  } catch(e){}
+}
+
+// ══ BINARY ADDER ══
+function clampBin(id){
+  const el=document.getElementById(id);
+  el.value=el.value.replace(/[^01]/g,'').slice(0,8);
+}
+function doAdd(){
+  const aStr=document.getElementById('addA').value.padStart(8,'0');
+  const bStr=document.getElementById('addB').value.padStart(8,'0');
+  const err=document.getElementById('adderErr');
+  if(!/^[01]{8}$/.test(aStr)||!/^[01]{8}$/.test(bStr)){
+    err.style.display='block'; return;
+  }
+  err.style.display='none';
+  const a=aStr.split('').map(Number);
+  const b=bStr.split('').map(Number);
+  const result=new Array(8).fill(0);
+  const carry=new Array(9).fill(0);
+  for(let i=7;i>=0;i--){
+    const s=a[i]+b[i]+carry[i+1];
+    result[i]=s%2;
+    carry[i]=Math.floor(s/2);
+  }
+  const overflow=carry[0]===1;
+  const aVal=parseInt(aStr,2), bVal=parseInt(bStr,2), rVal=parseInt(result.join(''),2);
+  const trueSum=aVal+bVal;
+  let out='';
+  const pad=(n)=>n===0?'—':n;
+  out+=`Carry: `;
+  for(let i=0;i<8;i++) out+=(i===0&&carry[0]?'\x1b[am]'+carry[0]:carry[i+1]?'1':' ')+' ';
+  out+='\n';
+  out+=`A:     ${a.join(' ')}   (${aVal})\n`;
+  out+=`B:     ${b.join(' ')}   (${bVal})\n`;
+  out+=`─────────────────────────\n`;
+  out+=`Result:${result.join(' ')}   (${rVal})`;
+  if(overflow) out+=`\n\n⚠️  OVERFLOW! True sum = ${trueSum} — too large for 8 bits.\n    Carry out of MSB = 1 (lost). Stored result ${rVal} is INCORRECT.`;
+  else out+=`\n\n✓  No overflow. ${aVal} + ${bVal} = ${trueSum} = ${trueSum === rVal ? 'correct ✓' : 'error'}`;
+
+  const box=document.getElementById('adderOutput');
+  // build as HTML for colour coding
+  let html='';
+  const carryRow=carry.slice(1).map((c,i)=>`<span class="aw-carry">${c||' '}</span>`).join(' ');
+  const aRow=a.map(x=>`<span class="aw-a">${x}</span>`).join(' ');
+  const bRow=b.map(x=>`<span class="aw-b">${x}</span>`).join(' ');
+  const rRow=result.map(x=>`<span class="aw-sum">${x}</span>`).join(' ');
+  html+=`Carry:  ${carryRow}\n`;
+  html+=`<span class="aw-a">A:</span>      ${aRow}   <span style="color:#6b5b8a;">(${aVal})</span>\n`;
+  html+=`<span class="aw-b">B:</span>      ${bRow}   <span style="color:#6b5b8a;">(${bVal})</span>\n`;
+  html+=`────────────────────────────\n`;
+  html+=`<span class="aw-sum">Result:</span> ${rRow}   <span style="color:#6b5b8a;">(${rVal})</span>`;
+  if(overflow){
+    html+=`\n\n<span class="aw-overflow">⚠️  OVERFLOW! True sum = ${trueSum} — exceeds 255.</span>\n<span class="aw-overflow">    Carry out of MSB was 1 (lost). Stored result (${rVal}) is INCORRECT.</span>`;
+  } else {
+    html+=`\n\n<span class="aw-sum">✓  No overflow. ${aVal} + ${bVal} = ${trueSum}</span>`;
+  }
+  box.innerHTML=html;
+}
+
+// ══ SHIFT DEMO ══
+let shiftBits=[0,0,0,1,0,1,0,0]; // 20 default
+let shiftHistory=[];
+function buildShiftRow(){
+  const row=document.getElementById('shiftRow'); if(!row) return;
+  row.innerHTML='';
+  shiftBits.forEach((b,i)=>{
+    const d=document.createElement('div');
+    d.className='shift-bit'+(b?' on':'');
+    d.id='sb'+i; d.textContent=b;
+    d.onclick=()=>toggleShiftBit(i);
+    row.appendChild(d);
+  });
+  updateShiftVals();
+}
+function toggleShiftBit(i){
+  shiftBits[i]=shiftBits[i]?0:1;
+  document.getElementById('sb'+i).textContent=shiftBits[i];
+  document.getElementById('sb'+i).className='shift-bit'+(shiftBits[i]?' on':'');
+  shiftHistory=[];
+  document.getElementById('shiftLog').innerHTML='Manual edit — shift history cleared.';
+  updateShiftVals();
+}
+function updateShiftVals(){
+  const val=shiftBits.reduce((s,b,i)=>s+b*(1<<(7-i)),0);
+  document.getElementById('shiftBin').textContent=shiftBits.join('');
+  document.getElementById('shiftDec').textContent=val;
+  document.getElementById('shiftHex').textContent=val.toString(16).toUpperCase().padStart(2,'0');
+}
+function doShift(dir){
+  const before=shiftBits.reduce((s,b,i)=>s+b*(1<<(7-i)),0);
+  const beforeStr=shiftBits.join('');
+  let overflow=false, lostBit=0;
+  if(dir==='left'){
+    lostBit=shiftBits[0];
+    shiftBits=[...shiftBits.slice(1),0];
+    if(lostBit===1) overflow=true;
+  } else {
+    lostBit=shiftBits[7];
+    shiftBits=[0,...shiftBits.slice(0,7)];
+  }
+  const after=shiftBits.reduce((s,b,i)=>s+b*(1<<(7-i)),0);
+  buildShiftRow();
+  const log=document.getElementById('shiftLog');
+  const arrow=dir==='left'?'◀ Left':'▶ Right';
+  let entry=`<span class="sl-entry">${arrow} shift: ${beforeStr} (${before}) → ${shiftBits.join('')} (${after})</span>`;
+  if(overflow) entry+=`<span class="sl-overflow"> ⚠ Overflow — MSB 1 was lost! True value would be ${before*2}</span>`;
+  if(dir==='right'&&lostBit===1) entry+=`<span class="sl-overflow"> ⚠ Remainder lost (LSB was 1)</span>`;
+  shiftHistory.unshift(entry);
+  if(shiftHistory.length>5) shiftHistory.pop();
+  log.innerHTML=shiftHistory.join('\n');
+}
+function resetShift(){
+  shiftBits=[0,0,0,1,0,1,0,0];
+  shiftHistory=[];
+  buildShiftRow();
+  document.getElementById('shiftLog').innerHTML='Reset to 00010100 (20)';
+}
+
+buildDots();
+buildBitBoard();
+buildShiftRow();
+updateBadgeScore();
+</script>
+</body>
+</html>

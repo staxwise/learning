@@ -1,0 +1,2247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Priority 3 High Master Quiz | GCSE Computer Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --text-muted: #555566;
+            --border-subtle: #2a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .exam-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-magenta), var(--accent-purple));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-magenta), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .progress-container {
+            margin-top: 30px;
+        }
+
+        .progress-bar-track {
+            height: 8px;
+            background: var(--border-subtle);
+            border-radius: 4px;
+            overflow: hidden;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-magenta), var(--accent-orange));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-label {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: var(--accent-cyan);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            margin-bottom: 14px;
+            color: var(--text-primary);
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+
+        .topic-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .topic-tag.search-sort { background: rgba(0, 212, 255, 0.2); color: var(--accent-cyan); }
+        .topic-tag.arrays { background: rgba(0, 255, 136, 0.2); color: var(--accent-green); }
+        .topic-tag.compilers { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); }
+        .topic-tag.test-plans { background: rgba(255, 214, 10, 0.2); color: var(--accent-yellow); }
+        .topic-tag.random { background: rgba(255, 149, 0, 0.2); color: var(--accent-orange); }
+
+        .question-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            padding: 14px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--accent-cyan);
+            transform: translateX(4px);
+        }
+
+        .option-btn.selected {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .option-btn.correct {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.15);
+        }
+
+        .option-btn.incorrect {
+            border-color: var(--accent-magenta);
+            background: rgba(255, 0, 110, 0.15);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+        .option-btn code {
+            background: transparent;
+            padding: 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+
+        .nav-btn.secondary:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .nav-btn.primary {
+            background: linear-gradient(135deg, var(--accent-magenta), var(--accent-orange));
+            color: white;
+        }
+
+        .nav-btn.primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(255, 0, 110, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .topic-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .topic-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .topic-card h4 {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .topic-card p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .results-header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.1), rgba(255, 149, 0, 0.05));
+            border-radius: 16px;
+            margin-bottom: 24px;
+        }
+
+        .results-score {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-magenta), var(--accent-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .results-label {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .results-grade {
+            margin-top: 12px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .breakdown-section {
+            margin-bottom: 30px;
+        }
+
+        .breakdown-title {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .topic-result {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .topic-result .topic-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .topic-result .topic-score {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .topic-result .score-bar {
+            width: 100px;
+            height: 8px;
+            background: var(--border-subtle);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .topic-result .score-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .topic-result.excellent .score-fill { background: var(--accent-green); }
+        .topic-result.good .score-fill { background: var(--accent-cyan); }
+        .topic-result.needs-work .score-fill { background: var(--accent-yellow); }
+        .topic-result.weak .score-fill { background: var(--accent-magenta); }
+
+        .feedback-section {
+            margin-bottom: 24px;
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .feedback-header .icon {
+            font-size: 1.5rem;
+        }
+
+        .feedback-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .strength-item, .development-item {
+            padding: 16px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .strength-item {
+            background: rgba(0, 255, 136, 0.08);
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .development-item {
+            background: rgba(255, 214, 10, 0.08);
+            border-left: 3px solid var(--accent-yellow);
+        }
+
+        .feedback-topic {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .feedback-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .revision-section {
+            margin-top: 30px;
+        }
+
+        .revision-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            color: var(--accent-orange);
+        }
+
+        .revision-item {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .revision-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .revision-item-header:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .revision-item-header h4 {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .revision-item-header .toggle {
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .revision-item-header.open .toggle {
+            transform: rotate(180deg);
+        }
+
+        .revision-content {
+            display: none;
+            padding: 0 16px 16px 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .revision-content.show {
+            display: block;
+        }
+
+        .revision-question {
+            padding: 12px;
+            background: rgba(255, 0, 110, 0.1);
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+
+        .revision-question .label {
+            font-size: 0.75rem;
+            color: var(--accent-magenta);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .revision-question p {
+            color: var(--text-primary);
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .revision-answer {
+            padding: 12px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .revision-answer .label {
+            font-size: 0.75rem;
+            color: var(--accent-green);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .revision-answer p {
+            color: var(--text-primary);
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .revision-notes {
+            padding: 16px;
+            background: var(--bg-card);
+            border-radius: 8px;
+        }
+
+        .revision-notes h5 {
+            color: var(--accent-yellow);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .revision-notes ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .revision-notes li {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .revision-notes code {
+            font-size: 0.85rem;
+        }
+
+        .badge-generator {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.1), rgba(255, 149, 0, 0.05));
+            border: 2px solid var(--accent-magenta);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .badge-generator h3 {
+            color: var(--accent-magenta);
+            margin-bottom: 8px;
+        }
+
+        .badge-generator > p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .badge-input-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .badge-name-input {
+            padding: 12px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+
+        .badge-name-input:focus {
+            outline: none;
+            border-color: var(--accent-magenta);
+        }
+
+        .badge-name-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .generate-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--accent-magenta), var(--accent-orange));
+            color: white;
+            transition: all 0.2s ease;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 0, 110, 0.3);
+        }
+
+        .badge-display {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .badge-display.show {
+            display: flex;
+        }
+
+        .badge-container {
+            background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(255, 0, 110, 0.1);
+        }
+
+        .badge-hint {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            h1 {
+                font-size: 1.7rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+
+            .topic-result {
+                flex-wrap: wrap;
+            }
+
+            .topic-result .score-bar {
+                width: 100%;
+                order: 3;
+                margin-top: 8px;
+            }
+
+            .results-score {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="exam-badge">OCR GCSE J277</div>
+            <h1>Priority 3 High Master Quiz</h1>
+            <p class="subtitle">Rotational Assessment</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill" id="progressFill"></div>
+                </div>
+                <p class="progress-label" id="progressLabel">Ready to begin</p>
+            </div>
+        </header>
+
+        <main>
+            <!-- Section: Intro -->
+            <section id="intro" class="active">
+                <div class="card">
+                    <h2>📋 Assessment Overview</h2>
+                    
+                    <p>This master quiz will assess your understanding across <strong>5 key topics</strong>. You'll receive detailed feedback on your strengths and areas for development.</p>
+
+                    <div class="topics-grid">
+                        <div class="topic-card">
+                            <div class="icon">🔍</div>
+                            <h4>Search & Sort</h4>
+                            <p>10 questions</p>
+                        </div>
+                        <div class="topic-card">
+                            <div class="icon">📊</div>
+                            <h4>Arrays</h4>
+                            <p>10 questions</p>
+                        </div>
+                        <div class="topic-card">
+                            <div class="icon">⚙️</div>
+                            <h4>Compilers & Interpreters</h4>
+                            <p>10 questions</p>
+                        </div>
+                        <div class="topic-card">
+                            <div class="icon">✅</div>
+                            <h4>Test Plans</h4>
+                            <p>10 questions</p>
+                        </div>
+                        <div class="topic-card">
+                            <div class="icon">🎲</div>
+                            <h4>Random Module</h4>
+                            <p>10 questions</p>
+                        </div>
+                    </div>
+
+                    <p><strong>Total:</strong> 50 questions</p>
+                    <p>Take your time and read each question carefully. Your results will help guide your revision.</p>
+                </div>
+
+                <div class="nav-buttons">
+                    <div></div>
+                    <button class="nav-btn primary" onclick="startQuiz()">Begin Quiz →</button>
+                </div>
+            </section>
+
+            <!-- Section: Quiz -->
+            <section id="quiz">
+                <div id="questionContainer"></div>
+                
+                <div class="nav-buttons">
+                    <button class="nav-btn secondary" id="prevBtn" onclick="prevQuestion()" disabled>← Previous</button>
+                    <button class="nav-btn primary" id="nextBtn" onclick="nextQuestion()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section: Results -->
+            <section id="results">
+                <div class="results-header">
+                    <div class="results-score" id="finalScore">0%</div>
+                    <div class="results-label">Overall Score</div>
+                    <div class="results-grade" id="finalGrade"></div>
+                </div>
+
+                <div class="card breakdown-section">
+                    <div class="breakdown-title">📊 Topic Breakdown</div>
+                    <div id="topicBreakdown"></div>
+                </div>
+
+                <div class="card feedback-section" id="strengthsSection">
+                    <div class="feedback-header">
+                        <span class="icon">💪</span>
+                        <h3>Areas of Strength</h3>
+                    </div>
+                    <div id="strengthsList"></div>
+                </div>
+
+                <div class="card feedback-section" id="developmentSection">
+                    <div class="feedback-header">
+                        <span class="icon">🎯</span>
+                        <h3>Areas for Development</h3>
+                    </div>
+                    <div id="developmentList"></div>
+                </div>
+
+                <div class="card revision-section" id="revisionSection">
+                    <div class="revision-header">
+                        <span>📝</span>
+                        <h3>Revision Notes for Incorrect Answers</h3>
+                    </div>
+                    <p style="margin-bottom: 20px;">Click each item to expand detailed revision notes you can use to create your own revision resources.</p>
+                    <div id="revisionList"></div>
+                </div>
+
+                <div class="badge-generator">
+                    <h3>🏆 Claim Your Certificate</h3>
+                    <p>Enter your name to generate your Priority 3 High certificate:</p>
+                    
+                    <div class="badge-input-group">
+                        <input type="text" class="badge-name-input" id="badgeNameInput" placeholder="Enter your name..." maxlength="30">
+                        <button class="generate-btn" onclick="generateBadge()">Generate Certificate</button>
+                    </div>
+
+                    <div class="badge-display" id="badgeDisplay">
+                        <div class="badge-container">
+                            <svg width="380" height="440" viewBox="0 0 380 440" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#ff006e"/>
+                                        <stop offset="100%" style="stop-color:#ff9500"/>
+                                    </linearGradient>
+                                    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#ffd60a"/>
+                                        <stop offset="50%" style="stop-color:#ffaa00"/>
+                                        <stop offset="100%" style="stop-color:#ffd60a"/>
+                                    </linearGradient>
+                                    <filter id="glow">
+                                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                        <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                    </filter>
+                                </defs>
+                                
+                                <rect x="10" y="10" width="360" height="420" rx="20" fill="none" stroke="url(#badgeGradient)" stroke-width="3" opacity="0.3"/>
+                                <rect x="20" y="20" width="340" height="400" rx="16" fill="#12121a" stroke="url(#badgeGradient)" stroke-width="2"/>
+                                <rect x="20" y="20" width="340" height="60" rx="16" fill="url(#badgeGradient)"/>
+                                <rect x="20" y="60" width="340" height="20" fill="url(#badgeGradient)"/>
+                                
+                                <text x="190" y="58" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-size="14" font-weight="700" letter-spacing="2">PRIORITY 3 HIGH</text>
+                                
+                                <g transform="translate(190, 145)" filter="url(#glow)">
+                                    <path d="M-30,-35 L30,-35 L25,5 C25,20 15,30 0,30 C-15,30 -25,20 -25,5 Z" fill="url(#goldGradient)" stroke="#ffaa00" stroke-width="2"/>
+                                    <path d="M-30,-25 C-45,-25 -50,-10 -45,5 C-42,12 -35,15 -28,10" fill="none" stroke="url(#goldGradient)" stroke-width="4" stroke-linecap="round"/>
+                                    <path d="M30,-25 C45,-25 50,-10 45,5 C42,12 35,15 28,10" fill="none" stroke="url(#goldGradient)" stroke-width="4" stroke-linecap="round"/>
+                                    <rect x="-8" y="30" width="16" height="12" fill="url(#goldGradient)"/>
+                                    <rect x="-20" y="42" width="40" height="8" rx="2" fill="url(#goldGradient)"/>
+                                    <polygon points="0,-15 4,-5 15,-5 6,2 10,13 0,6 -10,13 -6,2 -15,-5 -4,-5" fill="#ffffff" opacity="0.9"/>
+                                </g>
+                                
+                                <text x="190" y="215" text-anchor="middle" fill="#8888aa" font-family="Outfit, sans-serif" font-size="11" letter-spacing="1">MASTER QUIZ CERTIFICATE</text>
+                                <text x="190" y="245" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-size="13">This certifies that</text>
+                                <text id="badgeStudentName" x="190" y="280" text-anchor="middle" fill="url(#badgeGradient)" font-family="Outfit, sans-serif" font-size="22" font-weight="700">Student Name</text>
+                                <text x="190" y="310" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-size="13">has completed the rotational assessment</text>
+                                <text x="190" y="340" text-anchor="middle" fill="#8888aa" font-family="Outfit, sans-serif" font-size="11">GCSE COMPUTER SCIENCE</text>
+                                
+                                <rect x="130" y="355" width="120" height="45" rx="8" fill="#0a0a0f" stroke="url(#badgeGradient)" stroke-width="2"/>
+                                <text id="badgeScoreText" x="190" y="385" text-anchor="middle" fill="url(#goldGradient)" font-family="JetBrains Mono, monospace" font-size="20" font-weight="700">50/50</text>
+                            </svg>
+                        </div>
+                        <p class="badge-hint">📸 Screenshot to save your certificate!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Question Bank - 50 questions (10 per topic) with plausible distractors
+        const questions = [
+            // ============ SEARCH & SORT (10 questions) ============
+            {
+                id: 1,
+                topic: 'search-sort',
+                topicName: 'Search & Sort Algorithms',
+                question: 'What is the worst-case time complexity of binary search?',
+                options: ['O(n) - linear time', 'O(log n) - logarithmic time', 'O(n²) - quadratic time', 'O(n log n) - linearithmic'],
+                correct: 1,
+                revision: {
+                    answer: 'O(log n) - logarithmic time',
+                    notes: [
+                        'Binary search halves the search space with each comparison',
+                        'For 1000 items, it needs at most ~10 comparisons (log₂1000 ≈ 10)',
+                        'O(log n) is very efficient compared to O(n) linear search',
+                        'The "log" comes from repeatedly dividing by 2',
+                        'Each step eliminates half of the remaining items'
+                    ]
+                }
+            },
+            {
+                id: 2,
+                topic: 'search-sort',
+                topicName: 'Search & Sort Algorithms',
+                question: 'Which sorting algorithm compares adjacent elements and swaps them if needed?',
+                options: ['Merge sort', 'Insertion sort', 'Bubble sort', 'Selection sort'],
+                correct: 2,
+                revision: {
+                    answer: 'Bubble sort',
+                    notes: [
+                        'Bubble sort compares pairs of adjacent (neighbouring) elements',
+                        'If they are in the wrong order, it swaps them',
+                        'Each pass moves the largest unsorted element to its correct position',
+                        'Called "bubble" because large values "bubble up" to the end',
+                        'Insertion sort inserts elements into a sorted section instead'
+                    ]
+                }
+            },
+            {
+                id: 3,
+                topic: 'search-sort',
+                topicName: 'Search & Sort Algorithms',
+                question: 'What condition must be met before using binary search?',
+                options: ['Data must be numeric', 'Data must be sorted', 'Data must be unique', 'Data must be in an array'],
+                correct: 1,
+                revision: {
+                    answer: 'Data must be sorted',
+                    notes: [
+                        'Binary search REQUIRES sorted data to work correctly',
+                        'It compares the target with the middle to decide which half to search',
+                        'If data is unsorted, this comparison gives incorrect results',
+                        'Data can be any type (numbers, strings) as long as it is sorted',
+                        'Duplicate values are allowed - sorting is the only requirement'
+                    ]
+                }
+            },
+            {
+                id: 4,
+                topic: 'search-sort',
+                topicName: 'Search & Sort Algorithms',
+                question: 'Linear search has O(n) complexity. What does this mean?',
+                options: ['It always checks exactly n items', 'Doubling list size doubles worst-case time', 'It can only search n items maximum', 'It uses n bytes of memory'],
+                correct: 1,
+                revision: {
+                    answer: 'Doubling the list size roughly doubles the worst-case time',
+                    notes: [
+                        'O(n) means time grows proportionally with input size',
+                        'If a list doubles in size, worst-case time roughly doubles',
+                        'Best case is still O(1) if the item is found first',
+                        'Average case checks about half the elements',
+                        'O(n) describes the growth rate, not exact operations'
+                    ]
+                }
+            },
+            {
+                id: 5,
+                topic: 'search-sort',
+                topicName: 'Search & Sort Algorithms',
+                question: 'In merge sort, what happens during the "merge" phase?',
+                options: ['The list is split into halves', 'Sorted sublists are combined in order', 'Elements are compared and swapped', 'The smallest element is selected'],
+                correct: 1,
+                revision: {
+                    answer: 'Sorted sublists are combined into larger sorted lists',
+                    notes: [
+                        'Merge sort has two phases: divide and merge',
+                        'Divide phase: split the list into smaller sublists',
+                        'Merge phase: combine sorted sublists back together in order',
+                        'When merging, elements from both sublists are compared',
+                        'This continues until one fully sorted list remains'
+                    ]
+                }
+            },
+            {
+                id: 6,
+                topic: 'search-sort',
+                topicName: 'Search & Sort Algorithms',
+                question: 'A list has 1024 items. Maximum comparisons for binary search?',
+                options: ['1024 comparisons', '512 comparisons', '10 comparisons', '32 comparisons'],
+                correct: 2,
+                revision: {
+                    answer: '10 comparisons (because log₂1024 = 10)',
+                    notes: [
+                        'Binary search halves the search space each time',
+                        '1024 → 512 → 256 → 128 → 64 → 32 → 16 → 8 → 4 → 2 → 1',
+                        'That is 10 halvings, so maximum 10 comparisons',
+                        'The formula is log₂(n) - and 2¹⁰ = 1024',
+                        'This is why binary search is efficient for large datasets'
+                    ]
+                }
+            },
+            {
+                id: 7,
+                topic: 'search-sort',
+                topicName: 'Search & Sort Algorithms',
+                question: 'What is the main advantage of linear search over binary search?',
+                options: ['Linear search is faster overall', 'Linear search works on unsorted data', 'Linear search uses less memory', 'Linear search is more accurate'],
+                correct: 1,
+                revision: {
+                    answer: 'Linear search works on unsorted data',
+                    notes: [
+                        'Linear search can search ANY list - sorted or unsorted',
+                        'Binary search requires sorted data to function',
+                        'If data is unsorted, you must use linear search',
+                        'Or sort the data first, then use binary search',
+                        'For unsorted data, linear search is the only option'
+                    ]
+                }
+            },
+            {
+                id: 8,
+                topic: 'search-sort',
+                topicName: 'Search & Sort Algorithms',
+                question: 'What is the worst-case time complexity of bubble sort?',
+                options: ['O(n) - linear time', 'O(log n) - logarithmic time', 'O(n²) - quadratic time', 'O(n log n) - linearithmic'],
+                correct: 2,
+                revision: {
+                    answer: 'O(n²) - quadratic time',
+                    notes: [
+                        'Bubble sort uses nested loops - one inside another',
+                        'For each element (n), it may compare with every other (n)',
+                        'This gives n × n = n² comparisons in the worst case',
+                        'O(n²) is inefficient for large datasets',
+                        'Merge sort achieves O(n log n) which is much faster'
+                    ]
+                }
+            },
+            {
+                id: 9,
+                topic: 'search-sort',
+                topicName: 'Search & Sort Algorithms',
+                question: 'In binary search, if target < middle element, what happens next?',
+                options: ['Search the right half', 'Search the left half', 'Start from the beginning', 'Check adjacent elements'],
+                correct: 1,
+                revision: {
+                    answer: 'Search the left half of the list',
+                    notes: [
+                        'In a sorted list, smaller values are on the left',
+                        'If target < middle, the target must be in the left half',
+                        'If target > middle, the target must be in the right half',
+                        'If target = middle, we have found it',
+                        'This halving is why binary search is so efficient'
+                    ]
+                }
+            },
+            {
+                id: 10,
+                topic: 'search-sort',
+                topicName: 'Search & Sort Algorithms',
+                question: 'Why is merge sort preferred over bubble sort for large datasets?',
+                options: ['Merge sort uses less code', 'Merge sort has O(n log n) complexity', 'Merge sort uses less memory', 'Merge sort is easier to understand'],
+                correct: 1,
+                revision: {
+                    answer: 'Merge sort has O(n log n) complexity - much faster',
+                    notes: [
+                        'Merge sort: O(n log n) - efficient for large lists',
+                        'Bubble sort: O(n²) - becomes very slow with large lists',
+                        'For 1 million items: bubble ≈ 1 trillion operations',
+                        'For 1 million items: merge ≈ 20 million operations',
+                        'Merge sort is more complex but significantly faster'
+                    ]
+                }
+            },
+
+            // ============ ARRAYS (10 questions) ============
+            {
+                id: 11,
+                topic: 'arrays',
+                topicName: 'Arrays',
+                question: 'To access row 2, column 3 in a 2D array (0-based indexing)?',
+                options: ['array[3][2]', 'array[2][3]', 'array[1][2]', 'array[2,3]'],
+                correct: 2,
+                revision: {
+                    answer: 'array[1][2] - row 2 is index 1, column 3 is index 2',
+                    notes: [
+                        'Arrays use 0-based indexing: counting starts at 0',
+                        'Row 2 means the second row = index 1 (0, 1)',
+                        'Column 3 means the third column = index 2 (0, 1, 2)',
+                        'Format is array[row][column]',
+                        'Subtract 1 from the position to get the index'
+                    ]
+                }
+            },
+            {
+                id: 12,
+                topic: 'arrays',
+                topicName: 'Arrays',
+                question: 'What is the index of the first element in a Python array?',
+                options: ['1', '0', '-1', 'None'],
+                correct: 1,
+                revision: {
+                    answer: '0 - arrays use 0-based indexing',
+                    notes: [
+                        'In Python, Java, C, and JavaScript, arrays start at index 0',
+                        'The first element is at index 0, second at index 1, etc.',
+                        'An array with 5 elements has indices: 0, 1, 2, 3, 4',
+                        'The last index is always (length - 1)',
+                        'This is called "0-based indexing"'
+                    ]
+                }
+            },
+            {
+                id: 13,
+                topic: 'arrays',
+                topicName: 'Arrays',
+                question: 'Which statement best describes a 2D array?',
+                options: ['An array storing exactly two items', 'An array where each element is an array', 'An array with two data types', 'An array with two index methods'],
+                correct: 1,
+                revision: {
+                    answer: 'An array where each element is itself an array',
+                    notes: [
+                        'A 2D array is an "array of arrays"',
+                        'Think of it as a table with rows and columns',
+                        'First index selects row, second selects column',
+                        'Examples: spreadsheets, game boards, seating plans',
+                        'Can extend to 3D arrays (arrays of 2D arrays)'
+                    ]
+                }
+            },
+            {
+                id: 14,
+                topic: 'arrays',
+                topicName: 'Arrays',
+                question: 'Given <code>scores = [85, 92, 78, 95, 88]</code>, what is <code>scores[3]</code>?',
+                options: ['78', '95', '88', '92'],
+                correct: 1,
+                revision: {
+                    answer: '95 - index 3 is the fourth element',
+                    notes: [
+                        'Index positions: [0]=85, [1]=92, [2]=78, [3]=95, [4]=88',
+                        'Index 3 is the fourth element (counting from 0)',
+                        'scores[0] = 85 (first), scores[1] = 92 (second)',
+                        'scores[2] = 78 (third), scores[3] = 95 (fourth)',
+                        'Common mistake: thinking index 3 is the third element'
+                    ]
+                }
+            },
+            {
+                id: 15,
+                topic: 'arrays',
+                topicName: 'Arrays',
+                question: 'An array has 8 elements. What is the last index?',
+                options: ['8', '7', '9', '6'],
+                correct: 1,
+                revision: {
+                    answer: '7 - the last index is always (length - 1)',
+                    notes: [
+                        'With 0-based indexing, indices run from 0 to (length - 1)',
+                        'An 8-element array has indices: 0, 1, 2, 3, 4, 5, 6, 7',
+                        'Last index = 8 - 1 = 7',
+                        'Accessing index 8 causes "index out of range" error',
+                        'Formula: last index = length - 1'
+                    ]
+                }
+            },
+            {
+                id: 16,
+                topic: 'arrays',
+                topicName: 'Arrays',
+                question: 'What does <code>grid[0][0]</code> access in a 2D array?',
+                options: ['Bottom-right element', 'Top-left element', 'Centre element', 'Entire first row'],
+                correct: 1,
+                revision: {
+                    answer: 'The top-left element (first row, first column)',
+                    notes: [
+                        '[0][0] means row index 0, column index 0',
+                        'This is the first row and first column - top-left',
+                        'Visualise a 2D array like a table or grid',
+                        'Row 0 is top row, column 0 is leftmost column',
+                        'grid[0] alone would give the entire first row'
+                    ]
+                }
+            },
+            {
+                id: 17,
+                topic: 'arrays',
+                topicName: 'Arrays',
+                question: 'What error occurs accessing <code>array[10]</code> in a 10-element array?',
+                options: ['Syntax error', 'Index out of range error', 'Type error', 'Value error'],
+                correct: 1,
+                revision: {
+                    answer: 'Index out of range error',
+                    notes: [
+                        'A 10-element array has indices 0-9, not 0-10',
+                        'Index 10 does not exist in a 10-element array',
+                        'This causes an "index out of range" error',
+                        'This is a common "off-by-one error"',
+                        'Maximum valid index = length - 1'
+                    ]
+                }
+            },
+            {
+                id: 18,
+                topic: 'arrays',
+                topicName: 'Arrays',
+                question: 'A cinema has 5 rows and 8 seats per row. Total elements in its 2D array?',
+                options: ['13 elements', '40 elements', '58 elements', '16 elements'],
+                correct: 1,
+                revision: {
+                    answer: '40 elements (5 rows × 8 columns = 40)',
+                    notes: [
+                        'Total elements in 2D array = rows × columns',
+                        '5 rows × 8 seats = 40 total seats',
+                        'Each seat accessed as cinema[row][seat]',
+                        'First seat: cinema[0][0], last: cinema[4][7]',
+                        'This calculation works for any 2D array dimensions'
+                    ]
+                }
+            },
+            {
+                id: 19,
+                topic: 'arrays',
+                topicName: 'Arrays',
+                question: 'Given <code>data = [[1,2,3], [4,5,6], [7,8,9]]</code>, what is <code>data[2][0]</code>?',
+                options: ['3', '7', '1', '4'],
+                correct: 1,
+                revision: {
+                    answer: '7 - row index 2 (third row), column index 0 (first column)',
+                    notes: [
+                        'data[2] gets the third row: [7, 8, 9]',
+                        'data[2][0] gets the first element of that row: 7',
+                        'Row 0: [1,2,3], Row 1: [4,5,6], Row 2: [7,8,9]',
+                        'Go to row 2 first, then column 0 within that row',
+                        'data[0][2] would be 3 (first row, third column)'
+                    ]
+                }
+            },
+            {
+                id: 20,
+                topic: 'arrays',
+                topicName: 'Arrays',
+                question: 'Why use a 2D array instead of a 1D array?',
+                options: ['2D arrays process faster', '2D arrays use less memory', '2D arrays suit tabular/grid data', '2D arrays hold more data types'],
+                correct: 2,
+                revision: {
+                    answer: '2D arrays naturally represent tabular or grid data',
+                    notes: [
+                        '2D arrays are ideal for row and column data',
+                        'Examples: spreadsheets, game boards, images, timetables',
+                        'A chess board is naturally 8×8 - perfect for 2D array',
+                        '1D arrays are for simple lists without structure',
+                        '2D arrays organise data differently, not more efficiently'
+                    ]
+                }
+            },
+
+            // ============ COMPILERS & INTERPRETERS (10 questions) ============
+            {
+                id: 21,
+                topic: 'compilers',
+                topicName: 'Compilers & Interpreters',
+                question: 'What is the key difference between compilers and interpreters?',
+                options: [
+                    'Compilers work with Python only',
+                    'Compilers translate all at once, interpreters line by line',
+                    'Compilers are slower at execution',
+                    'Interpreters create executable files'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'Compilers translate all code at once, interpreters line by line',
+                    notes: [
+                        'Compiler: translates entire program → creates executable → runs',
+                        'Interpreter: translates one line → executes → next line → repeat',
+                        'Both convert source code to machine code, just differently',
+                        'Python typically uses interpreter, C uses compiler',
+                        'Java uses both (compiler to bytecode, then interpreter)'
+                    ]
+                }
+            },
+            {
+                id: 22,
+                topic: 'compilers',
+                topicName: 'Compilers & Interpreters',
+                question: 'What is an advantage of using an interpreter?',
+                options: [
+                    'Programs execute faster overall',
+                    'Errors shown at exact line during runtime',
+                    'Creates standalone executable files',
+                    'Source code hidden from users'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'Errors are reported at the exact line during runtime',
+                    notes: [
+                        'Interpreters stop at the exact line where error occurs',
+                        'This makes debugging easier during development',
+                        'No waiting for full compilation after each change',
+                        'Trade-off: interpreted programs run slower',
+                        'Interpreters do NOT create standalone executables'
+                    ]
+                }
+            },
+            {
+                id: 23,
+                topic: 'compilers',
+                topicName: 'Compilers & Interpreters',
+                question: 'What does a compiler produce after translation?',
+                options: [
+                    'An interpreted script file',
+                    'A machine code executable file',
+                    'A debugging report document',
+                    'A flowchart of the program'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'A machine code executable file',
+                    notes: [
+                        'Compilers convert source code to machine code (binary)',
+                        'This is saved as an executable file (.exe on Windows)',
+                        'Executable runs without the source code present',
+                        'Executable runs without the compiler installed',
+                        'This also protects source code from being viewed'
+                    ]
+                }
+            },
+            {
+                id: 24,
+                topic: 'compilers',
+                topicName: 'Compilers & Interpreters',
+                question: 'Why do game developers often prefer compiled languages?',
+                options: [
+                    'Compiled languages have better libraries',
+                    'Compiled code executes faster for performance',
+                    'Compiled languages are easier to learn',
+                    'Compiled languages have built-in graphics'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'Compiled code executes faster for better performance',
+                    notes: [
+                        'Games need fast execution for smooth graphics',
+                        'Compiled code is already machine code - no translation delay',
+                        'Interpreted code translates during play, adding overhead',
+                        'Most game engines use C++ (compiled) for core systems',
+                        'Compilation also protects game source code'
+                    ]
+                }
+            },
+            {
+                id: 25,
+                topic: 'compilers',
+                topicName: 'Compilers & Interpreters',
+                question: 'When does a compiler report syntax errors?',
+                options: [
+                    'While the program is running',
+                    'Before running, during compilation',
+                    'After the program finishes',
+                    'Only when errors crash the program'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'Before the program runs, during compilation',
+                    notes: [
+                        'Compilers check ALL code before creating executable',
+                        'Syntax errors found during compilation phase',
+                        'If errors exist, no executable is created',
+                        'Different from interpreters which find errors at runtime',
+                        'Compiled programs with syntax errors cannot run'
+                    ]
+                }
+            },
+            {
+                id: 26,
+                topic: 'compilers',
+                topicName: 'Compilers & Interpreters',
+                question: 'What is needed to run an interpreted program?',
+                options: [
+                    'Only the source code file',
+                    'The interpreter must be installed',
+                    'A compiler to translate first',
+                    'An executable file must exist'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'The interpreter software must be installed',
+                    notes: [
+                        'Interpreted programs need the interpreter to run',
+                        'For Python programs, Python must be installed',
+                        'Browsers have built-in JavaScript interpreters',
+                        'Compiled programs create standalone executables',
+                        'This is why compiled programs are easier to distribute'
+                    ]
+                }
+            },
+            {
+                id: 27,
+                topic: 'compilers',
+                topicName: 'Compilers & Interpreters',
+                question: 'An interpreter encounters an error on line 50 of 100. What happens?',
+                options: [
+                    'All 100 lines checked before reporting',
+                    'Lines 1-49 run, then stops at line 50',
+                    'The program does not start at all',
+                    'Error logged but execution continues'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'Lines 1-49 run, then execution stops at line 50',
+                    notes: [
+                        'Interpreters execute line by line in sequence',
+                        'Lines before the error run successfully',
+                        'When error line reached, execution stops',
+                        'Error message indicates exact line number',
+                        'Helpful for debugging but partial execution occurred'
+                    ]
+                }
+            },
+            {
+                id: 28,
+                topic: 'compilers',
+                topicName: 'Compilers & Interpreters',
+                question: 'What is an advantage of using a compiler?',
+                options: [
+                    'Faster development with quick feedback',
+                    'Faster execution speed after compilation',
+                    'Easier to find runtime errors',
+                    'No additional software needed to run'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'Faster program execution speed after compilation',
+                    notes: [
+                        'Compiled programs run faster - already machine code',
+                        'No translation needed during execution',
+                        'Compilation happens once, runs many times',
+                        'Interpreters translate every time program runs',
+                        'For frequent runs, compilation saves time overall'
+                    ]
+                }
+            },
+            {
+                id: 29,
+                topic: 'compilers',
+                topicName: 'Compilers & Interpreters',
+                question: 'To sell software without revealing source code, you should:',
+                options: [
+                    'Use an interpreter to run it',
+                    'Distribute the compiled executable',
+                    'Add detailed code comments',
+                    'Use descriptive variable names'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'Distribute the compiled executable file',
+                    notes: [
+                        'Compiled executables contain machine code, not source',
+                        'Machine code is very difficult to reverse-engineer',
+                        'This protects intellectual property',
+                        'Interpreted programs require distributing source code',
+                        'Source code can be read, copied, and modified'
+                    ]
+                }
+            },
+            {
+                id: 30,
+                topic: 'compilers',
+                topicName: 'Compilers & Interpreters',
+                question: 'Why might a beginner prefer an interpreted language?',
+                options: [
+                    'Interpreted languages have simpler syntax',
+                    'Immediate feedback makes testing quicker',
+                    'Interpreted languages have more functions',
+                    'Interpreted programs never have bugs'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'Immediate feedback makes testing code changes quicker',
+                    notes: [
+                        'Interpreters run code immediately - no compilation wait',
+                        'Students can test small changes quickly',
+                        'Error messages appear at exact problem line',
+                        'Edit-run-test cycle is faster with interpreters',
+                        'Python (interpreted) is popular for teaching'
+                    ]
+                }
+            },
+
+            // ============ TEST PLANS (10 questions) ============
+            {
+                id: 31,
+                topic: 'test-plans',
+                topicName: 'Test Plans',
+                question: 'What is the main purpose of creating a test plan?',
+                options: [
+                    'To make the program run faster',
+                    'To systematically verify program correctness',
+                    'To reduce the amount of code',
+                    'To automatically fix program bugs'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'To systematically verify the program works correctly',
+                    notes: [
+                        'Test plans ensure testing is organised and thorough',
+                        'They prevent missing important test cases',
+                        'Each test documents what to test and expected results',
+                        'Like a pilot\'s checklist - systematic, not random',
+                        'Provides evidence of proper testing'
+                    ]
+                }
+            },
+            {
+                id: 32,
+                topic: 'test-plans',
+                topicName: 'Test Plans',
+                question: 'For input accepting 18-65, which is a boundary value?',
+                options: ['30', '65', '70', '45'],
+                correct: 1,
+                revision: {
+                    answer: '65 - it is at the edge of the valid range',
+                    notes: [
+                        'Boundary values are at the edges of valid ranges',
+                        'For 18-65, boundaries are 18 and 65',
+                        'Also test just outside: 17 and 66 (invalid boundaries)',
+                        '30 and 45 are normal data (middle values)',
+                        '70 is invalid data (outside valid range)'
+                    ]
+                }
+            },
+            {
+                id: 33,
+                topic: 'test-plans',
+                topicName: 'Test Plans',
+                question: 'What should happen when entering erroneous data?',
+                options: [
+                    'Program should crash immediately',
+                    'Appropriate error message should appear',
+                    'Data should be accepted anyway',
+                    'Program should guess correct value'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'An appropriate error message should appear',
+                    notes: [
+                        'Erroneous = wrong data TYPE (text instead of number)',
+                        'Good programs display helpful error messages',
+                        'Example: "Please enter a number" for text input',
+                        'Program should NOT crash - that indicates a bug',
+                        'Programs should validate and handle errors gracefully'
+                    ]
+                }
+            },
+            {
+                id: 34,
+                topic: 'test-plans',
+                topicName: 'Test Plans',
+                question: 'Expected: "Error message", Actual: "Program crashed". Result?',
+                options: ['Passed', 'Failed', 'Inconclusive', 'Needs retest'],
+                correct: 1,
+                revision: {
+                    answer: 'Failed the test',
+                    notes: [
+                        'Pass = Actual matches Expected exactly',
+                        'Fail = Actual differs from Expected',
+                        'Crash when expecting error message = bug found',
+                        'Program should handle invalid input without crashing',
+                        'This test identified a problem needing fixes'
+                    ]
+                }
+            },
+            {
+                id: 35,
+                topic: 'test-plans',
+                topicName: 'Test Plans',
+                question: 'What type of test data is "twenty" when numeric age expected?',
+                options: ['Normal data', 'Boundary data', 'Invalid data', 'Erroneous data'],
+                correct: 3,
+                revision: {
+                    answer: 'Erroneous data - wrong data type entirely',
+                    notes: [
+                        'Erroneous = wrong DATA TYPE (text when number expected)',
+                        'Invalid = correct type but wrong RANGE (e.g., -5 for age)',
+                        'Normal = typical valid input (e.g., 25 for age)',
+                        'Boundary = edge of valid range (e.g., 0 or 120)',
+                        '"twenty" is text/string, not a number - wrong type'
+                    ]
+                }
+            },
+            {
+                id: 36,
+                topic: 'test-plans',
+                topicName: 'Test Plans',
+                question: 'For percentage input (0-100), which value is invalid data?',
+                options: ['0', '50', '100', '150'],
+                correct: 3,
+                revision: {
+                    answer: '150 - outside valid range but still a number',
+                    notes: [
+                        'Invalid = correct TYPE but wrong RANGE',
+                        '150 is a number (correct type) but exceeds 100 (wrong range)',
+                        '0 and 100 are boundary values (edges)',
+                        '50 is normal data (typical middle value)',
+                        'Invalid differs from erroneous (erroneous = wrong type)'
+                    ]
+                }
+            },
+            {
+                id: 37,
+                topic: 'test-plans',
+                topicName: 'Test Plans',
+                question: 'When should Expected Result be filled in?',
+                options: [
+                    'After running and seeing what happens',
+                    'Before running, based on requirements',
+                    'Only if the test passes',
+                    'Same time as Actual Result'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'Before running the test based on requirements',
+                    notes: [
+                        'Expected Result is your PREDICTION of what should happen',
+                        'Must be written BEFORE you run the test',
+                        'Based on program requirements/specification',
+                        'Actual Result filled in AFTER running test',
+                        'Compare them to determine Pass or Fail'
+                    ]
+                }
+            },
+            {
+                id: 38,
+                topic: 'test-plans',
+                topicName: 'Test Plans',
+                question: 'Why is testing boundary values important?',
+                options: [
+                    'Boundaries test if program runs',
+                    'Errors often occur at range edges',
+                    'Boundary values are faster to test',
+                    'Only boundaries can find bugs'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'Errors often occur at the edges of valid ranges',
+                    notes: [
+                        'Bugs often involve < vs <= or > vs >= errors',
+                        'Example: using < 18 instead of <= 18',
+                        'Boundary tests catch "off-by-one" errors',
+                        'Test valid boundaries (18, 65) and just outside (17, 66)',
+                        'Normal data might work while boundaries reveal bugs'
+                    ]
+                }
+            },
+            {
+                id: 39,
+                topic: 'test-plans',
+                topicName: 'Test Plans',
+                question: 'Which column shows what happened when the test ran?',
+                options: ['Test Data', 'Expected Result', 'Actual Result', 'Data Type'],
+                correct: 2,
+                revision: {
+                    answer: 'Actual Result column',
+                    notes: [
+                        'Actual Result records what program DID when tested',
+                        'Expected Result records what it SHOULD do (written first)',
+                        'Test Data shows input value used',
+                        'Data Type classifies test data type',
+                        'Compare Expected vs Actual for Pass/Fail'
+                    ]
+                }
+            },
+            {
+                id: 40,
+                topic: 'test-plans',
+                topicName: 'Test Plans',
+                question: 'Which is a GOOD test description?',
+                options: [
+                    '"Test the program"',
+                    '"Test age with boundary 18 to verify minimum accepted"',
+                    '"Test number 1"',
+                    '"Check it works"'
+                ],
+                correct: 1,
+                revision: {
+                    answer: '"Test age with boundary 18 to verify minimum accepted"',
+                    notes: [
+                        'Good descriptions state WHAT and WHY',
+                        'Include: what input, data type, expected behaviour',
+                        'Bad descriptions are vague: "Test program"',
+                        'Template: "Test [what] with [type] to check [behaviour]"',
+                        'Specific descriptions help others understand the test'
+                    ]
+                }
+            },
+
+            // ============ RANDOM MODULE (10 questions) ============
+            {
+                id: 41,
+                topic: 'random',
+                topicName: 'Random Module',
+                question: 'What must you write before using random functions?',
+                options: [
+                    '<code>install random</code>',
+                    '<code>import random</code>',
+                    '<code>include random</code>',
+                    '<code>require random</code>'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'import random',
+                    notes: [
+                        'import random loads the module into your program',
+                        'Must be written BEFORE using any random functions',
+                        'Usually at the very top of your program',
+                        'Without import, you get a NameError',
+                        'Module included with Python - no separate install'
+                    ]
+                }
+            },
+            {
+                id: 42,
+                topic: 'random',
+                topicName: 'Random Module',
+                question: 'What does <code>random.randint(1, 6)</code> return?',
+                options: [
+                    'Decimal between 1.0 and 6.0',
+                    'Integer from 1 to 6 inclusive',
+                    'Integer from 1 to 5 only',
+                    'Either 1 or 6 but nothing between'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'An integer from 1 to 6, including both',
+                    notes: [
+                        'randint(min, max) returns whole numbers (integers)',
+                        'INCLUSIVE: both min and max can be returned',
+                        'randint(1, 6) returns: 1, 2, 3, 4, 5, or 6',
+                        'Perfect for simulating dice rolls',
+                        'For decimals, use random.uniform() instead'
+                    ]
+                }
+            },
+            {
+                id: 43,
+                topic: 'random',
+                topicName: 'Random Module',
+                question: 'Which function selects a random item from a list?',
+                options: [
+                    '<code>random.randint()</code>',
+                    '<code>random.select()</code>',
+                    '<code>random.choice()</code>',
+                    '<code>random.pick()</code>'
+                ],
+                correct: 2,
+                revision: {
+                    answer: 'random.choice()',
+                    notes: [
+                        'choice() picks ONE random item from a list',
+                        'Example: random.choice(["red", "blue", "green"])',
+                        'List must be in square brackets',
+                        'randint() is for number ranges (min to max)',
+                        'uniform() is for decimal ranges (min to max)'
+                    ]
+                }
+            },
+            {
+                id: 44,
+                topic: 'random',
+                topicName: 'Random Module',
+                question: 'What does <code>random.uniform(1.0, 10.0)</code> return?',
+                options: [
+                    'Integer between 1 and 10',
+                    'Float (decimal) between 1.0 and 10.0',
+                    'Either 1.0 or 10.0 only',
+                    'Random string of digits'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'A float (decimal) between 1.0 and 10.0',
+                    notes: [
+                        'uniform(min, max) returns floats (decimals)',
+                        'Example outputs: 3.7284, 9.1052, 1.0003',
+                        'INCLUSIVE: can return exactly min or max',
+                        'Use for: prices, temperatures, percentages',
+                        'For whole numbers, use randint() instead'
+                    ]
+                }
+            },
+            {
+                id: 45,
+                topic: 'random',
+                topicName: 'Random Module',
+                question: 'What is the main purpose of random numbers in programs?',
+                options: [
+                    'To make programs run faster',
+                    'To add unpredictability and variety',
+                    'To reduce memory usage',
+                    'To encrypt user passwords'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'To add unpredictability and variety',
+                    notes: [
+                        'Random numbers make outcomes unpredictable',
+                        'Games: dice rolls, card shuffling, enemy spawns',
+                        'Simulations: weather models, traffic patterns',
+                        'Security: generating passwords and keys',
+                        'Without randomness, games would be predictable'
+                    ]
+                }
+            },
+            {
+                id: 46,
+                topic: 'random',
+                topicName: 'Random Module',
+                question: 'What is wrong with <code>random.choice("red", "blue")</code>?',
+                options: [
+                    'Colours should be numbers',
+                    'Items must be in a list: ["red", "blue"]',
+                    'Cannot use strings with choice()',
+                    'Function should be select()'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'Items must be inside a list: ["red", "blue"]',
+                    notes: [
+                        'choice() takes ONE argument - a list',
+                        'Correct: random.choice(["red", "blue"])',
+                        'Wrong: random.choice("red", "blue") - multiple arguments',
+                        'Square brackets create a list',
+                        'Common mistake: forgetting brackets around options'
+                    ]
+                }
+            },
+            {
+                id: 47,
+                topic: 'random',
+                topicName: 'Random Module',
+                question: 'To generate a 4-digit PIN (1000-9999), use:',
+                options: [
+                    '<code>random.uniform(1000, 9999)</code>',
+                    '<code>random.randint(1000, 9999)</code>',
+                    '<code>random.choice(1000, 9999)</code>',
+                    '<code>random.digits(4)</code>'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'random.randint(1000, 9999)',
+                    notes: [
+                        'PINs are whole numbers, so use randint()',
+                        'uniform() gives decimals like 1234.5678',
+                        'choice() picks from a list, not a range',
+                        'No digits() function in random module',
+                        'randint(1000, 9999) gives integers 1000 to 9999'
+                    ]
+                }
+            },
+            {
+                id: 48,
+                topic: 'random',
+                topicName: 'Random Module',
+                question: 'Pick random day from a list of weekdays:',
+                options: [
+                    '<code>random.randint(["Mon", "Tue"])</code>',
+                    '<code>random.uniform(["Mon", "Tue"])</code>',
+                    '<code>random.choice(["Mon", "Tue"])</code>',
+                    '<code>random.day(["Mon", "Tue"])</code>'
+                ],
+                correct: 2,
+                revision: {
+                    answer: 'random.choice(["Mon", "Tue"])',
+                    notes: [
+                        'Use choice() to pick from a list of options',
+                        'randint() is for number ranges, not string lists',
+                        'uniform() is for decimal number ranges',
+                        'No day() function in random module',
+                        'choice() works with any list type'
+                    ]
+                }
+            },
+            {
+                id: 49,
+                topic: 'random',
+                topicName: 'Random Module',
+                question: 'Using <code>random.randint(1, 6)</code> without importing causes:',
+                options: [
+                    'Syntax error',
+                    'NameError: random not defined',
+                    'Type error',
+                    'Value error'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'NameError - "random" is not defined',
+                    notes: [
+                        'Python does not know "random" without import',
+                        'NameError: name "random" is not defined',
+                        'Import statement tells Python to load module',
+                        'Always write "import random" at program top',
+                        'This applies to all modules, not just random'
+                    ]
+                }
+            },
+            {
+                id: 50,
+                topic: 'random',
+                topicName: 'Random Module',
+                question: 'For random prices like £7.49, which function?',
+                options: [
+                    '<code>random.randint(0, 10)</code>',
+                    '<code>random.uniform(0.0, 10.0)</code>',
+                    '<code>random.choice([0, 10])</code>',
+                    '<code>random.price(0, 10)</code>'
+                ],
+                correct: 1,
+                revision: {
+                    answer: 'random.uniform(0.0, 10.0)',
+                    notes: [
+                        'Prices need decimal places (£7.49, £3.99)',
+                        'uniform() returns floats/decimals',
+                        'randint() only returns whole numbers',
+                        'choice([0, 10]) only returns 0 or 10',
+                        'No price() function in random module'
+                    ]
+                }
+            }
+        ];
+
+        // Topic metadata
+        const topicInfo = {
+            'search-sort': {
+                name: 'Search & Sort Algorithms',
+                icon: '🔍',
+                color: 'var(--accent-cyan)',
+                strengthFeedback: 'Excellent understanding of search and sort algorithms! You can confidently explain time complexity, compare algorithms, and identify when each should be used.',
+                developmentFeedback: 'Focus on: time complexity (Big O notation), differences between algorithms, binary search requirements (sorted data), and merge vs bubble sort efficiency.'
+            },
+            'arrays': {
+                name: 'Arrays',
+                icon: '📊',
+                color: 'var(--accent-green)',
+                strengthFeedback: 'Strong grasp of array concepts! You understand 0-based indexing, 1D and 2D arrays, and can correctly access elements.',
+                developmentFeedback: 'Focus on: 0-based indexing (first = 0, last = length-1), 2D access (array[row][column]), and calculating positions from human-readable to index format.'
+            },
+            'compilers': {
+                name: 'Compilers & Interpreters',
+                icon: '⚙️',
+                color: 'var(--accent-purple)',
+                strengthFeedback: 'Great understanding of translators! You can explain differences between compilers and interpreters, their advantages, and appropriate use cases.',
+                developmentFeedback: 'Focus on: Compiler = all at once (fast execution, executables). Interpreter = line by line (easier debugging, needs interpreter installed). Know advantages of each.'
+            },
+            'test-plans': {
+                name: 'Test Plans',
+                icon: '✅',
+                color: 'var(--accent-yellow)',
+                strengthFeedback: 'Solid knowledge of testing! You understand test plan structure, four test data types, and pass/fail determination.',
+                developmentFeedback: 'Focus on: Normal (typical), Boundary (edges), Invalid (wrong range), Erroneous (wrong type). Expected results for bad data = error messages, not crashes.'
+            },
+            'random': {
+                name: 'Random Module',
+                icon: '🎲',
+                color: 'var(--accent-orange)',
+                strengthFeedback: 'Confident with the random module! You know how to import it and correctly use randint(), uniform(), and choice().',
+                developmentFeedback: 'Focus on: import random (required first), randint(min,max) for integers, uniform(min,max) for decimals, choice([list]) for picking from options. Brackets matter!'
+            }
+        };
+
+        // Quiz State
+        let currentQuestion = 0;
+        let answers = new Array(questions.length).fill(null);
+        let quizStarted = false;
+
+        function startQuiz() {
+            document.getElementById('intro').classList.remove('active');
+            document.getElementById('quiz').classList.add('active');
+            quizStarted = true;
+            shuffleQuestions();
+            renderQuestion();
+            updateProgress();
+        }
+
+        function shuffleQuestions() {
+            const byTopic = {};
+            questions.forEach(q => {
+                if (!byTopic[q.topic]) byTopic[q.topic] = [];
+                byTopic[q.topic].push(q);
+            });
+            
+            Object.keys(byTopic).forEach(topic => {
+                byTopic[topic].sort(() => Math.random() - 0.5);
+            });
+            
+            const topics = Object.keys(byTopic);
+            let index = 0;
+            for (let i = 0; i < 10; i++) {
+                topics.forEach(topic => {
+                    if (byTopic[topic][i]) {
+                        questions[index] = byTopic[topic][i];
+                        index++;
+                    }
+                });
+            }
+        }
+
+        function renderQuestion() {
+            const q = questions[currentQuestion];
+            const container = document.getElementById('questionContainer');
+            
+            const selectedAnswer = answers[currentQuestion];
+            
+            let optionsHTML = q.options.map((opt, i) => {
+                let classes = 'option-btn';
+                if (selectedAnswer === i) classes += ' selected';
+                return `<button class="${classes}" onclick="selectAnswer(${i})">${opt}</button>`;
+            }).join('');
+            
+            container.innerHTML = `
+                <div class="question-box">
+                    <span class="topic-tag ${q.topic}">${topicInfo[q.topic].icon} ${topicInfo[q.topic].name}</span>
+                    <div class="question-number">Question ${currentQuestion + 1} of ${questions.length}</div>
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">${optionsHTML}</div>
+                </div>
+            `;
+            
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            document.getElementById('nextBtn').textContent = currentQuestion === questions.length - 1 ? 'Submit Quiz' : 'Next →';
+        }
+
+        function selectAnswer(index) {
+            answers[currentQuestion] = index;
+            renderQuestion();
+            updateProgress();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+                updateProgress();
+            } else {
+                submitQuiz();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const answered = answers.filter(a => a !== null).length;
+            const pct = (answered / questions.length) * 100;
+            document.getElementById('progressFill').style.width = pct + '%';
+            document.getElementById('progressLabel').textContent = `${answered} of ${questions.length} answered`;
+        }
+
+        function submitQuiz() {
+            const unanswered = answers.findIndex(a => a === null);
+            if (unanswered !== -1) {
+                alert(`Please answer question ${unanswered + 1} before submitting.`);
+                currentQuestion = unanswered;
+                renderQuestion();
+                return;
+            }
+            
+            document.getElementById('quiz').classList.remove('active');
+            document.getElementById('results').classList.add('active');
+            calculateResults();
+        }
+
+        function calculateResults() {
+            const topicScores = {};
+            const topicQuestions = {};
+            const incorrectQuestions = [];
+            
+            Object.keys(topicInfo).forEach(topic => {
+                topicScores[topic] = 0;
+                topicQuestions[topic] = 0;
+            });
+            
+            questions.forEach((q, i) => {
+                topicQuestions[q.topic]++;
+                if (answers[i] === q.correct) {
+                    topicScores[q.topic]++;
+                } else {
+                    incorrectQuestions.push({
+                        ...q,
+                        userAnswer: q.options[answers[i]],
+                        correctAnswer: q.options[q.correct]
+                    });
+                }
+            });
+            
+            const totalCorrect = Object.values(topicScores).reduce((a, b) => a + b, 0);
+            const percentage = Math.round((totalCorrect / questions.length) * 100);
+            
+            document.getElementById('finalScore').textContent = percentage + '%';
+            document.getElementById('finalGrade').textContent = getGrade(percentage);
+            document.getElementById('finalGrade').style.color = getGradeColor(percentage);
+            
+            const breakdownHTML = Object.keys(topicInfo).map(topic => {
+                const score = topicScores[topic];
+                const total = topicQuestions[topic];
+                const pct = (score / total) * 100;
+                const level = pct >= 80 ? 'excellent' : pct >= 60 ? 'good' : pct >= 40 ? 'needs-work' : 'weak';
+                
+                return `
+                    <div class="topic-result ${level}">
+                        <span style="font-size: 1.2rem;">${topicInfo[topic].icon}</span>
+                        <span class="topic-name">${topicInfo[topic].name}</span>
+                        <span class="topic-score" style="color: ${topicInfo[topic].color}">${score}/${total}</span>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('topicBreakdown').innerHTML = breakdownHTML;
+            
+            const strengths = Object.keys(topicInfo).filter(t => (topicScores[t] / topicQuestions[t]) >= 0.8);
+            if (strengths.length > 0) {
+                document.getElementById('strengthsList').innerHTML = strengths.map(t => `
+                    <div class="strength-item">
+                        <div class="feedback-topic">${topicInfo[t].icon} ${topicInfo[t].name} (${topicScores[t]}/${topicQuestions[t]})</div>
+                        <p class="feedback-text">${topicInfo[t].strengthFeedback}</p>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('strengthsSection').style.display = 'none';
+            }
+            
+            const development = Object.keys(topicInfo).filter(t => (topicScores[t] / topicQuestions[t]) < 0.8);
+            if (development.length > 0) {
+                document.getElementById('developmentList').innerHTML = development.map(t => `
+                    <div class="development-item">
+                        <div class="feedback-topic">${topicInfo[t].icon} ${topicInfo[t].name} (${topicScores[t]}/${topicQuestions[t]})</div>
+                        <p class="feedback-text">${topicInfo[t].developmentFeedback}</p>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('developmentSection').innerHTML = `
+                    <div class="feedback-header">
+                        <span class="icon">🎯</span>
+                        <h3>Areas for Development</h3>
+                    </div>
+                    <div class="strength-item">
+                        <div class="feedback-topic">🌟 Outstanding Performance!</div>
+                        <p class="feedback-text">You achieved 80%+ in all topics! Keep revising to maintain this excellent level.</p>
+                    </div>
+                `;
+            }
+            
+            if (incorrectQuestions.length > 0) {
+                document.getElementById('revisionList').innerHTML = incorrectQuestions.map((q, i) => `
+                    <div class="revision-item">
+                        <div class="revision-item-header" onclick="toggleRevision(${i})">
+                            <h4>
+                                <span class="topic-tag ${q.topic}">${topicInfo[q.topic].icon}</span>
+                                Q${q.id}: ${q.question.replace(/<[^>]*>/g, '').substring(0, 40)}...
+                            </h4>
+                            <span class="toggle">▼</span>
+                        </div>
+                        <div class="revision-content" id="revision-${i}">
+                            <div class="revision-question">
+                                <div class="label">Question</div>
+                                <p>${q.question}</p>
+                            </div>
+                            <div class="revision-question" style="background: rgba(255, 0, 110, 0.15);">
+                                <div class="label" style="color: var(--accent-magenta);">Your Answer (Incorrect)</div>
+                                <p>${q.userAnswer}</p>
+                            </div>
+                            <div class="revision-answer">
+                                <div class="label">Correct Answer</div>
+                                <p>${q.revision.answer}</p>
+                            </div>
+                            <div class="revision-notes">
+                                <h5>📝 Revision Notes</h5>
+                                <ul>
+                                    ${q.revision.notes.map(note => `<li>${note}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                document.getElementById('revisionSection').innerHTML = `
+                    <div class="revision-header">
+                        <span>🎉</span>
+                        <h3>Perfect Score!</h3>
+                    </div>
+                    <p>Congratulations! You answered all 50 questions correctly. Outstanding work!</p>
+                `;
+            }
+            
+            document.getElementById('progressFill').style.width = '100%';
+            document.getElementById('progressLabel').textContent = 'Quiz Complete!';
+        }
+
+        function toggleRevision(index) {
+            const content = document.getElementById(`revision-${index}`);
+            const header = content.previousElementSibling;
+            content.classList.toggle('show');
+            header.classList.toggle('open');
+        }
+
+        function getGrade(pct) {
+            if (pct >= 90) return '⭐ Outstanding';
+            if (pct >= 80) return '✨ Excellent';
+            if (pct >= 70) return '👍 Good';
+            if (pct >= 60) return '📚 Satisfactory';
+            if (pct >= 50) return '📖 Keep Practising';
+            return '💪 More Revision Needed';
+        }
+
+        function getGradeColor(pct) {
+            if (pct >= 80) return 'var(--accent-green)';
+            if (pct >= 60) return 'var(--accent-yellow)';
+            return 'var(--accent-orange)';
+        }
+
+        function generateBadge() {
+            const name = document.getElementById('badgeNameInput').value.trim();
+            if (!name) {
+                document.getElementById('badgeNameInput').style.borderColor = 'var(--accent-magenta)';
+                setTimeout(() => document.getElementById('badgeNameInput').style.borderColor = '', 2000);
+                return;
+            }
+            
+            const totalCorrect = answers.reduce((sum, ans, i) => ans === questions[i].correct ? sum + 1 : sum, 0);
+            
+            document.getElementById('badgeStudentName').textContent = name;
+            document.getElementById('badgeScoreText').textContent = `${totalCorrect}/${questions.length}`;
+            document.getElementById('badgeDisplay').classList.add('show');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (!quizStarted || document.getElementById('results').classList.contains('active')) return;
+            
+            if (e.key === 'ArrowRight' || e.key === 'Enter') {
+                nextQuestion();
+            } else if (e.key === 'ArrowLeft') {
+                prevQuestion();
+            } else if (e.key >= '1' && e.key <= '4') {
+                selectAnswer(parseInt(e.key) - 1);
+            }
+        });
+    </script>
+</body>
+</html>

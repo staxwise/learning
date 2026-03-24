@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inputs, Processes & Outputs | GCSE Computer Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --text-muted: #555566;
+            --border-subtle: #2a2a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; line-height: 1.7; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        header { text-align: center; margin-bottom: 50px; }
+
+        .exam-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+            color: #0a0a0f;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; font-weight: 300; }
+
+        /* Progress Dots */
+        .progress-container { margin-top: 30px; }
+        .progress-bar { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
+        .progress-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--border-subtle);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .progress-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 12px var(--accent-cyan);
+            transform: scale(1.2);
+        }
+        .progress-dot.completed { background: var(--accent-green); }
+        .progress-label { margin-top: 12px; font-size: 0.9rem; color: var(--text-muted); }
+
+        section { display: none; animation: fadeIn 0.5s ease; }
+        section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        .learning-objective {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.02));
+            border-left: 3px solid var(--accent-cyan);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 0 12px 12px 0;
+        }
+        .learning-objective-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-cyan); margin-bottom: 6px; }
+        .learning-objective ul { color: var(--text-primary); margin-top: 10px; padding-left: 20px; }
+        .learning-objective li { margin-bottom: 6px; }
+
+        h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--accent-cyan); }
+        h3 { font-size: 1.15rem; margin-bottom: 14px; color: var(--text-primary); }
+        p { color: var(--text-secondary); margin-bottom: 14px; }
+
+        .highlight { color: var(--accent-yellow); font-weight: 600; }
+        .highlight-cyan { color: var(--accent-cyan); font-weight: 600; }
+        .highlight-green { color: var(--accent-green); font-weight: 600; }
+        .highlight-purple { color: var(--accent-purple); font-weight: 600; }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+
+        /* Interactive IPO Diagram */
+        .ipo-diagram-interactive {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .ipo-box-interactive {
+            padding: 24px 32px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 140px;
+            flex: 1;
+            max-width: 180px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .ipo-box-interactive:hover {
+            transform: scale(1.05);
+        }
+        .ipo-box-interactive.input {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.05));
+            border: 3px solid var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+        .ipo-box-interactive.input.active {
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+        .ipo-box-interactive.process {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(168, 85, 247, 0.05));
+            border: 3px solid var(--accent-purple);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+        }
+        .ipo-box-interactive.process.active {
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+        }
+        .ipo-box-interactive.output {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 136, 0.05));
+            border: 3px solid var(--accent-green);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+        .ipo-box-interactive.output.active {
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+        .ipo-box-interactive .icon { font-size: 2.5rem; margin-bottom: 8px; }
+        .ipo-box-interactive h4 { font-size: 1.1rem; margin-bottom: 4px; }
+        .ipo-box-interactive.input h4 { color: var(--accent-cyan); }
+        .ipo-box-interactive.process h4 { color: var(--accent-purple); }
+        .ipo-box-interactive.output h4 { color: var(--accent-green); }
+        .ipo-box-interactive p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+        .ipo-arrow-animated {
+            font-size: 2rem;
+            padding: 0 10px;
+            animation: pulse 2s infinite;
+        }
+        .ipo-arrow-animated.cyan { color: var(--accent-cyan); }
+        .ipo-arrow-animated.green { color: var(--accent-green); }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: translateX(0); }
+            50% { opacity: 1; transform: translateX(5px); }
+        }
+
+        /* Info popup for IPO diagram */
+        .ipo-info-popup {
+            display: none;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-top: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        .ipo-info-popup.show { display: block; }
+        .ipo-info-popup.input { border-color: var(--accent-cyan); }
+        .ipo-info-popup.process { border-color: var(--accent-purple); }
+        .ipo-info-popup.output { border-color: var(--accent-green); }
+        .ipo-info-popup h4 { margin-bottom: 8px; }
+        .ipo-info-popup.input h4 { color: var(--accent-cyan); }
+        .ipo-info-popup.process h4 { color: var(--accent-purple); }
+        .ipo-info-popup.output h4 { color: var(--accent-green); }
+
+        /* Click-to-cycle sorter */
+        .sort-exercise {
+            margin: 20px 0;
+        }
+        .sort-instruction {
+            background: linear-gradient(135deg, rgba(255, 214, 10, 0.1), rgba(255, 149, 0, 0.05));
+            border: 1px solid rgba(255, 214, 10, 0.3);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            color: var(--accent-yellow);
+            font-weight: 500;
+        }
+        .sort-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .sort-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 14px 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .sort-item:hover { transform: translateX(4px); }
+        .sort-item.input {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.1);
+        }
+        .sort-item.process {
+            border-color: var(--accent-purple);
+            background: rgba(168, 85, 247, 0.1);
+        }
+        .sort-item.output {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+        .sort-item.correct {
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+        .sort-item.incorrect {
+            box-shadow: 0 0 15px rgba(255, 0, 110, 0.3);
+            border-color: var(--accent-magenta);
+        }
+        .sort-item-badge {
+            min-width: 80px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sort-item-badge.none {
+            background: var(--border-subtle);
+            color: var(--text-muted);
+        }
+        .sort-item-badge.input {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+        .sort-item-badge.process {
+            background: var(--accent-purple);
+            color: white;
+        }
+        .sort-item-badge.output {
+            background: var(--accent-green);
+            color: var(--bg-dark);
+        }
+        .sort-item-text {
+            flex: 1;
+            color: var(--text-primary);
+        }
+
+        /* Drag and Drop */
+        .drag-drop-container {
+            margin: 20px 0;
+        }
+        .drag-pool {
+            background: var(--bg-dark);
+            border: 2px dashed var(--border-subtle);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            min-height: 80px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .drag-pool-label {
+            width: 100%;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+        .drag-item {
+            background: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 10px 16px;
+            cursor: grab;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+        .drag-item:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+        .drag-item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+        .drop-zones {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .drop-zone {
+            background: var(--bg-dark);
+            border: 2px dashed var(--border-subtle);
+            border-radius: 12px;
+            padding: 16px;
+            min-height: 150px;
+            transition: all 0.2s ease;
+        }
+        .drop-zone.input { border-color: rgba(0, 212, 255, 0.3); }
+        .drop-zone.process { border-color: rgba(168, 85, 247, 0.3); }
+        .drop-zone.output { border-color: rgba(0, 255, 136, 0.3); }
+        .drop-zone.dragover {
+            background: rgba(0, 212, 255, 0.05);
+            border-style: solid;
+        }
+        .drop-zone.input.dragover { background: rgba(0, 212, 255, 0.1); border-color: var(--accent-cyan); }
+        .drop-zone.process.dragover { background: rgba(168, 85, 247, 0.1); border-color: var(--accent-purple); }
+        .drop-zone.output.dragover { background: rgba(0, 255, 136, 0.1); border-color: var(--accent-green); }
+        .drop-zone-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .drop-zone.input .drop-zone-label { color: var(--accent-cyan); }
+        .drop-zone.process .drop-zone-label { color: var(--accent-purple); }
+        .drop-zone.output .drop-zone-label { color: var(--accent-green); }
+        .drop-zone-items {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .dropped-item {
+            background: var(--bg-card);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+        .drop-zone.input .dropped-item { border-left: 3px solid var(--accent-cyan); }
+        .drop-zone.process .dropped-item { border-left: 3px solid var(--accent-purple); }
+        .drop-zone.output .dropped-item { border-left: 3px solid var(--accent-green); }
+
+        /* Use Case Grid */
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .use-case-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .use-case-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+        }
+        .use-case-card .icon { font-size: 2rem; margin-bottom: 10px; }
+        .use-case-card h4 { color: var(--text-primary); font-size: 1rem; margin-bottom: 6px; }
+        .use-case-card p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+
+        /* Key Term - more vibrant */
+        .key-term {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+        .key-term-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .key-term-badge {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+        .key-term-word { font-weight: 600; color: var(--accent-cyan); }
+        .key-term p { margin: 0; color: var(--text-secondary); }
+
+        /* Analogy Box - more vibrant */
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(255, 214, 10, 0.15), rgba(255, 149, 0, 0.08));
+            border: 2px solid rgba(255, 214, 10, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .analogy-box-header {
+            font-weight: 600;
+            color: var(--accent-yellow);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        .analogy-box p { margin: 0; color: var(--text-primary); }
+
+        /* Think Box */
+        .think-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(168, 85, 247, 0.05));
+            border: 2px solid rgba(168, 85, 247, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .think-box-header { font-weight: 600; color: var(--accent-purple); margin-bottom: 10px; font-size: 1.1rem; }
+        .think-box p { margin: 0; color: var(--text-primary); }
+
+        /* Warning Box */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.15), rgba(255, 0, 110, 0.05));
+            border: 2px solid rgba(255, 0, 110, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .warning-box-header { font-weight: 600; color: var(--accent-magenta); margin-bottom: 10px; font-size: 1.1rem; }
+        .warning-box p { margin: 0; color: var(--text-primary); }
+
+        /* Definition Cards - more vibrant */
+        .definition-card { border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
+        .definition-card.input {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 212, 255, 0.05));
+            border: 2px solid rgba(0, 212, 255, 0.4);
+        }
+        .definition-card.process {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(168, 85, 247, 0.05));
+            border: 2px solid rgba(168, 85, 247, 0.4);
+        }
+        .definition-card.output {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 255, 136, 0.05));
+            border: 2px solid rgba(0, 255, 136, 0.4);
+        }
+        .definition-card h4 { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 1.2rem; }
+        .definition-card.input h4 { color: var(--accent-cyan); }
+        .definition-card.process h4 { color: var(--accent-purple); }
+        .definition-card.output h4 { color: var(--accent-green); }
+        .definition-card .definition { color: var(--text-primary); font-weight: 500; margin-bottom: 12px; font-size: 1.05rem; }
+        .definition-card .examples { color: var(--text-secondary); font-size: 0.95rem; }
+        .definition-card .examples strong { color: var(--text-primary); }
+
+        /* Scenario Card */
+        .scenario-card {
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+        .scenario-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+        .scenario-icon { font-size: 2.5rem; }
+        .scenario-title { font-size: 1.2rem; font-weight: 600; color: var(--text-primary); }
+        .scenario-context {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .scenario-ipo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .scenario-ipo-item { padding: 16px; border-radius: 10px; }
+        .scenario-ipo-item.input { background: rgba(0, 212, 255, 0.1); border: 2px solid rgba(0, 212, 255, 0.3); }
+        .scenario-ipo-item.process { background: rgba(168, 85, 247, 0.1); border: 2px solid rgba(168, 85, 247, 0.3); }
+        .scenario-ipo-item.output { background: rgba(0, 255, 136, 0.1); border: 2px solid rgba(0, 255, 136, 0.3); }
+        .scenario-ipo-item h5 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .scenario-ipo-item.input h5 { color: var(--accent-cyan); }
+        .scenario-ipo-item.process h5 { color: var(--accent-purple); }
+        .scenario-ipo-item.output h5 { color: var(--accent-green); }
+        .scenario-ipo-item ul { list-style: none; padding: 0; margin: 0; }
+        .scenario-ipo-item li { color: var(--text-secondary); font-size: 0.9rem; padding: 4px 0; padding-left: 16px; position: relative; }
+        .scenario-ipo-item.input li::before { content: '→'; position: absolute; left: 0; color: var(--accent-cyan); }
+        .scenario-ipo-item.process li::before { content: '⚙'; position: absolute; left: 0; color: var(--accent-purple); font-size: 0.8rem; }
+        .scenario-ipo-item.output li::before { content: '←'; position: absolute; left: 0; color: var(--accent-green); }
+
+        /* Questions */
+        .question-box {
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+        .question-box p { color: var(--text-primary); margin-bottom: 16px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            padding: 14px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+        .option-btn:hover:not(:disabled) { border-color: var(--accent-cyan); transform: translateX(4px); }
+        .option-btn.correct { border-color: var(--accent-green); background: rgba(0, 255, 136, 0.15); }
+        .option-btn.incorrect { border-color: var(--accent-magenta); background: rgba(255, 0, 110, 0.15); }
+        .option-btn:disabled { cursor: not-allowed; }
+
+        .feedback {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback.show { display: block; }
+        .feedback.success { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--accent-green); color: var(--accent-green); }
+        .feedback.error { background: rgba(255, 0, 110, 0.1); border: 1px solid var(--accent-magenta); color: var(--accent-magenta); }
+
+        /* Controls */
+        .controls { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+        .control-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .control-btn.primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+        }
+        .control-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3); }
+        .control-btn.secondary {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+        .control-btn.secondary:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+
+        .exercise-result {
+            margin-top: 16px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        .exercise-result.show { display: block; }
+        .exercise-result.success { background: rgba(0, 255, 136, 0.1); border: 2px solid var(--accent-green); }
+        .exercise-result.partial { background: rgba(255, 214, 10, 0.1); border: 2px solid var(--accent-yellow); }
+        .exercise-result h4 { margin-bottom: 4px; }
+        .exercise-result.success h4 { color: var(--accent-green); }
+        .exercise-result.partial h4 { color: var(--accent-yellow); }
+        .exercise-result p { margin: 0; color: var(--text-secondary); }
+
+        /* ORANGE Notes Summary */
+        .notes-summary {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.12), rgba(255, 214, 10, 0.06));
+            border: 2px solid rgba(255, 149, 0, 0.4);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 24px;
+        }
+        .notes-summary-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            color: var(--accent-orange);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .notes-summary h4 {
+            color: var(--accent-yellow);
+            font-size: 1rem;
+            margin: 16px 0 8px 0;
+        }
+        .notes-summary h4:first-of-type { margin-top: 0; }
+        .notes-summary ul { color: var(--text-primary); margin: 0; padding-left: 20px; }
+        .notes-summary li { margin-bottom: 6px; }
+
+        /* Navigation */
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; gap: 12px; }
+        .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .nav-btn.prev {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+        .nav-btn.prev:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+        .nav-btn.next { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); color: white; }
+        .nav-btn.next:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3); }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
+
+        /* Badge Generator */
+        .badge-generator {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 2px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+        .badge-generator h3 { color: var(--accent-cyan); margin-bottom: 8px; }
+        .badge-generator > p { color: var(--text-secondary); margin-bottom: 20px; }
+        .badge-progress { max-width: 300px; margin: 0 auto 20px; }
+        .badge-progress-bar {
+            height: 12px;
+            background: var(--bg-dark);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+        }
+        .badge-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .badge-progress-text { display: block; margin-top: 8px; font-size: 0.85rem; color: var(--text-muted); }
+        .badge-locked-message { color: var(--text-muted); font-style: italic; }
+        #badgeLocked { display: block; }
+        #badgeUnlocked { display: none; }
+        #badgeUnlocked > p { color: var(--accent-green); font-weight: 500; margin-bottom: 20px; }
+        .badge-input-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+        .badge-name-input {
+            padding: 12px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+        .badge-name-input:focus { outline: none; border-color: var(--accent-cyan); }
+        .badge-display { display: none; flex-direction: column; align-items: center; gap: 16px; margin-top: 20px; animation: fadeIn 0.5s ease; }
+        .badge-display.show { display: flex; }
+        .badge-container {
+            background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(0, 212, 255, 0.1);
+        }
+        .badge-hint { color: var(--text-muted); font-size: 0.85rem; }
+        .generate-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+            color: var(--bg-dark);
+            transition: all 0.2s ease;
+        }
+        .generate-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 20px 16px; }
+            h1 { font-size: 1.7rem; }
+            .card { padding: 20px; }
+            .ipo-diagram-interactive { flex-direction: column; gap: 16px; }
+            .ipo-arrow-animated { transform: rotate(90deg); }
+            .scenario-ipo { grid-template-columns: 1fr; }
+            .drop-zones { grid-template-columns: 1fr; }
+            .nav-buttons { flex-direction: column; }
+            .nav-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="exam-badge">OCR GCSE J277</div>
+            <h1>Inputs, Processes & Outputs</h1>
+            <p class="subtitle">Understanding the IPO Model</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <p class="progress-label" id="progressLabel">Section 1 of 10</p>
+            </div>
+        </header>
+        <main>
+            <!-- Section 1: Welcome with Interactive Diagram -->
+            <section id="section-1" class="active">
+                <div class="card">
+                    <h2>👋 Welcome</h2>
+                    
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objectives</div>
+                        <ul>
+                            <li>Define inputs, processes, and outputs in computational terms</li>
+                            <li>Identify IPO components in real-world systems</li>
+                            <li>Consider data types and variable names for each component</li>
+                            <li>Apply IPO thinking to decompose programming problems</li>
+                        </ul>
+                    </div>
+
+                    <p>Every computer program follows the same fundamental pattern: it takes in data, does something with it, and produces a result. This is called the <span class="highlight">Input-Process-Output (IPO) model</span>.</p>
+
+                    <p style="color: var(--accent-yellow); font-weight: 500; text-align: center; margin: 20px 0;">👆 Click each box below to learn more!</p>
+
+                    <div class="ipo-diagram-interactive">
+                        <div class="ipo-box-interactive input" onclick="showIpoInfo('input')">
+                            <div class="icon">📥</div>
+                            <h4>INPUT</h4>
+                            <p>Data goes in</p>
+                        </div>
+                        <div class="ipo-arrow-animated cyan">→</div>
+                        <div class="ipo-box-interactive process" onclick="showIpoInfo('process')">
+                            <div class="icon">⚙️</div>
+                            <h4>PROCESS</h4>
+                            <p>Data is transformed</p>
+                        </div>
+                        <div class="ipo-arrow-animated green">→</div>
+                        <div class="ipo-box-interactive output" onclick="showIpoInfo('output')">
+                            <div class="icon">📤</div>
+                            <h4>OUTPUT</h4>
+                            <p>Results come out</p>
+                        </div>
+                    </div>
+
+                    <div class="ipo-info-popup" id="ipoInfoPopup">
+                        <h4 id="ipoInfoTitle"></h4>
+                        <p id="ipoInfoText"></p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">🍳 Kitchen Analogy</div>
+                        <p>Think of cooking: <strong>Inputs</strong> are your ingredients (eggs, flour, milk). The <strong>Process</strong> is mixing and cooking. The <strong>Output</strong> is your finished pancake! Every recipe follows this pattern, and so does every program.</p>
+                    </div>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Key Concept</span>
+                            <span class="key-term-word">IPO Model</span>
+                        </div>
+                        <p>The Input-Process-Output model is the fundamental way all computer systems work. Understanding IPO helps you design and decompose any programming problem.</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Overview</h4>
+                    <ul>
+                        <li>All programs follow the <strong>IPO model</strong>: Input → Process → Output</li>
+                        <li>Understanding IPO helps break down and design any system</li>
+                        <li>Kitchen analogy: Ingredients → Cooking → Finished dish</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" disabled>← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 2: What Are Inputs? -->
+            <section id="section-2">
+                <div class="card">
+                    <h2>📥 What Are Inputs?</h2>
+
+                    <div class="definition-card input">
+                        <h4>📥 Definition</h4>
+                        <p class="definition">Data or information supplied to the program or algorithm.</p>
+                        <p class="examples"><strong>Examples:</strong> Usernames, passwords, scores, sensor readings, file uploads, menu selections, slider values, GPS coordinates.</p>
+                    </div>
+
+                    <p>Inputs are the <span class="highlight-cyan">raw materials</span> your program needs. Without inputs, a program has nothing to process!</p>
+
+                    <h3>Where Do Inputs Come From?</h3>
+                    <div class="use-case-grid">
+                        <div class="use-case-card">
+                            <div class="icon">👤</div>
+                            <h4>Users</h4>
+                            <p>Typing, clicking, touching, speaking</p>
+                        </div>
+                        <div class="use-case-card">
+                            <div class="icon">📁</div>
+                            <h4>Files</h4>
+                            <p>Reading from documents or databases</p>
+                        </div>
+                        <div class="use-case-card">
+                            <div class="icon">📡</div>
+                            <h4>Sensors</h4>
+                            <p>Temperature, motion, light, pressure</p>
+                        </div>
+                        <div class="use-case-card">
+                            <div class="icon">🌐</div>
+                            <h4>Other Systems</h4>
+                            <p>APIs, network data, other programs</p>
+                        </div>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">🤔 Design Considerations</div>
+                        <p><strong>Variable names:</strong> Use descriptive names like <code>customerAge</code> not <code>x</code><br>
+                        <strong>Data types:</strong> String, Integer, Float, or Boolean?<br>
+                        <strong>Validation:</strong> What if the user enters invalid data?</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-input1">
+                        <p>In a fitness app that calculates calories burned, which is an INPUT?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('input1', this, false)">The message "You burned 350 calories!"</button>
+                            <button class="option-btn" onclick="checkAnswer('input1', this, true)">The user's weight and exercise duration</button>
+                            <button class="option-btn" onclick="checkAnswer('input1', this, false)">The calculation of calories per minute</button>
+                            <button class="option-btn" onclick="checkAnswer('input1', this, false)">Displaying a progress bar</button>
+                        </div>
+                        <div class="feedback" id="feedback-input1"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Inputs</h4>
+                    <ul>
+                        <li><strong>Definition:</strong> Data supplied to the program</li>
+                        <li><strong>Sources:</strong> Users, files, sensors, other systems (APIs)</li>
+                        <li><strong>Consider:</strong> Variable names, data types, validation</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 3: What Are Processes? -->
+            <section id="section-3">
+                <div class="card">
+                    <h2>⚙️ What Are Processes?</h2>
+
+                    <div class="definition-card process">
+                        <h4>⚙️ Definition</h4>
+                        <p class="definition">The actions, calculations, or transformations performed on the input data.</p>
+                        <p class="examples"><strong>Examples:</strong> Checking passwords, calculating totals, sorting data, updating records, checking availability, converting formats.</p>
+                    </div>
+
+                    <p>Processes are the <span class="highlight-purple">brain</span> of your program — where inputs are transformed into meaningful outputs.</p>
+
+                    <h3>Types of Processing</h3>
+                    <div class="use-case-grid">
+                        <div class="use-case-card">
+                            <div class="icon">🧮</div>
+                            <h4>Calculations</h4>
+                            <p>Maths operations, formulas, totals</p>
+                        </div>
+                        <div class="use-case-card">
+                            <div class="icon">⚖️</div>
+                            <h4>Comparisons</h4>
+                            <p>Checking conditions, validation</p>
+                        </div>
+                        <div class="use-case-card">
+                            <div class="icon">🔄</div>
+                            <h4>Data Manipulation</h4>
+                            <p>Sorting, filtering, formatting</p>
+                        </div>
+                        <div class="use-case-card">
+                            <div class="icon">🔀</div>
+                            <h4>Logic Decisions</h4>
+                            <p>If/else branches, loops</p>
+                        </div>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">⚠️ Order Matters!</div>
+                        <p>The sequence of processes is important. You can't apply a discount before calculating the subtotal, or check a password before the user types it!</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-process1">
+                        <p>In an online shopping cart, which is a PROCESS?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('process1', this, false)">The customer entering their address</button>
+                            <button class="option-btn" onclick="checkAnswer('process1', this, false)">The order confirmation email</button>
+                            <button class="option-btn" onclick="checkAnswer('process1', this, true)">Calculating the total cost including delivery</button>
+                            <button class="option-btn" onclick="checkAnswer('process1', this, false)">The list of items added by the customer</button>
+                        </div>
+                        <div class="feedback" id="feedback-process1"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Processes</h4>
+                    <ul>
+                        <li><strong>Definition:</strong> Actions/transformations performed on data</li>
+                        <li><strong>Types:</strong> Calculations, comparisons, manipulation, logic</li>
+                        <li><strong>Remember:</strong> Sequence matters — some steps depend on others</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 4: What Are Outputs? -->
+            <section id="section-4">
+                <div class="card">
+                    <h2>📤 What Are Outputs?</h2>
+
+                    <div class="definition-card output">
+                        <h4>📤 Definition</h4>
+                        <p class="definition">The final result or information produced by the program.</p>
+                        <p class="examples"><strong>Examples:</strong> Confirmation messages, error messages, calculated values, displays, sounds, printed documents, emails.</p>
+                    </div>
+
+                    <p>Outputs are the <span class="highlight-green">results</span> — what the user sees, hears, or receives. This is the whole point of the program!</p>
+
+                    <h3>Types of Output</h3>
+                    <div class="use-case-grid">
+                        <div class="use-case-card">
+                            <div class="icon">🖥️</div>
+                            <h4>Visual</h4>
+                            <p>Text, images, graphs, animations</p>
+                        </div>
+                        <div class="use-case-card">
+                            <div class="icon">🔊</div>
+                            <h4>Audio</h4>
+                            <p>Sounds, alerts, spoken feedback</p>
+                        </div>
+                        <div class="use-case-card">
+                            <div class="icon">💾</div>
+                            <h4>Data</h4>
+                            <p>Saved files, database updates</p>
+                        </div>
+                        <div class="use-case-card">
+                            <div class="icon">📧</div>
+                            <h4>Communication</h4>
+                            <p>Emails, notifications, API responses</p>
+                        </div>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">🤔 Good Output Design</div>
+                        <p><strong>Be specific:</strong> "Password must be 8+ characters" not just "Error"<br>
+                        <strong>Format properly:</strong> Show prices as £12.99, not 12.987654<br>
+                        <strong>Be helpful:</strong> Tell users what to do next</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-output1">
+                        <p>In a weather app, which is an OUTPUT?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('output1', this, false)">The user entering their postcode</button>
+                            <button class="option-btn" onclick="checkAnswer('output1', this, false)">Retrieving weather data from a database</button>
+                            <button class="option-btn" onclick="checkAnswer('output1', this, false)">Converting temperature from Celsius to Fahrenheit</button>
+                            <button class="option-btn" onclick="checkAnswer('output1', this, true)">Displaying "Today: 18°C, Partly Cloudy"</button>
+                        </div>
+                        <div class="feedback" id="feedback-output1"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Outputs</h4>
+                    <ul>
+                        <li><strong>Definition:</strong> The final result produced by the program</li>
+                        <li><strong>Types:</strong> Visual, audio, data files, communications</li>
+                        <li><strong>Design:</strong> Be specific, format properly, be helpful</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 5: Click-to-Sort Exercise -->
+            <section id="section-5">
+                <div class="card">
+                    <h2>🎯 Interactive: Click to Classify</h2>
+
+                    <p>Click each item to cycle through: <span class="highlight-cyan">Input</span> → <span class="highlight-purple">Process</span> → <span class="highlight-green">Output</span></p>
+
+                    <div class="sort-instruction">
+                        💡 Click the badge on each item to change its classification, then check your answers!
+                    </div>
+
+                    <div class="sort-exercise">
+                        <div class="sort-items" id="sortItems">
+                            <div class="sort-item" data-correct="input" data-current="none" onclick="cycleSortItem(this)">
+                                <span class="sort-item-badge none">Click me</span>
+                                <span class="sort-item-text">User types their username</span>
+                            </div>
+                            <div class="sort-item" data-correct="process" data-current="none" onclick="cycleSortItem(this)">
+                                <span class="sort-item-badge none">Click me</span>
+                                <span class="sort-item-text">System checks if password is correct</span>
+                            </div>
+                            <div class="sort-item" data-correct="output" data-current="none" onclick="cycleSortItem(this)">
+                                <span class="sort-item-badge none">Click me</span>
+                                <span class="sort-item-text">"Welcome back!" message displayed</span>
+                            </div>
+                            <div class="sort-item" data-correct="input" data-current="none" onclick="cycleSortItem(this)">
+                                <span class="sort-item-badge none">Click me</span>
+                                <span class="sort-item-text">Temperature sensor reading</span>
+                            </div>
+                            <div class="sort-item" data-correct="process" data-current="none" onclick="cycleSortItem(this)">
+                                <span class="sort-item-badge none">Click me</span>
+                                <span class="sort-item-text">Sorting a list alphabetically</span>
+                            </div>
+                            <div class="sort-item" data-correct="output" data-current="none" onclick="cycleSortItem(this)">
+                                <span class="sort-item-badge none">Click me</span>
+                                <span class="sort-item-text">Error: "Invalid email format"</span>
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button class="control-btn primary" onclick="checkSortExercise()">Check Answers</button>
+                            <button class="control-btn secondary" onclick="resetSortExercise()">Reset</button>
+                        </div>
+
+                        <div class="exercise-result" id="sortResult">
+                            <h4 id="sortResultTitle"></h4>
+                            <p id="sortResultMessage"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Quick Reference</div>
+                    <h4>How to Identify Components</h4>
+                    <ul>
+                        <li><strong style="color: var(--accent-cyan);">Input:</strong> Data going INTO the system (user types, sensor reads)</li>
+                        <li><strong style="color: var(--accent-purple);">Process:</strong> Something DONE to data (calculate, check, sort)</li>
+                        <li><strong style="color: var(--accent-green);">Output:</strong> Results coming OUT (display, print, send)</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+            <!-- Section 6: Real-World Example -->
+            <section id="section-6">
+                <div class="card">
+                    <h2>🎬 Example: Cinema Ticket System</h2>
+
+                    <p>Let's analyse a complete system to see IPO in action.</p>
+
+                    <div class="scenario-card">
+                        <div class="scenario-header">
+                            <span class="scenario-icon">🎬</span>
+                            <span class="scenario-title">Cinema Self-Service Kiosk</span>
+                        </div>
+                        <p class="scenario-context">A cinema has self-service kiosks where customers browse films, select seats, and buy tickets. The system checks availability, calculates prices with discounts, and produces tickets.</p>
+                        
+                        <div class="scenario-ipo">
+                            <div class="scenario-ipo-item input">
+                                <h5>📥 Inputs</h5>
+                                <ul>
+                                    <li>Film selection</li>
+                                    <li>Showtime choice</li>
+                                    <li>Number of tickets</li>
+                                    <li>Ticket types (adult/child)</li>
+                                    <li>Seat preferences</li>
+                                    <li>Payment details</li>
+                                </ul>
+                            </div>
+                            <div class="scenario-ipo-item process">
+                                <h5>⚙️ Processes</h5>
+                                <ul>
+                                    <li>Check seat availability</li>
+                                    <li>Calculate ticket prices</li>
+                                    <li>Apply age discounts</li>
+                                    <li>Calculate total cost</li>
+                                    <li>Process payment</li>
+                                    <li>Reserve the seats</li>
+                                </ul>
+                            </div>
+                            <div class="scenario-ipo-item output">
+                                <h5>📤 Outputs</h5>
+                                <ul>
+                                    <li>Available seats display</li>
+                                    <li>Price breakdown</li>
+                                    <li>Payment confirmation</li>
+                                    <li>Printed tickets</li>
+                                    <li>Email receipt</li>
+                                    <li>Updated seat map</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">🤔 Variable Considerations</div>
+                        <p>
+                            • <code>filmTitle</code> (String) — name of the selected film<br>
+                            • <code>numAdultTickets</code> (Integer) — count of adult tickets<br>
+                            • <code>seatNumber</code> (String) — e.g., "F12"<br>
+                            • <code>totalCost</code> (Float) — final price with pence
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-cinema">
+                        <p>In the cinema system, "Apply age discounts" is:</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('cinema', this, false)">An input</button>
+                            <button class="option-btn" onclick="checkAnswer('cinema', this, true)">A process</button>
+                            <button class="option-btn" onclick="checkAnswer('cinema', this, false)">An output</button>
+                            <button class="option-btn" onclick="checkAnswer('cinema', this, false)">A variable</button>
+                        </div>
+                        <div class="feedback" id="feedback-cinema"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Cinema System Analysis</h4>
+                    <ul>
+                        <li><strong>Inputs:</strong> Film, showtime, tickets, seats, payment</li>
+                        <li><strong>Processes:</strong> Check availability, calculate prices, apply discounts</li>
+                        <li><strong>Outputs:</strong> Seat display, tickets, receipt, confirmation</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 7: Drag and Drop Exercise -->
+            <section id="section-7">
+                <div class="card">
+                    <h2>🎮 Drag & Drop: Build the IPO</h2>
+
+                    <p>Drag each item from the pool into the correct category:</p>
+
+                    <div class="drag-drop-container">
+                        <div class="drag-pool" id="dragPool">
+                            <div class="drag-pool-label">📦 Items to sort (drag these):</div>
+                            <div class="drag-item" draggable="true" data-correct="input" id="drag1">Customer's postcode</div>
+                            <div class="drag-item" draggable="true" data-correct="process" id="drag2">Calculate delivery cost</div>
+                            <div class="drag-item" draggable="true" data-correct="output" id="drag3">"Order confirmed" email</div>
+                            <div class="drag-item" draggable="true" data-correct="input" id="drag4">Items added to basket</div>
+                            <div class="drag-item" draggable="true" data-correct="process" id="drag5">Check stock levels</div>
+                            <div class="drag-item" draggable="true" data-correct="output" id="drag6">Receipt displayed</div>
+                        </div>
+
+                        <div class="drop-zones">
+                            <div class="drop-zone input" id="dropInput" ondrop="handleDrop(event, 'input')" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                                <div class="drop-zone-label">📥 INPUTS</div>
+                                <div class="drop-zone-items" id="dropInputItems"></div>
+                            </div>
+                            <div class="drop-zone process" id="dropProcess" ondrop="handleDrop(event, 'process')" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                                <div class="drop-zone-label">⚙️ PROCESSES</div>
+                                <div class="drop-zone-items" id="dropProcessItems"></div>
+                            </div>
+                            <div class="drop-zone output" id="dropOutput" ondrop="handleDrop(event, 'output')" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                                <div class="drop-zone-label">📤 OUTPUTS</div>
+                                <div class="drop-zone-items" id="dropOutputItems"></div>
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button class="control-btn primary" onclick="checkDragDrop()">Check Answers</button>
+                            <button class="control-btn secondary" onclick="resetDragDrop()">Reset</button>
+                        </div>
+
+                        <div class="exercise-result" id="dragResult">
+                            <h4 id="dragResultTitle"></h4>
+                            <p id="dragResultMessage"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Exam Tip</div>
+                    <h4>Identifying IPO Components</h4>
+                    <ul>
+                        <li>Ask: "Is this data going <strong>into</strong> the system?" → Input</li>
+                        <li>Ask: "Is something being <strong>done</strong> to data?" → Process</li>
+                        <li>Ask: "Is this a <strong>result</strong> shown/sent?" → Output</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 8: Data Types Practice -->
+            <section id="section-8">
+                <div class="card">
+                    <h2>📊 Data Types for IPO</h2>
+
+                    <p>When designing inputs and outputs, choosing the right <span class="highlight">data type</span> is essential.</p>
+
+                    <div class="use-case-grid">
+                        <div class="use-case-card" style="border-color: var(--accent-cyan);">
+                            <div class="icon" style="color: var(--accent-cyan);">Aa</div>
+                            <h4 style="color: var(--accent-cyan);">String</h4>
+                            <p>Text data: names, emails, passwords, postcodes</p>
+                        </div>
+                        <div class="use-case-card" style="border-color: var(--accent-purple);">
+                            <div class="icon" style="color: var(--accent-purple);">123</div>
+                            <h4 style="color: var(--accent-purple);">Integer</h4>
+                            <p>Whole numbers: age, quantity, score, year</p>
+                        </div>
+                        <div class="use-case-card" style="border-color: var(--accent-green);">
+                            <div class="icon" style="color: var(--accent-green);">1.5</div>
+                            <h4 style="color: var(--accent-green);">Float</h4>
+                            <p>Decimals: prices, temperatures, percentages</p>
+                        </div>
+                        <div class="use-case-card" style="border-color: var(--accent-yellow);">
+                            <div class="icon" style="color: var(--accent-yellow);">T/F</div>
+                            <h4 style="color: var(--accent-yellow);">Boolean</h4>
+                            <p>True/False: isLoggedIn, hasDiscount, isValid</p>
+                        </div>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">🍳 Kitchen Analogy</div>
+                        <p>Just as you measure flour in grams (numbers) and list ingredients by name (text), programs need the right "container" for each type of data!</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-datatype">
+                        <p>What data type should store a product price like £12.99?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('datatype', this, false)">String</button>
+                            <button class="option-btn" onclick="checkAnswer('datatype', this, false)">Integer</button>
+                            <button class="option-btn" onclick="checkAnswer('datatype', this, true)">Float</button>
+                            <button class="option-btn" onclick="checkAnswer('datatype', this, false)">Boolean</button>
+                        </div>
+                        <div class="feedback" id="feedback-datatype"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Data Types</h4>
+                    <ul>
+                        <li><strong>String:</strong> Text (names, emails, addresses)</li>
+                        <li><strong>Integer:</strong> Whole numbers (age, count, ID)</li>
+                        <li><strong>Float:</strong> Decimals (price, temperature, percentage)</li>
+                        <li><strong>Boolean:</strong> True/False flags</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 9: Summary -->
+            <section id="section-9">
+                <div class="card">
+                    <h2>📋 Summary</h2>
+
+                    <div class="ipo-diagram-interactive" style="pointer-events: none;">
+                        <div class="ipo-box-interactive input">
+                            <div class="icon">📥</div>
+                            <h4>INPUT</h4>
+                            <p>Data supplied</p>
+                        </div>
+                        <div class="ipo-arrow-animated cyan">→</div>
+                        <div class="ipo-box-interactive process">
+                            <div class="icon">⚙️</div>
+                            <h4>PROCESS</h4>
+                            <p>Transform data</p>
+                        </div>
+                        <div class="ipo-arrow-animated green">→</div>
+                        <div class="ipo-box-interactive output">
+                            <div class="icon">📤</div>
+                            <h4>OUTPUT</h4>
+                            <p>Results produced</p>
+                        </div>
+                    </div>
+
+                    <div class="definition-card input">
+                        <h4>📥 Inputs</h4>
+                        <p class="definition">Data supplied to the program.</p>
+                        <p class="examples"><strong>Sources:</strong> Users, files, sensors, APIs<br><strong>Consider:</strong> Variable names, data types, validation</p>
+                    </div>
+
+                    <div class="definition-card process">
+                        <h4>⚙️ Processes</h4>
+                        <p class="definition">Actions performed on the input data.</p>
+                        <p class="examples"><strong>Types:</strong> Calculations, comparisons, sorting, logic<br><strong>Consider:</strong> Sequence order, data conversions</p>
+                    </div>
+
+                    <div class="definition-card output">
+                        <h4>📤 Outputs</h4>
+                        <p class="definition">Results produced by the program.</p>
+                        <p class="examples"><strong>Types:</strong> Visual, audio, data, communications<br><strong>Consider:</strong> Format, clarity, usefulness</p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">🍳 Remember the Kitchen Analogy</div>
+                        <p><strong>Inputs</strong> = Ingredients &nbsp;|&nbsp; <strong>Processes</strong> = Cooking steps &nbsp;|&nbsp; <strong>Outputs</strong> = Finished dish</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Complete Summary</div>
+                    <h4>The IPO Model</h4>
+                    <ul>
+                        <li>All programs: <strong>Input → Process → Output</strong></li>
+                        <li>Helps decompose and design systems</li>
+                    </ul>
+                    <h4>Key Considerations</h4>
+                    <ul>
+                        <li><strong>Inputs:</strong> What data? What type? How validated?</li>
+                        <li><strong>Processes:</strong> What steps? What order? Conversions needed?</li>
+                        <li><strong>Outputs:</strong> What format? Clear and useful?</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+            <!-- Section 10: Final Assessment -->
+            <section id="section-10">
+                <div class="card">
+                    <h2>✅ Final Assessment</h2>
+
+                    <!-- Question 1 -->
+                    <div class="question-box" id="q1">
+                        <p><strong>Question 1:</strong> What is the correct order of the IPO model?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">Output → Process → Input</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">Process → Input → Output</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, true)">Input → Process → Output</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">Input → Output → Process</button>
+                        </div>
+                        <div class="feedback" id="feedback1"></div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="question-box" id="q2">
+                        <p><strong>Question 2:</strong> A car park barrier uses a sensor to detect vehicles. The sensor reading is:</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, true)">An input</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">A process</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">An output</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">A variable name</button>
+                        </div>
+                        <div class="feedback" id="feedback2"></div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="question-box" id="q3">
+                        <p><strong>Question 3:</strong> In a game, "checking if the player's score beats the high score" is:</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">An input</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, true)">A process</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">An output</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">A data type</button>
+                        </div>
+                        <div class="feedback" id="feedback3"></div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="question-box" id="q4">
+                        <p><strong>Question 4:</strong> When designing inputs, what should you consider?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">Only the output format</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, true)">Variable names, data types, and validation</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">Only the colour of the interface</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">The speed of the processor</button>
+                        </div>
+                        <div class="feedback" id="feedback4"></div>
+                    </div>
+
+                    <div id="quizResult" style="display: none; margin-top: 20px; padding: 20px; background: var(--bg-card); border-radius: 12px; text-align: center; border: 2px solid var(--accent-green);">
+                        <h3 id="quizScore" style="font-size: 1.5rem;"></h3>
+                        <p id="quizMessage" style="color: var(--text-secondary);"></p>
+                    </div>
+                </div>
+
+                <!-- Badge Generator -->
+                <div class="card badge-generator">
+                    <h3>🏆 Claim Your Badge</h3>
+                    
+                    <div id="badgeLocked">
+                        <div class="badge-progress">
+                            <div class="badge-progress-bar">
+                                <div class="badge-progress-fill" id="badgeProgressFill"></div>
+                            </div>
+                            <span class="badge-progress-text" id="badgeProgressText">0 / 10 questions answered</span>
+                        </div>
+                        <p class="badge-locked-message">Complete all questions to unlock your badge!</p>
+                    </div>
+
+                    <div id="badgeUnlocked">
+                        <p>🎉 Badge unlocked! Enter your name:</p>
+                        <div class="badge-input-group">
+                            <input type="text" class="badge-name-input" id="badgeNameInput" placeholder="Enter your name..." maxlength="30">
+                            <button class="generate-btn" onclick="generateBadge()">Generate Badge</button>
+                        </div>
+
+                        <div class="badge-display" id="badgeDisplay">
+                            <div class="badge-container">
+                                <svg width="320" height="360" viewBox="0 0 320 360" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#00d4ff"/>
+                                            <stop offset="100%" style="stop-color:#00ff88"/>
+                                        </linearGradient>
+                                        <filter id="glow">
+                                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                        </filter>
+                                    </defs>
+                                    
+                                    <circle cx="160" cy="160" r="145" fill="none" stroke="url(#badgeGradient)" stroke-width="3" opacity="0.3"/>
+                                    <circle cx="160" cy="160" r="130" fill="#12121a" stroke="url(#badgeGradient)" stroke-width="4"/>
+                                    <circle cx="160" cy="160" r="115" fill="none" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="8 4"/>
+                                    
+                                    <!-- IPO Flow -->
+                                    <g transform="translate(160, 100)" filter="url(#glow)">
+                                        <rect x="-95" y="-25" width="50" height="35" rx="6" fill="rgba(0, 212, 255, 0.2)" stroke="#00d4ff" stroke-width="2"/>
+                                        <text x="-70" y="-3" text-anchor="middle" fill="#00d4ff" font-family="Outfit" font-size="10" font-weight="600">IN</text>
+                                        <polygon points="-40,-7 -30,-7 -30,-12 -20,-2 -30,8 -30,3 -40,3" fill="#00d4ff"/>
+                                        <rect x="-15" y="-25" width="50" height="35" rx="6" fill="rgba(168, 85, 247, 0.2)" stroke="#a855f7" stroke-width="2"/>
+                                        <text x="10" y="-10" text-anchor="middle" fill="#a855f7" font-size="12">⚙️</text>
+                                        <text x="10" y="5" text-anchor="middle" fill="#a855f7" font-family="Outfit" font-size="7" font-weight="600">PROC</text>
+                                        <polygon points="40,-7 50,-7 50,-12 60,-2 50,8 50,3 40,3" fill="#00ff88"/>
+                                        <rect x="65" y="-25" width="50" height="35" rx="6" fill="rgba(0, 255, 136, 0.2)" stroke="#00ff88" stroke-width="2"/>
+                                        <text x="90" y="-3" text-anchor="middle" fill="#00ff88" font-family="Outfit" font-size="10" font-weight="600">OUT</text>
+                                    </g>
+                                    
+                                    <text x="160" y="175" text-anchor="middle" fill="#00d4ff" font-family="Outfit" font-size="11" font-weight="600" letter-spacing="2">GCSE COMPUTER SCIENCE</text>
+                                    <text x="160" y="205" text-anchor="middle" fill="#ffffff" font-family="Outfit" font-size="16" font-weight="700">Inputs, Processes</text>
+                                    <text x="160" y="228" text-anchor="middle" fill="#ffffff" font-family="Outfit" font-size="16" font-weight="700">& Outputs</text>
+                                    <text id="badgeScoreText" x="160" y="258" text-anchor="middle" fill="#00ff88" font-family="JetBrains Mono" font-size="14" font-weight="700">10/10 correct</text>
+                                    
+                                    <path d="M60 280 L260 280 L250 300 L260 320 L60 320 L70 300 Z" fill="url(#badgeGradient)"/>
+                                    <text id="badgeStudentName" x="160" y="305" text-anchor="middle" fill="#0a0a0f" font-family="Outfit" font-size="16" font-weight="700">Student Name</text>
+                                </svg>
+                            </div>
+                            <p class="badge-hint">📸 Screenshot to save your badge!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" disabled style="background: var(--accent-green);">Complete! 🎉</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Navigation
+        const totalSections = 10;
+        let currentSection = 1;
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.innerHTML = '';
+            for (let i = 1; i <= totalSections; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                if (i === currentSection) dot.classList.add('active');
+                if (i < currentSection) dot.classList.add('completed');
+                dot.onclick = () => goToSection(i);
+                progressBar.appendChild(dot);
+            }
+            document.getElementById('progressLabel').textContent = `Section ${currentSection} of ${totalSections}`;
+        }
+
+        function goToSection(num) {
+            document.getElementById(`section-${currentSection}`).classList.remove('active');
+            currentSection = num;
+            document.getElementById(`section-${currentSection}`).classList.add('active');
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextSection() { if (currentSection < totalSections) goToSection(currentSection + 1); }
+        function prevSection() { if (currentSection > 1) goToSection(currentSection - 1); }
+
+        // Interactive IPO Diagram
+        const ipoInfo = {
+            input: {
+                title: '📥 Inputs',
+                text: 'Data supplied TO the system: user typing, sensor readings, file uploads, API data. Think: "What goes IN?"'
+            },
+            process: {
+                title: '⚙️ Processes',
+                text: 'Actions performed ON the data: calculations, comparisons, sorting, validation. Think: "What HAPPENS to the data?"'
+            },
+            output: {
+                title: '📤 Outputs',
+                text: 'Results coming OUT of the system: displays, messages, files, emails. Think: "What comes OUT?"'
+            }
+        };
+
+        function showIpoInfo(type) {
+            const popup = document.getElementById('ipoInfoPopup');
+            const title = document.getElementById('ipoInfoTitle');
+            const text = document.getElementById('ipoInfoText');
+            
+            document.querySelectorAll('.ipo-box-interactive').forEach(box => box.classList.remove('active'));
+            document.querySelector(`.ipo-box-interactive.${type}`).classList.add('active');
+            
+            popup.className = `ipo-info-popup show ${type}`;
+            title.textContent = ipoInfo[type].title;
+            text.textContent = ipoInfo[type].text;
+        }
+
+        // Question Tracking
+        const totalQuestions = 10;
+        const answeredQuestions = new Set();
+        const correctAnswers = new Set();
+
+        // Section Self-Checks
+        const sectionFeedback = {
+            'input1': { 
+                correct: "Correct! Weight and exercise duration are data supplied TO the app — that's an input.", 
+                incorrect: "Weight and duration are the inputs — data supplied to the system. The message is an output, the calculation is a process." 
+            },
+            'process1': { 
+                correct: "Correct! Calculating the total is an action performed on data — a process.", 
+                incorrect: "Calculating the total is the process — the action performed on data. Address is input, email is output." 
+            },
+            'output1': { 
+                correct: "Correct! The weather display is the result shown to the user — an output.", 
+                incorrect: "The display showing 'Today: 18°C' is the output — the result shown to the user." 
+            },
+            'cinema': { 
+                correct: "Correct! Applying discounts is an action performed on data — a process.", 
+                incorrect: "Applying discounts is something the system DOES to data — that's a process." 
+            },
+            'datatype': { 
+                correct: "Correct! Float stores decimal numbers, perfect for prices like £12.99.", 
+                incorrect: "Prices have decimals (pence), so Float is needed. Integer only stores whole numbers." 
+            }
+        };
+
+        function checkAnswer(section, button, isCorrect) {
+            const questionBox = button.closest('.question-box');
+            if (questionBox.classList.contains('answered')) return;
+            questionBox.classList.add('answered');
+            
+            questionBox.querySelectorAll('.option-btn').forEach(opt => {
+                opt.disabled = true;
+                if (opt === button) opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+            });
+            
+            const feedback = document.getElementById(`feedback-${section}`);
+            feedback.textContent = isCorrect ? sectionFeedback[section].correct : sectionFeedback[section].incorrect;
+            feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+            
+            answeredQuestions.add('section-' + section);
+            if (isCorrect) correctAnswers.add('section-' + section);
+            updateBadgeProgress();
+        }
+
+        // Click-to-Sort Exercise
+        function cycleSortItem(item) {
+            if (item.classList.contains('locked')) return;
+            
+            const current = item.dataset.current;
+            const badge = item.querySelector('.sort-item-badge');
+            
+            const cycle = ['none', 'input', 'process', 'output'];
+            const currentIndex = cycle.indexOf(current);
+            const nextIndex = (currentIndex + 1) % cycle.length;
+            const next = cycle[nextIndex];
+            
+            item.dataset.current = next;
+            item.className = `sort-item ${next !== 'none' ? next : ''}`;
+            badge.className = `sort-item-badge ${next}`;
+            badge.textContent = next === 'none' ? 'Click me' : next.toUpperCase();
+        }
+
+        let sortLocked = false;
+        function checkSortExercise() {
+            if (sortLocked) return;
+            sortLocked = true;
+            
+            const items = document.querySelectorAll('#sortItems .sort-item');
+            let correct = 0;
+            
+            items.forEach(item => {
+                item.classList.add('locked');
+                const isCorrect = item.dataset.current === item.dataset.correct;
+                item.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (isCorrect) correct++;
+            });
+            
+            const result = document.getElementById('sortResult');
+            result.classList.add('show');
+            result.className = correct === 6 ? 'exercise-result show success' : 'exercise-result show partial';
+            document.getElementById('sortResultTitle').textContent = correct === 6 ? '✓ Perfect!' : `${correct}/6 correct`;
+            document.getElementById('sortResultMessage').textContent = correct === 6 ? 
+                'Excellent classification!' : 
+                'Username/Sensor=Input, Check/Sort=Process, Message/Error=Output';
+            
+            answeredQuestions.add('sortExercise');
+            if (correct === 6) correctAnswers.add('sortExercise');
+            updateBadgeProgress();
+        }
+
+        function resetSortExercise() {
+            sortLocked = false;
+            const items = document.querySelectorAll('#sortItems .sort-item');
+            items.forEach(item => {
+                item.dataset.current = 'none';
+                item.className = 'sort-item';
+                item.classList.remove('locked', 'correct', 'incorrect');
+                const badge = item.querySelector('.sort-item-badge');
+                badge.className = 'sort-item-badge none';
+                badge.textContent = 'Click me';
+            });
+            document.getElementById('sortResult').classList.remove('show');
+            answeredQuestions.delete('sortExercise');
+            correctAnswers.delete('sortExercise');
+            updateBadgeProgress();
+        }
+
+        // Drag and Drop
+        let draggedItem = null;
+
+        document.querySelectorAll('.drag-item').forEach(item => {
+            item.addEventListener('dragstart', (e) => {
+                draggedItem = e.target;
+                e.target.classList.add('dragging');
+            });
+            item.addEventListener('dragend', (e) => {
+                e.target.classList.remove('dragging');
+                draggedItem = null;
+            });
+        });
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('dragover');
+        }
+
+        function handleDrop(e, category) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+            
+            if (draggedItem) {
+                const itemsContainer = document.getElementById(`drop${category.charAt(0).toUpperCase() + category.slice(1)}Items`);
+                const droppedDiv = document.createElement('div');
+                droppedDiv.className = 'dropped-item';
+                droppedDiv.textContent = draggedItem.textContent;
+                droppedDiv.dataset.correct = draggedItem.dataset.correct;
+                droppedDiv.dataset.placed = category;
+                itemsContainer.appendChild(droppedDiv);
+                draggedItem.style.display = 'none';
+            }
+        }
+
+        let dragLocked = false;
+        function checkDragDrop() {
+            if (dragLocked) return;
+            dragLocked = true;
+            
+            const dropped = document.querySelectorAll('.dropped-item');
+            let correct = 0;
+            
+            dropped.forEach(item => {
+                const isCorrect = item.dataset.placed === item.dataset.correct;
+                item.style.borderColor = isCorrect ? 'var(--accent-green)' : 'var(--accent-magenta)';
+                item.style.background = isCorrect ? 'rgba(0,255,136,0.1)' : 'rgba(255,0,110,0.1)';
+                if (isCorrect) correct++;
+            });
+            
+            const result = document.getElementById('dragResult');
+            result.classList.add('show');
+            result.className = correct === 6 ? 'exercise-result show success' : 'exercise-result show partial';
+            document.getElementById('dragResultTitle').textContent = correct === 6 ? '✓ Perfect!' : `${correct}/6 correct`;
+            document.getElementById('dragResultMessage').textContent = correct === 6 ? 
+                'Great drag and drop skills!' : 
+                'Postcode/Items=Input, Calculate/Check=Process, Email/Receipt=Output';
+            
+            answeredQuestions.add('dragExercise');
+            if (correct === 6) correctAnswers.add('dragExercise');
+            updateBadgeProgress();
+        }
+
+        function resetDragDrop() {
+            dragLocked = false;
+            document.querySelectorAll('.dropped-item').forEach(item => item.remove());
+            document.querySelectorAll('.drag-item').forEach(item => item.style.display = 'block');
+            document.getElementById('dragResult').classList.remove('show');
+            answeredQuestions.delete('dragExercise');
+            correctAnswers.delete('dragExercise');
+            updateBadgeProgress();
+        }
+
+        // Final Quiz
+        let finalAnswered = new Set();
+        let finalCorrect = 0;
+        const finalFeedback = {
+            1: { correct: "Correct! Input → Process → Output is the fundamental pattern.", incorrect: "Remember: Data goes IN, gets PROCESSED, then results come OUT." },
+            2: { correct: "Correct! Sensor data is information coming INTO the system — an input.", incorrect: "Sensor readings are data coming INTO the system, making them inputs." },
+            3: { correct: "Correct! Checking/comparing scores is an action on data — a process.", incorrect: "Checking if a score beats another is a comparison — an action on data (process)." },
+            4: { correct: "Correct! Good input design considers variable names, data types, and validation.", incorrect: "Input design needs: What variable name? What data type? How to validate?" }
+        };
+
+        function checkFinalAnswer(qNum, button, isCorrect) {
+            if (finalAnswered.has(qNum)) return;
+            finalAnswered.add(qNum);
+            
+            button.parentElement.querySelectorAll('.option-btn').forEach(opt => {
+                opt.disabled = true;
+                if (opt === button) opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+            });
+            
+            const feedback = document.getElementById(`feedback${qNum}`);
+            feedback.textContent = isCorrect ? finalFeedback[qNum].correct : finalFeedback[qNum].incorrect;
+            feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+            
+            if (isCorrect) finalCorrect++;
+            answeredQuestions.add('final-' + qNum);
+            if (isCorrect) correctAnswers.add('final-' + qNum);
+            updateBadgeProgress();
+            
+            if (finalAnswered.size === 4) {
+                const result = document.getElementById('quizResult');
+                result.style.display = 'block';
+                document.getElementById('quizScore').textContent = `${finalCorrect}/4 Correct`;
+                document.getElementById('quizScore').style.color = finalCorrect >= 3 ? 'var(--accent-green)' : 'var(--accent-yellow)';
+                document.getElementById('quizMessage').textContent = finalCorrect === 4 ? 'Excellent work!' : 'Review the questions above.';
+            }
+        }
+
+        // Badge System
+        function updateBadgeProgress() {
+            const count = answeredQuestions.size;
+            const pct = (count / totalQuestions) * 100;
+            document.getElementById('badgeProgressFill').style.width = pct + '%';
+            document.getElementById('badgeProgressText').textContent = `${count} / ${totalQuestions} questions answered`;
+            if (count >= totalQuestions) unlockBadge();
+        }
+
+        function unlockBadge() {
+            document.getElementById('badgeLocked').style.display = 'none';
+            document.getElementById('badgeUnlocked').style.display = 'block';
+        }
+
+        function generateBadge() {
+            const name = document.getElementById('badgeNameInput').value.trim();
+            if (!name) {
+                document.getElementById('badgeNameInput').style.borderColor = 'var(--accent-magenta)';
+                setTimeout(() => document.getElementById('badgeNameInput').style.borderColor = '', 2000);
+                return;
+            }
+            document.getElementById('badgeStudentName').textContent = name;
+            document.getElementById('badgeScoreText').textContent = `${correctAnswers.size}/${totalQuestions} correct`;
+            document.getElementById('badgeDisplay').classList.add('show');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgress();
+            updateBadgeProgress();
+            document.getElementById('badgeNameInput')?.addEventListener('keypress', e => { if (e.key === 'Enter') generateBadge(); });
+        });
+    </script>
+</body>
+</html>

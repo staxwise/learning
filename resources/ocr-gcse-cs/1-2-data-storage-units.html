@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Units of Data Storage | GCSE Computer Science J277 1.2.3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --text-muted: #555566;
+            --border-subtle: #2a2a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+        header { text-align: center; margin-bottom: 50px; }
+
+        .exam-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-magenta));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; font-weight: 300; }
+
+        .progress-container { margin-top: 30px; }
+        .progress-bar { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
+
+        .progress-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--border-subtle);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .progress-dot.active { background: var(--accent-cyan); box-shadow: 0 0 12px var(--accent-cyan); transform: scale(1.2); }
+        .progress-dot.completed { background: var(--accent-green); }
+        .progress-label { margin-top: 12px; font-size: 0.9rem; color: var(--text-muted); }
+
+        section { display: none; animation: fadeIn 0.5s ease; }
+        section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        .learning-objective {
+            background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(0,212,255,0.02));
+            border-left: 3px solid var(--accent-cyan);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 0 12px 12px 0;
+        }
+        .learning-objective-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-cyan); margin-bottom: 6px; }
+        .learning-objective p, .learning-objective ul { color: var(--text-primary); margin: 0; }
+        .learning-objective ul { margin-top: 10px; padding-left: 20px; }
+        .learning-objective li { margin-bottom: 6px; }
+
+        h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--accent-cyan); }
+        h3 { font-size: 1.15rem; margin-bottom: 14px; color: var(--text-primary); }
+        p { color: var(--text-secondary); margin-bottom: 14px; }
+
+        .highlight        { color: var(--accent-yellow);  font-weight: 600; }
+        .highlight-cyan   { color: var(--accent-cyan);    font-weight: 600; }
+        .highlight-magenta{ color: var(--accent-magenta); font-weight: 600; }
+        .highlight-green  { color: var(--accent-green);   font-weight: 600; }
+        .highlight-purple { color: var(--accent-purple);  font-weight: 600; }
+        .highlight-orange { color: var(--accent-orange);  font-weight: 600; }
+
+        .key-term {
+            background: linear-gradient(135deg, rgba(255,214,10,0.1), rgba(255,149,0,0.05));
+            border: 1px solid rgba(255,214,10,0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+        .key-term-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+        .key-term-badge { background: var(--accent-yellow); color: var(--bg-dark); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 8px; border-radius: 4px; }
+        .key-term-word { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 600; color: var(--accent-yellow); }
+        .key-term p { color: var(--text-primary); margin: 0; }
+
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(168,85,247,0.05));
+            border: 1px solid rgba(0,212,255,0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+        .analogy-box-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--accent-cyan); font-weight: 600; }
+        .analogy-box p { color: var(--text-primary); margin: 0; }
+
+        .think-box {
+            background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(168,85,247,0.03));
+            border: 1px solid rgba(168,85,247,0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+        .think-box-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--accent-purple); font-weight: 600; }
+        .think-box p, .think-box ul { color: var(--text-primary); margin: 0; }
+
+        .connect-box {
+            background: linear-gradient(135deg, rgba(0,255,136,0.08), rgba(0,255,136,0.02));
+            border: 1px solid rgba(0,255,136,0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+        .connect-box-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--accent-green); font-weight: 600; }
+        .connect-box p { color: var(--text-primary); margin: 0; }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255,0,110,0.1), rgba(255,0,110,0.03));
+            border: 1px solid rgba(255,0,110,0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+        .warning-box-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--accent-magenta); font-weight: 600; }
+        .warning-box p { color: var(--text-primary); margin: 0; }
+
+        /* ---- RECALL RAMP ---- */
+        .recall-ramp {
+            background: linear-gradient(135deg, rgba(255,149,0,0.1), rgba(255,214,10,0.05));
+            border: 1px solid rgba(255,149,0,0.4);
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+        }
+        .recall-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; font-size: 1.2rem; font-weight: 700; color: var(--accent-orange); }
+        .recall-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; }
+        .recall-q { background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 16px 20px; margin-bottom: 14px; }
+        .recall-q-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-orange); margin-bottom: 8px; }
+        .recall-q > p { color: var(--text-primary); margin: 0 0 12px 0; }
+
+        /* Drag and Drop - Recall Ramp 1 */
+        .drag-zone {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .drag-item {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: grab;
+            user-select: none;
+            transition: all 0.2s;
+            border: 2px solid;
+        }
+        .drag-item:active { cursor: grabbing; opacity: 0.6; }
+        .drag-item.item-cd { background: rgba(0,212,255,0.12); border-color: rgba(0,212,255,0.4); color: var(--accent-cyan); }
+        .drag-item.item-movie { background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.4); color: var(--accent-purple); }
+        .drag-item.item-hdd { background: rgba(255,149,0,0.12); border-color: rgba(255,149,0,0.4); color: var(--accent-orange); }
+        .drag-item.dragging { opacity: 0.4; transform: scale(0.95); }
+
+        .drop-buckets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px; }
+        .drop-bucket {
+            background: rgba(255,255,255,0.03);
+            border: 2px dashed var(--border-subtle);
+            border-radius: 12px;
+            padding: 14px;
+            min-height: 90px;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .drop-bucket.over { border-color: var(--accent-cyan); background: rgba(0,212,255,0.06); }
+        .drop-bucket.correct-bucket { border-color: var(--accent-green); background: rgba(0,255,136,0.08); }
+        .drop-bucket.wrong-bucket { border-color: var(--accent-magenta); background: rgba(255,0,110,0.08); }
+        .bucket-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; }
+        .bucket-size { font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; }
+        .bucket-items { display: flex; flex-direction: column; gap: 6px; min-height: 30px; }
+
+        .recall-choice-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+        .recall-choice {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 10px 18px;
+            background: rgba(255,255,255,0.04);
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .recall-choice:hover:not(:disabled) { border-color: var(--accent-cyan); color: var(--text-primary); }
+        .recall-choice.rc-correct { border-color: var(--accent-green); background: rgba(0,255,136,0.15); color: var(--accent-green); }
+        .recall-choice.rc-wrong { border-color: var(--accent-magenta); background: rgba(255,0,110,0.12); color: var(--accent-magenta); }
+
+        .recall-input {
+            width: 100%; padding: 10px 14px; margin-top: 10px;
+            background: var(--bg-dark); border: 1px solid var(--border-subtle);
+            border-radius: 8px; color: var(--text-primary); font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem; resize: vertical; min-height: 70px;
+        }
+        .recall-input:focus { outline: none; border-color: var(--accent-orange); }
+
+        .recall-reveal-btn {
+            margin-top: 10px; padding: 7px 16px;
+            background: rgba(255,149,0,0.15); border: 1px solid rgba(255,149,0,0.4);
+            border-radius: 8px; color: var(--accent-orange); font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .recall-reveal-btn:hover { background: rgba(255,149,0,0.25); }
+        .recall-answer { display: none; margin-top: 10px; padding: 10px 14px; background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.3); border-radius: 8px; color: var(--accent-green); font-size: 0.95rem; }
+
+        /* ---- HIERARCHY TABLE ---- */
+        .hierarchy-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .hierarchy-table th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+        .hierarchy-table td { padding: 10px 14px; border-bottom: 1px solid rgba(42,42,58,0.6); font-size: 0.95rem; }
+        .hierarchy-table tr:last-child td { border-bottom: none; }
+        .hierarchy-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .unit-name { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+        .unit-abbr { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--text-muted); }
+        .row-bit    { color: var(--accent-green); }
+        .row-nibble { color: #66ff99; }
+        .row-byte   { color: var(--accent-cyan); }
+        .row-kb     { color: #66d9ff; }
+        .row-mb     { color: var(--accent-purple); }
+        .row-gb     { color: var(--accent-yellow); }
+        .row-tb     { color: var(--accent-orange); }
+        .row-pb     { color: var(--accent-magenta); }
+
+        /* ---- SPLIT SCREEN SANDBOX ---- */
+        .split-screen { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+        .split-panel { background: var(--bg-dark); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 20px; }
+        .split-panel-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 14px; }
+        .scale-display { text-align: center; margin: 16px 0; }
+        .scale-big-num { font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; line-height: 1; transition: all 0.3s; }
+        .scale-unit { font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px; }
+        .scale-converted { font-size: 1rem; color: var(--accent-green); font-weight: 600; margin-top: 8px; min-height: 28px; transition: all 0.3s; }
+        .scale-slider { width: 100%; margin: 14px 0; accent-color: var(--accent-cyan); cursor: pointer; }
+
+        .scale-visual {
+            display: flex; align-items: flex-end; justify-content: center;
+            gap: 8px; height: 80px; margin: 12px 0;
+        }
+        .scale-bowl {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid var(--border-subtle);
+            border-radius: 0 0 30px 30px;
+            width: 80px;
+            transition: height 0.3s, border-color 0.3s, background 0.3s;
+            min-height: 10px;
+            position: relative;
+        }
+        .scale-bowl.full { border-color: var(--accent-green); background: rgba(0,255,136,0.15); }
+        .scale-stand { width: 90px; height: 4px; background: var(--text-muted); border-radius: 2px; }
+
+        /* ---- CONVERSION PRACTICE ---- */
+        .conv-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+        .conv-table th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-subtle); }
+        .conv-table td { padding: 10px 14px; border-bottom: 1px solid rgba(42,42,58,0.6); vertical-align: middle; }
+        .conv-table tr:last-child td { border-bottom: none; }
+        .conv-input {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            width: 120px;
+            padding: 8px 12px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .conv-input:focus { outline: none; border-color: var(--accent-cyan); }
+        .conv-input.correct { border-color: var(--accent-green); background: rgba(0,255,136,0.1); color: var(--accent-green); }
+        .conv-input.incorrect { border-color: var(--accent-magenta); background: rgba(255,0,110,0.1); color: var(--accent-magenta); }
+        .conv-input:disabled { opacity: 0.6; }
+        .conv-check-btn {
+            padding: 8px 16px; background: rgba(0,212,255,0.12);
+            border: 1px solid rgba(0,212,255,0.3); border-radius: 8px;
+            color: var(--accent-cyan); font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-left: 8px;
+        }
+        .conv-check-btn:hover:not(:disabled) { background: rgba(0,212,255,0.2); }
+        .conv-check-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .conv-status { display: inline-block; font-size: 1.1rem; margin-left: 8px; min-width: 24px; }
+        .conv-hint { font-size: 0.82rem; color: var(--accent-yellow); margin-top: 4px; display: none; }
+
+        /* ---- BOSS FIGHT ---- */
+        .boss-banner {
+            background: linear-gradient(135deg, rgba(255,0,110,0.15), rgba(168,85,247,0.1));
+            border: 2px solid rgba(255,0,110,0.4);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .boss-title { font-size: 1.3rem; font-weight: 700; color: var(--accent-magenta); margin-bottom: 6px; }
+        .boss-sub { color: var(--text-secondary); font-size: 0.95rem; }
+
+        .file-items-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+        .file-item {
+            background: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: grab;
+            user-select: none;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .file-item:hover { border-color: var(--accent-cyan); transform: translateY(-2px); }
+        .file-item.dragging { opacity: 0.4; }
+        .file-item.dropped { opacity: 0.35; cursor: default; border-style: dashed; }
+        .file-emoji { font-size: 2rem; margin-bottom: 6px; }
+        .file-name { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+        .file-size { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--accent-yellow); }
+        .file-calc { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+
+        .phone-drop-zone {
+            background: rgba(255,255,255,0.02);
+            border: 2px dashed var(--border-subtle);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 16px 0;
+            transition: all 0.2s;
+            min-height: 80px;
+        }
+        .phone-drop-zone.over { border-color: var(--accent-cyan); background: rgba(0,212,255,0.04); }
+        .phone-drop-zone-label { font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .storage-bar-container { margin: 16px 0; }
+        .storage-bar-labels { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 6px; }
+        .storage-bar-track { height: 36px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; border: 1px solid var(--border-subtle); position: relative; }
+        .storage-bar-fill {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 10px;
+            transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), background 0.4s;
+            display: flex; align-items: center; padding-left: 12px;
+        }
+        .storage-bar-fill.overflow { background: linear-gradient(90deg, var(--accent-magenta), #ff4444) !important; box-shadow: 0 0 20px rgba(255,0,110,0.4); }
+        .storage-bar-text { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; font-weight: 700; color: white; white-space: nowrap; }
+        .storage-verdict { margin-top: 12px; text-align: center; font-size: 1.1rem; font-weight: 700; min-height: 32px; transition: all 0.4s; }
+        .dropped-items { display: flex; gap: 8px; flex-wrap: wrap; min-height: 30px; }
+        .dropped-chip { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3); color: var(--accent-cyan); }
+
+        /* ---- MATCHING ---- */
+        .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+        .match-col { display: flex; flex-direction: column; gap: 8px; }
+        .match-col-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; text-align: center; }
+        .match-item {
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.04);
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            user-select: none;
+        }
+        .match-item:hover:not(.matched):not(.locked) { border-color: var(--accent-cyan); color: var(--text-primary); }
+        .match-item.selected { border-color: var(--accent-yellow); background: rgba(255,214,10,0.1); color: var(--accent-yellow); }
+        .match-item.matched { border-color: var(--accent-green); background: rgba(0,255,136,0.1); color: var(--accent-green); cursor: default; }
+        .match-item.wrong-flash { border-color: var(--accent-magenta); background: rgba(255,0,110,0.1); color: var(--accent-magenta); }
+        .match-item.locked { opacity: 0.5; cursor: default; }
+
+        /* ---- FINAL QUIZ ---- */
+        .question-box { margin: 20px 0; }
+        .question-box > p { color: var(--text-primary); font-weight: 500; margin-bottom: 14px; }
+        .options { display: flex; flex-direction: column; gap: 8px; }
+        .option-btn {
+            font-family: 'Outfit', sans-serif; font-size: 0.95rem;
+            padding: 12px 18px; background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border-subtle); border-radius: 8px;
+            color: var(--text-secondary); text-align: left; cursor: pointer; transition: all 0.2s;
+        }
+        .option-btn:hover:not(:disabled) { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: var(--text-primary); }
+        .option-btn.correct { background: rgba(0,255,136,0.15); border-color: var(--accent-green); color: var(--accent-green); }
+        .option-btn.incorrect { background: rgba(255,0,110,0.12); border-color: var(--accent-magenta); color: var(--accent-magenta); }
+        .feedback { display: none; margin-top: 12px; padding: 12px 16px; border-radius: 8px; font-size: 0.95rem; }
+        .feedback.show { display: block; }
+        .feedback.success { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); color: var(--accent-green); }
+        .feedback.error   { background: rgba(255,0,110,0.1); border: 1px solid rgba(255,0,110,0.3); color: var(--accent-magenta); }
+
+        /* ---- NOTES SUMMARY ---- */
+        .notes-summary {
+            background: linear-gradient(135deg, rgba(255,149,0,0.08), rgba(255,214,10,0.05));
+            border: 1px solid rgba(255,149,0,0.3);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 24px;
+        }
+        .notes-summary-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; color: var(--accent-orange); font-weight: 600; }
+        .notes-summary h4 { color: var(--accent-yellow); font-size: 1rem; margin: 16px 0 8px 0; }
+        .notes-summary h4:first-of-type { margin-top: 0; }
+        .notes-summary p, .notes-summary ul { color: var(--text-primary); margin: 0 0 8px 0; }
+        .notes-summary ul { padding-left: 20px; }
+        .notes-summary li { margin-bottom: 4px; }
+        .notes-summary code { font-family: 'JetBrains Mono', monospace; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; font-size: 0.9rem; }
+
+        /* ---- NAV ---- */
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-subtle); }
+        .nav-btn { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 600; padding: 14px 28px; border: none; border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+        .nav-btn.prev { background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-secondary); }
+        .nav-btn.prev:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+        .nav-btn.next { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); color: white; }
+        .nav-btn.next:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,212,255,0.3); }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
+
+        /* ---- BADGE ---- */
+        .badge-generator {
+            background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(168,85,247,0.05));
+            border: 1px solid rgba(0,212,255,0.2);
+            border-radius: 16px;
+            padding: 28px 32px;
+            text-align: center;
+        }
+        .badge-gen-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 12px; }
+        .badge-name-input {
+            font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 600;
+            width: 100%; max-width: 340px;
+            padding: 14px 20px; text-align: center;
+            background: var(--bg-dark); border: 2px solid var(--border-subtle);
+            border-radius: 12px; color: var(--text-primary); margin-bottom: 16px;
+        }
+        .badge-name-input:focus { outline: none; border-color: var(--accent-cyan); }
+        .badge-gen-btn {
+            font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700;
+            padding: 14px 36px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none; border-radius: 12px; color: white; cursor: pointer;
+            transition: all 0.2s; letter-spacing: 0.5px;
+        }
+        .badge-gen-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,212,255,0.35); }
+
+        .badge-output { display: none; margin-top: 28px; }
+        .badge-card {
+            display: inline-block;
+            background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
+            border: 3px solid;
+            border-radius: 20px;
+            padding: 32px 40px;
+            min-width: 320px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .badge-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(0,212,255,0.06), transparent 60%),
+                        radial-gradient(circle at 70% 70%, rgba(168,85,247,0.06), transparent 60%);
+        }
+        .badge-icon-large { font-size: 4rem; margin-bottom: 12px; display: block; position: relative; z-index: 1; }
+        .badge-title-text { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; position: relative; z-index: 1; }
+        .badge-student-name { font-size: 1.1rem; color: white; margin: 8px 0 4px 0; position: relative; z-index: 1; }
+        .badge-topic-line { font-size: 0.8rem; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; position: relative; z-index: 1; }
+        .badge-spec-line { font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-top: 8px; font-family: 'JetBrains Mono', monospace; position: relative; z-index: 1; }
+        .badge-score-line { font-size: 0.9rem; margin-top: 10px; position: relative; z-index: 1; }
+        .badge-divider { width: 60px; height: 2px; margin: 12px auto; position: relative; z-index: 1; }
+        .badge-hint { color: var(--text-muted); font-size: 0.85rem; margin-top: 16px; }
+
+        /* ---- MISC ---- */
+        .control-btn {
+            font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 600;
+            padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+        }
+        .control-btn.primary { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); color: white; }
+        .control-btn.secondary { background: rgba(255,255,255,0.06); border: 1px solid var(--border-subtle); color: var(--text-secondary); }
+        .control-btn:hover:not(:disabled) { transform: translateY(-1px); }
+        .control-btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+        hr.section-divider { border: none; border-top: 1px solid var(--border-subtle); margin: 24px 0; }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px 16px; }
+            h1 { font-size: 1.7rem; }
+            .card { padding: 20px; }
+            .split-screen { grid-template-columns: 1fr; }
+            .file-items-grid { grid-template-columns: 1fr 1fr; }
+            .drop-buckets { grid-template-columns: 1fr; }
+            .match-grid { grid-template-columns: 1fr; }
+            .nav-buttons { flex-direction: column; gap: 12px; }
+            .nav-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="exam-badge">OCR GCSE Computer Science — J277 1.2.3</div>
+        <h1>Units of Data Storage</h1>
+        <p class="subtitle">From a single switch to a petabyte — and everything in between</p>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <p class="progress-label" id="progressLabel">Section 1 of 10</p>
+        </div>
+    </header>
+
+    <main id="content">
+
+    <!-- ===== SECTION 1: RECALL RAMP ===== -->
+    <section id="section-1" class="active">
+        <div class="recall-ramp">
+            <div class="recall-header">🧠 Recall Ramp</div>
+            <p class="recall-subtitle">Three quick interactions to fire up what you already know before we learn something new.</p>
+
+            <!-- Interaction 1: Drag Sort -->
+            <div class="recall-q">
+                <div class="recall-q-label">Interaction 1 — Capacity Sort</div>
+                <p>Drag each item to the storage capacity bucket where it belongs.</p>
+                <div class="drag-zone" id="dragZone">
+                    <div class="drag-item item-cd" draggable="true" data-item="cd" id="drag-cd">💿 CD-ROM</div>
+                    <div class="drag-item item-movie" draggable="true" data-item="movie" id="drag-movie">🎬 4K Movie File</div>
+                    <div class="drag-item item-hdd" draggable="true" data-item="hdd" id="drag-hdd">💾 1TB Internal HDD</div>
+                </div>
+                <div class="drop-buckets">
+                    <div class="drop-bucket" id="bucket-mb" data-bucket="mb">
+                        <div class="bucket-label">Small</div>
+                        <div class="bucket-size" style="color:var(--accent-green)">Megabytes (MB)</div>
+                        <div class="bucket-items" id="items-mb"></div>
+                    </div>
+                    <div class="drop-bucket" id="bucket-gb" data-bucket="gb">
+                        <div class="bucket-label">Medium</div>
+                        <div class="bucket-size" style="color:var(--accent-yellow)">Gigabytes (GB)</div>
+                        <div class="bucket-items" id="items-gb"></div>
+                    </div>
+                    <div class="drop-bucket" id="bucket-tb" data-bucket="tb">
+                        <div class="bucket-label">Large</div>
+                        <div class="bucket-size" style="color:var(--accent-orange)">Terabytes (TB)</div>
+                        <div class="bucket-items" id="items-tb"></div>
+                    </div>
+                </div>
+                <div id="dragFeedback" class="recall-answer" style="display:none;"></div>
+            </div>
+
+            <!-- Interaction 2: Binary States -->
+            <div class="recall-q">
+                <div class="recall-q-label">Interaction 2 — The Physical Connection</div>
+                <p>An SSD stores data using billions of tiny electronic switches. What are the <em>only</em> two states these switches can be in?</p>
+                <div class="recall-choice-btns">
+                    <button class="recall-choice" onclick="checkRecall2(this,'wrong')">High / Low</button>
+                    <button class="recall-choice" onclick="checkRecall2(this,'wrong')">Red / Blue</button>
+                    <button class="recall-choice" onclick="checkRecall2(this,'correct')">On / Off</button>
+                </div>
+                <div id="recall2Feedback" class="recall-answer"></div>
+            </div>
+
+            <!-- Interaction 3: Logic Hook -->
+            <div class="recall-q">
+                <div class="recall-q-label">Interaction 3 — Logic Hook</div>
+                <p>If 1 switch = 1 Bit, and a single page of text needs about <strong>16,000 bits</strong> to store — why do we need units like "Kilobytes" and "Megabytes"? What's your best guess?</p>
+                <textarea class="recall-input" placeholder="Type your thinking here — there's no wrong answer..."></textarea>
+                <button class="recall-reveal-btn" onclick="revealLogicHook(this)">Reveal the Thinking</button>
+                <div class="recall-answer" id="logicHookAnswer">Because the numbers get unmanageably large, unbelievably fast. A 1-page document is already 16,000 bits. A typical photo is tens of millions of bits. A modern SSD holds trillions. Writing those numbers out in full would be impractical — just like a geographer doesn't measure the distance to the moon in millimetres. We group bits into larger, named units so that we can talk about data at a human scale. That's exactly what Kilobytes, Megabytes, and beyond are for.</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🗺️ The Big Picture</h2>
+            <div class="connect-box">
+                <div class="connect-box-header">🔗 Where You Are in the Story</div>
+                <p>You know the <strong>hardware</strong> — SSDs, HDDs, optical discs. You know they store data as billions of binary switches. Now we learn the <strong>scale</strong>. Just as you wouldn't measure the distance to the moon in millimetres, we don't measure a hard drive in bits.</p>
+            </div>
+            <p>By the end of this resource, you'll be able to convert between every unit in the hierarchy — and use those units to calculate exactly how much space your music, photos, videos, and games take up on a real device.</p>
+            <div class="think-box">
+                <div class="think-box-header">👀 What's Coming</div>
+                <p>In the boss-fight section, you'll face a real-world smartphone storage problem: <strong>4 GB of free space, and a list of files to download</strong>. You'll need to calculate whether everything fits. The units table you're about to learn is the only tool you need.</p>
+            </div>
+        </div>
+
+        <div class="notes-summary">
+            <div class="notes-summary-header">📝 Notes for This Section</div>
+            <h4>Prior Knowledge Check</h4>
+            <ul>
+                <li>Storage devices hold data as billions of binary switches — each in one of two states: <strong>On / Off</strong> (also described as 1 / 0)</li>
+                <li>Each switch represents 1 <strong>Bit</strong> of data</li>
+                <li>We need larger units because bit-scale numbers become unmanageably large</li>
+                <li>CD-ROM ≈ MB range | 4K Movie ≈ GB range | 1TB HDD = TB range</li>
+            </ul>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn prev" disabled>← Previous</button>
+            <button class="nav-btn next" onclick="nextSection()">Next →</button>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 2: THE HIERARCHY ===== -->
+    <section id="section-2">
+        <div class="card">
+            <h2>📐 The Data Unit Hierarchy</h2>
+            <p>Here is the complete scale — from a single binary switch to a petabyte. This table is your foundation for every conversion in this topic.</p>
+
+            <div class="key-term">
+                <div class="key-term-header">
+                    <span class="key-term-badge">OCR Rule</span>
+                    <span class="key-term-word">÷ 1,000 going UP — × 1,000 going DOWN</span>
+                </div>
+                <p>To convert to a <strong>larger</strong> unit (e.g. Bytes → KB): <strong>divide by 1,000</strong>. To convert to a <strong>smaller</strong> unit (e.g. GB → MB): <strong>multiply by 1,000</strong>. OCR uses 1,000 for exam calculations — not 1,024.</p>
+            </div>
+
+            <table class="hierarchy-table">
+                <thead>
+                    <tr>
+                        <th>Unit</th>
+                        <th>Abbreviation</th>
+                        <th>Equivalent</th>
+                        <th>Real-World Scale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="unit-name row-bit">Bit</span></td>
+                        <td><span class="unit-abbr row-bit">b</span></td>
+                        <td style="color:var(--text-secondary)">1 binary digit (0 or 1)</td>
+                        <td style="color:var(--text-muted); font-size:0.85rem;">1 switch in an SSD</td>
+                    </tr>
+                    <tr>
+                        <td><span class="unit-name row-nibble">Nibble</span></td>
+                        <td><span class="unit-abbr row-nibble">—</span></td>
+                        <td style="color:var(--text-secondary)">4 Bits</td>
+                        <td style="color:var(--text-muted); font-size:0.85rem;">One hexadecimal digit</td>
+                    </tr>
+                    <tr>
+                        <td><span class="unit-name row-byte">Byte</span></td>
+                        <td><span class="unit-abbr row-byte">B</span></td>
+                        <td style="color:var(--text-secondary)">8 Bits</td>
+                        <td style="color:var(--text-muted); font-size:0.85rem;">One character of text</td>
+                    </tr>
+                    <tr>
+                        <td><span class="unit-name row-kb">Kilobyte</span></td>
+                        <td><span class="unit-abbr row-kb">KB</span></td>
+                        <td style="color:var(--text-secondary)">1,000 Bytes</td>
+                        <td style="color:var(--text-muted); font-size:0.85rem;">A short email or text file</td>
+                    </tr>
+                    <tr>
+                        <td><span class="unit-name row-mb">Megabyte</span></td>
+                        <td><span class="unit-abbr row-mb">MB</span></td>
+                        <td style="color:var(--text-secondary)">1,000 Kilobytes</td>
+                        <td style="color:var(--text-muted); font-size:0.85rem;">A typical photo (2–5 MB)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="unit-name row-gb">Gigabyte</span></td>
+                        <td><span class="unit-abbr row-gb">GB</span></td>
+                        <td style="color:var(--text-secondary)">1,000 Megabytes</td>
+                        <td style="color:var(--text-muted); font-size:0.85rem;">An HD film (~4 GB)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="unit-name row-tb">Terabyte</span></td>
+                        <td><span class="unit-abbr row-tb">TB</span></td>
+                        <td style="color:var(--text-secondary)">1,000 Gigabytes</td>
+                        <td style="color:var(--text-muted); font-size:0.85rem;">A large HDD (1–4 TB)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="unit-name row-pb">Petabyte</span></td>
+                        <td><span class="unit-abbr row-pb">PB</span></td>
+                        <td style="color:var(--text-secondary)">1,000 Terabytes</td>
+                        <td style="color:var(--text-muted); font-size:0.85rem;">Data centre scale storage</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <div class="warning-box-header">⚠️ 1,000 vs 1,024 — Know Both</div>
+                <p><strong>For your OCR exam: always use 1,000</strong> (the SI standard). However, you should know that operating systems (like Windows) often use 1,024 — this is why a "500 GB" hard drive shows as slightly less in File Explorer. If an exam question specifies 1,024, use that. Otherwise, default to 1,000.</p>
+            </div>
+
+            <div class="connect-box">
+                <div class="connect-box-header">🔗 The Direction Rule in Plain English</div>
+                <p><strong>Going UP to a bigger unit?</strong> The number gets smaller → divide. <br>"5,000 MB ÷ 1,000 = 5 GB"</p>
+                <p style="margin-top:8px;"><strong>Going DOWN to a smaller unit?</strong> The number gets bigger → multiply.<br>"3 GB × 1,000 = 3,000 MB"</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>✓ Quick Check</h3>
+            <div class="question-box" id="q-hierarchy">
+                <p>How many Kilobytes are in 1 Megabyte? (OCR rule)</p>
+                <div class="options">
+                    <button class="option-btn" onclick="checkQ('hierarchy', this, false)">8</button>
+                    <button class="option-btn" onclick="checkQ('hierarchy', this, false)">1,024</button>
+                    <button class="option-btn" onclick="checkQ('hierarchy', this, true)">1,000</button>
+                    <button class="option-btn" onclick="checkQ('hierarchy', this, false)">1,000,000</button>
+                </div>
+                <div class="feedback" id="feedback-hierarchy"></div>
+            </div>
+        </div>
+
+        <div class="notes-summary">
+            <div class="notes-summary-header">📝 Notes for This Section</div>
+            <h4>The Data Unit Hierarchy</h4>
+            <ul>
+                <li><strong>Bit</strong> — 1 binary digit (0 or 1)</li>
+                <li><strong>Nibble</strong> — 4 Bits</li>
+                <li><strong>Byte</strong> — 8 Bits</li>
+                <li><strong>Kilobyte (KB)</strong> — 1,000 Bytes</li>
+                <li><strong>Megabyte (MB)</strong> — 1,000 Kilobytes</li>
+                <li><strong>Gigabyte (GB)</strong> — 1,000 Megabytes</li>
+                <li><strong>Terabyte (TB)</strong> — 1,000 Gigabytes</li>
+                <li><strong>Petabyte (PB)</strong> — 1,000 Terabytes</li>
+                <li>OCR rule: use <strong>1,000</strong> (not 1,024) for conversions</li>
+                <li>Going UP = divide | Going DOWN = multiply</li>
+            </ul>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+            <button class="nav-btn next" onclick="nextSection()">Next →</button>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 3: KITCHEN SCALE / DATA CONVERTER ===== -->
+    <section id="section-3">
+        <div class="card">
+            <h2>⚖️ The Concrete Sandbox</h2>
+            <p>Here's the key insight that makes conversions click. Move the slider on either side and watch what happens — the mathematics is identical.</p>
+
+            <div class="split-screen">
+                <!-- Left: Kitchen Scale -->
+                <div class="split-panel">
+                    <div class="split-panel-label">🍳 Kitchen Scale (Weight)</div>
+                    <div class="scale-display">
+                        <div class="scale-big-num" id="scaleGrams" style="color:var(--accent-yellow);">0</div>
+                        <div class="scale-unit">grams</div>
+                        <div class="scale-converted" id="scaleKg"></div>
+                    </div>
+                    <div class="scale-visual">
+                        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+                            <div class="scale-bowl" id="scaleBowl" style="height:10px;width:80px;"></div>
+                            <div class="scale-stand"></div>
+                        </div>
+                    </div>
+                    <input type="range" class="scale-slider" id="masterSlider" min="0" max="3000" value="0" oninput="updateSandbox(this.value)">
+                    <div style="display:flex;justify-content:space-between;font-size:0.78rem;color:var(--text-muted);">
+                        <span>0g</span><span>1,500g</span><span>3,000g</span>
+                    </div>
+                </div>
+
+                <!-- Right: Data Converter -->
+                <div class="split-panel">
+                    <div class="split-panel-label">💾 Data Converter</div>
+                    <div class="scale-display">
+                        <div class="scale-big-num" id="scaleBytes" style="color:var(--accent-cyan);">0</div>
+                        <div class="scale-unit">bytes</div>
+                        <div class="scale-converted" id="scaleKB"></div>
+                    </div>
+                    <div style="height:80px;display:flex;align-items:center;justify-content:center;margin:12px 0;">
+                        <div style="background:rgba(0,212,255,0.08);border:2px solid rgba(0,212,255,0.3);border-radius:12px;padding:12px 20px;text-align:center;width:100%;transition:all 0.3s;" id="dataBox">
+                            <div style="font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:var(--text-muted);" id="dataBoxBits">0 bits</div>
+                            <div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;" id="dataBoxFiles">≈ a few characters of text</div>
+                        </div>
+                    </div>
+                    <div style="height:20px;"></div><!-- spacer to align with slider -->
+                    <div style="background:rgba(0,0,0,0.2);border-radius:8px;padding:10px 14px;margin-top:14px;">
+                        <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:4px;">Conversion so far:</div>
+                        <div style="font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--text-primary);" id="convFormula">0 Bytes</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="analogy-box">
+                <div class="analogy-box-header">💡 The Aha Moment</div>
+                <p>Converting data units is <strong>exactly</strong> like converting grams to kilograms. You are just moving the decimal point. 1,000 grams becomes 1.0 kg — 1,000 bytes becomes 1.0 KB. The rule is identical at every level of the hierarchy. Once you see this, conversions stop being maths and start being pattern recognition.</p>
+            </div>
+        </div>
+
+        <div class="notes-summary">
+            <div class="notes-summary-header">📝 Notes for This Section</div>
+            <h4>The Conversion Rule — Visualised</h4>
+            <ul>
+                <li>1,000g = 1 kg → <strong>1,000 Bytes = 1 KB</strong></li>
+                <li>1,000 kg = 1 tonne → <strong>1,000 KB = 1 MB</strong></li>
+                <li>The same ÷1,000 / ×1,000 rule applies at every level</li>
+                <li>Moving to a <em>bigger</em> unit = number gets smaller (÷1,000)</li>
+                <li>Moving to a <em>smaller</em> unit = number gets bigger (×1,000)</li>
+            </ul>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+            <button class="nav-btn next" onclick="nextSection()">Next →</button>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 4: GUIDED PRACTICE ===== -->
+    <section id="section-4">
+        <div class="card">
+            <h2>🏋️ Guided Practice — Conversion Table</h2>
+            <p>Now you do the converting. Type your answer and hit Check. If you get it wrong, read the hint carefully — the same logic unlocks every row.</p>
+
+            <div class="warning-box">
+                <div class="warning-box-header">⚠️ Wrong answer? 3-second cooldown</div>
+                <p>If your answer is incorrect, the input will lock for 3 seconds before you can try again. Use that time to re-read the hint — it's pointing at exactly what went wrong.</p>
+            </div>
+
+            <table class="conv-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Convert…</th>
+                        <th>To…</th>
+                        <th>Your Answer</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="conv-row-1">
+                        <td style="color:var(--text-muted)">1</td>
+                        <td style="color:var(--text-primary);font-weight:600;">2,000 MB</td>
+                        <td style="color:var(--accent-cyan);">GB</td>
+                        <td>
+                            <input class="conv-input" id="conv1" type="number" placeholder="?">
+                            <button class="conv-check-btn" onclick="checkConv(1)" id="conv-btn-1">Check</button>
+                            <span class="conv-status" id="conv-status-1"></span>
+                            <div class="conv-hint" id="conv-hint-1">Moving UP to a larger unit → divide. 2,000 ÷ 1,000 = ?</div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr id="conv-row-2">
+                        <td style="color:var(--text-muted)">2</td>
+                        <td style="color:var(--text-primary);font-weight:600;">5 GB</td>
+                        <td style="color:var(--accent-purple);">MB</td>
+                        <td>
+                            <input class="conv-input" id="conv2" type="number" placeholder="?">
+                            <button class="conv-check-btn" onclick="checkConv(2)" id="conv-btn-2">Check</button>
+                            <span class="conv-status" id="conv-status-2"></span>
+                            <div class="conv-hint" id="conv-hint-2">Moving DOWN to a smaller unit → multiply. 5 × 1,000 = ?</div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr id="conv-row-3">
+                        <td style="color:var(--text-muted)">3</td>
+                        <td style="color:var(--text-primary);font-weight:600;">3,000 KB</td>
+                        <td style="color:var(--accent-yellow);">MB</td>
+                        <td>
+                            <input class="conv-input" id="conv3" type="number" placeholder="?">
+                            <button class="conv-check-btn" onclick="checkConv(3)" id="conv-btn-3">Check</button>
+                            <span class="conv-status" id="conv-status-3"></span>
+                            <div class="conv-hint" id="conv-hint-3">Moving UP again → divide. 3,000 ÷ 1,000 = ?</div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr id="conv-row-4">
+                        <td style="color:var(--text-muted)">4</td>
+                        <td style="color:var(--text-primary);font-weight:600;">0.5 GB</td>
+                        <td style="color:var(--accent-orange);">MB</td>
+                        <td>
+                            <input class="conv-input" id="conv4" type="number" placeholder="?">
+                            <button class="conv-check-btn" onclick="checkConv(4)" id="conv-btn-4">Check</button>
+                            <span class="conv-status" id="conv-status-4"></span>
+                            <div class="conv-hint" id="conv-hint-4">Moving DOWN → multiply. 0.5 × 1,000 = ? Remember: 0.5 is a half.</div>
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="convComplete" style="display:none;" class="connect-box">
+                <div class="connect-box-header">✅ All Conversions Complete!</div>
+                <p>You've nailed the conversion logic. The same rule scales from Bytes all the way to Petabytes. Now we apply it to a real-world problem.</p>
+            </div>
+        </div>
+
+        <div class="notes-summary">
+            <div class="notes-summary-header">📝 Notes for This Section</div>
+            <h4>Conversion Practice Answers</h4>
+            <ul>
+                <li>2,000 MB ÷ 1,000 = <strong>2 GB</strong></li>
+                <li>5 GB × 1,000 = <strong>5,000 MB</strong></li>
+                <li>3,000 KB ÷ 1,000 = <strong>3 MB</strong></li>
+                <li>0.5 GB × 1,000 = <strong>500 MB</strong></li>
+            </ul>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+            <button class="nav-btn next" onclick="nextSection()">Next →</button>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 5: BOSS FIGHT ===== -->
+    <section id="section-5">
+        <div class="boss-banner">
+            <div style="font-size:2rem;margin-bottom:8px;">📱</div>
+            <div class="boss-title">⚡ BOSS FIGHT — The Smartphone Storage Crisis</div>
+            <div class="boss-sub">Apply everything. One real-world problem. No shortcuts.</div>
+        </div>
+
+        <div class="card">
+            <h2>The Scenario</h2>
+            <p>Your phone has <span class="highlight-green">4 GB of free space</span>. You want to download the following:</p>
+
+            <div class="file-items-grid" id="fileGrid">
+                <div class="file-item" draggable="true" data-id="videos" data-gb="1.5" id="file-videos">
+                    <div class="file-emoji">🎬</div>
+                    <div class="file-name">3 Videos</div>
+                    <div class="file-size">500 MB each</div>
+                    <div class="file-calc">= 1,500 MB = 1.5 GB</div>
+                </div>
+                <div class="file-item" draggable="true" data-id="photos" data-gb="1.0" id="file-photos">
+                    <div class="file-emoji">📷</div>
+                    <div class="file-name">500 Photos</div>
+                    <div class="file-size">2 MB each</div>
+                    <div class="file-calc">= 1,000 MB = 1.0 GB</div>
+                </div>
+                <div class="file-item" draggable="true" data-id="game" data-gb="2.1" id="file-game">
+                    <div class="file-emoji">🎮</div>
+                    <div class="file-name">1 Game</div>
+                    <div class="file-size">2,100 MB</div>
+                    <div class="file-calc">= 2,100 MB = 2.1 GB</div>
+                </div>
+            </div>
+
+            <div class="phone-drop-zone" id="phoneDrop">
+                <div class="phone-drop-zone-label">📲 Drop files here to add to phone</div>
+                <div class="dropped-items" id="droppedItems"></div>
+            </div>
+
+            <div class="storage-bar-container">
+                <div class="storage-bar-labels">
+                    <span>0 GB used</span>
+                    <span id="usedLabel">0 / 4 GB</span>
+                    <span>4 GB limit</span>
+                </div>
+                <div class="storage-bar-track">
+                    <div class="storage-bar-fill" id="storageFill">
+                        <span class="storage-bar-text" id="storageFillText"></span>
+                    </div>
+                </div>
+                <div class="storage-verdict" id="storageVerdict"></div>
+            </div>
+
+            <div style="margin-top:12px;text-align:center;">
+                <button class="control-btn secondary" onclick="resetBoss()">🔄 Reset</button>
+            </div>
+
+            <div id="bossReveal" style="display:none; margin-top:16px;">
+                <div class="warning-box">
+                    <div class="warning-box-header">❌ Doesn't Fit — Here's Why</div>
+                    <p>Total = 1.5 GB + 1.0 GB + 2.1 GB = <strong>4.6 GB</strong>. The phone only has <strong>4 GB free</strong>. You're 0.6 GB (600 MB) over the limit. You'd need to drop one of the items — probably the video files or the game.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="think-box">
+            <div class="think-box-header">🤔 Extension: What Would Fit?</div>
+            <p>If you removed the Videos (1.5 GB), the remaining total would be 1.0 + 2.1 = 3.1 GB — which <em>would</em> fit. Or you could keep all the videos and photos (2.5 GB) but skip the game. This kind of trade-off is exactly the decision people make every day on real devices.</p>
+        </div>
+
+        <div class="notes-summary">
+            <div class="notes-summary-header">📝 Notes for This Section</div>
+            <h4>Smartphone Storage Calculation</h4>
+            <ul>
+                <li>3 Videos: 500 MB × 3 = 1,500 MB = <strong>1.5 GB</strong></li>
+                <li>500 Photos: 2 MB × 500 = 1,000 MB = <strong>1.0 GB</strong></li>
+                <li>1 Game: 2,100 MB = <strong>2.1 GB</strong></li>
+                <li>Total: 1.5 + 1.0 + 2.1 = <strong>4.6 GB</strong></li>
+                <li>Free space = 4 GB → <strong>Does NOT fit</strong> (0.6 GB over)</li>
+            </ul>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+            <button class="nav-btn next" onclick="nextSection()">Next →</button>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 6: CHEAT SHEET BUILDER (MATCHING) ===== -->
+    <section id="section-6">
+        <div class="card">
+            <h2>🔗 Cheat Sheet Builder</h2>
+            <p>Match each unit to its correct definition. Click a term on the left, then click its matching value on the right. Get them all right to unlock your summary.</p>
+
+            <div class="match-grid" id="matchGrid">
+                <div class="match-col">
+                    <div class="match-col-label">Unit</div>
+                    <div class="match-item" data-match="nibble" id="m-nibble" onclick="selectMatch(this,'term')">Nibble</div>
+                    <div class="match-item" data-match="byte" id="m-byte" onclick="selectMatch(this,'term')">Byte</div>
+                    <div class="match-item" data-match="mb" id="m-mb" onclick="selectMatch(this,'term')">Megabyte</div>
+                    <div class="match-item" data-match="tb" id="m-tb" onclick="selectMatch(this,'term')">Terabyte</div>
+                </div>
+                <div class="match-col">
+                    <div class="match-col-label">Value</div>
+                    <div class="match-item" data-match="mb" id="v-mb" onclick="selectMatch(this,'value')">1,000 Kilobytes</div>
+                    <div class="match-item" data-match="byte" id="v-byte" onclick="selectMatch(this,'value')">8 Bits</div>
+                    <div class="match-item" data-match="tb" id="v-tb" onclick="selectMatch(this,'value')">1,000 Gigabytes</div>
+                    <div class="match-item" data-match="nibble" id="v-nibble" onclick="selectMatch(this,'value')">4 Bits</div>
+                </div>
+            </div>
+
+            <div id="matchFeedback" style="margin-top:12px;"></div>
+            <div id="matchComplete" style="display:none;" class="connect-box" style="margin-top:16px;">
+                <div class="connect-box-header">✅ All Matched — Cheat Sheet Complete!</div>
+                <p>You've locked in all four definitions. These are the ones most likely to appear in a fill-in-the-blank or short-answer question.</p>
+            </div>
+        </div>
+
+        <div class="notes-summary">
+            <div class="notes-summary-header">📝 Notes for This Section</div>
+            <h4>Key Definitions (Learn These Exactly)</h4>
+            <ul>
+                <li><strong>Nibble</strong> = 4 Bits</li>
+                <li><strong>Byte</strong> = 8 Bits</li>
+                <li><strong>Megabyte (MB)</strong> = 1,000 Kilobytes</li>
+                <li><strong>Terabyte (TB)</strong> = 1,000 Gigabytes</li>
+            </ul>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+            <button class="nav-btn next" onclick="nextSection()">Next →</button>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 7: FINAL QUIZ ===== -->
+    <section id="section-7">
+        <div class="card">
+            <h2>🎯 Final Quiz</h2>
+            <p>Four questions. All the core concepts. Your score decides your badge title.</p>
+
+            <div class="question-box" id="q1">
+                <p><strong>Q1.</strong> How many Bits are in 1 Byte?</p>
+                <div class="options">
+                    <button class="option-btn" onclick="checkFinal(1,this,false)">4</button>
+                    <button class="option-btn" onclick="checkFinal(1,this,true)">8</button>
+                    <button class="option-btn" onclick="checkFinal(1,this,false)">16</button>
+                    <button class="option-btn" onclick="checkFinal(1,this,false)">1,000</button>
+                </div>
+                <div class="feedback" id="qfb1"></div>
+            </div>
+
+            <hr class="section-divider">
+
+            <div class="question-box" id="q2">
+                <p><strong>Q2.</strong> Convert 3 GB to MB (using OCR's rule of 1,000).</p>
+                <div class="options">
+                    <button class="option-btn" onclick="checkFinal(2,this,false)">3 MB</button>
+                    <button class="option-btn" onclick="checkFinal(2,this,false)">300 MB</button>
+                    <button class="option-btn" onclick="checkFinal(2,this,true)">3,000 MB</button>
+                    <button class="option-btn" onclick="checkFinal(2,this,false)">3,072 MB</button>
+                </div>
+                <div class="feedback" id="qfb2"></div>
+            </div>
+
+            <hr class="section-divider">
+
+            <div class="question-box" id="q3">
+                <p><strong>Q3.</strong> A music file is 4,000 KB. What is this in MB?</p>
+                <div class="options">
+                    <button class="option-btn" onclick="checkFinal(3,this,false)">0.4 MB</button>
+                    <button class="option-btn" onclick="checkFinal(3,this,true)">4 MB</button>
+                    <button class="option-btn" onclick="checkFinal(3,this,false)">40 MB</button>
+                    <button class="option-btn" onclick="checkFinal(3,this,false)">4,000,000 MB</button>
+                </div>
+                <div class="feedback" id="qfb3"></div>
+            </div>
+
+            <hr class="section-divider">
+
+            <div class="question-box" id="q4">
+                <p><strong>Q4.</strong> Why does OCR use 1,000 rather than 1,024 for unit conversions in the exam?</p>
+                <div class="options">
+                    <button class="option-btn" onclick="checkFinal(4,this,false)">Because 1,024 is only used for RAM, not storage</button>
+                    <button class="option-btn" onclick="checkFinal(4,this,false)">Because 1,024 is incorrect — bytes always come in thousands</button>
+                    <button class="option-btn" onclick="checkFinal(4,this,true)">Because OCR follows the SI standard (1,000), which makes calculations more straightforward — though 1,024 is technically also acceptable and used by operating systems</button>
+                    <button class="option-btn" onclick="checkFinal(4,this,false)">Because 1,024 is only relevant to networking, not storage</button>
+                </div>
+                <div class="feedback" id="qfb4"></div>
+            </div>
+
+            <div id="quizResult" style="display:none;margin-top:20px;padding:20px;background:var(--bg-card);border-radius:12px;text-align:center;">
+                <h3 id="quizScore" style="margin-bottom:8px;"></h3>
+                <p id="quizMessage" style="color:var(--text-secondary);"></p>
+                <p id="badgeHint" style="color:var(--accent-cyan);margin-top:8px;font-size:0.9rem;"></p>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+            <button class="nav-btn next" onclick="nextSection()">Next →</button>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 8: FULL SUMMARY NOTES ===== -->
+    <section id="section-8">
+        <div class="card">
+            <h2>📋 Complete Summary Notes</h2>
+            <p>Everything you need for the exam, consolidated.</p>
+
+            <div class="notes-summary" style="margin-top:0;">
+                <div class="notes-summary-header">📝 Full Topic Summary — Units of Data Storage</div>
+
+                <h4>The Bit</h4>
+                <ul>
+                    <li>The smallest unit of data — a single binary digit: <strong>0 or 1</strong></li>
+                    <li>Physically represented by an On/Off switch in storage hardware</li>
+                </ul>
+
+                <h4>The Full Hierarchy (OCR J277)</h4>
+                <ul>
+                    <li><strong>Bit</strong> — 1 binary digit</li>
+                    <li><strong>Nibble</strong> — 4 Bits</li>
+                    <li><strong>Byte (B)</strong> — 8 Bits</li>
+                    <li><strong>Kilobyte (KB)</strong> — 1,000 Bytes</li>
+                    <li><strong>Megabyte (MB)</strong> — 1,000 KB</li>
+                    <li><strong>Gigabyte (GB)</strong> — 1,000 MB</li>
+                    <li><strong>Terabyte (TB)</strong> — 1,000 GB</li>
+                    <li><strong>Petabyte (PB)</strong> — 1,000 TB</li>
+                </ul>
+
+                <h4>The Conversion Rule</h4>
+                <ul>
+                    <li>Moving to a <strong>larger</strong> unit → <code>÷ 1,000</code></li>
+                    <li>Moving to a <strong>smaller</strong> unit → <code>× 1,000</code></li>
+                    <li>OCR uses <strong>1,000</strong> (SI standard) — not 1,024</li>
+                    <li>1,024 is technically correct (binary) and used by operating systems — acknowledge this but use 1,000 in calculations</li>
+                </ul>
+
+                <h4>Real-World File Sizes</h4>
+                <ul>
+                    <li>Text file (1 page) ≈ 16 KB</li>
+                    <li>Photo ≈ 2–5 MB</li>
+                    <li>Song (MP3) ≈ 3–5 MB</li>
+                    <li>HD video file ≈ 4–8 GB</li>
+                    <li>Large game ≈ 1–100 GB</li>
+                </ul>
+
+                <h4>Exam Technique: Storage Calculation Questions</h4>
+                <ul>
+                    <li>Convert all items to the same unit first (usually GB)</li>
+                    <li>Add totals, then compare to available space</li>
+                    <li>Show your working: <code>500 MB × 3 = 1,500 MB = 1.5 GB</code></li>
+                    <li>State a clear conclusion: "does / does not fit because…"</li>
+                </ul>
+
+                <h4>The Analogy</h4>
+                <ul>
+                    <li>Data units ↔ metric weight units</li>
+                    <li>1,000 g = 1 kg → 1,000 Bytes = 1 KB (same division)</li>
+                    <li>Once you can do weight conversions, you can do data conversions</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+            <button class="nav-btn next" onclick="nextSection()">Next →</button>
+        </div>
+    </section>
+
+    <!-- ===== SECTION 9: DIGITAL BADGE ===== -->
+    <section id="section-9">
+        <div class="card">
+            <h2>🏅 Your Digital Badge</h2>
+            <p>Enter your name and click Generate to create your badge. Take a screenshot to add to your portfolio.</p>
+
+            <div class="badge-generator">
+                <div class="badge-gen-label">Step 1 — Enter Your Name</div>
+                <input class="badge-name-input" type="text" id="badgeNameInput" placeholder="Your full name...">
+                <br>
+                <button class="badge-gen-btn" onclick="generateBadge()">⚡ Generate My Badge</button>
+
+                <div class="badge-output" id="badgeOutput">
+                    <div class="badge-card" id="badgeCard">
+                        <span class="badge-icon-large" id="badgeIcon">🏆</span>
+                        <div class="badge-title-text" id="badgeTitleEl">Data Architect</div>
+                        <div class="badge-divider" id="badgeDivider"></div>
+                        <div class="badge-student-name" id="badgeNameEl">Your Name</div>
+                        <div class="badge-topic-line">Units of Data Storage</div>
+                        <div class="badge-spec-line">OCR GCSE Computer Science · J277 1.2.3</div>
+                        <div class="badge-score-line" id="badgeScoreEl"></div>
+                    </div>
+                    <p class="badge-hint">📸 Take a screenshot of the badge above to save to your portfolio</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+            <button class="nav-btn next" disabled style="background:var(--accent-green);opacity:1;">Complete! 🎉</button>
+        </div>
+    </section>
+
+    </main>
+</div>
+
+<script>
+    // ============ Navigation ============
+    const totalSections = 9;
+    let currentSection = 1;
+
+    function updateProgress() {
+        const bar = document.getElementById('progressBar');
+        bar.innerHTML = '';
+        for (let i = 1; i <= totalSections; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'progress-dot';
+            if (i === currentSection) dot.classList.add('active');
+            if (i < currentSection) dot.classList.add('completed');
+            dot.onclick = () => goToSection(i);
+            bar.appendChild(dot);
+        }
+        document.getElementById('progressLabel').textContent = `Section ${currentSection} of ${totalSections}`;
+    }
+
+    function goToSection(n) {
+        document.getElementById(`section-${currentSection}`).classList.remove('active');
+        currentSection = n;
+        document.getElementById(`section-${currentSection}`).classList.add('active');
+        updateProgress();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nextSection() { if (currentSection < totalSections) goToSection(currentSection + 1); }
+    function prevSection() { if (currentSection > 1) goToSection(currentSection - 1); }
+
+    // ============ Recall Ramp ============
+    // Drag & Drop
+    const correctBuckets = { cd: 'mb', movie: 'gb', hdd: 'tb' };
+    let draggedItem = null;
+
+    document.querySelectorAll('.drag-item').forEach(item => {
+        item.addEventListener('dragstart', e => {
+            draggedItem = item;
+            setTimeout(() => item.classList.add('dragging'), 0);
+        });
+        item.addEventListener('dragend', () => {
+            item.classList.remove('dragging');
+            draggedItem = null;
+        });
+    });
+
+    document.querySelectorAll('.drop-bucket').forEach(bucket => {
+        bucket.addEventListener('dragover', e => { e.preventDefault(); bucket.classList.add('over'); });
+        bucket.addEventListener('dragleave', () => bucket.classList.remove('over'));
+        bucket.addEventListener('drop', e => {
+            e.preventDefault();
+            bucket.classList.remove('over');
+            if (!draggedItem) return;
+            const itemKey = draggedItem.dataset.item;
+            const bucketKey = bucket.dataset.bucket;
+            const correct = correctBuckets[itemKey] === bucketKey;
+
+            // Clone item into bucket
+            const clone = draggedItem.cloneNode(true);
+            clone.removeAttribute('draggable');
+            clone.style.cursor = 'default';
+            clone.style.fontSize = '0.75rem';
+            clone.style.padding = '4px 8px';
+            document.getElementById(`items-${bucketKey}`).appendChild(clone);
+
+            if (correct) {
+                bucket.classList.add('correct-bucket');
+                draggedItem.style.opacity = '0.3';
+                draggedItem.setAttribute('draggable', 'false');
+            } else {
+                bucket.classList.add('wrong-bucket');
+                setTimeout(() => bucket.classList.remove('wrong-bucket'), 1000);
+                setTimeout(() => document.getElementById(`items-${bucketKey}`).removeChild(clone), 800);
+            }
+
+            // Check all placed
+            const placed = Object.keys(correctBuckets).filter(k => {
+                const el = document.getElementById(`drag-${k}`);
+                return el && el.style.opacity === '0.3';
+            });
+            if (placed.length === 3) {
+                const fb = document.getElementById('dragFeedback');
+                fb.style.display = 'block';
+                fb.textContent = '✅ Correct! CD-ROMs are MB scale (~700 MB), 4K movies are GB scale (~50–80 GB), and a 1TB HDD is in the TB range.';
+            }
+        });
+    });
+
+    function checkRecall2(btn, result) {
+        document.querySelectorAll('.recall-choice').forEach(b => b.disabled = true);
+        if (result === 'correct') {
+            btn.classList.add('rc-correct');
+            const fb = document.getElementById('recall2Feedback');
+            fb.style.display = 'block';
+            fb.textContent = '✅ Correct! On and Off (1 and 0). These two states are the foundation of all digital data. Every bit in every storage device is fundamentally one of these two states.';
+        } else {
+            btn.classList.add('rc-wrong');
+            setTimeout(() => {
+                document.querySelectorAll('.recall-choice').forEach(b => b.disabled = false);
+                btn.classList.remove('rc-wrong');
+            }, 1000);
+            document.querySelectorAll('.recall-choice').forEach(b => b.disabled = false);
+        }
+    }
+
+    function revealLogicHook(btn) {
+        document.getElementById('logicHookAnswer').style.display = 'block';
+        btn.disabled = true; btn.textContent = 'Revealed ✓';
+        btn.style.opacity = '0.5';
+    }
+
+    // ============ Section Quick Check ============
+    const qFeedback = {
+        'hierarchy': {
+            correct: "Correct! OCR uses 1,000 for all data unit conversions. 1 MB = 1,000 KB. This keeps the maths clean and is the SI standard.",
+            incorrect: "Remember: OCR follows the SI standard of 1,000, not the binary 1,024. 1 MB = 1,000 KB for your exam."
+        }
+    };
+
+    function checkQ(key, btn, isCorrect) {
+        const box = btn.closest('.question-box');
+        if (box.classList.contains('answered')) return;
+        box.classList.add('answered');
+        box.querySelectorAll('.option-btn').forEach(b => { b.disabled = true; if (b === btn) b.classList.add(isCorrect ? 'correct' : 'incorrect'); });
+        const fb = document.getElementById(`feedback-${key}`);
+        fb.textContent = isCorrect ? qFeedback[key].correct : qFeedback[key].incorrect;
+        fb.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+    }
+
+    // ============ Sandbox ============
+    function updateSandbox(val) {
+        val = parseInt(val);
+        // Grams side
+        document.getElementById('scaleGrams').textContent = val.toLocaleString();
+        const kg = val / 1000;
+        document.getElementById('scaleKg').textContent = val >= 1000 ? `= ${kg.toFixed(2)} kg` : '';
+        // Bowl visual
+        const bowl = document.getElementById('scaleBowl');
+        const pct = Math.min(val / 3000, 1);
+        bowl.style.height = (10 + pct * 60) + 'px';
+        if (val >= 1000) { bowl.classList.add('full'); } else { bowl.classList.remove('full'); }
+
+        // Data side
+        document.getElementById('scaleBytes').textContent = val.toLocaleString();
+        const kb = val / 1000;
+        document.getElementById('scaleKB').textContent = val >= 1000 ? `= ${kb.toFixed(2)} KB` : '';
+
+        // Formula
+        let formula = `${val} Bytes`;
+        if (val >= 1000) formula += ` ÷ 1,000 = ${kb.toFixed(3)} KB`;
+        document.getElementById('convFormula').textContent = formula;
+
+        // Bit count
+        const bits = val * 8;
+        document.getElementById('dataBoxBits').textContent = bits.toLocaleString() + ' bits';
+        let fileDesc = '';
+        if (val === 0) fileDesc = '';
+        else if (val < 100) fileDesc = '≈ a few characters of text';
+        else if (val < 1000) fileDesc = '≈ a short paragraph';
+        else if (val < 2000) fileDesc = '≈ a small text email';
+        else fileDesc = '≈ a larger text file';
+        document.getElementById('dataBoxFiles').textContent = fileDesc;
+
+        // Highlight box when threshold hit
+        const dataBox = document.getElementById('dataBox');
+        if (val >= 1000) {
+            dataBox.style.borderColor = 'rgba(0,255,136,0.5)';
+            dataBox.style.background = 'rgba(0,255,136,0.07)';
+        } else {
+            dataBox.style.borderColor = 'rgba(0,212,255,0.3)';
+            dataBox.style.background = 'rgba(0,212,255,0.06)';
+        }
+    }
+
+    // ============ Conversion Practice ============
+    const convAnswers = { 1: 2, 2: 5000, 3: 3, 4: 500 };
+    const convSolved = new Set();
+
+    function checkConv(n) {
+        const input = document.getElementById(`conv${n}`);
+        const btn = document.getElementById(`conv-btn-${n}`);
+        const hint = document.getElementById(`conv-hint-${n}`);
+        const status = document.getElementById(`conv-status-${n}`);
+        const val = parseFloat(input.value);
+
+        if (isNaN(val)) return;
+
+        if (val === convAnswers[n]) {
+            input.classList.add('correct'); input.classList.remove('incorrect');
+            input.disabled = true; btn.disabled = true;
+            status.textContent = '✅';
+            hint.style.display = 'none';
+            convSolved.add(n);
+            if (convSolved.size === 4) document.getElementById('convComplete').style.display = 'block';
+        } else {
+            input.classList.add('incorrect'); input.classList.remove('correct');
+            status.textContent = '❌';
+            hint.style.display = 'block';
+            // 3 second lockout
+            input.disabled = true; btn.disabled = true;
+            setTimeout(() => {
+                input.disabled = false; btn.disabled = false;
+                input.classList.remove('incorrect');
+                input.value = '';
+                status.textContent = '';
+            }, 3000);
+        }
+    }
+
+    // Enter key for conv inputs
+    [1,2,3,4].forEach(n => {
+        const el = document.getElementById(`conv${n}`);
+        if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') checkConv(n); });
+    });
+
+    // ============ Boss Fight Drag & Drop ============
+    let droppedFiles = {};
+    let bossTotal = 0;
+    const phoneCapacity = 4;
+
+    document.querySelectorAll('.file-item').forEach(item => {
+        item.addEventListener('dragstart', e => {
+            draggedItem = item;
+            setTimeout(() => item.classList.add('dragging'), 0);
+        });
+        item.addEventListener('dragend', () => { item.classList.remove('dragging'); draggedItem = null; });
+    });
+
+    const phoneDrop = document.getElementById('phoneDrop');
+    phoneDrop.addEventListener('dragover', e => { e.preventDefault(); phoneDrop.classList.add('over'); });
+    phoneDrop.addEventListener('dragleave', () => phoneDrop.classList.remove('over'));
+    phoneDrop.addEventListener('drop', e => {
+        e.preventDefault();
+        phoneDrop.classList.remove('over');
+        if (!draggedItem || draggedItem.classList.contains('file-item') === false) return;
+        if (draggedItem.classList.contains('dropped')) return;
+        const id = draggedItem.dataset.id;
+        if (droppedFiles[id]) return;
+
+        const gb = parseFloat(draggedItem.dataset.gb);
+        droppedFiles[id] = gb;
+        bossTotal = Object.values(droppedFiles).reduce((a,b) => a+b, 0);
+        draggedItem.classList.add('dropped');
+
+        // Add chip
+        const chip = document.createElement('div');
+        chip.className = 'dropped-chip';
+        chip.textContent = draggedItem.querySelector('.file-name').textContent + ' (' + gb + ' GB)';
+        document.getElementById('droppedItems').appendChild(chip);
+
+        updateStorageBar();
+    });
+
+    function updateStorageBar() {
+        const pct = Math.min(bossTotal / phoneCapacity, 1) * 100;
+        const fill = document.getElementById('storageFill');
+        fill.style.width = pct + '%';
+        document.getElementById('storageFillText').textContent = bossTotal > 0 ? bossTotal.toFixed(1) + ' GB' : '';
+        document.getElementById('usedLabel').textContent = bossTotal.toFixed(1) + ' / 4 GB';
+
+        const verdict = document.getElementById('storageVerdict');
+        if (bossTotal > phoneCapacity) {
+            fill.classList.add('overflow');
+            verdict.innerHTML = `<span style="color:var(--accent-magenta)">❌ OVER CAPACITY — ${bossTotal.toFixed(1)} GB needed, only 4 GB available. You're ${(bossTotal - phoneCapacity).toFixed(1)} GB over.</span>`;
+            if (Object.keys(droppedFiles).length === 3) document.getElementById('bossReveal').style.display = 'block';
+        } else if (bossTotal > 0) {
+            fill.classList.remove('overflow');
+            verdict.innerHTML = `<span style="color:var(--accent-green)">✅ ${bossTotal.toFixed(1)} GB used — ${(phoneCapacity - bossTotal).toFixed(1)} GB remaining</span>`;
+        } else {
+            fill.classList.remove('overflow');
+            verdict.innerHTML = '';
+        }
+    }
+
+    function resetBoss() {
+        droppedFiles = {}; bossTotal = 0;
+        document.getElementById('droppedItems').innerHTML = '';
+        document.getElementById('storageFill').style.width = '0%';
+        document.getElementById('storageFill').classList.remove('overflow');
+        document.getElementById('storageFillText').textContent = '';
+        document.getElementById('usedLabel').textContent = '0 / 4 GB';
+        document.getElementById('storageVerdict').innerHTML = '';
+        document.getElementById('bossReveal').style.display = 'none';
+        document.querySelectorAll('.file-item').forEach(f => f.classList.remove('dropped', 'dragging'));
+    }
+
+    // ============ Matching Exercise ============
+    let selectedTerm = null, selectedValue = null;
+    const matchedPairs = new Set();
+
+    function selectMatch(el, type) {
+        if (el.classList.contains('matched') || el.classList.contains('locked')) return;
+
+        if (type === 'term') {
+            // Deselect previous term
+            document.querySelectorAll('.match-col:first-child .match-item').forEach(i => i.classList.remove('selected'));
+            selectedTerm = el;
+            el.classList.add('selected');
+        } else {
+            document.querySelectorAll('.match-col:last-child .match-item').forEach(i => i.classList.remove('selected'));
+            selectedValue = el;
+            el.classList.add('selected');
+        }
+
+        if (selectedTerm && selectedValue) {
+            if (selectedTerm.dataset.match === selectedValue.dataset.match) {
+                // Correct
+                selectedTerm.classList.remove('selected'); selectedTerm.classList.add('matched'); selectedTerm.classList.add('locked');
+                selectedValue.classList.remove('selected'); selectedValue.classList.add('matched'); selectedValue.classList.add('locked');
+                matchedPairs.add(selectedTerm.dataset.match);
+                if (matchedPairs.size === 4) document.getElementById('matchComplete').style.display = 'block';
+            } else {
+                // Wrong flash
+                selectedTerm.classList.add('wrong-flash'); selectedValue.classList.add('wrong-flash');
+                setTimeout(() => {
+                    selectedTerm.classList.remove('selected','wrong-flash');
+                    selectedValue.classList.remove('selected','wrong-flash');
+                    selectedTerm = null; selectedValue = null;
+                }, 600);
+                return;
+            }
+            selectedTerm = null; selectedValue = null;
+        }
+    }
+
+    // ============ Final Quiz ============
+    let finalAnswered = new Set(), finalCorrect = 0;
+
+    const finalFeedback = {
+        1: { correct: "Correct! 1 Byte = 8 Bits. This is one of the most important definitions in the topic — a single character of text takes 8 bits (1 byte) to store.", incorrect: "Not quite. A Byte is made up of 8 Bits. This is a fixed definition — remember: 8 bits = 1 byte." },
+        2: { correct: "Correct! 3 GB × 1,000 = 3,000 MB. Moving down to a smaller unit means the number gets bigger, so we multiply.", incorrect: "Moving to a smaller unit (GB → MB) means the number gets bigger. Multiply by 1,000: 3 × 1,000 = 3,000 MB." },
+        3: { correct: "Correct! 4,000 KB ÷ 1,000 = 4 MB. Moving up to a larger unit means the number gets smaller, so we divide.", incorrect: "Moving from KB to MB is going UP — so we divide. 4,000 ÷ 1,000 = 4 MB." },
+        4: { correct: "Correct! OCR uses the SI standard of 1,000 to keep calculations clean and accessible — but 1,024 is technically valid (the binary standard) and widely used by operating systems.", incorrect: "OCR uses 1,000 as the SI standard, which simplifies exam calculations. However, 1,024 is also technically correct (it's a power of 2: 2¹⁰) and is used by most operating systems." }
+    };
+
+    function checkFinal(n, btn, isCorrect) {
+        if (finalAnswered.has(n)) return;
+        finalAnswered.add(n);
+        btn.parentElement.querySelectorAll('.option-btn').forEach(b => { b.disabled = true; if (b === btn) b.classList.add(isCorrect ? 'correct' : 'incorrect'); });
+        const fb = document.getElementById(`qfb${n}`);
+        fb.textContent = isCorrect ? finalFeedback[n].correct : finalFeedback[n].incorrect;
+        fb.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+        if (isCorrect) finalCorrect++;
+        if (finalAnswered.size === 4) showQuizResult();
+    }
+
+    function showQuizResult() {
+        const res = document.getElementById('quizResult');
+        const score = document.getElementById('quizScore');
+        const msg = document.getElementById('quizMessage');
+        const hint = document.getElementById('badgeHint');
+        res.style.display = 'block';
+
+        const pct = (finalCorrect / 4) * 100;
+        score.textContent = `${finalCorrect} / 4 Correct`;
+
+        if (finalCorrect === 4) {
+            score.style.color = 'var(--accent-green)';
+            msg.textContent = "Perfect score on the first attempt — flawless.";
+            hint.textContent = "🏆 You've earned: Data Architect";
+        } else if (pct >= 75) {
+            score.style.color = 'var(--accent-cyan)';
+            msg.textContent = "Strong performance. Review the one(s) you missed.";
+            hint.textContent = "📊 You've earned: Storage Specialist";
+        } else {
+            score.style.color = 'var(--accent-yellow)';
+            msg.textContent = "Head back through sections 2–4 before the exam.";
+            hint.textContent = "🔧 You've earned: The Bit-Mangler (keep going — you'll get there!)";
+        }
+    }
+
+    // ============ Badge Generator ============
+    function generateBadge() {
+        const name = document.getElementById('badgeNameInput').value.trim();
+        if (!name) {
+            document.getElementById('badgeNameInput').style.borderColor = 'var(--accent-magenta)';
+            setTimeout(() => document.getElementById('badgeNameInput').style.borderColor = '', 1500);
+            return;
+        }
+
+        // Determine title based on score
+        const pct = (finalCorrect / 4) * 100;
+        let title, icon, borderColor, titleColor, scoreText;
+
+        if (finalCorrect === 4) {
+            title = 'Data Architect';
+            icon = '🏆';
+            borderColor = '#ffd60a';
+            titleColor = '#ffd60a';
+            scoreText = 'Score: 4/4 — Perfect';
+        } else if (pct >= 75) {
+            title = 'Storage Specialist';
+            icon = '💾';
+            borderColor = '#00d4ff';
+            titleColor = '#00d4ff';
+            scoreText = `Score: ${finalCorrect}/4`;
+        } else {
+            title = 'The Bit-Mangler';
+            icon = '🔧';
+            borderColor = '#a855f7';
+            titleColor = '#a855f7';
+            scoreText = `Score: ${finalCorrect}/4 — Keep practising!`;
+        }
+
+        // If quiz not taken
+        if (finalAnswered.size < 4) {
+            title = 'Storage Specialist';
+            icon = '💾';
+            borderColor = '#00d4ff';
+            titleColor = '#00d4ff';
+            scoreText = 'Units of Data Storage — Complete';
+        }
+
+        // Apply to badge
+        const card = document.getElementById('badgeCard');
+        card.style.borderColor = borderColor;
+
+        document.getElementById('badgeIcon').textContent = icon;
+        document.getElementById('badgeTitleEl').textContent = title;
+        document.getElementById('badgeTitleEl').style.color = titleColor;
+        document.getElementById('badgeDivider').style.background = borderColor;
+        document.getElementById('badgeNameEl').textContent = name;
+        document.getElementById('badgeScoreEl').textContent = scoreText;
+        document.getElementById('badgeScoreEl').style.color = titleColor;
+
+        document.getElementById('badgeOutput').style.display = 'block';
+        document.getElementById('badgeOutput').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // ============ Init ============
+    document.addEventListener('DOMContentLoaded', updateProgress);
+</script>
+</body>
+</html>

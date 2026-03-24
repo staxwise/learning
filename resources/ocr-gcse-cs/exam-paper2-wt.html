@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2 Exam Walkthrough | OCR GCSE Computer Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --text-muted: #555566;
+            --border-subtle: #2a2a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; line-height: 1.7; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        
+        header { text-align: center; margin-bottom: 40px; }
+        .exam-badge-header {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-magenta), var(--accent-orange));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; }
+
+        .progress-container { margin-top: 24px; }
+        .progress-bar { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
+        .progress-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--border-subtle);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .progress-dot.active { background: var(--accent-cyan); box-shadow: 0 0 12px var(--accent-cyan); transform: scale(1.2); }
+        .progress-dot.completed { background: var(--accent-green); }
+        .progress-label { margin-top: 10px; font-size: 0.85rem; color: var(--text-muted); }
+
+        section { display: none; animation: fadeIn 0.5s ease; }
+        section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+        }
+
+        h2 { font-size: 1.4rem; margin-bottom: 16px; color: var(--accent-cyan); }
+        h3 { font-size: 1.1rem; margin-bottom: 12px; color: var(--text-primary); }
+        h4 { font-size: 1rem; margin-bottom: 10px; color: var(--accent-yellow); }
+        p { color: var(--text-secondary); margin-bottom: 12px; }
+
+        .highlight { color: var(--accent-yellow); font-weight: 600; }
+        .highlight-cyan { color: var(--accent-cyan); font-weight: 600; }
+        .highlight-green { color: var(--accent-green); font-weight: 600; }
+        .highlight-magenta { color: var(--accent-magenta); font-weight: 600; }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+
+        .question-box {
+            background: #ffffff;
+            color: #000000;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            font-family: 'Times New Roman', serif;
+        }
+        .question-box .q-number { font-weight: 700; margin-right: 8px; }
+        .question-box .marks { float: right; font-weight: 700; }
+        .question-box table { border-collapse: collapse; margin: 12px auto; }
+        .question-box td, .question-box th { border: 1px solid #000; padding: 8px 12px; text-align: center; }
+        .question-box .data-row { display: flex; justify-content: center; gap: 4px; margin: 12px 0; flex-wrap: wrap; }
+        .question-box .data-cell { border: 1px solid #000; padding: 6px 12px; min-width: 50px; text-align: center; }
+        .question-box pre {
+            background: #f5f5f5;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            margin: 12px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .prior-knowledge {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 212, 255, 0.05));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-left: 4px solid var(--accent-cyan);
+            border-radius: 0 12px 12px 0;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+        .prior-knowledge-header { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--accent-cyan); margin-bottom: 8px; }
+        .prior-knowledge p { margin: 0; }
+
+        .approach-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(168, 85, 247, 0.05));
+            border: 2px solid rgba(168, 85, 247, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+        .approach-header { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--accent-purple); margin-bottom: 12px; font-size: 1.1rem; }
+        .approach-box ol, .approach-box ul { margin: 0 0 0 20px; color: var(--text-primary); }
+        .approach-box li { margin-bottom: 6px; }
+
+        .model-answer {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.05));
+            border: 2px solid rgba(0, 255, 136, 0.4);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+        .model-answer-header { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--accent-green); margin-bottom: 12px; font-size: 1.1rem; }
+
+        .step-container {
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 12px 0;
+            overflow-x: auto;
+        }
+        .step-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); flex-wrap: nowrap; }
+        .step-row:last-child { border-bottom: none; }
+        .step-label {
+            background: var(--accent-purple);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            min-width: 60px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .step-data { display: flex; gap: 4px; flex-wrap: nowrap; font-family: 'JetBrains Mono', monospace; }
+        .step-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            padding: 4px 6px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+        }
+        .step-item.highlight-change { background: rgba(255, 214, 10, 0.2); border-color: var(--accent-yellow); color: var(--accent-yellow); }
+        .step-item.mid { background: rgba(255, 0, 110, 0.2); border-color: var(--accent-magenta); }
+        .step-item.found { background: rgba(0, 255, 136, 0.2); border-color: var(--accent-green); }
+        .step-item.discarded { opacity: 0.3; text-decoration: line-through; }
+
+        .code-block {
+            background: #1a1a2e;
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 12px 0;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            white-space: pre;
+        }
+        .code-block .kw { color: var(--accent-magenta); }
+        .code-block .fn { color: var(--accent-cyan); }
+        .code-block .str { color: var(--accent-green); }
+        .code-block .num { color: var(--accent-orange); }
+        .code-block .cmt { color: var(--text-muted); font-style: italic; }
+        .code-block .var { color: var(--accent-yellow); }
+
+        .exam-tip {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.15), rgba(255, 214, 10, 0.08));
+            border: 2px solid rgba(255, 149, 0, 0.4);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+        .exam-tip-header { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--accent-orange); margin-bottom: 8px; }
+        .exam-tip p { margin: 0; color: var(--text-primary); }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.15), rgba(255, 0, 110, 0.05));
+            border: 2px solid rgba(255, 0, 110, 0.4);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+        .warning-header { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--accent-magenta); margin-bottom: 8px; }
+        .warning-box p { margin: 0; color: var(--text-primary); }
+
+        .marks-breakdown {
+            background: var(--bg-dark);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+        .marks-breakdown h4 { color: var(--accent-cyan); margin-bottom: 10px; }
+        .mark-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed var(--border-subtle); }
+        .mark-item:last-child { border-bottom: none; }
+        .mark-point { color: var(--text-primary); }
+        .mark-value { color: var(--accent-green); font-weight: 600; }
+
+        .notes-summary {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.12), rgba(255, 214, 10, 0.06));
+            border: 2px solid rgba(255, 149, 0, 0.4);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 24px;
+        }
+        .notes-summary-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; color: var(--accent-orange); font-weight: 600; font-size: 1.1rem; }
+        .notes-summary h4 { color: var(--accent-yellow); margin: 14px 0 8px 0; }
+        .notes-summary h4:first-of-type { margin-top: 0; }
+        .notes-summary ul { color: var(--text-primary); margin: 0; padding-left: 20px; }
+        .notes-summary li { margin-bottom: 6px; }
+
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; gap: 12px; }
+        .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .nav-btn.prev { background: var(--bg-card); border: 1px solid var(--border-subtle); color: var(--text-secondary); }
+        .nav-btn.prev:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+        .nav-btn.next { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); color: white; }
+        .nav-btn.next:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3); }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
+
+        .answer-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.95rem; }
+        .answer-table th, .answer-table td { border: 1px solid var(--border-subtle); padding: 10px 14px; text-align: center; }
+        .answer-table th { background: var(--bg-dark); color: var(--accent-cyan); font-weight: 600; }
+        .answer-table td { background: var(--bg-card); }
+        .answer-table .tick { color: var(--accent-green); font-weight: 700; }
+
+        /* Badge Generator */
+        .badge-generator {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 2px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+        .badge-generator h3 { color: var(--accent-cyan); margin-bottom: 8px; }
+        .badge-generator > p { color: var(--text-secondary); margin-bottom: 20px; }
+        .badge-input-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px; }
+        .badge-input {
+            padding: 12px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            min-width: 180px;
+        }
+        .badge-input:focus { outline: none; border-color: var(--accent-cyan); }
+        .badge-input.error { border-color: var(--accent-magenta); }
+        .generate-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--accent-magenta), var(--accent-orange));
+            color: white;
+            transition: all 0.2s ease;
+        }
+        .generate-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(255, 0, 110, 0.3); }
+        .badge-error { color: var(--accent-magenta); margin-top: 12px; display: none; }
+        .badge-error.show { display: block; }
+        .badge-display { display: none; flex-direction: column; align-items: center; gap: 16px; margin-top: 20px; animation: fadeIn 0.5s ease; }
+        .badge-display.show { display: flex; }
+        .badge-container { background: linear-gradient(145deg, #1a1a2e, #0f0f1a); border-radius: 20px; padding: 30px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(168, 85, 247, 0.1); }
+        .badge-hint { color: var(--text-muted); font-size: 0.85rem; }
+
+        @media (max-width: 768px) {
+            .container { padding: 20px 16px; }
+            h1 { font-size: 1.6rem; }
+            .card { padding: 20px; }
+            .nav-buttons { flex-direction: column; }
+            .nav-btn { width: 100%; }
+            .step-data { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="exam-badge-header">P2 High Rotational 25/26</div>
+            <h1>Exam Walkthrough Guide</h1>
+            <p class="subtitle">Step-by-step guidance for every question</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <p class="progress-label" id="progressLabel">Question 1 of 11</p>
+            </div>
+        </header>
+
+        <main>
+            <!-- Section 1: Overview -->
+            <section id="section-1" class="active">
+                <div class="card">
+                    <h2>📋 Paper Overview</h2>
+                    <p>This paper tests your knowledge of <span class="highlight">algorithms, programming, and testing</span>. Before we dive into each question, let's see what's covered:</p>
+
+                    <table class="answer-table">
+                        <tr><th>Q</th><th>Topic</th><th>Marks</th><th>Prior Knowledge</th></tr>
+                        <tr><td>1</td><td>Merge Sort</td><td>4</td><td>Sorting Algorithms</td></tr>
+                        <tr><td>2a</td><td>Bubble Sort</td><td>4</td><td>Sorting Algorithms</td></tr>
+                        <tr><td>2b/3</td><td>Binary Search</td><td>4</td><td>Searching Algorithms</td></tr>
+                        <tr><td>4</td><td>Function with 2D Array</td><td>6</td><td>Arrays, Functions, Casting</td></tr>
+                        <tr><td>5</td><td>Casting + 2D Array Program</td><td>7</td><td>Data Types, Arrays</td></tr>
+                        <tr><td>6</td><td>2D Array Indexing</td><td>1</td><td>Arrays</td></tr>
+                        <tr><td>7</td><td>Test Data Types</td><td>4</td><td>Testing</td></tr>
+                        <tr><td>8</td><td>Test Plan Completion</td><td>4</td><td>Testing</td></tr>
+                        <tr><td>9</td><td>Algorithm Writing</td><td>6</td><td>Programming Constructs</td></tr>
+                    </table>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 General Exam Strategy</div>
+                        <p>• <strong>Read the question twice</strong> — underline key words<br>
+                        • <strong>Check the marks</strong> — they tell you how much detail is needed<br>
+                        • <strong>Show your working</strong> — partial marks are available<br>
+                        • <strong>Use the correct terminology</strong> — the examiner is looking for it</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Paper Summary</div>
+                    <ul>
+                        <li>Total marks: <strong>44</strong></li>
+                        <li>Time: <strong>60 minutes</strong> (roughly 1.3 mins per mark)</li>
+                        <li>Heavy focus on <strong>sorting/searching algorithms</strong> and <strong>2D arrays</strong></li>
+                        <li>Two 6-mark programming questions — plan before you write!</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" disabled>← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Question 1: Merge Sort →</button>
+                </div>
+            </section>
+
+            <!-- Section 2: Q1 Merge Sort -->
+            <section id="section-2">
+                <div class="card">
+                    <h2>Question 1: Merge Sort [4 marks]</h2>
+
+                    <div class="question-box">
+                        <span class="q-number">1</span>
+                        Show the steps that a merge sort would take to put the data set into ascending numerical order.
+                        <span class="marks">[4]</span>
+                        <div class="data-row">
+                            <div class="data-cell">2</div><div class="data-cell">7</div><div class="data-cell">3</div><div class="data-cell">1</div>
+                            <div class="data-cell">9</div><div class="data-cell">6</div><div class="data-cell">5</div><div class="data-cell">4</div>
+                        </div>
+                    </div>
+
+                    <div class="prior-knowledge">
+                        <div class="prior-knowledge-header">🔗 Prior Knowledge: Sorting Algorithms</div>
+                        <p>Merge sort uses <strong>divide and conquer</strong>: split the list in half repeatedly until you have single items, then <strong>merge</strong> them back together in order.</p>
+                    </div>
+
+                    <div class="approach-box">
+                        <div class="approach-header">🎯 How to Approach This</div>
+                        <ol>
+                            <li><strong>SPLIT phase:</strong> Keep halving until you have individual items</li>
+                            <li><strong>MERGE phase:</strong> Combine pairs in order, working back up</li>
+                            <li>Show <strong>every stage</strong> — the examiner needs to see your process</li>
+                            <li>4 marks = typically 4 clear stages shown</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="model-answer">
+                        <div class="model-answer-header">✓ Model Answer</div>
+                        
+                        <h4>Stage 1: Split into halves</h4>
+                        <div class="step-container">
+                            <div class="step-row">
+                                <span class="step-label">Original</span>
+                                <div class="step-data">
+                                    <span class="step-item">2</span><span class="step-item">7</span><span class="step-item">3</span><span class="step-item">1</span>
+                                    <span class="step-item">9</span><span class="step-item">6</span><span class="step-item">5</span><span class="step-item">4</span>
+                                </div>
+                            </div>
+                            <div class="step-row">
+                                <span class="step-label">Split 1</span>
+                                <div class="step-data">
+                                    <span class="step-item">2</span><span class="step-item">7</span><span class="step-item">3</span><span class="step-item">1</span>
+                                    <span style="color: var(--text-muted); margin: 0 6px;">|</span>
+                                    <span class="step-item">9</span><span class="step-item">6</span><span class="step-item">5</span><span class="step-item">4</span>
+                                </div>
+                            </div>
+                            <div class="step-row">
+                                <span class="step-label">Split 2</span>
+                                <div class="step-data">
+                                    <span class="step-item">2</span><span class="step-item">7</span>
+                                    <span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item">3</span><span class="step-item">1</span>
+                                    <span style="color: var(--text-muted); margin: 0 6px;">|</span>
+                                    <span class="step-item">9</span><span class="step-item">6</span>
+                                    <span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item">5</span><span class="step-item">4</span>
+                                </div>
+                            </div>
+                            <div class="step-row">
+                                <span class="step-label">Split 3</span>
+                                <div class="step-data">
+                                    <span class="step-item">2</span><span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item">7</span><span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item">3</span><span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item">1</span><span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item">9</span><span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item">6</span><span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item">5</span><span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item">4</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4>Stage 2: Merge back in order</h4>
+                        <div class="step-container">
+                            <div class="step-row">
+                                <span class="step-label">Merge 1</span>
+                                <div class="step-data">
+                                    <span class="step-item highlight-change">2,7</span>
+                                    <span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item highlight-change">1,3</span>
+                                    <span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item highlight-change">6,9</span>
+                                    <span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item highlight-change">4,5</span>
+                                </div>
+                            </div>
+                            <div class="step-row">
+                                <span class="step-label">Merge 2</span>
+                                <div class="step-data">
+                                    <span class="step-item highlight-change">1,2,3,7</span>
+                                    <span style="color: var(--text-muted);">|</span>
+                                    <span class="step-item highlight-change">4,5,6,9</span>
+                                </div>
+                            </div>
+                            <div class="step-row">
+                                <span class="step-label">Merge 3</span>
+                                <div class="step-data">
+                                    <span class="step-item found">1,2,3,4,5,6,7,9</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="marks-breakdown">
+                        <h4>📊 Mark Scheme Breakdown</h4>
+                        <div class="mark-item"><span class="mark-point">Shows splitting into halves</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Continues splitting to single items</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Shows merging pairs in order</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Final sorted list correct</span><span class="mark-value">1 mark</span></div>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-header">⚠️ Common Mistakes</div>
+                        <p>• Forgetting to show the split phase<br>• Not splitting all the way to single items<br>• Merging without sorting the pairs<br>• Jumping straight to the final answer</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Merge Sort Remember</div>
+                    <ul>
+                        <li><strong>Divide:</strong> Split → Split → Split (until single items)</li>
+                        <li><strong>Conquer:</strong> Merge in order → Merge → Merge (until one list)</li>
+                        <li>Always show <strong>both phases</strong> for full marks</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Overview</button>
+                    <button class="nav-btn next" onclick="nextSection()">Question 2a: Bubble Sort →</button>
+                </div>
+            </section>
+
+            <!-- Section 3: Q2a Bubble Sort -->
+            <section id="section-3">
+                <div class="card">
+                    <h2>Question 2a: Bubble Sort [4 marks]</h2>
+
+                    <div class="question-box">
+                        <span class="q-number">2(a)</span>
+                        A sample of data is shown. Show the stages of a bubble sort when applied to the data.
+                        <span class="marks">[4]</span>
+                        <div class="data-row">
+                            <div class="data-cell">crime</div><div class="data-cell">bait</div><div class="data-cell">fright</div>
+                            <div class="data-cell">victory</div><div class="data-cell">nymph</div><div class="data-cell">loose</div>
+                        </div>
+                    </div>
+
+                    <div class="prior-knowledge">
+                        <div class="prior-knowledge-header">🔗 Prior Knowledge: Bubble Sort</div>
+                        <p>Bubble sort compares <strong>adjacent pairs</strong> and swaps if they're in the wrong order. Each pass "bubbles" the largest unsorted item to the end. For strings, we compare <strong>alphabetically</strong>.</p>
+                    </div>
+
+                    <div class="approach-box">
+                        <div class="approach-header">🎯 How to Approach This</div>
+                        <ol>
+                            <li>Compare first two items — swap if needed</li>
+                            <li>Move to next pair, compare, swap if needed</li>
+                            <li>Continue until end of list = <strong>one pass complete</strong></li>
+                            <li>Show the <strong>state after each complete pass</strong></li>
+                            <li>Stop when no swaps made (or list is sorted)</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="model-answer">
+                        <div class="model-answer-header">✓ Model Answer</div>
+                        
+                        <div class="step-container">
+                            <div class="step-row">
+                                <span class="step-label">Original</span>
+                                <div class="step-data">
+                                    <span class="step-item">crime</span><span class="step-item">bait</span><span class="step-item">fright</span>
+                                    <span class="step-item">victory</span><span class="step-item">nymph</span><span class="step-item">loose</span>
+                                </div>
+                            </div>
+                            <div class="step-row">
+                                <span class="step-label">Pass 1</span>
+                                <div class="step-data">
+                                    <span class="step-item highlight-change">bait</span><span class="step-item highlight-change">crime</span><span class="step-item">fright</span>
+                                    <span class="step-item highlight-change">nymph</span><span class="step-item highlight-change">loose</span><span class="step-item">victory</span>
+                                </div>
+                            </div>
+                            <div class="step-row">
+                                <span class="step-label">Pass 2</span>
+                                <div class="step-data">
+                                    <span class="step-item">bait</span><span class="step-item">crime</span><span class="step-item">fright</span>
+                                    <span class="step-item highlight-change">loose</span><span class="step-item highlight-change">nymph</span><span class="step-item">victory</span>
+                                </div>
+                            </div>
+                            <div class="step-row">
+                                <span class="step-label">Pass 3</span>
+                                <div class="step-data">
+                                    <span class="step-item found">bait</span><span class="step-item found">crime</span><span class="step-item found">fright</span>
+                                    <span class="step-item found">loose</span><span class="step-item found">nymph</span><span class="step-item found">victory</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p style="margin-top: 12px; color: var(--text-secondary);">Pass 3 makes no swaps → list is sorted</p>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Alphabetical Comparison</div>
+                        <p>Compare the <strong>first letter</strong> of each word. If same, move to second letter, etc.<br>"bait" < "crime" because 'b' comes before 'c' in the alphabet.</p>
+                    </div>
+
+                    <div class="marks-breakdown">
+                        <h4>📊 Mark Scheme Breakdown</h4>
+                        <div class="mark-item"><span class="mark-point">Pass 1 shown correctly</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Pass 2 shown correctly</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Continues until sorted</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Final sorted order correct</span><span class="mark-value">1 mark</span></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Bubble Sort Remember</div>
+                    <ul>
+                        <li>Compare <strong>adjacent pairs</strong>, swap if wrong order</li>
+                        <li>Show state <strong>after each complete pass</strong></li>
+                        <li>Stop when <strong>no swaps</strong> made in a pass</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Question 1</button>
+                    <button class="nav-btn next" onclick="nextSection()">Question 2b/3: Binary Search →</button>
+                </div>
+            </section>
+            <!-- Section 4: Q2b/Q3 Binary Search - FIXED smaller items -->
+            <section id="section-4">
+                <div class="card">
+                    <h2>Question 2b/3: Binary Search [4 marks]</h2>
+
+                    <div class="question-box">
+                        <span class="q-number">2(b)</span>
+                        Show the stages of a binary search to find the word 'zebra' using the data shown.
+                        <span class="marks">[4]</span>
+                        <div class="data-row">
+                            <div class="data-cell" style="padding: 4px 8px; font-size: 0.85rem;">amber</div>
+                            <div class="data-cell" style="padding: 4px 8px; font-size: 0.85rem;">house</div>
+                            <div class="data-cell" style="padding: 4px 8px; font-size: 0.85rem;">kick</div>
+                            <div class="data-cell" style="padding: 4px 8px; font-size: 0.85rem;">moose</div>
+                            <div class="data-cell" style="padding: 4px 8px; font-size: 0.85rem;">orange</div>
+                            <div class="data-cell" style="padding: 4px 8px; font-size: 0.85rem;">range</div>
+                            <div class="data-cell" style="padding: 4px 8px; font-size: 0.85rem;">tent</div>
+                            <div class="data-cell" style="padding: 4px 8px; font-size: 0.85rem;">wind</div>
+                            <div class="data-cell" style="padding: 4px 8px; font-size: 0.85rem;">zebra</div>
+                        </div>
+                    </div>
+
+                    <div class="prior-knowledge">
+                        <div class="prior-knowledge-header">🔗 Prior Knowledge: Binary Search</div>
+                        <p>Binary search requires a <strong>sorted list</strong>. Find the <strong>middle item</strong>, compare to target. If target is higher, discard left half; if lower, discard right half. Repeat until found.</p>
+                    </div>
+
+                    <div class="approach-box">
+                        <div class="approach-header">🎯 How to Approach This</div>
+                        <ol>
+                            <li>Find the <strong>middle item</strong> (for 9 items: index 4 = "orange")</li>
+                            <li>Compare: Is "zebra" before or after "orange"?</li>
+                            <li>"zebra" > "orange" alphabetically → discard left half</li>
+                            <li>Repeat with remaining items</li>
+                            <li>Show <strong>which item you check</strong> and <strong>which half you discard</strong></li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="model-answer">
+                        <div class="model-answer-header">✓ Model Answer</div>
+                        
+                        <div class="step-container">
+                            <div class="step-row">
+                                <span class="step-label">Step 1</span>
+                                <div class="step-data">
+                                    <span class="step-item">amb</span>
+                                    <span class="step-item">hou</span>
+                                    <span class="step-item">kic</span>
+                                    <span class="step-item">moo</span>
+                                    <span class="step-item mid">orange</span>
+                                    <span class="step-item">ran</span>
+                                    <span class="step-item">ten</span>
+                                    <span class="step-item">win</span>
+                                    <span class="step-item">zeb</span>
+                                </div>
+                            </div>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 4px 0 12px 72px;">Middle = "orange". "zebra" > "orange" → discard left</p>
+                            
+                            <div class="step-row">
+                                <span class="step-label">Step 2</span>
+                                <div class="step-data">
+                                    <span class="step-item discarded">amb</span>
+                                    <span class="step-item discarded">hou</span>
+                                    <span class="step-item discarded">kic</span>
+                                    <span class="step-item discarded">moo</span>
+                                    <span class="step-item discarded">ora</span>
+                                    <span class="step-item">ran</span>
+                                    <span class="step-item mid">tent</span>
+                                    <span class="step-item">win</span>
+                                    <span class="step-item">zeb</span>
+                                </div>
+                            </div>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 4px 0 12px 72px;">Middle = "tent". "zebra" > "tent" → discard left</p>
+                            
+                            <div class="step-row">
+                                <span class="step-label">Step 3</span>
+                                <div class="step-data">
+                                    <span class="step-item discarded">amb</span>
+                                    <span class="step-item discarded">hou</span>
+                                    <span class="step-item discarded">kic</span>
+                                    <span class="step-item discarded">moo</span>
+                                    <span class="step-item discarded">ora</span>
+                                    <span class="step-item discarded">ran</span>
+                                    <span class="step-item discarded">ten</span>
+                                    <span class="step-item mid">wind</span>
+                                    <span class="step-item">zeb</span>
+                                </div>
+                            </div>
+                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin: 4px 0 12px 72px;">Middle = "wind". "zebra" > "wind" → discard left</p>
+                            
+                            <div class="step-row">
+                                <span class="step-label">Step 4</span>
+                                <div class="step-data">
+                                    <span class="step-item discarded">amb</span>
+                                    <span class="step-item discarded">hou</span>
+                                    <span class="step-item discarded">kic</span>
+                                    <span class="step-item discarded">moo</span>
+                                    <span class="step-item discarded">ora</span>
+                                    <span class="step-item discarded">ran</span>
+                                    <span class="step-item discarded">ten</span>
+                                    <span class="step-item discarded">win</span>
+                                    <span class="step-item found">zebra ✓</span>
+                                </div>
+                            </div>
+                            <p style="color: var(--accent-green); font-size: 0.85rem; margin: 4px 0 0 72px;">Only "zebra" remains → FOUND!</p>
+                        </div>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Finding the Middle</div>
+                        <p>For an <strong>odd</strong> number of items, middle is exact. For <strong>even</strong>, round down or up consistently.<br>
+                        9 items → middle is index 4 (5th item). Formula: middle = (low + high) DIV 2</p>
+                    </div>
+
+                    <div class="marks-breakdown">
+                        <h4>📊 Mark Scheme Breakdown</h4>
+                        <div class="mark-item"><span class="mark-point">Identifies first middle item correctly</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Discards correct half</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Continues process correctly</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Finds "zebra" and states found</span><span class="mark-value">1 mark</span></div>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-header">⚠️ Common Mistakes</div>
+                        <p>• Forgetting the list must be <strong>sorted</strong> first<br>• Discarding the wrong half<br>• Not clearly showing which item is the middle<br>• Stopping before explicitly stating the item is found</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Binary Search Remember</div>
+                    <ul>
+                        <li>List <strong>MUST be sorted</strong> first</li>
+                        <li>Find middle → Compare → Discard half → Repeat</li>
+                        <li>Much faster than linear search for large datasets</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Question 2a</button>
+                    <button class="nav-btn next" onclick="nextSection()">Question 4: Function →</button>
+                </div>
+            </section>
+
+            <!-- Section 5: Q4 Function - FIXED code formatting -->
+            <section id="section-5">
+                <div class="card">
+                    <h2>Question 4: Function with 2D Array [6 marks]</h2>
+
+                    <div class="question-box">
+                        <span class="q-number">4</span>
+                        Create a function, <code>pilotValid()</code>, that:
+                        <ul style="margin: 10px 0 10px 20px;">
+                            <li>takes a pilot code as a parameter</li>
+                            <li>uses the 2D array <code>journeys</code> to calculate hours flown</li>
+                            <li>returns "valid" if ≤9 hours or "warning" if >9 hours</li>
+                            <li>uses casting where needed</li>
+                        </ul>
+                        <span class="marks">[6]</span>
+                        <table style="margin-top: 12px;">
+                            <tr><th></th><th>[0]</th><th>[1]</th></tr>
+                            <tr><td>[0]</td><td>"SM720"</td><td>"4.5"</td></tr>
+                            <tr><td>[1]</td><td>"GC730"</td><td>"3"</td></tr>
+                            <tr><td>[2]</td><td>"JP670"</td><td>"2"</td></tr>
+                            <tr><td>[3]</td><td>"GC730"</td><td>"3.5"</td></tr>
+                            <tr><td>[4]</td><td>"CC200"</td><td>"9"</td></tr>
+                            <tr><td>[5]</td><td>"RY320"</td><td>"12"</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="prior-knowledge">
+                        <div class="prior-knowledge-header">🔗 Prior Knowledge</div>
+                        <p>• <strong>Functions:</strong> Use parameters, return values<br>• <strong>2D Arrays:</strong> Access with [row, column] indexing<br>• <strong>Casting:</strong> Converting strings to numbers (the hours are stored as strings!)</p>
+                    </div>
+
+                    <div class="approach-box">
+                        <div class="approach-header">🎯 How to Approach This</div>
+                        <ol>
+                            <li><strong>Function header:</strong> Define function with pilot code parameter</li>
+                            <li><strong>Initialise:</strong> Set total hours to 0</li>
+                            <li><strong>Loop:</strong> Go through each row in the array</li>
+                            <li><strong>Check:</strong> If pilot code matches, add hours (with casting!)</li>
+                            <li><strong>Return:</strong> "valid" if ≤9, "warning" if >9</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="model-answer">
+                        <div class="model-answer-header">✓ Model Answer (Python)</div>
+                        
+                        <div class="code-block"><span class="kw">def</span> <span class="fn">pilotValid</span>(<span class="var">pilotCode</span>):
+    <span class="var">totalHours</span> = <span class="num">0</span>
+    
+    <span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="num">6</span>):
+        <span class="kw">if</span> <span class="var">journeys</span>[<span class="var">i</span>][<span class="num">0</span>] == <span class="var">pilotCode</span>:
+            <span class="var">totalHours</span> = <span class="var">totalHours</span> + <span class="fn">float</span>(<span class="var">journeys</span>[<span class="var">i</span>][<span class="num">1</span>])
+    
+    <span class="kw">if</span> <span class="var">totalHours</span> &lt;= <span class="num">9</span>:
+        <span class="kw">return</span> <span class="str">"valid"</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="str">"warning"</span></div>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Why Casting?</div>
+                        <p>The array stores <strong>strings</strong> ("4.5", "3", etc.). You can't add strings mathematically!<br>
+                        <code>float()</code> converts the string to a decimal number.<br>
+                        Notice GC730 appears twice (rows 1 and 3) — both flights must be added!</p>
+                    </div>
+
+                    <div class="marks-breakdown">
+                        <h4>📊 Mark Scheme Breakdown</h4>
+                        <div class="mark-item"><span class="mark-point">Function definition with parameter</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Initialise total to 0</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Loop through array</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Check if pilot code matches</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Casting string to number</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Correct return values</span><span class="mark-value">1 mark</span></div>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-header">⚠️ Common Mistakes</div>
+                        <p>• Forgetting to cast strings to numbers<br>• Using <code>int()</code> when decimals are needed (use <code>float()</code>)<br>• Only finding the first match (pilot may have multiple flights)<br>• Using = instead of == for comparison</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Function Writing Checklist</div>
+                    <ul>
+                        <li>✓ Function header with parameter(s) — <code>def name(param):</code></li>
+                        <li>✓ Initialise any counters/totals</li>
+                        <li>✓ Loop through data structure — <code>for i in range():</code></li>
+                        <li>✓ Cast data types where needed — <code>float()</code>, <code>int()</code>, <code>str()</code></li>
+                        <li>✓ Return appropriate value(s)</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Question 2b/3</button>
+                    <button class="nav-btn next" onclick="nextSection()">Question 5: Casting →</button>
+                </div>
+            </section>
+            <!-- Section 6: Q5 Casting - FIXED code formatting -->
+            <section id="section-6">
+                <div class="card">
+                    <h2>Question 5: Casting + 2D Array [7 marks]</h2>
+
+                    <div class="question-box">
+                        <span class="q-number">5(i)</span>
+                        Identify the process that converts integer data to string data.
+                        <span class="marks">[1]</span>
+                    </div>
+
+                    <div class="model-answer" style="margin-top: 16px;">
+                        <div class="model-answer-header">✓ Answer</div>
+                        <p style="margin: 0; font-size: 1.1rem;"><strong>Casting</strong> (or "type conversion" / "type coercion")</p>
+                    </div>
+
+                    <div class="question-box" style="margin-top: 24px;">
+                        <span class="q-number">5(ii)</span>
+                        Write a program that:
+                        <ul style="margin: 10px 0 10px 20px;">
+                            <li>asks the user to input a date</li>
+                            <li>totals the number of seconds sensors have been activated on that date</li>
+                            <li>outputs the calculated total in an appropriate message</li>
+                        </ul>
+                        <span class="marks">[6]</span>
+                        <table style="margin-top: 12px; font-size: 0.85rem;">
+                            <tr><th>Date</th><th>SensorID</th><th>SensorType</th><th>Length</th></tr>
+                            <tr><td>05/02/2023</td><td>WS2</td><td>Window</td><td>38</td></tr>
+                            <tr><td>05/02/2023</td><td>MS1</td><td>Motion</td><td>2</td></tr>
+                            <tr><td>06/02/2023</td><td>DS3</td><td>Door</td><td>1</td></tr>
+                            <tr><td>06/02/2023</td><td>MS2</td><td>Motion</td><td>3</td></tr>
+                            <tr><td>06/02/2023</td><td>MS1</td><td>Motion</td><td>2</td></tr>
+                            <tr><td>07/02/2023</td><td>WS1</td><td>Window</td><td>24</td></tr>
+                            <tr><td>07/02/2023</td><td>DS1</td><td>Door</td><td>1</td></tr>
+                        </table>
+                        <p style="margin-top: 8px; font-size: 0.85rem;">In this table, <code>arrayEvents[1, 1]</code> contains "MS1"</p>
+                    </div>
+
+                    <div class="approach-box">
+                        <div class="approach-header">🎯 How to Approach This</div>
+                        <ol>
+                            <li><strong>Input:</strong> Ask user for date</li>
+                            <li><strong>Initialise:</strong> Set total seconds to 0</li>
+                            <li><strong>Loop:</strong> Through each row in arrayEvents</li>
+                            <li><strong>Check:</strong> If date matches, add seconds (with casting!)</li>
+                            <li><strong>Output:</strong> Display total with meaningful message</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="model-answer">
+                        <div class="model-answer-header">✓ Model Answer (Python)</div>
+                        
+                        <div class="code-block"><span class="var">userDate</span> = <span class="fn">input</span>(<span class="str">"Enter a date: "</span>)
+<span class="var">totalSeconds</span> = <span class="num">0</span>
+
+<span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="num">7</span>):
+    <span class="kw">if</span> <span class="var">arrayEvents</span>[<span class="var">i</span>][<span class="num">0</span>] == <span class="var">userDate</span>:
+        <span class="var">totalSeconds</span> = <span class="var">totalSeconds</span> + <span class="fn">int</span>(<span class="var">arrayEvents</span>[<span class="var">i</span>][<span class="num">3</span>])
+
+<span class="fn">print</span>(<span class="str">"Sensors were activated for "</span> + <span class="fn">str</span>(<span class="var">totalSeconds</span>) + <span class="str">" seconds on "</span> + <span class="var">userDate</span>)</div>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Array Indexing</div>
+                        <p>The question tells us <code>arrayEvents[1][1]</code> = "MS1".<br>
+                        So: Column 0 = Date, Column 1 = SensorID, Column 2 = SensorType, Column 3 = Length</p>
+                    </div>
+
+                    <div class="marks-breakdown">
+                        <h4>📊 Mark Scheme Breakdown</h4>
+                        <div class="mark-item"><span class="mark-point">Input date from user</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Initialise total to 0</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Loop through array</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Check date matches</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Casting + addition</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Appropriate output message</span><span class="mark-value">1 mark</span></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 2D Array Programs</div>
+                    <ul>
+                        <li>Always check the indexing hint given in the question</li>
+                        <li>Remember to <strong>cast</strong> string numbers before arithmetic</li>
+                        <li>Use meaningful output messages including the input value</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Question 4</button>
+                    <button class="nav-btn next" onclick="nextSection()">Question 6 & 7 →</button>
+                </div>
+            </section>
+
+            <!-- Section 7: Q6 & Q7 -->
+            <section id="section-7">
+                <div class="card">
+                    <h2>Question 6: 2D Array Indexing [1 mark]</h2>
+
+                    <div class="question-box">
+                        <span class="q-number">6</span>
+                        Write program code to output the number of minutes that Stuart played computer games on Friday.
+                        <span class="marks">[1]</span>
+                        <table style="margin-top: 12px; font-size: 0.85rem;">
+                            <tr><th></th><th>Stuart (0)</th><th>Wes (1)</th><th>Victoria (2)</th><th>Dan (3)</th></tr>
+                            <tr><td>Mon (0)</td><td>60</td><td>30</td><td>45</td><td>0</td></tr>
+                            <tr><td>Tue (1)</td><td>180</td><td>60</td><td>0</td><td>60</td></tr>
+                            <tr><td>Wed (2)</td><td>200</td><td>30</td><td>0</td><td>20</td></tr>
+                            <tr><td>Thu (3)</td><td>60</td><td>10</td><td>15</td><td>15</td></tr>
+                            <tr><td>Fri (4)</td><td>100</td><td>35</td><td>30</td><td>45</td></tr>
+                        </table>
+                        <p style="margin-top: 8px; font-size: 0.85rem;">Dan (column 3) on Wednesday (row 2): <code>print(minsPlayed[3,2])</code></p>
+                    </div>
+
+                    <div class="prior-knowledge">
+                        <div class="prior-knowledge-header">🔗 Prior Knowledge: 2D Array Indexing</div>
+                        <p>The example shows <code>[column, row]</code> format (Dan=3, Wed=2).<br>Stuart = column <strong>0</strong>, Friday = row <strong>4</strong></p>
+                    </div>
+
+                    <div class="model-answer">
+                        <div class="model-answer-header">✓ Answer (Python)</div>
+                        <div class="code-block"><span class="fn">print</span>(<span class="var">minsPlayed</span>[<span class="num">0</span>][<span class="num">4</span>])</div>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-header">⚠️ Watch the Order!</div>
+                        <p>The example shows <code>[column, row]</code> NOT <code>[row, column]</code>.<br>Always check the example given — different questions may use different conventions!<br>In Python, use <code>[0][4]</code> with separate brackets.</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>Question 7: Test Data Types [4 marks]</h2>
+
+                    <div class="question-box">
+                        <span class="q-number">7</span>
+                        A program accepts integer values between 1 and 100 (inclusive).<br>
+                        Tick one or more boxes to identify the type(s) of test for each example data.
+                        <span class="marks">[4]</span>
+                    </div>
+
+                    <div class="prior-knowledge">
+                        <div class="prior-knowledge-header">🔗 Prior Knowledge: Test Data Types</div>
+                        <p><strong>Normal:</strong> Typical valid data within expected range<br>
+                        <strong>Boundary:</strong> At the edges of valid/invalid (1, 100, 0, 101)<br>
+                        <strong>Erroneous:</strong> Invalid data the program should reject</p>
+                    </div>
+
+                    <div class="model-answer">
+                        <div class="model-answer-header">✓ Answers</div>
+                        <table class="answer-table">
+                            <tr><th>Test Data</th><th>Normal</th><th>Boundary</th><th>Erroneous</th></tr>
+                            <tr><td>27</td><td class="tick">✓</td><td></td><td></td></tr>
+                            <tr><td>"Hello"</td><td></td><td></td><td class="tick">✓</td></tr>
+                            <tr><td>105</td><td></td><td></td><td class="tick">✓</td></tr>
+                            <tr><td>100</td><td></td><td class="tick">✓</td><td></td></tr>
+                        </table>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Boundary vs Erroneous</div>
+                        <p><strong>100</strong> is boundary because it's the edge of valid range (1-100 inclusive).<br>
+                        <strong>105</strong> is erroneous because it's outside the valid range entirely.<br>
+                        <strong>"Hello"</strong> is erroneous — wrong data type entirely.</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Test Data Types</div>
+                    <ul>
+                        <li><strong>Normal:</strong> Valid, typical, middle-of-range values</li>
+                        <li><strong>Boundary:</strong> Edge values (min, max, just inside/outside)</li>
+                        <li><strong>Erroneous:</strong> Invalid data (wrong type, out of range)</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Question 5</button>
+                    <button class="nav-btn next" onclick="nextSection()">Question 8: Test Plan →</button>
+                </div>
+            </section>
+            <!-- Section 8: Q8 Test Plan - FIXED code formatting in question -->
+            <section id="section-8">
+                <div class="card">
+                    <h2>Question 8: Complete the Test Plan [4 marks]</h2>
+
+                    <div class="question-box">
+                        <span class="q-number">8</span>
+                        A pilot's flying experience is validated. The algorithm checks that experience is between 0 and 20 years.
+                        <span class="marks">[4]</span>
+<pre>exp = input("Enter number of years")
+if exp >= 0 and exp <= 20 then
+    print(True)
+else
+    print(False)
+endif</pre>
+                        <p>Complete this test plan:</p>
+                        <table style="margin-top: 12px;">
+                            <tr><th>Experience</th><th>Type of test</th><th>Expected output</th></tr>
+                            <tr><td>?</td><td>Normal</td><td>True</td></tr>
+                            <tr><td>20</td><td>Boundary</td><td>?</td></tr>
+                            <tr><td>32</td><td>?</td><td>?</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="approach-box">
+                        <div class="approach-header">🎯 How to Approach This</div>
+                        <ol>
+                            <li>Understand the valid range: <strong>0 to 20</strong> inclusive (outputs True)</li>
+                            <li>Anything outside outputs <strong>False</strong></li>
+                            <li>For Normal test: pick a typical valid value (e.g., 10, 15)</li>
+                            <li>For 20: it's a boundary, and it's valid (20 <= 20), so True</li>
+                            <li>For 32: it's outside the range, so erroneous, outputs False</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="model-answer">
+                        <div class="model-answer-header">✓ Completed Test Plan</div>
+                        <table class="answer-table">
+                            <tr><th>Experience</th><th>Type of test</th><th>Expected output</th></tr>
+                            <tr><td><span class="highlight-green">10</span> (or any value 1-19)</td><td>Normal</td><td>True</td></tr>
+                            <tr><td>20</td><td>Boundary</td><td><span class="highlight-green">True</span></td></tr>
+                            <tr><td>32</td><td><span class="highlight-green">Erroneous</span></td><td><span class="highlight-green">False</span></td></tr>
+                        </table>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Trace the Code!</div>
+                        <p>For each test value, trace through the IF statement:<br>
+                        <strong>exp = 20:</strong> Is 20 >= 0? Yes. Is 20 <= 20? Yes. Both true → print True<br>
+                        <strong>exp = 32:</strong> Is 32 >= 0? Yes. Is 32 <= 20? No. Not both true → print False</p>
+                    </div>
+
+                    <div class="marks-breakdown">
+                        <h4>📊 Mark Scheme</h4>
+                        <div class="mark-item"><span class="mark-point">Valid normal test data (e.g., 10)</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">20 outputs True (boundary valid)</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">32 is Erroneous type</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">32 outputs False</span><span class="mark-value">1 mark</span></div>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-header">⚠️ Common Mistakes</div>
+                        <p>• Thinking 20 outputs False (it's valid — 20 <= 20 is true!)<br>• Confusing boundary with erroneous<br>• Not reading the condition carefully (>= 0 AND <= 20)</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Test Plans</div>
+                    <ul>
+                        <li>Always <strong>trace the code</strong> with the test value</li>
+                        <li>Check boundary values carefully — are they valid or invalid?</li>
+                        <li>Remember AND means <strong>both</strong> conditions must be true</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Question 6 & 7</button>
+                    <button class="nav-btn next" onclick="nextSection()">Question 9: Algorithm →</button>
+                </div>
+            </section>
+
+            <!-- Section 9: Q9 Algorithm - FIXED code formatting -->
+            <section id="section-9">
+                <div class="card">
+                    <h2>Question 9: Algorithm Writing [6 marks]</h2>
+
+                    <div class="question-box">
+                        <span class="q-number">9</span>
+                        Write an algorithm to play a game with the following rules:
+                        <ul style="margin: 10px 0 10px 20px;">
+                            <li>the player is asked 3 addition questions</li>
+                            <li>each question asks the player to add two random whole numbers between 1 and 10 inclusive</li>
+                            <li>if the player gets the correct answer, 1 is added to their score</li>
+                            <li>at the end of the game their score is displayed</li>
+                        </ul>
+                        <span class="marks">[6]</span>
+                    </div>
+
+                    <div class="prior-knowledge">
+                        <div class="prior-knowledge-header">🔗 Prior Knowledge</div>
+                        <p>• <strong>Iteration:</strong> FOR loop for fixed number of repeats<br>
+                        • <strong>Random numbers:</strong> <code>import random</code> then <code>random.randint(1, 10)</code><br>
+                        • <strong>Selection:</strong> IF to check answer<br>
+                        • <strong>Variables:</strong> Counter for score</p>
+                    </div>
+
+                    <div class="approach-box">
+                        <div class="approach-header">🎯 How to Approach This</div>
+                        <ol>
+                            <li><strong>Import:</strong> import random</li>
+                            <li><strong>Initialise:</strong> Set score = 0</li>
+                            <li><strong>Loop 3 times:</strong> for i in range(3):</li>
+                            <li><strong>Generate:</strong> Two random numbers (1-10)</li>
+                            <li><strong>Calculate:</strong> The correct answer</li>
+                            <li><strong>Ask:</strong> Display question, get user answer</li>
+                            <li><strong>Check:</strong> IF answer correct THEN add 1 to score</li>
+                            <li><strong>Output:</strong> Display final score</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="model-answer">
+                        <div class="model-answer-header">✓ Model Answer (Python)</div>
+                        
+                        <div class="code-block"><span class="kw">import</span> <span class="var">random</span>
+
+<span class="var">score</span> = <span class="num">0</span>
+
+<span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
+    <span class="var">num1</span> = <span class="var">random</span>.<span class="fn">randint</span>(<span class="num">1</span>, <span class="num">10</span>)
+    <span class="var">num2</span> = <span class="var">random</span>.<span class="fn">randint</span>(<span class="num">1</span>, <span class="num">10</span>)
+    <span class="var">correctAnswer</span> = <span class="var">num1</span> + <span class="var">num2</span>
+    
+    <span class="fn">print</span>(<span class="str">"What is "</span> + <span class="fn">str</span>(<span class="var">num1</span>) + <span class="str">" + "</span> + <span class="fn">str</span>(<span class="var">num2</span>) + <span class="str">"?"</span>)
+    <span class="var">userAnswer</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Your answer: "</span>))
+    
+    <span class="kw">if</span> <span class="var">userAnswer</span> == <span class="var">correctAnswer</span>:
+        <span class="var">score</span> = <span class="var">score</span> + <span class="num">1</span>
+
+<span class="fn">print</span>(<span class="str">"Your final score is: "</span> + <span class="fn">str</span>(<span class="var">score</span>))</div>
+                    </div>
+
+                    <div class="exam-tip">
+                        <div class="exam-tip-header">💡 Alternative Approaches</div>
+                        <p>• Score increment: <code>score = score + 1</code> or <code>score += 1</code><br>
+                        • Print: Can use f-strings: <code>print(f"Your score is: {score}")</code><br>
+                        • Remember to <code>import random</code> at the top!</p>
+                    </div>
+
+                    <div class="marks-breakdown">
+                        <h4>📊 Mark Scheme Breakdown</h4>
+                        <div class="mark-item"><span class="mark-point">Initialise score to 0</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Loop 3 times</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Generate two random numbers (1-10)</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Ask question and get input</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Check answer and update score</span><span class="mark-value">1 mark</span></div>
+                        <div class="mark-item"><span class="mark-point">Output final score</span><span class="mark-value">1 mark</span></div>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-header">⚠️ Common Mistakes</div>
+                        <p>• Forgetting to initialise score BEFORE the loop<br>• Outputting score INSIDE the loop (should be after)<br>• Using wrong random range (must be 1-10 inclusive)<br>• Comparing strings to integers without casting</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Algorithm Writing Checklist</div>
+                    <ul>
+                        <li>✓ Read ALL bullet points — each is usually worth a mark</li>
+                        <li>✓ Initialise counters/totals BEFORE loops</li>
+                        <li>✓ Use FOR when you know how many times to repeat</li>
+                        <li>✓ Output should happen AFTER the loop ends</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Question 8</button>
+                    <button class="nav-btn next" onclick="nextSection()">Summary & Badge →</button>
+                </div>
+            </section>
+            <!-- Section 10: Summary - FIXED code formatting -->
+            <section id="section-10">
+                <div class="card">
+                    <h2>📋 Exam Summary & Final Tips</h2>
+
+                    <h3>Key Topics Covered</h3>
+                    <table class="answer-table">
+                        <tr><th>Topic</th><th>Key Points</th></tr>
+                        <tr><td><strong>Merge Sort</strong></td><td>Split → Split → Split → Merge in order</td></tr>
+                        <tr><td><strong>Bubble Sort</strong></td><td>Compare adjacent pairs, swap if needed, show each pass</td></tr>
+                        <tr><td><strong>Binary Search</strong></td><td>Find middle, discard half, repeat (list must be sorted!)</td></tr>
+                        <tr><td><strong>2D Arrays</strong></td><td>Check indexing convention [row,col] or [col,row]</td></tr>
+                        <tr><td><strong>Functions</strong></td><td>Parameters, loop through data, return values</td></tr>
+                        <tr><td><strong>Casting</strong></td><td>int(), real()/float(), str() — convert between types</td></tr>
+                        <tr><td><strong>Test Data</strong></td><td>Normal (typical), Boundary (edge), Erroneous (invalid)</td></tr>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3>🎯 Top 10 Exam Tips</h3>
+                    
+                    <div class="exam-tip">
+                        <ol style="color: var(--text-primary); margin-left: 20px;">
+                            <li style="margin-bottom: 8px;"><strong>Show your working</strong> — partial marks available</li>
+                            <li style="margin-bottom: 8px;"><strong>Check the marks</strong> — 4 marks = 4 distinct points</li>
+                            <li style="margin-bottom: 8px;"><strong>Read examples carefully</strong> — array indexing varies</li>
+                            <li style="margin-bottom: 8px;"><strong>Cast your data</strong> — strings need casting for maths</li>
+                            <li style="margin-bottom: 8px;"><strong>Initialise before loops</strong> — counters start at 0</li>
+                            <li style="margin-bottom: 8px;"><strong>Use == for comparison</strong> — single = is assignment</li>
+                            <li style="margin-bottom: 8px;"><strong>Trace through code</strong> — manually work through values</li>
+                            <li style="margin-bottom: 8px;"><strong>Boundary values matter</strong> — 0, 1, max, max+1</li>
+                            <li style="margin-bottom: 8px;"><strong>Output after loops</strong> — totals displayed AFTER loop ends</li>
+                            <li style="margin-bottom: 8px;"><strong>Clear indentation</strong> — shows code structure</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📚 Quick Reference: Python</h3>
+                    
+                    <div class="code-block"><span class="cmt"># Variables and Assignment</span>
+<span class="var">x</span> = <span class="num">5</span>
+<span class="var">name</span> = <span class="str">"Alice"</span>
+
+<span class="cmt"># Input and Output</span>
+<span class="var">answer</span> = <span class="fn">input</span>(<span class="str">"Enter value: "</span>)
+<span class="fn">print</span>(<span class="str">"Hello "</span> + <span class="var">name</span>)
+
+<span class="cmt"># Selection</span>
+<span class="kw">if</span> <span class="var">x</span> > <span class="num">10</span>:
+    <span class="fn">print</span>(<span class="str">"Big"</span>)
+<span class="kw">elif</span> <span class="var">x</span> > <span class="num">5</span>:
+    <span class="fn">print</span>(<span class="str">"Medium"</span>)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="str">"Small"</span>)
+
+<span class="cmt"># Iteration - FOR loop</span>
+<span class="kw">for</span> <span class="var">i</span> <span class="kw">in</span> <span class="fn">range</span>(<span class="num">10</span>):
+    <span class="fn">print</span>(<span class="var">i</span>)
+
+<span class="cmt"># Iteration - WHILE loop</span>
+<span class="kw">while</span> <span class="var">x</span> &lt; <span class="num">100</span>:
+    <span class="var">x</span> = <span class="var">x</span> + <span class="num">1</span>
+
+<span class="cmt"># Functions</span>
+<span class="kw">def</span> <span class="fn">add</span>(<span class="var">a</span>, <span class="var">b</span>):
+    <span class="kw">return</span> <span class="var">a</span> + <span class="var">b</span>
+
+<span class="cmt"># Casting</span>
+<span class="fn">int</span>(<span class="str">"42"</span>)       <span class="cmt"># String to integer</span>
+<span class="fn">float</span>(<span class="str">"3.14"</span>)   <span class="cmt"># String to decimal</span>
+<span class="fn">str</span>(<span class="num">100</span>)        <span class="cmt"># Number to string</span>
+
+<span class="cmt"># Random</span>
+<span class="kw">import</span> <span class="var">random</span>
+<span class="var">random</span>.<span class="fn">randint</span>(<span class="num">1</span>, <span class="num">10</span>)  <span class="cmt"># Random integer 1-10</span>
+
+<span class="cmt"># Arrays (Lists)</span>
+<span class="var">arr</span>[<span class="num">0</span>] = <span class="str">"first"</span>
+<span class="var">grid</span>[<span class="num">2</span>][<span class="num">3</span>] = <span class="num">99</span>  <span class="cmt"># 2D list</span></div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Final Checklist</div>
+                    <ul>
+                        <li>✓ Can you trace through merge sort AND bubble sort?</li>
+                        <li>✓ Can you perform a binary search step by step?</li>
+                        <li>✓ Do you know when to cast data types?</li>
+                        <li>✓ Can you write a function with parameters and return?</li>
+                        <li>✓ Do you know boundary vs erroneous test data?</li>
+                        <li>✓ Can you complete a test plan by tracing code?</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Question 9</button>
+                    <button class="nav-btn next" onclick="nextSection()">Claim Badge →</button>
+                </div>
+            </section>
+
+            <!-- Section 11: Badge Generator with verification code -->
+            <section id="section-11">
+                <div class="card">
+                    <h2>🏆 High Rotational Mock Badge</h2>
+                    <p>Congratulations on completing the exam walkthrough! Claim your badge below.</p>
+                </div>
+
+                <div class="card badge-generator">
+                    <h3>Generate Your Badge</h3>
+                    <p>Enter your name and the verification code from your exam booklet to generate your badge.</p>
+                    
+                    <div class="badge-input-group">
+                        <input type="text" class="badge-input" id="badgeNameInput" placeholder="Your name..." maxlength="25">
+                        <input type="text" class="badge-input" id="badgeCodeInput" placeholder="Verification code..." maxlength="10">
+                    </div>
+                    <button class="generate-btn" onclick="generateBadge()">Generate Badge</button>
+                    
+                    <p class="badge-error" id="badgeError">Incorrect verification code. Please check your exam booklet notes.</p>
+
+                    <div class="badge-display" id="badgeDisplay">
+                        <div class="badge-container">
+                            <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#ff006e"/>
+                                        <stop offset="50%" style="stop-color:#a855f7"/>
+                                        <stop offset="100%" style="stop-color:#00d4ff"/>
+                                    </linearGradient>
+                                    <filter id="glow">
+                                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                        <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                    </filter>
+                                </defs>
+                                
+                                <!-- Outer ring -->
+                                <circle cx="160" cy="170" r="145" fill="none" stroke="url(#badgeGradient)" stroke-width="3" opacity="0.3"/>
+                                <circle cx="160" cy="170" r="130" fill="#12121a" stroke="url(#badgeGradient)" stroke-width="4"/>
+                                <circle cx="160" cy="170" r="115" fill="none" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="8 4"/>
+                                
+                                <!-- Top banner -->
+                                <g transform="translate(160, 80)" filter="url(#glow)">
+                                    <rect x="-70" y="-14" width="140" height="28" rx="8" fill="rgba(255, 0, 110, 0.2)" stroke="#ff006e" stroke-width="1.5"/>
+                                    <text y="6" text-anchor="middle" fill="#ff006e" font-family="Outfit" font-size="11" font-weight="700">HIGH ROTATIONAL</text>
+                                </g>
+                                
+                                <!-- Central icon -->
+                                <g transform="translate(160, 140)" filter="url(#glow)">
+                                    <circle r="40" fill="rgba(0, 212, 255, 0.15)" stroke="#00d4ff" stroke-width="2"/>
+                                    <text y="12" text-anchor="middle" fill="#ffffff" font-size="36">📝</text>
+                                </g>
+                                
+                                <!-- Mock badge text -->
+                                <text x="160" y="210" text-anchor="middle" fill="#00d4ff" font-family="Outfit" font-size="11" font-weight="600" letter-spacing="2">MOCK EXAM</text>
+                                <text x="160" y="235" text-anchor="middle" fill="#ffffff" font-family="Outfit" font-size="18" font-weight="700">P2 Walkthrough</text>
+                                <text x="160" y="258" text-anchor="middle" fill="#ffffff" font-family="Outfit" font-size="14" font-weight="500">Complete</text>
+                                
+                                <!-- Date -->
+                                <text x="160" y="285" text-anchor="middle" fill="#00ff88" font-family="JetBrains Mono" font-size="12" font-weight="600" id="badgeDate">January 2026</text>
+                                
+                                <!-- Name ribbon -->
+                                <path d="M50 320 L270 320 L260 345 L270 370 L50 370 L60 345 Z" fill="url(#badgeGradient)"/>
+                                <text id="badgeStudentName" x="160" y="350" text-anchor="middle" fill="#ffffff" font-family="Outfit" font-size="16" font-weight="700">Student Name</text>
+                            </svg>
+                        </div>
+                        <p class="badge-hint">📸 Screenshot to save your badge!</p>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Summary</button>
+                    <button class="nav-btn next" disabled style="background: var(--accent-green);">Complete! 🎉</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const totalSections = 11;
+        let currentSection = 1;
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.innerHTML = '';
+            for (let i = 1; i <= totalSections; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                if (i === currentSection) dot.classList.add('active');
+                if (i < currentSection) dot.classList.add('completed');
+                dot.onclick = () => goToSection(i);
+                progressBar.appendChild(dot);
+            }
+            
+            const labels = ['Overview', 'Q1: Merge Sort', 'Q2a: Bubble Sort', 'Q2b/3: Binary Search', 
+                           'Q4: Function', 'Q5: Casting', 'Q6 & Q7', 'Q8: Test Plan', 'Q9: Algorithm', 'Summary', 'Badge'];
+            document.getElementById('progressLabel').textContent = labels[currentSection - 1];
+        }
+
+        function goToSection(num) {
+            document.getElementById(`section-${currentSection}`).classList.remove('active');
+            currentSection = num;
+            document.getElementById(`section-${currentSection}`).classList.add('active');
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextSection() {
+            if (currentSection < totalSections) goToSection(currentSection + 1);
+        }
+
+        function prevSection() {
+            if (currentSection > 1) goToSection(currentSection - 1);
+        }
+
+        // Badge generation with verification code
+        function generateBadge() {
+            const name = document.getElementById('badgeNameInput').value.trim();
+            const code = document.getElementById('badgeCodeInput').value;
+            const errorEl = document.getElementById('badgeError');
+            const displayEl = document.getElementById('badgeDisplay');
+            
+            // Reset states
+            errorEl.classList.remove('show');
+            document.getElementById('badgeNameInput').classList.remove('error');
+            document.getElementById('badgeCodeInput').classList.remove('error');
+            
+            // Validate name
+            if (!name) {
+                document.getElementById('badgeNameInput').classList.add('error');
+                return;
+            }
+            
+            // Validate code - must be exactly " cs24" (with leading space)
+            if (code !== ' cs24') {
+                document.getElementById('badgeCodeInput').classList.add('error');
+                errorEl.classList.add('show');
+                return;
+            }
+            
+            // Generate badge
+            document.getElementById('badgeStudentName').textContent = name;
+            
+            // Set current date
+            const now = new Date();
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                           'July', 'August', 'September', 'October', 'November', 'December'];
+            document.getElementById('badgeDate').textContent = months[now.getMonth()] + ' ' + now.getFullYear();
+            
+            displayEl.classList.add('show');
+        }
+
+        document.addEventListener('DOMContentLoaded', updateProgress);
+        
+        // Allow Enter key to generate badge
+        document.getElementById('badgeCodeInput')?.addEventListener('keypress', e => {
+            if (e.key === 'Enter') generateBadge();
+        });
+    </script>
+</body>
+</html>

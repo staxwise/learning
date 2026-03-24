@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Plans | GCSE Computer Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --text-muted: #555566;
+            --border-subtle: #2a2a3a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .exam-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-magenta));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .progress-container {
+            margin-top: 30px;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border-subtle);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .progress-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 12px var(--accent-cyan);
+            transform: scale(1.2);
+        }
+
+        .progress-dot.completed {
+            background: var(--accent-green);
+        }
+
+        .progress-label {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        .learning-objective {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.02));
+            border-left: 3px solid var(--accent-cyan);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .learning-objective-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-cyan);
+            margin-bottom: 6px;
+        }
+
+        .learning-objective p, .learning-objective ul {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .learning-objective ul {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .learning-objective li {
+            margin-bottom: 6px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: var(--accent-cyan);
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            margin-bottom: 14px;
+            color: var(--text-primary);
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+
+        .highlight {
+            color: var(--accent-yellow);
+            font-weight: 600;
+        }
+
+        .highlight-cyan {
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .highlight-magenta {
+            color: var(--accent-magenta);
+            font-weight: 600;
+        }
+
+        .highlight-green {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .highlight-purple {
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
+        .highlight-orange {
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+
+        /* Key Term Definition */
+        .key-term {
+            background: linear-gradient(135deg, rgba(255, 214, 10, 0.1), rgba(255, 149, 0, 0.05));
+            border: 1px solid rgba(255, 214, 10, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .key-term-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .key-term-badge {
+            background: var(--accent-yellow);
+            color: var(--bg-dark);
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .key-term-word {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-yellow);
+        }
+
+        .key-term p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Analogy Box */
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .analogy-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .analogy-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .analogy-box p + p {
+            margin-top: 10px;
+        }
+
+        /* Think About It Box */
+        .think-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.03));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .think-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-purple);
+            font-weight: 600;
+        }
+
+        .think-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Connect Box */
+        .connect-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 255, 136, 0.02));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .connect-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .connect-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Warning/Misconception Box */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.1), rgba(255, 0, 110, 0.03));
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 20px 0;
+        }
+
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: var(--accent-magenta);
+            font-weight: 600;
+        }
+
+        .warning-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Test Plan Table */
+        .test-plan-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .test-plan-table th {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .test-plan-table th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .test-plan-table th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        .test-plan-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        .test-plan-table tr:last-child td:first-child {
+            border-radius: 0 0 0 8px;
+        }
+
+        .test-plan-table tr:last-child td:last-child {
+            border-radius: 0 0 8px 0;
+        }
+
+        .test-plan-table tr:hover td {
+            background: var(--bg-card-hover);
+        }
+
+        .test-plan-table .type-normal {
+            color: var(--accent-green);
+        }
+
+        .test-plan-table .type-boundary {
+            color: var(--accent-cyan);
+        }
+
+        .test-plan-table .type-invalid {
+            color: var(--accent-orange);
+        }
+
+        .test-plan-table .type-erroneous {
+            color: var(--accent-magenta);
+        }
+
+        .test-plan-table .pass {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .test-plan-table .fail {
+            color: var(--accent-magenta);
+            font-weight: 600;
+        }
+
+        /* Data Type Cards */
+        .data-type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .data-type-card {
+            padding: 16px;
+            border-radius: 12px;
+            border: 2px solid;
+        }
+
+        .data-type-card.normal {
+            background: rgba(0, 255, 136, 0.08);
+            border-color: var(--accent-green);
+        }
+
+        .data-type-card.boundary {
+            background: rgba(0, 212, 255, 0.08);
+            border-color: var(--accent-cyan);
+        }
+
+        .data-type-card.invalid {
+            background: rgba(255, 149, 0, 0.08);
+            border-color: var(--accent-orange);
+        }
+
+        .data-type-card.erroneous {
+            background: rgba(255, 0, 110, 0.08);
+            border-color: var(--accent-magenta);
+        }
+
+        .data-type-card h4 {
+            margin-bottom: 8px;
+        }
+
+        .data-type-card.normal h4 { color: var(--accent-green); }
+        .data-type-card.boundary h4 { color: var(--accent-cyan); }
+        .data-type-card.invalid h4 { color: var(--accent-orange); }
+        .data-type-card.erroneous h4 { color: var(--accent-magenta); }
+
+        .data-type-card p {
+            color: var(--text-primary);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .data-type-card .example {
+            margin-top: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Interactive Test Plan */
+        .interactive-test-plan {
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .interactive-test-plan table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        .interactive-test-plan th {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+            color: white;
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .interactive-test-plan td {
+            padding: 8px;
+            border-bottom: 1px solid var(--border-subtle);
+            background: var(--bg-card);
+            vertical-align: middle;
+        }
+
+        .interactive-test-plan input,
+        .interactive-test-plan select {
+            width: 100%;
+            padding: 8px 10px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+        }
+
+        .interactive-test-plan input:focus,
+        .interactive-test-plan select:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        .interactive-test-plan input.correct,
+        .interactive-test-plan select.correct {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.1);
+        }
+
+        .interactive-test-plan input.incorrect,
+        .interactive-test-plan select.incorrect {
+            border-color: var(--accent-magenta);
+            background: rgba(255, 0, 110, 0.1);
+        }
+
+        .interactive-test-plan input:disabled,
+        .interactive-test-plan select:disabled {
+            opacity: 0.9;
+            cursor: not-allowed;
+        }
+
+        .interactive-test-plan .fixed-cell {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .scenario-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(255, 0, 110, 0.05));
+            border: 2px solid var(--accent-purple);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-box h4 {
+            color: var(--accent-purple);
+            margin-bottom: 10px;
+        }
+
+        .scenario-box p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .scenario-box code {
+            display: block;
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            white-space: pre-wrap;
+        }
+
+        /* Quiz Options */
+        .question-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .question-box p {
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            padding: 14px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--accent-cyan);
+            transform: translateX(4px);
+        }
+
+        .option-btn.correct {
+            border-color: var(--accent-green);
+            background: rgba(0, 255, 136, 0.15);
+        }
+
+        .option-btn.incorrect {
+            border-color: var(--accent-magenta);
+            background: rgba(255, 0, 110, 0.15);
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.85;
+        }
+
+        /* Feedback */
+        .feedback {
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-top: 14px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .feedback.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .feedback.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .feedback.error {
+            background: rgba(255, 0, 110, 0.1);
+            border: 1px solid var(--accent-magenta);
+            color: var(--accent-magenta);
+        }
+
+        /* Notes Summary */
+        .notes-summary {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.08), rgba(255, 214, 10, 0.05));
+            border: 1px solid rgba(255, 149, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 24px;
+        }
+
+        .notes-summary-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            color: var(--accent-orange);
+            font-weight: 600;
+        }
+
+        .notes-summary h4 {
+            color: var(--accent-yellow);
+            font-size: 1rem;
+            margin: 16px 0 8px 0;
+        }
+
+        .notes-summary h4:first-of-type {
+            margin-top: 0;
+        }
+
+        .notes-summary p, .notes-summary ul {
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+
+        .notes-summary ul {
+            padding-left: 20px;
+        }
+
+        .notes-summary li {
+            margin-bottom: 4px;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .control-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn.primary {
+            background: var(--accent-cyan);
+            color: var(--bg-dark);
+        }
+
+        .control-btn.primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .control-btn.secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+
+        .control-btn.secondary:hover:not(:disabled) {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .exercise-result {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .exercise-result.show {
+            display: block;
+        }
+
+        .exercise-result.success {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-green);
+        }
+
+        .exercise-result.partial {
+            background: rgba(255, 214, 10, 0.1);
+            border: 1px solid var(--accent-yellow);
+        }
+
+        .exercise-result h4 {
+            margin: 0 0 8px 0;
+        }
+
+        .exercise-result.success h4 {
+            color: var(--accent-green);
+        }
+
+        .exercise-result.partial h4 {
+            color: var(--accent-yellow);
+        }
+
+        .exercise-result p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn.prev {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+
+        .nav-btn.prev:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+        }
+
+        .nav-btn.next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Badge Generator */
+        .badge-generator {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 2px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .badge-generator h3 {
+            color: var(--accent-cyan);
+            margin-bottom: 8px;
+        }
+
+        .badge-generator > p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .badge-input-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .badge-name-input {
+            padding: 12px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            min-width: 200px;
+        }
+
+        .badge-name-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+
+        .badge-name-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .badge-display {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .badge-display.show {
+            display: flex;
+        }
+
+        .badge-container {
+            background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 60px rgba(0, 212, 255, 0.1);
+        }
+
+        .badge-hint {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 8px;
+        }
+
+        .badge-locked-message {
+            padding: 20px;
+        }
+
+        .badge-locked-message .lock-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .badge-locked-message p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .badge-progress {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .badge-progress-bar {
+            height: 12px;
+            background: var(--bg-dark);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .badge-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .badge-progress-text {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        #badgeUnlocked > p {
+            color: var(--accent-green);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            h1 {
+                font-size: 1.7rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .test-plan-table {
+                font-size: 0.8rem;
+            }
+
+            .test-plan-table th,
+            .test-plan-table td {
+                padding: 8px 6px;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+
+            .data-type-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="exam-badge">OCR GCSE J277</div>
+            <h1>Test Plans</h1>
+            <p class="subtitle">Systematic testing to ensure programs work correctly</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <p class="progress-label" id="progressLabel">Section 1 of 10</p>
+            </div>
+        </header>
+
+        <main id="content">
+            <!-- Section 1: Welcome -->
+            <section id="section-1" class="active">
+                <div class="card">
+                    <h2>🎯 What You'll Learn</h2>
+                    
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objectives</div>
+                        <p>By the end of this resource, you will be able to:</p>
+                        <ul>
+                            <li>Explain what a test plan is and why it's needed</li>
+                            <li>Identify the components of a test plan</li>
+                            <li>Select appropriate test data for different scenarios</li>
+                            <li>Create and complete test plans for given programs</li>
+                            <li>Determine expected results and pass/fail outcomes</li>
+                        </ul>
+                    </div>
+
+                    <p>Testing isn't just about running a program to see if it works. Professional developers create <strong>test plans</strong> — structured documents that ensure every part of a program is tested systematically.</p>
+
+                    <div class="connect-box">
+                        <div class="connect-box-header">
+                            🔗 Connect to What You Know
+                        </div>
+                        <p>You've already learned about <strong>types of test data</strong> — normal, boundary, invalid, and erroneous. This resource builds on that knowledge, showing you how to use these data types within a structured test plan.</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Overview</h4>
+                    <ul>
+                        <li>Test plans = structured approach to testing</li>
+                        <li>Ensures systematic coverage of all scenarios</li>
+                        <li>Uses different types of test data</li>
+                        <li>Documents expected vs actual results</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" disabled>← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 2: Why Test Plans? -->
+            <section id="section-2">
+                <div class="card">
+                    <h2>✈️ Why Do We Need Test Plans?</h2>
+
+                    <p>Imagine you've written a program that calculates exam grades. You run it once with your own marks, it works, so you assume it's finished. But what about:</p>
+
+                    <ul style="color: var(--text-secondary); padding-left: 24px; margin-bottom: 20px;">
+                        <li>What if someone enters a negative mark?</li>
+                        <li>What if they enter 100 exactly (the boundary)?</li>
+                        <li>What if they type "fifty" instead of 50?</li>
+                        <li>What if the mark is 101?</li>
+                    </ul>
+
+                    <p>Without a <strong>test plan</strong>, you might miss these cases entirely.</p>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            ✈️ Pre-Flight Checklist Analogy
+                        </div>
+                        <p>Pilots don't just start the engine and hope the plane works. Before every flight, they work through a <strong>pre-flight checklist</strong> — a systematic list of everything that must be checked.</p>
+                        <p>A test plan is your program's pre-flight checklist. It ensures you check everything systematically, not just the obvious things.</p>
+                    </div>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Key Term</span>
+                            <span class="key-term-word">Test Plan</span>
+                        </div>
+                        <p>A structured document that lists all the tests to be performed on a program, including what data to use, what results to expect, and whether each test passed or failed.</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            ⚠️ Common Mistake
+                        </div>
+                        <p>Students often test only with "normal" data that they expect to work. A good test plan deliberately includes data that <strong>should</strong> cause errors — to check the program handles them correctly.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-why">
+                        <p>Why is a test plan better than just running a program a few times?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('why', this, false)">It makes the program run faster</button>
+                            <button class="option-btn" onclick="checkAnswer('why', this, true)">It ensures systematic testing of all scenarios, not just obvious ones</button>
+                            <button class="option-btn" onclick="checkAnswer('why', this, false)">It automatically fixes bugs in the code</button>
+                            <button class="option-btn" onclick="checkAnswer('why', this, false)">It's only needed for large programs</button>
+                        </div>
+                        <div class="feedback" id="feedback-why"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Why Test Plans?</h4>
+                    <ul>
+                        <li>Ensure <strong>systematic</strong> testing (nothing missed)</li>
+                        <li>Test edge cases and error conditions</li>
+                        <li>Document what was tested and results</li>
+                        <li>Like a pilot's pre-flight checklist</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 3: Types of Test Data Recap -->
+            <section id="section-3">
+                <div class="card">
+                    <h2>🔄 Quick Recap: Types of Test Data</h2>
+
+                    <p>Before we build test plans, let's quickly recap the four types of test data you'll use:</p>
+
+                    <div class="data-type-grid">
+                        <div class="data-type-card normal">
+                            <h4>Normal Data</h4>
+                            <p>Typical, expected inputs that should be accepted.</p>
+                            <div class="example">Age (0-120): <strong>25</strong></div>
+                        </div>
+                        <div class="data-type-card boundary">
+                            <h4>Boundary Data</h4>
+                            <p>Values at the edges of valid ranges.</p>
+                            <div class="example">Age (0-120): <strong>0, 120</strong></div>
+                        </div>
+                        <div class="data-type-card invalid">
+                            <h4>Invalid Data</h4>
+                            <p>Outside range but correct data type.</p>
+                            <div class="example">Age (0-120): <strong>-5, 150</strong></div>
+                        </div>
+                        <div class="data-type-card erroneous">
+                            <h4>Erroneous Data</h4>
+                            <p>Completely wrong data type.</p>
+                            <div class="example">Age: <strong>"twenty"</strong></div>
+                        </div>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            ✈️ Pre-Flight Checklist Analogy
+                        </div>
+                        <p>Think of these as different types of checks: normal (engine sounds right), boundary (fuel exactly at minimum), invalid (fuel gauge impossible value), erroneous (water in fuel tank).</p>
+                    </div>
+
+                    <div class="think-box">
+                        <div class="think-box-header">
+                            🤔 Why Test Invalid and Erroneous Data?
+                        </div>
+                        <p>You're not testing whether wrong data works — you're testing whether your program <strong>handles</strong> wrong data correctly (showing an error message rather than crashing).</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-datatype">
+                        <p>A program accepts percentages between 0 and 100. Which is <strong>boundary</strong> test data?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('datatype', this, false)">50</button>
+                            <button class="option-btn" onclick="checkAnswer('datatype', this, true)">100</button>
+                            <button class="option-btn" onclick="checkAnswer('datatype', this, false)">-10</button>
+                            <button class="option-btn" onclick="checkAnswer('datatype', this, false)">"fifty"</button>
+                        </div>
+                        <div class="feedback" id="feedback-datatype"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Types of Test Data</h4>
+                    <ul>
+                        <li><strong>Normal:</strong> Typical valid data</li>
+                        <li><strong>Boundary:</strong> Edge of valid range</li>
+                        <li><strong>Invalid:</strong> Outside range, correct type</li>
+                        <li><strong>Erroneous:</strong> Wrong data type entirely</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 4: Structure of a Test Plan -->
+            <section id="section-4">
+                <div class="card">
+                    <h2>📋 Structure of a Test Plan</h2>
+
+                    <p>A test plan is usually presented as a table with specific columns:</p>
+
+                    <div style="overflow-x: auto;">
+                        <table class="test-plan-table">
+                            <tr>
+                                <th>Test No.</th>
+                                <th>Description</th>
+                                <th>Test Data</th>
+                                <th>Data Type</th>
+                                <th>Expected Result</th>
+                                <th>Actual Result</th>
+                                <th>Pass/Fail</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Test typical valid age</td>
+                                <td>25</td>
+                                <td class="type-normal">Normal</td>
+                                <td>Accepted, processed</td>
+                                <td>Accepted, processed</td>
+                                <td class="pass">Pass</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Test lower boundary</td>
+                                <td>0</td>
+                                <td class="type-boundary">Boundary</td>
+                                <td>Accepted</td>
+                                <td>Accepted</td>
+                                <td class="pass">Pass</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Test negative age</td>
+                                <td>-5</td>
+                                <td class="type-invalid">Invalid</td>
+                                <td>Error message</td>
+                                <td>Program crashed</td>
+                                <td class="fail">Fail</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Exam Tip</span>
+                            <span class="key-term-word">Expected vs Actual</span>
+                        </div>
+                        <p><strong>Expected Result:</strong> What <em>should</em> happen (written before testing).<br>
+                        <strong>Actual Result:</strong> What <em>did</em> happen (filled in after testing).<br>
+                        If they match = Pass. If not = Fail.</p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            ✈️ Pre-Flight Checklist Analogy
+                        </div>
+                        <p>Each row is like one item on the checklist. "Expected Result" is what should happen (fuel gauge shows full). "Actual Result" is what you observe. If they match, tick "Pass"!</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-structure">
+                        <p>When should the "Expected Result" column be filled in?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('structure', this, true)">Before running the test</button>
+                            <button class="option-btn" onclick="checkAnswer('structure', this, false)">After running the test</button>
+                            <button class="option-btn" onclick="checkAnswer('structure', this, false)">Only if the test passes</button>
+                            <button class="option-btn" onclick="checkAnswer('structure', this, false)">It doesn't matter when</button>
+                        </div>
+                        <div class="feedback" id="feedback-structure"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Test Plan Columns</h4>
+                    <ul>
+                        <li><strong>Test No.:</strong> Unique identifier</li>
+                        <li><strong>Description:</strong> What is being tested</li>
+                        <li><strong>Test Data:</strong> The actual value used</li>
+                        <li><strong>Data Type:</strong> Normal/Boundary/Invalid/Erroneous</li>
+                        <li><strong>Expected Result:</strong> What should happen (before)</li>
+                        <li><strong>Actual Result:</strong> What did happen (after)</li>
+                        <li><strong>Pass/Fail:</strong> Do expected and actual match?</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 5: Writing Good Test Descriptions -->
+            <section id="section-5">
+                <div class="card">
+                    <h2>✍️ Writing Good Test Descriptions</h2>
+
+                    <p>The description should explain <strong>what</strong> you're testing and <strong>why</strong>:</p>
+
+                    <h3>❌ Poor Descriptions</h3>
+                    <ul style="color: var(--accent-magenta); padding-left: 24px; margin-bottom: 20px;">
+                        <li>"Test the program"</li>
+                        <li>"Enter 50"</li>
+                        <li>"Check it works"</li>
+                    </ul>
+
+                    <h3>✓ Good Descriptions</h3>
+                    <ul style="color: var(--accent-green); padding-left: 24px; margin-bottom: 20px;">
+                        <li>"Test with typical valid percentage in middle of range"</li>
+                        <li>"Test upper boundary of valid range (100)"</li>
+                        <li>"Test that text input is rejected with error message"</li>
+                    </ul>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Formula</span>
+                            <span class="key-term-word">Description Template</span>
+                        </div>
+                        <p><strong>"Test [what/where] with [type of data] to check [expected behaviour]"</strong></p>
+                        <p style="margin-top: 8px;">Example: "Test age input with boundary value (0) to check minimum is accepted"</p>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            ⚠️ Exam Warning
+                        </div>
+                        <p>Vague descriptions like "test with normal data" lose marks. Be specific about <strong>what</strong> and <strong>why</strong>.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-description">
+                        <p>Which is the best description for testing 0 in a percentage input (0-100)?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('description', this, false)">"Test with 0"</button>
+                            <button class="option-btn" onclick="checkAnswer('description', this, false)">"Test boundary"</button>
+                            <button class="option-btn" onclick="checkAnswer('description', this, true)">"Test lower boundary (0) to check minimum valid percentage is accepted"</button>
+                            <button class="option-btn" onclick="checkAnswer('description', this, false)">"Check program works with zero"</button>
+                        </div>
+                        <div class="feedback" id="feedback-description"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Good Test Descriptions</h4>
+                    <ul>
+                        <li>Be <strong>specific</strong> about what you're testing</li>
+                        <li>Explain <strong>why</strong> you chose that data</li>
+                        <li>Mention the <strong>type</strong> of test</li>
+                        <li>Template: "Test [what] with [data type] to check [behaviour]"</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 6: Expected Results -->
+            <section id="section-6">
+                <div class="card">
+                    <h2>🎯 Determining Expected Results</h2>
+
+                    <p>The expected result describes what <strong>should</strong> happen:</p>
+
+                    <table class="test-plan-table">
+                        <tr>
+                            <th>Data Type</th>
+                            <th>Expected Result (typically)</th>
+                        </tr>
+                        <tr>
+                            <td class="type-normal">Normal</td>
+                            <td>Data accepted, correct output produced</td>
+                        </tr>
+                        <tr>
+                            <td class="type-boundary">Boundary</td>
+                            <td>Data accepted (if in range), correct output for edge case</td>
+                        </tr>
+                        <tr>
+                            <td class="type-invalid">Invalid</td>
+                            <td>Data rejected, error message displayed</td>
+                        </tr>
+                        <tr>
+                            <td class="type-erroneous">Erroneous</td>
+                            <td>Data rejected, error asking for correct type</td>
+                        </tr>
+                    </table>
+
+                    <div class="think-box">
+                        <div class="think-box-header">
+                            🤔 Be Specific!
+                        </div>
+                        <p>Don't write "Error message" — write what it should say: "Error: Enter a number between 0 and 100"</p>
+                        <p style="margin-top: 10px;">Don't write "Accepted" — write what happens: "Grade 'B' displayed"</p>
+                    </div>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            ✈️ Pre-Flight Checklist Analogy
+                        </div>
+                        <p>Pilots know exactly what "normal" looks like. "Fuel gauge" isn't just "check" — it's "needle in green zone, at least 75%". Your expected results should be equally specific.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-expected">
+                        <p>What should the expected result be for entering "abc" into an age field?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('expected', this, false)">Program crashes</button>
+                            <button class="option-btn" onclick="checkAnswer('expected', this, false)">Data is accepted</button>
+                            <button class="option-btn" onclick="checkAnswer('expected', this, true)">Error message displayed, asking for a valid number</button>
+                            <button class="option-btn" onclick="checkAnswer('expected', this, false)">No expected result needed</button>
+                        </div>
+                        <div class="feedback" id="feedback-expected"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Expected Results</h4>
+                    <ul>
+                        <li><strong>Normal/Boundary:</strong> Data accepted + specific output</li>
+                        <li><strong>Invalid/Erroneous:</strong> Data rejected + error message</li>
+                        <li>Be <strong>specific</strong> about what should happen</li>
+                        <li>Written <strong>before</strong> testing</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 7: Complete Example -->
+            <section id="section-7">
+                <div class="card">
+                    <h2>📝 Complete Test Plan Example</h2>
+
+                    <div class="scenario-box">
+                        <h4>📋 Scenario</h4>
+                        <p>A program calculates grades from percentage marks (0-100):</p>
+                        <code>70-100 = A    60-69 = B    50-59 = C    40-49 = D    0-39 = F</code>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="test-plan-table">
+                            <tr>
+                                <th>No.</th>
+                                <th>Description</th>
+                                <th>Data</th>
+                                <th>Type</th>
+                                <th>Expected</th>
+                                <th>Actual</th>
+                                <th>P/F</th>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>Test typical B grade mark</td>
+                                <td>65</td>
+                                <td class="type-normal">Normal</td>
+                                <td>Grade "B"</td>
+                                <td>Grade "B"</td>
+                                <td class="pass">Pass</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Test lower boundary (0)</td>
+                                <td>0</td>
+                                <td class="type-boundary">Boundary</td>
+                                <td>Grade "F"</td>
+                                <td>Grade "F"</td>
+                                <td class="pass">Pass</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Test upper boundary (100)</td>
+                                <td>100</td>
+                                <td class="type-boundary">Boundary</td>
+                                <td>Grade "A"</td>
+                                <td>Grade "A"</td>
+                                <td class="pass">Pass</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Test grade boundary (69/70)</td>
+                                <td>70</td>
+                                <td class="type-boundary">Boundary</td>
+                                <td>Grade "A"</td>
+                                <td>Grade "A"</td>
+                                <td class="pass">Pass</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Test above maximum (101)</td>
+                                <td>101</td>
+                                <td class="type-invalid">Invalid</td>
+                                <td>Error message</td>
+                                <td>Error shown</td>
+                                <td class="pass">Pass</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Test negative value</td>
+                                <td>-5</td>
+                                <td class="type-invalid">Invalid</td>
+                                <td>Error message</td>
+                                <td>Crash</td>
+                                <td class="fail">Fail</td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Test text input</td>
+                                <td>"fifty"</td>
+                                <td class="type-erroneous">Erroneous</td>
+                                <td>Error message</td>
+                                <td>Error shown</td>
+                                <td class="pass">Pass</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            ⚠️ Notice Test 6
+                        </div>
+                        <p>Test 6 <strong>failed</strong> — the program crashed instead of showing an error. The test plan found a bug that needs fixing!</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-example">
+                        <p>Which additional boundary would be important to test?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('example', this, false)">55 (middle of C grade)</button>
+                            <button class="option-btn" onclick="checkAnswer('example', this, true)">69 (boundary between B and A)</button>
+                            <button class="option-btn" onclick="checkAnswer('example', this, false)">200 (far above maximum)</button>
+                            <button class="option-btn" onclick="checkAnswer('example', this, false)">Grade boundaries don't need testing</button>
+                        </div>
+                        <div class="feedback" id="feedback-example"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Notes for This Section
+                    </div>
+                    <h4>Test Plan Coverage</h4>
+                    <ul>
+                        <li>At least one <strong>normal</strong> test</li>
+                        <li><strong>Both</strong> range boundaries (0 and 100)</li>
+                        <li><strong>Grade boundaries</strong> where categories change</li>
+                        <li><strong>Invalid</strong> data (outside range)</li>
+                        <li><strong>Erroneous</strong> data (wrong type)</li>
+                        <li>Failed tests identify bugs!</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 8: Interactive Practice -->
+            <section id="section-8">
+                <div class="card">
+                    <h2>🎮 Practice: Complete the Test Plan</h2>
+
+                    <div class="scenario-box">
+                        <h4>📋 Scenario</h4>
+                        <p>Cinema tickets based on age (valid: 0-120):</p>
+                        <code>0-15 = Child (£5)    16-64 = Adult (£10)    65-120 = Senior (£7)</code>
+                    </div>
+
+                    <p>Fill in the missing cells:</p>
+
+                    <div class="interactive-test-plan">
+                        <table>
+                            <tr>
+                                <th>No.</th>
+                                <th>Description</th>
+                                <th>Data</th>
+                                <th>Type</th>
+                                <th>Expected Result</th>
+                            </tr>
+                            <tr>
+                                <td class="fixed-cell">1</td>
+                                <td class="fixed-cell">Test typical adult age</td>
+                                <td><select id="practice-1-data"><option value="">Select...</option><option value="35">35</option><option value="8">8</option><option value="65">65</option><option value="121">121</option></select></td>
+                                <td class="fixed-cell">Normal</td>
+                                <td class="fixed-cell">Adult ticket (£10)</td>
+                            </tr>
+                            <tr>
+                                <td class="fixed-cell">2</td>
+                                <td class="fixed-cell">Test lower boundary (0)</td>
+                                <td class="fixed-cell">0</td>
+                                <td><select id="practice-2-type"><option value="">Select...</option><option value="normal">Normal</option><option value="boundary">Boundary</option><option value="invalid">Invalid</option><option value="erroneous">Erroneous</option></select></td>
+                                <td class="fixed-cell">Child ticket (£5)</td>
+                            </tr>
+                            <tr>
+                                <td class="fixed-cell">3</td>
+                                <td class="fixed-cell">Test child/adult boundary</td>
+                                <td class="fixed-cell">16</td>
+                                <td class="fixed-cell">Boundary</td>
+                                <td><select id="practice-3-expected"><option value="">Select...</option><option value="child">Child ticket (£5)</option><option value="adult">Adult ticket (£10)</option><option value="senior">Senior ticket (£7)</option><option value="error">Error message</option></select></td>
+                            </tr>
+                            <tr>
+                                <td class="fixed-cell">4</td>
+                                <td><select id="practice-4-desc"><option value="">Select...</option><option value="senior-boundary">Test adult/senior boundary (65)</option><option value="normal-senior">Test typical senior age</option><option value="invalid-high">Test above maximum age</option><option value="boundary-low">Test lower boundary (0)</option></select></td>
+                                <td class="fixed-cell">65</td>
+                                <td class="fixed-cell">Boundary</td>
+                                <td class="fixed-cell">Senior ticket (£7)</td>
+                            </tr>
+                            <tr>
+                                <td class="fixed-cell">5</td>
+                                <td class="fixed-cell">Test above maximum</td>
+                                <td><select id="practice-5-data"><option value="">Select...</option><option value="120">120</option><option value="100">100</option><option value="125">125</option><option value="64">64</option></select></td>
+                                <td class="fixed-cell">Invalid</td>
+                                <td class="fixed-cell">Error message</td>
+                            </tr>
+                            <tr>
+                                <td class="fixed-cell">6</td>
+                                <td class="fixed-cell">Test text input</td>
+                                <td class="fixed-cell">"old"</td>
+                                <td><select id="practice-6-type"><option value="">Select...</option><option value="normal">Normal</option><option value="boundary">Boundary</option><option value="invalid">Invalid</option><option value="erroneous">Erroneous</option></select></td>
+                                <td class="fixed-cell">Error message</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="controls">
+                        <button class="control-btn primary" onclick="checkPractice()">Check Answers</button>
+                        <button class="control-btn secondary" onclick="resetPractice()">Reset</button>
+                    </div>
+
+                    <div class="exercise-result" id="practiceResult">
+                        <h4 id="practiceResultTitle"></h4>
+                        <p id="practiceResultMessage"></p>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 9: Summary -->
+            <section id="section-9">
+                <div class="card">
+                    <h2>📋 Summary</h2>
+
+                    <h3>The 7 Columns</h3>
+                    <ol style="color: var(--text-secondary); padding-left: 24px; margin-bottom: 20px;">
+                        <li><strong style="color: var(--text-primary);">Test Number</strong> — Unique identifier</li>
+                        <li><strong style="color: var(--text-primary);">Description</strong> — What and why</li>
+                        <li><strong style="color: var(--text-primary);">Test Data</strong> — The value</li>
+                        <li><strong style="color: var(--text-primary);">Data Type</strong> — Normal/Boundary/Invalid/Erroneous</li>
+                        <li><strong style="color: var(--text-primary);">Expected Result</strong> — What should happen</li>
+                        <li><strong style="color: var(--text-primary);">Actual Result</strong> — What did happen</li>
+                        <li><strong style="color: var(--text-primary);">Pass/Fail</strong> — Match?</li>
+                    </ol>
+
+                    <h3>Good Coverage Includes</h3>
+                    <ul style="color: var(--text-secondary); padding-left: 24px; margin-bottom: 20px;">
+                        <li>At least one <span class="highlight-green">normal</span> value</li>
+                        <li><span class="highlight-cyan">Boundary</span> values at both ends</li>
+                        <li><span class="highlight-cyan">Boundary</span> values between categories</li>
+                        <li><span class="highlight-orange">Invalid</span> values outside range</li>
+                        <li><span class="highlight-magenta">Erroneous</span> wrong data type</li>
+                    </ul>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">
+                            ✈️ Pre-Flight Checklist — Final Thought
+                        </div>
+                        <p>Just like pilots never skip their checklist, good developers never skip their test plan. It's the difference between hoping your program works and <strong>knowing</strong> it works.</p>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">
+                        📝 Complete Summary for Your Notes
+                    </div>
+                    
+                    <h4>Test Plan Purpose</h4>
+                    <ul>
+                        <li>Systematic testing of all scenarios</li>
+                        <li>Documents expected vs actual results</li>
+                        <li>Identifies bugs before release</li>
+                    </ul>
+
+                    <h4>The 7 Columns</h4>
+                    <ul>
+                        <li>Test No., Description, Test Data, Data Type</li>
+                        <li>Expected Result, Actual Result, Pass/Fail</li>
+                    </ul>
+
+                    <h4>Types of Test Data</h4>
+                    <ul>
+                        <li><strong>Normal:</strong> Typical valid inputs</li>
+                        <li><strong>Boundary:</strong> Edge of valid ranges</li>
+                        <li><strong>Invalid:</strong> Outside range, correct type</li>
+                        <li><strong>Erroneous:</strong> Wrong data type</li>
+                    </ul>
+
+                    <h4>Good Coverage</h4>
+                    <ul>
+                        <li>Normal values + all boundaries</li>
+                        <li>Category boundaries (grade changes)</li>
+                        <li>Invalid and erroneous data</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 10: Final Assessment -->
+            <section id="section-10">
+                <div class="card">
+                    <h2>✅ Final Assessment</h2>
+
+                    <!-- Question 1 -->
+                    <div class="question-box" id="q1">
+                        <p><strong>Question 1:</strong> What is the main purpose of a test plan?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">To make programs run faster</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, true)">To systematically test all aspects of a program</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">To write the program code</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(1, this, false)">To design the user interface</button>
+                        </div>
+                        <div class="feedback" id="feedback1"></div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="question-box" id="q2">
+                        <p><strong>Question 2:</strong> For a field accepting ages 18-65, which is a boundary value?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">40</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, true)">65</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">70</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(2, this, false)">"eighteen"</button>
+                        </div>
+                        <div class="feedback" id="feedback2"></div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="question-box" id="q3">
+                        <p><strong>Question 3:</strong> What should the expected result be for erroneous data?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">The data should be accepted</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">The program should crash</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, true)">An error message should be displayed</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(3, this, false)">No expected result is needed</button>
+                        </div>
+                        <div class="feedback" id="feedback3"></div>
+                    </div>
+
+                    <!-- Question 4 -->
+                    <div class="question-box" id="q4">
+                        <p><strong>Question 4:</strong> A test shows Expected: "Error message" and Actual: "Program crashed". What is the result?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">Pass — both indicate an error occurred</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, true)">Fail — the program should show a message, not crash</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">Pass — crashing is acceptable for bad data</button>
+                            <button class="option-btn" onclick="checkFinalAnswer(4, this, false)">Cannot determine from this information</button>
+                        </div>
+                        <div class="feedback" id="feedback4"></div>
+                    </div>
+
+                    <div id="quizResult" style="display: none; margin-top: 20px; padding: 20px; background: var(--bg-card); border-radius: 12px; text-align: center;">
+                        <h3 id="quizScore"></h3>
+                        <p id="quizMessage" style="color: var(--text-secondary);"></p>
+                    </div>
+                </div>
+
+                <!-- Final Test Plan Exercise -->
+                <div class="card">
+                    <h3>📝 Create a Test Plan</h3>
+                    
+                    <div class="scenario-box">
+                        <h4>📋 Scenario</h4>
+                        <p>Password validator: passwords must be 8-20 characters long.</p>
+                    </div>
+
+                    <div class="interactive-test-plan">
+                        <table>
+                            <tr>
+                                <th>No.</th>
+                                <th>Description</th>
+                                <th>Data</th>
+                                <th>Type</th>
+                                <th>Expected Result</th>
+                            </tr>
+                            <tr>
+                                <td class="fixed-cell">1</td>
+                                <td><select id="final-1-desc"><option value="">Select...</option><option value="normal">Test typical valid password length</option><option value="boundary">Test minimum password length</option><option value="invalid">Test password that is too short</option><option value="erroneous">Test with numbers only</option></select></td>
+                                <td class="fixed-cell">password123</td>
+                                <td class="fixed-cell">Normal</td>
+                                <td><select id="final-1-expected"><option value="">Select...</option><option value="accepted">Password accepted</option><option value="rejected">Password rejected</option><option value="error-short">Error: Too short</option><option value="error-long">Error: Too long</option></select></td>
+                            </tr>
+                            <tr>
+                                <td class="fixed-cell">2</td>
+                                <td class="fixed-cell">Test minimum length (8)</td>
+                                <td><select id="final-2-data"><option value="">Select...</option><option value="pass1234">pass1234</option><option value="pass123">pass123</option><option value="password1">password1</option><option value="short">short</option></select></td>
+                                <td><select id="final-2-type"><option value="">Select...</option><option value="normal">Normal</option><option value="boundary">Boundary</option><option value="invalid">Invalid</option><option value="erroneous">Erroneous</option></select></td>
+                                <td class="fixed-cell">Password accepted</td>
+                            </tr>
+                            <tr>
+                                <td class="fixed-cell">3</td>
+                                <td class="fixed-cell">Test maximum length (20)</td>
+                                <td><select id="final-3-data"><option value="">Select...</option><option value="abcdefghijklmnopqrst">abcdefghijklmnopqrst</option><option value="abcdefghijklmnopqrstuvwxyz">abcdefghijklmnopqrstuvwxyz</option><option value="password12345">password12345</option><option value="abcdefghij">abcdefghij</option></select></td>
+                                <td class="fixed-cell">Boundary</td>
+                                <td><select id="final-3-expected"><option value="">Select...</option><option value="accepted">Password accepted</option><option value="rejected">Password rejected</option><option value="error-short">Error: Too short</option><option value="error-long">Error: Too long</option></select></td>
+                            </tr>
+                            <tr>
+                                <td class="fixed-cell">4</td>
+                                <td><select id="final-4-desc"><option value="">Select...</option><option value="invalid-short">Test password below minimum length</option><option value="boundary-min">Test minimum boundary (8 chars)</option><option value="normal">Test typical valid password</option><option value="erroneous">Test with special characters</option></select></td>
+                                <td class="fixed-cell">short</td>
+                                <td><select id="final-4-type"><option value="">Select...</option><option value="normal">Normal</option><option value="boundary">Boundary</option><option value="invalid">Invalid</option><option value="erroneous">Erroneous</option></select></td>
+                                <td class="fixed-cell">Error: Too short</td>
+                            </tr>
+                            <tr>
+                                <td class="fixed-cell">5</td>
+                                <td class="fixed-cell">Test too long (21+ chars)</td>
+                                <td><select id="final-5-data"><option value="">Select...</option><option value="thispasswordiswaytoolong">thispasswordiswaytoolong</option><option value="exactly20characters!">exactly20characters!</option><option value="password">password</option><option value="12345678">12345678</option></select></td>
+                                <td class="fixed-cell">Invalid</td>
+                                <td><select id="final-5-expected"><option value="">Select...</option><option value="accepted">Password accepted</option><option value="rejected">Password rejected</option><option value="error-short">Error: Too short</option><option value="error-long">Error: Too long</option></select></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="controls">
+                        <button class="control-btn primary" onclick="checkFinalExercise()">Check Answers</button>
+                        <button class="control-btn secondary" onclick="resetFinalExercise()">Reset</button>
+                    </div>
+
+                    <div class="exercise-result" id="finalExerciseResult">
+                        <h4 id="finalExerciseTitle"></h4>
+                        <p id="finalExerciseMessage"></p>
+                    </div>
+                </div>
+
+                <!-- Badge Generator -->
+                <div class="card badge-generator">
+                    <h3>🏆 Claim Your Badge</h3>
+                    
+                    <div id="badgeLocked">
+                        <div class="badge-locked-message">
+                            <span class="lock-icon">🔒</span>
+                            <p>Complete all questions to unlock your badge!</p>
+                            <div class="badge-progress">
+                                <div class="badge-progress-bar">
+                                    <div class="badge-progress-fill" id="badgeProgressFill"></div>
+                                </div>
+                                <span class="badge-progress-text" id="badgeProgressText">0 / 12 questions answered</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="badgeUnlocked" style="display: none;">
+                        <p>🎉 All questions completed! Enter your name:</p>
+                        
+                        <div class="badge-input-group">
+                            <input type="text" class="badge-name-input" id="badgeNameInput" placeholder="Enter your name..." maxlength="30">
+                            <button class="control-btn primary" onclick="generateBadge()">Generate Badge</button>
+                        </div>
+
+                        <div class="badge-display" id="badgeDisplay">
+                            <div class="badge-container">
+                                <svg width="320" height="380" viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="badgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#00d4ff"/>
+                                            <stop offset="100%" style="stop-color:#a855f7"/>
+                                        </linearGradient>
+                                        <filter id="glow">
+                                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                        </filter>
+                                    </defs>
+                                    
+                                    <circle cx="160" cy="160" r="145" fill="none" stroke="url(#badgeGradient)" stroke-width="3" opacity="0.3"/>
+                                    <circle cx="160" cy="160" r="130" fill="#12121a" stroke="url(#badgeGradient)" stroke-width="4"/>
+                                    <circle cx="160" cy="160" r="115" fill="none" stroke="#2a2a3a" stroke-width="1" stroke-dasharray="8 4"/>
+                                    
+                                    <!-- Clipboard Icon -->
+                                    <g transform="translate(160, 115)" filter="url(#glow)">
+                                        <rect x="-35" y="-10" width="70" height="85" rx="6" fill="#1a1a2e" stroke="#00d4ff" stroke-width="2"/>
+                                        <rect x="-15" y="-20" width="30" height="16" rx="3" fill="#1a1a2e" stroke="#a855f7" stroke-width="2"/>
+                                        <line x1="-22" y1="10" x2="22" y2="10" stroke="#00ff88" stroke-width="2"/>
+                                        <path d="M-25,10 L-22,13 L-18,7" stroke="#00ff88" stroke-width="2" fill="none"/>
+                                        <line x1="-22" y1="30" x2="22" y2="30" stroke="#00ff88" stroke-width="2"/>
+                                        <path d="M-25,30 L-22,33 L-18,27" stroke="#00ff88" stroke-width="2" fill="none"/>
+                                        <line x1="-22" y1="50" x2="22" y2="50" stroke="#ff006e" stroke-width="2"/>
+                                        <path d="M-25,47 L-18,53 M-25,53 L-18,47" stroke="#ff006e" stroke-width="2" fill="none"/>
+                                    </g>
+                                    
+                                    <text x="160" y="215" text-anchor="middle" fill="#00d4ff" font-family="Outfit, sans-serif" font-size="11" font-weight="600" letter-spacing="2">GCSE COMPUTER SCIENCE</text>
+                                    <text x="160" y="245" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-size="18" font-weight="700">Test Plans</text>
+                                    <text id="badgeScoreText" x="160" y="273" text-anchor="middle" fill="#00ff88" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700">12/12 correct</text>
+                                    
+                                    <path d="M60 295 L260 295 L250 315 L260 335 L60 335 L70 315 Z" fill="url(#badgeGradient)"/>
+                                    <text id="badgeStudentName" x="160" y="320" text-anchor="middle" fill="#ffffff" font-family="Outfit, sans-serif" font-size="16" font-weight="700">Student Name</text>
+                                </svg>
+                            </div>
+                            <p class="badge-hint">📸 Screenshot to save your badge!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" disabled style="background: var(--accent-green);">Complete! 🎉</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Navigation
+        const totalSections = 10;
+        let currentSection = 1;
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.innerHTML = '';
+            for (let i = 1; i <= totalSections; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot';
+                if (i === currentSection) dot.classList.add('active');
+                if (i < currentSection) dot.classList.add('completed');
+                dot.onclick = () => goToSection(i);
+                progressBar.appendChild(dot);
+            }
+            document.getElementById('progressLabel').textContent = `Section ${currentSection} of ${totalSections}`;
+        }
+
+        function goToSection(num) {
+            document.getElementById(`section-${currentSection}`).classList.remove('active');
+            currentSection = num;
+            document.getElementById(`section-${currentSection}`).classList.add('active');
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextSection() { if (currentSection < totalSections) goToSection(currentSection + 1); }
+        function prevSection() { if (currentSection > 1) goToSection(currentSection - 1); }
+
+        // Section Self-Checks
+        const sectionFeedback = {
+            'why': { correct: "Correct! A test plan ensures systematic testing of all scenarios.", incorrect: "Think about what 'systematic' means — organised, covering everything." },
+            'datatype': { correct: "Correct! 100 is on the boundary of the valid range (0-100).", incorrect: "Boundary data is at the edge. For 0-100, boundaries are 0 and 100." },
+            'structure': { correct: "Correct! Expected results are written before testing — your prediction.", incorrect: "You need to know what should happen before you can check if it did." },
+            'description': { correct: "Correct! Specific about what (boundary), value (0), and why (check minimum).", incorrect: "Good descriptions explain what, the value, and why you chose it." },
+            'expected': { correct: "Correct! Erroneous data should show an error message, not crash.", incorrect: "Programs should handle wrong data gracefully with error messages." },
+            'example': { correct: "Correct! 69 is the boundary between B and A grades.", incorrect: "Grade boundaries (39/40, 49/50, 59/60, 69/70) are important to test." }
+        };
+
+        function checkAnswer(section, button, isCorrect) {
+            const questionBox = button.closest('.question-box');
+            if (questionBox.classList.contains('answered')) return;
+            questionBox.classList.add('answered');
+            
+            questionBox.querySelectorAll('.option-btn').forEach(opt => {
+                opt.disabled = true;
+                if (opt === button) opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+            });
+            
+            const feedback = document.getElementById(`feedback-${section}`);
+            feedback.textContent = isCorrect ? sectionFeedback[section].correct : sectionFeedback[section].incorrect;
+            feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+            
+            answeredQuestions.add('section-' + section);
+            if (isCorrect) correctAnswers.add('section-' + section);
+            updateBadgeProgress();
+        }
+
+        // Practice Exercise
+        const practiceAnswers = {
+            'practice-1-data': '35',
+            'practice-2-type': 'boundary',
+            'practice-3-expected': 'adult',
+            'practice-4-desc': 'senior-boundary',
+            'practice-5-data': '125',
+            'practice-6-type': 'erroneous'
+        };
+        let practiceLocked = false;
+
+        function checkPractice() {
+            if (practiceLocked) return;
+            practiceLocked = true;
+            let correctCount = 0;
+
+            Object.keys(practiceAnswers).forEach(id => {
+                const el = document.getElementById(id);
+                const isCorrect = el.value === practiceAnswers[id];
+
+                el.disabled = true;
+                el.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (isCorrect) correctCount++;
+            });
+
+            const result = document.getElementById('practiceResult');
+            result.classList.add('show');
+            result.className = correctCount === 6 ? 'exercise-result show success' : 'exercise-result show partial';
+            document.getElementById('practiceResultTitle').textContent = correctCount === 6 ? '✓ Perfect!' : `${correctCount}/6 correct`;
+            document.getElementById('practiceResultMessage').textContent = correctCount === 6 ? 'You understand test plans!' : 'Check the red answers.';
+
+            answeredQuestions.add('practice');
+            if (correctCount === 6) correctAnswers.add('practice');
+            updateBadgeProgress();
+        }
+
+        function resetPractice() {
+            practiceLocked = false;
+            Object.keys(practiceAnswers).forEach(id => {
+                const el = document.getElementById(id);
+                el.disabled = false;
+                el.value = '';
+                el.classList.remove('correct', 'incorrect');
+            });
+            document.getElementById('practiceResult').classList.remove('show');
+            answeredQuestions.delete('practice');
+            correctAnswers.delete('practice');
+            updateBadgeProgress();
+        }
+
+        // Final Quiz
+        let finalAnswered = new Set();
+        let finalCorrect = 0;
+        const finalFeedback = {
+            1: { correct: "Correct! Test plans systematically test all program aspects.", incorrect: "Test plans are about testing — checking programs work correctly." },
+            2: { correct: "Correct! 65 is on the boundary of the valid range.", incorrect: "Boundaries are at the edges: 18 and 65 for this range." },
+            3: { correct: "Correct! Error messages, not crashes.", incorrect: "Programs should handle errors gracefully." },
+            4: { correct: "Correct! Crashing is not the same as showing an error message.", incorrect: "Expected and actual must match exactly for a pass." }
+        };
+
+        function checkFinalAnswer(qNum, button, isCorrect) {
+            if (finalAnswered.has(qNum)) return;
+            finalAnswered.add(qNum);
+            
+            button.parentElement.querySelectorAll('.option-btn').forEach(opt => {
+                opt.disabled = true;
+                if (opt === button) opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+            });
+            
+            const feedback = document.getElementById(`feedback${qNum}`);
+            feedback.textContent = isCorrect ? finalFeedback[qNum].correct : finalFeedback[qNum].incorrect;
+            feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+            
+            if (isCorrect) finalCorrect++;
+            answeredQuestions.add('final-' + qNum);
+            if (isCorrect) correctAnswers.add('final-' + qNum);
+            updateBadgeProgress();
+            
+            if (finalAnswered.size === 4) {
+                const result = document.getElementById('quizResult');
+                result.style.display = 'block';
+                document.getElementById('quizScore').textContent = `${finalCorrect}/4 Correct`;
+                document.getElementById('quizScore').style.color = finalCorrect >= 3 ? 'var(--accent-green)' : 'var(--accent-yellow)';
+                document.getElementById('quizMessage').textContent = finalCorrect === 4 ? 'Excellent!' : 'Review missed questions.';
+            }
+        }
+
+        // Final Exercise
+        const finalExAnswers = {
+            'final-1-desc': 'normal',
+            'final-1-expected': 'accepted',
+            'final-2-data': 'pass1234',
+            'final-2-type': 'boundary',
+            'final-3-data': 'abcdefghijklmnopqrst',
+            'final-3-expected': 'accepted',
+            'final-4-desc': 'invalid-short',
+            'final-4-type': 'invalid',
+            'final-5-data': 'thispasswordiswaytoolong',
+            'final-5-expected': 'error-long'
+        };
+        let finalExLocked = false;
+
+        function checkFinalExercise() {
+            if (finalExLocked) return;
+            finalExLocked = true;
+            let correctCount = 0;
+
+            Object.keys(finalExAnswers).forEach(id => {
+                const el = document.getElementById(id);
+                const isCorrect = el.value === finalExAnswers[id];
+
+                el.disabled = true;
+                el.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (isCorrect) correctCount++;
+            });
+
+            const result = document.getElementById('finalExerciseResult');
+            result.classList.add('show');
+            result.className = correctCount === 10 ? 'exercise-result show success' : 'exercise-result show partial';
+            document.getElementById('finalExerciseTitle').textContent = correctCount === 10 ? '✓ Perfect!' : `${correctCount}/10 correct`;
+            document.getElementById('finalExerciseMessage').textContent = correctCount >= 8 ? 'Great work!' : 'Review the red answers.';
+
+            answeredQuestions.add('finalExercise');
+            if (correctCount === 10) correctAnswers.add('finalExercise');
+            updateBadgeProgress();
+        }
+
+        function resetFinalExercise() {
+            finalExLocked = false;
+            Object.keys(finalExAnswers).forEach(id => {
+                const el = document.getElementById(id);
+                el.disabled = false;
+                el.value = '';
+                el.classList.remove('correct', 'incorrect');
+            });
+            document.getElementById('finalExerciseResult').classList.remove('show');
+            answeredQuestions.delete('finalExercise');
+            correctAnswers.delete('finalExercise');
+            updateBadgeProgress();
+        }
+
+        // Badge System
+        const totalQuestions = 12; // 6 section + 1 practice + 4 final + 1 final exercise
+        const answeredQuestions = new Set();
+        const correctAnswers = new Set();
+
+        function updateBadgeProgress() {
+            const count = answeredQuestions.size;
+            const pct = (count / totalQuestions) * 100;
+            document.getElementById('badgeProgressFill').style.width = pct + '%';
+            document.getElementById('badgeProgressText').textContent = `${count} / ${totalQuestions} questions answered`;
+            if (count >= totalQuestions) unlockBadge();
+        }
+
+        function unlockBadge() {
+            document.getElementById('badgeLocked').style.display = 'none';
+            document.getElementById('badgeUnlocked').style.display = 'block';
+        }
+
+        function generateBadge() {
+            const name = document.getElementById('badgeNameInput').value.trim();
+            if (!name) {
+                document.getElementById('badgeNameInput').style.borderColor = 'var(--accent-magenta)';
+                setTimeout(() => document.getElementById('badgeNameInput').style.borderColor = '', 2000);
+                return;
+            }
+            document.getElementById('badgeStudentName').textContent = name;
+            document.getElementById('badgeScoreText').textContent = `${correctAnswers.size}/${totalQuestions} correct`;
+            document.getElementById('badgeDisplay').classList.add('show');
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgress();
+            updateBadgeProgress();
+            document.getElementById('badgeNameInput')?.addEventListener('keypress', e => { if (e.key === 'Enter') generateBadge(); });
+        });
+    </script>
+</body>
+</html>

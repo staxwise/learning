@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local & Global Variables | GCSE Computer Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a25;
+            --accent-cyan: #00d4ff;
+            --accent-magenta: #ff006e;
+            --accent-yellow: #ffd60a;
+            --accent-green: #00ff88;
+            --accent-orange: #ff9500;
+            --accent-purple: #a855f7;
+            --text-primary: #ffffff;
+            --text-secondary: #8888aa;
+            --text-muted: #555566;
+            --border-subtle: #2a2a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; line-height: 1.7; }
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        header { text-align: center; margin-bottom: 50px; }
+
+        .exam-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-magenta));
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle { color: var(--text-secondary); font-size: 1.1rem; font-weight: 300; }
+
+        /* Progress Dots */
+        .progress-container { margin-top: 30px; }
+        .progress-bar { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
+        .progress-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: var(--border-subtle);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .progress-dot.active {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 12px var(--accent-cyan);
+            transform: scale(1.2);
+        }
+        .progress-dot.completed { background: var(--accent-green); }
+        .progress-label { margin-top: 12px; font-size: 0.9rem; color: var(--text-muted); }
+
+        section { display: none; animation: fadeIn 0.5s ease; }
+        section.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 20px;
+        }
+
+        .learning-objective {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.02));
+            border-left: 3px solid var(--accent-cyan);
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            border-radius: 0 12px 12px 0;
+        }
+        .learning-objective-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-cyan); margin-bottom: 6px; }
+        .learning-objective ul { color: var(--text-primary); margin-top: 10px; padding-left: 20px; }
+        .learning-objective li { margin-bottom: 6px; }
+
+        h2 { font-size: 1.5rem; margin-bottom: 16px; color: var(--accent-cyan); }
+        h3 { font-size: 1.15rem; margin-bottom: 14px; color: var(--text-primary); margin-top: 20px; }
+        p { color: var(--text-secondary); margin-bottom: 14px; }
+
+        .highlight { color: var(--accent-yellow); font-weight: 600; }
+        .highlight-cyan { color: var(--accent-cyan); font-weight: 600; }
+        .highlight-green { color: var(--accent-green); font-weight: 600; }
+        .highlight-purple { color: var(--accent-purple); font-weight: 600; }
+        .highlight-orange { color: var(--accent-orange); font-weight: 600; }
+        .highlight-magenta { color: var(--accent-magenta); font-weight: 600; }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+
+        /* Code Block with Syntax Highlighting */
+        .code-block {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            line-height: 1.8;
+            white-space: pre;
+        }
+        .code-block .keyword { color: var(--accent-magenta); }
+        .code-block .function { color: var(--accent-yellow); }
+        .code-block .variable { color: var(--accent-cyan); }
+        .code-block .global-var { color: var(--accent-orange); }
+        .code-block .local-var { color: var(--accent-green); }
+        .code-block .string { color: var(--accent-green); }
+        .code-block .number { color: var(--accent-purple); }
+        .code-block .comment { color: var(--text-muted); font-style: italic; }
+        .code-block .operator { color: var(--accent-yellow); }
+        .code-block .builtin { color: var(--accent-magenta); }
+
+        /* Key Term Box */
+        .key-term {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(168, 85, 247, 0.05));
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 16px 0;
+        }
+        .key-term.local {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.02));
+            border-color: rgba(0, 255, 136, 0.4);
+        }
+        .key-term.global {
+            background: linear-gradient(135deg, rgba(255, 149, 0, 0.1), rgba(255, 149, 0, 0.02));
+            border-color: rgba(255, 149, 0, 0.4);
+        }
+        .key-term-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .key-term-badge {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+        .key-term.local .key-term-badge { background: var(--accent-green); color: #0a0a0f; }
+        .key-term.global .key-term-badge { background: var(--accent-orange); color: #0a0a0f; }
+        .key-term-word { font-weight: 600; color: var(--accent-cyan); }
+        .key-term.local .key-term-word { color: var(--accent-green); }
+        .key-term.global .key-term-word { color: var(--accent-orange); }
+        .key-term p { margin: 0; color: var(--text-secondary); }
+
+        /* Comparison Cards */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 24px 0;
+        }
+        @media (max-width: 700px) {
+            .comparison-grid { grid-template-columns: 1fr; }
+        }
+        .comparison-card {
+            background: var(--bg-dark);
+            border-radius: 14px;
+            padding: 24px;
+            border: 2px solid var(--border-subtle);
+            transition: all 0.3s ease;
+        }
+        .comparison-card:hover {
+            transform: translateY(-3px);
+        }
+        .comparison-card.local {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+        .comparison-card.global {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 20px rgba(255, 149, 0, 0.1);
+        }
+        .comparison-card .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+        .comparison-card .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .comparison-card.local .card-title { color: var(--accent-green); }
+        .comparison-card.global .card-title { color: var(--accent-orange); }
+        .comparison-card .card-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Scope Visualiser */
+        .scope-visual {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+        .scope-visual-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .scope-program {
+            border: 3px dashed var(--accent-orange);
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+        }
+        .scope-program-label {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--bg-dark);
+            padding: 0 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-orange);
+        }
+        .scope-global-vars {
+            background: rgba(255, 149, 0, 0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-orange);
+        }
+        .scope-function {
+            border: 3px solid var(--accent-green);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .scope-function:last-child { margin-bottom: 0; }
+        .scope-function-label {
+            position: absolute;
+            top: -12px;
+            left: 16px;
+            background: var(--bg-dark);
+            padding: 0 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+        .scope-local-vars {
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-green);
+        }
+
+        /* Analogy Box */
+        .analogy-box {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(168, 85, 247, 0.02));
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 16px 0;
+        }
+        .analogy-box-header {
+            font-weight: 600;
+            color: var(--accent-purple);
+            margin-bottom: 8px;
+        }
+        .analogy-box p { margin: 0; }
+
+        /* Warning/Tip Boxes */
+        .warning-box {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.1), rgba(255, 0, 110, 0.02));
+            border: 1px solid rgba(255, 0, 110, 0.3);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 16px 0;
+        }
+        .warning-box-header {
+            font-weight: 600;
+            color: var(--accent-magenta);
+            margin-bottom: 8px;
+        }
+        .warning-box p { margin: 0; }
+
+        .tip-box {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 136, 0.02));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 16px 0;
+        }
+        .tip-box-header {
+            font-weight: 600;
+            color: var(--accent-green);
+            margin-bottom: 8px;
+        }
+        .tip-box p { margin: 0; }
+
+        /* Advantages List */
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 20px 0;
+        }
+        @media (max-width: 700px) {
+            .advantages-grid { grid-template-columns: 1fr; }
+        }
+        .advantage-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 18px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            border: 1px solid var(--border-subtle);
+        }
+        .advantage-item.local { border-left: 3px solid var(--accent-green); }
+        .advantage-item.global { border-left: 3px solid var(--accent-orange); }
+        .advantage-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .advantage-text {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+        .advantage-text strong {
+            color: var(--text-primary);
+        }
+
+        /* Question Box */
+        .question-box {
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+        .question-box p { color: var(--text-primary); margin-bottom: 16px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            padding: 14px 20px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+        .option-btn:hover:not(:disabled) { border-color: var(--accent-cyan); transform: translateX(4px); }
+        .option-btn.correct { border-color: var(--accent-green); background: rgba(0, 255, 136, 0.15); }
+        .option-btn.incorrect { border-color: var(--accent-magenta); background: rgba(255, 0, 110, 0.15); }
+        .option-btn:disabled { cursor: not-allowed; }
+
+        .feedback {
+            margin-top: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: none;
+        }
+        .feedback.show { display: block; }
+        .feedback.success { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--accent-green); color: var(--accent-green); }
+        .feedback.error { background: rgba(255, 0, 110, 0.1); border: 1px solid var(--accent-magenta); color: var(--accent-magenta); }
+
+        /* Interactive Code Demo */
+        .code-demo {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .code-demo-header {
+            background: var(--bg-card);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .code-demo-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .code-demo-btn {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .code-demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+        .code-demo-body {
+            padding: 20px;
+        }
+        .code-demo-output {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            min-height: 60px;
+        }
+        .code-demo-output .output-line {
+            margin-bottom: 6px;
+            color: var(--text-secondary);
+        }
+        .code-demo-output .output-line:last-child { margin-bottom: 0; }
+        .code-demo-output .output-success { color: var(--accent-green); }
+        .code-demo-output .output-error { color: var(--accent-magenta); }
+        .code-demo-output .output-value { color: var(--accent-cyan); }
+
+        /* Classifier Exercise */
+        .classifier-container { margin: 20px 0; }
+        .classifier-instruction {
+            background: var(--bg-dark);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .classifier-items { display: flex; flex-direction: column; gap: 10px; }
+        .classifier-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: var(--bg-dark);
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .classifier-item:hover { border-color: var(--accent-cyan); }
+        .classifier-item.locked { cursor: not-allowed; }
+        .classifier-item.correct { border-color: var(--accent-green); background: rgba(0, 255, 136, 0.1); }
+        .classifier-item.incorrect { border-color: var(--accent-magenta); background: rgba(255, 0, 110, 0.1); }
+        .classifier-badge {
+            min-width: 80px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .classifier-badge.none { background: var(--border-subtle); color: var(--text-muted); }
+        .classifier-badge.local { background: var(--accent-green); color: var(--bg-dark); }
+        .classifier-badge.global { background: var(--accent-orange); color: var(--bg-dark); }
+        .classifier-text { flex: 1; color: var(--text-primary); font-size: 0.95rem; }
+        .classifier-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Controls */
+        .controls { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+        .control-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .control-btn.primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: white;
+        }
+        .control-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3); }
+        .control-btn.secondary {
+            background: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            color: var(--text-secondary);
+        }
+        .control-btn.secondary:hover { border-color: var(--accent-cyan); color: var(--text-primary); }
+
+        /* Exercise Result */
+        .exercise-result {
+            margin-top: 16px;
+            padding: 16px 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        .exercise-result.show { display: block; }
+        .exercise-result.success { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--accent-green); }
+        .exercise-result.partial { background: rgba(255, 214, 10, 0.1); border: 1px solid var(--accent-yellow); }
+        .exercise-result h4 { color: var(--accent-green); margin-bottom: 6px; }
+        .exercise-result.partial h4 { color: var(--accent-yellow); }
+        .exercise-result p { color: var(--text-secondary); margin: 0; }
+
+        /* Notes Summary */
+        .notes-summary {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(168, 85, 247, 0.05));
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-top: 24px;
+        }
+        .notes-summary-header {
+            font-weight: 600;
+            color: var(--accent-cyan);
+            margin-bottom: 12px;
+        }
+        .notes-summary h4 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 8px;
+            margin-top: 14px;
+        }
+        .notes-summary h4:first-of-type { margin-top: 0; }
+        .notes-summary ul {
+            padding-left: 20px;
+            color: var(--text-secondary);
+        }
+        .notes-summary li { margin-bottom: 4px; }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 16px;
+        }
+        .nav-btn {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 14px 28px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 10px;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .nav-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+        .nav-btn.next {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            color: white;
+        }
+        .nav-btn.next:hover {
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Badge Section */
+        .badge-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .badge-locked {
+            opacity: 0.5;
+        }
+        .badge-container {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        .badge-ring {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        .badge-unlocked .badge-ring {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(0, 255, 136, 0.4); }
+            50% { box-shadow: 0 0 60px rgba(0, 255, 136, 0.6); }
+        }
+        .badge-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .badge-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .badge-progress {
+            margin-top: 20px;
+        }
+        .badge-progress-bar {
+            height: 8px;
+            background: var(--border-subtle);
+            border-radius: 4px;
+            overflow: hidden;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .badge-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .badge-progress-text {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Badge Generation */
+        .badge-input-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .badge-input {
+            padding: 12px 16px;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            width: 200px;
+        }
+        .badge-input:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+        }
+        .badge-generate-btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+            border: none;
+            border-radius: 8px;
+            color: #0a0a0f;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .badge-generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Generated Badge Display */
+        .badge-display {
+            display: none;
+            margin-top: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+            border: 2px solid var(--accent-green);
+            border-radius: 16px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .badge-display.show { display: block; animation: fadeIn 0.5s ease; }
+        .badge-display-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+        }
+        .badge-display-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 4px;
+        }
+        .badge-display-name {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .badge-display-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .badge-display-score {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="exam-badge">OCR J277 · Section 2.2</div>
+            <h1>Local & Global Variables</h1>
+            <p class="subtitle">Understanding variable scope in modular programs</p>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-dot active" onclick="goToSection(1)"></div>
+                    <div class="progress-dot" onclick="goToSection(2)"></div>
+                    <div class="progress-dot" onclick="goToSection(3)"></div>
+                    <div class="progress-dot" onclick="goToSection(4)"></div>
+                    <div class="progress-dot" onclick="goToSection(5)"></div>
+                    <div class="progress-dot" onclick="goToSection(6)"></div>
+                    <div class="progress-dot" onclick="goToSection(7)"></div>
+                    <div class="progress-dot" onclick="goToSection(8)"></div>
+                </div>
+                <p class="progress-label">Section <span id="currentSection">1</span> of 8</p>
+            </div>
+        </header>
+
+        <main>
+            <!-- Section 1: Introduction -->
+            <section id="section-1" class="active">
+                <div class="card">
+                    <div class="learning-objective">
+                        <div class="learning-objective-label">Learning Objectives</div>
+                        <ul>
+                            <li>Define local and global variables</li>
+                            <li>Explain the concept of scope</li>
+                            <li>Identify when to use each type</li>
+                            <li>Describe the advantages of local and global variables</li>
+                        </ul>
+                    </div>
+
+                    <h2>🎯 Why Does It Matter Where You Create a Variable?</h2>
+
+                    <p>When programs grow beyond a few lines, we organise code into <span class="highlight">subroutines</span> (functions and procedures). This creates a question: <strong>where can each variable be accessed from?</strong></p>
+
+                    <p>This concept is called <span class="highlight-cyan">scope</span>, and understanding it prevents bugs that can be incredibly frustrating to track down.</p>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">🏠 Think of it like this...</div>
+                        <p>Imagine a house with multiple rooms. Some items belong in <strong>one specific room</strong> (your toothbrush stays in the bathroom). Other items are <strong>shared throughout the house</strong> (the WiFi password works everywhere). Variables work the same way in programs.</p>
+                    </div>
+
+                    <h3>What You'll Learn</h3>
+                    <p>By the end of this resource, you'll be able to look at any variable in a program and immediately know:</p>
+                    <ul style="color: var(--text-secondary); padding-left: 24px; margin-bottom: 16px;">
+                        <li>Where it was created (its <strong>declaration point</strong>)</li>
+                        <li>Where it can be used (its <strong>scope</strong>)</li>
+                        <li>Why the programmer chose that approach</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <div></div>
+                    <button class="nav-btn next" onclick="nextSection()">Let's Begin →</button>
+                </div>
+            </section>
+
+            <!-- Section 2: What is Scope? -->
+            <section id="section-2">
+                <div class="card">
+                    <h2>🔍 What is Scope?</h2>
+
+                    <div class="key-term">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Definition</span>
+                            <span class="key-term-word">Scope</span>
+                        </div>
+                        <p>The region of a program where a variable can be accessed. A variable only exists within its scope.</p>
+                    </div>
+
+                    <p>When you create a variable, it doesn't automatically become available everywhere in your program. The <span class="highlight-cyan">location where you declare it</span> determines where it can be used.</p>
+
+                    <div class="scope-visual">
+                        <div class="scope-visual-title">Visualising Scope</div>
+                        <div class="scope-program">
+                            <span class="scope-program-label">🌍 Main Program</span>
+                            <div class="scope-global-vars">
+                                gameTitle = "Space Quest"  ← visible everywhere
+                            </div>
+                            <div class="scope-function">
+                                <span class="scope-function-label">📦 calculateScore()</span>
+                                <div class="scope-local-vars">
+                                    bonus = 50  ← only visible here
+                                </div>
+                            </div>
+                            <div class="scope-function">
+                                <span class="scope-function-label">📦 displayMenu()</span>
+                                <div class="scope-local-vars">
+                                    menuChoice = 1  ← only visible here
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>Notice how <code>gameTitle</code> sits outside the functions — it's accessible from anywhere. But <code>bonus</code> and <code>menuChoice</code> are trapped inside their own functions.</p>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">⚠️ Key Point</div>
+                        <p>If you try to use a variable outside its scope, you'll get an error. The program won't recognise the variable name because it "doesn't exist" in that context.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-scope">
+                        <p>What does "scope" refer to in programming?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('scope', this, false)">How fast a variable can be accessed</button>
+                            <button class="option-btn" onclick="checkAnswer('scope', this, true)">The region of a program where a variable can be used</button>
+                            <button class="option-btn" onclick="checkAnswer('scope', this, false)">The amount of memory a variable uses</button>
+                            <button class="option-btn" onclick="checkAnswer('scope', this, false)">The data type of a variable</button>
+                        </div>
+                        <div class="feedback" id="feedback-scope"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 3: Local Variables -->
+            <section id="section-3">
+                <div class="card">
+                    <h2>📍 Local Variables</h2>
+
+                    <div class="key-term local">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Definition</span>
+                            <span class="key-term-word">Local Variable</span>
+                        </div>
+                        <p>A variable declared inside a subroutine. It can <strong>only</strong> be accessed within that subroutine and is destroyed when the subroutine ends.</p>
+                    </div>
+
+                    <p>Local variables are <span class="highlight-green">contained</span> — they exist only for as long as their function is running. Once the function finishes, the variable is deleted from memory.</p>
+
+                    <div class="code-block"><span class="keyword">def</span> <span class="function">calculateDiscount</span>(<span class="variable">price</span>):
+    <span class="local-var">discountRate</span> <span class="operator">=</span> <span class="number">0.15</span>        <span class="comment"># Local variable</span>
+    <span class="local-var">savings</span> <span class="operator">=</span> <span class="variable">price</span> <span class="operator">*</span> <span class="local-var">discountRate</span>  <span class="comment"># Local variable</span>
+    <span class="keyword">return</span> <span class="local-var">savings</span>
+
+<span class="variable">result</span> <span class="operator">=</span> <span class="function">calculateDiscount</span>(<span class="number">100</span>)
+<span class="builtin">print</span>(<span class="variable">result</span>)              <span class="comment"># Works: 15.0</span>
+<span class="builtin">print</span>(<span class="local-var">discountRate</span>)        <span class="comment"># ERROR! discountRate doesn't exist here</span></div>
+
+                    <p>In this example, <code>discountRate</code> and <code>savings</code> are <span class="highlight-green">local</span> to the <code>calculateDiscount</code> function. They're created when the function runs and destroyed when it ends.</p>
+
+                    <h3>Why Use Local Variables?</h3>
+                    <div class="advantages-grid">
+                        <div class="advantage-item local">
+                            <span class="advantage-icon">💾</span>
+                            <span class="advantage-text"><strong>Memory efficient</strong> — only exists while needed, then automatically cleaned up</span>
+                        </div>
+                        <div class="advantage-item local">
+                            <span class="advantage-icon">🔒</span>
+                            <span class="advantage-text"><strong>Protected</strong> — can't be accidentally changed by other parts of the program</span>
+                        </div>
+                        <div class="advantage-item local">
+                            <span class="advantage-icon">🐛</span>
+                            <span class="advantage-text"><strong>Easier debugging</strong> — if something's wrong, you know exactly where to look</span>
+                        </div>
+                        <div class="advantage-item local">
+                            <span class="advantage-icon">♻️</span>
+                            <span class="advantage-text"><strong>Reusable</strong> — subroutines can be copied to other programs without conflicts</span>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <div class="tip-box-header">💡 Best Practice</div>
+                        <p>Use local variables as your <strong>default choice</strong>. Only use global variables when you have a specific reason to share data across the entire program.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-local">
+                        <p>What happens to a local variable when its subroutine finishes executing?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('local', this, false)">It becomes a global variable</button>
+                            <button class="option-btn" onclick="checkAnswer('local', this, false)">It stays in memory forever</button>
+                            <button class="option-btn" onclick="checkAnswer('local', this, true)">It is deleted from memory</button>
+                            <button class="option-btn" onclick="checkAnswer('local', this, false)">It gets saved to a file</button>
+                        </div>
+                        <div class="feedback" id="feedback-local"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Local Variables</h4>
+                    <ul>
+                        <li>Declared <strong>inside</strong> a subroutine</li>
+                        <li>Only accessible within that subroutine</li>
+                        <li>Created when subroutine starts, destroyed when it ends</li>
+                        <li>Default choice for most situations</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 4: Global Variables -->
+            <section id="section-4">
+                <div class="card">
+                    <h2>🌍 Global Variables</h2>
+
+                    <div class="key-term global">
+                        <div class="key-term-header">
+                            <span class="key-term-badge">Definition</span>
+                            <span class="key-term-word">Global Variable</span>
+                        </div>
+                        <p>A variable declared outside all subroutines, usually at the start of a program. It can be accessed from <strong>anywhere</strong> in the program.</p>
+                    </div>
+
+                    <p>Global variables are like <span class="highlight-orange">shared resources</span> — every part of your program can read and (with care) modify them.</p>
+
+                    <div class="code-block"><span class="global-var">playerLives</span> <span class="operator">=</span> <span class="number">3</span>                <span class="comment"># Global variable</span>
+<span class="global-var">highScore</span> <span class="operator">=</span> <span class="number">0</span>                  <span class="comment"># Global variable</span>
+
+<span class="keyword">def</span> <span class="function">loseLife</span>():
+    <span class="keyword">global</span> <span class="global-var">playerLives</span>       <span class="comment"># Tell Python we mean the global one</span>
+    <span class="global-var">playerLives</span> <span class="operator">=</span> <span class="global-var">playerLives</span> <span class="operator">-</span> <span class="number">1</span>
+
+<span class="keyword">def</span> <span class="function">checkGameOver</span>():
+    <span class="keyword">if</span> <span class="global-var">playerLives</span> <span class="operator">==</span> <span class="number">0</span>:     <span class="comment"># Can read global without 'global' keyword</span>
+        <span class="builtin">print</span>(<span class="string">"Game Over!"</span>)
+
+<span class="function">loseLife</span>()
+<span class="builtin">print</span>(<span class="global-var">playerLives</span>)              <span class="comment"># Output: 2</span></div>
+
+                    <p>Notice the <code>global</code> keyword in Python. When you want to <strong>modify</strong> a global variable inside a function, you must declare your intention with this keyword.</p>
+
+                    <h3>Why Use Global Variables?</h3>
+                    <div class="advantages-grid">
+                        <div class="advantage-item global">
+                            <span class="advantage-icon">🔗</span>
+                            <span class="advantage-text"><strong>Shared access</strong> — multiple subroutines can use the same data</span>
+                        </div>
+                        <div class="advantage-item global">
+                            <span class="advantage-icon">📝</span>
+                            <span class="advantage-text"><strong>Single declaration</strong> — define once, use everywhere</span>
+                        </div>
+                        <div class="advantage-item global">
+                            <span class="advantage-icon">🔧</span>
+                            <span class="advantage-text"><strong>Configuration values</strong> — perfect for settings that apply program-wide</span>
+                        </div>
+                        <div class="advantage-item global">
+                            <span class="advantage-icon">📊</span>
+                            <span class="advantage-text"><strong>Program state</strong> — useful for tracking things like scores, lives, or login status</span>
+                        </div>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">⚠️ Warning: Use Sparingly</div>
+                        <p>Global variables can make programs harder to debug because <strong>any part of the code could change them</strong>. When something goes wrong, you have to search the entire program to find the problem. Use them only when genuinely needed.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-global">
+                        <p>Where should a global variable be declared?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('global', this, false)">Inside a function</button>
+                            <button class="option-btn" onclick="checkAnswer('global', this, false)">At the end of the program</button>
+                            <button class="option-btn" onclick="checkAnswer('global', this, true)">Outside all subroutines, typically at the start</button>
+                            <button class="option-btn" onclick="checkAnswer('global', this, false)">Inside a loop</button>
+                        </div>
+                        <div class="feedback" id="feedback-global"></div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Notes for This Section</div>
+                    <h4>Global Variables</h4>
+                    <ul>
+                        <li>Declared <strong>outside</strong> all subroutines</li>
+                        <li>Accessible from anywhere in the program</li>
+                        <li>Exists for the entire program runtime</li>
+                        <li>In Python, use <code>global</code> keyword to modify inside functions</li>
+                        <li>Use sparingly — can make debugging harder</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 5: Side-by-Side Comparison -->
+            <section id="section-5">
+                <div class="card">
+                    <h2>⚖️ Local vs Global: The Key Differences</h2>
+
+                    <p>Let's put everything together and see how these two types of variables compare:</p>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card local">
+                            <div class="card-icon">📍</div>
+                            <div class="card-title">Local Variable</div>
+                            <div class="card-desc">Lives inside a subroutine. Private, temporary, and self-contained.</div>
+                        </div>
+                        <div class="comparison-card global">
+                            <div class="card-icon">🌍</div>
+                            <div class="card-title">Global Variable</div>
+                            <div class="card-desc">Lives in the main program. Shared, persistent, and accessible everywhere.</div>
+                        </div>
+                    </div>
+
+                    <table style="width: 100%; border-collapse: collapse; margin: 24px 0;">
+                        <thead>
+                            <tr>
+                                <th style="padding: 14px; text-align: left; border-bottom: 2px solid var(--border-subtle); color: var(--text-primary);">Aspect</th>
+                                <th style="padding: 14px; text-align: left; border-bottom: 2px solid var(--border-subtle); color: var(--accent-green);">Local</th>
+                                <th style="padding: 14px; text-align: left; border-bottom: 2px solid var(--border-subtle); color: var(--accent-orange);">Global</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">Declared</td>
+                                <td style="padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">Inside a subroutine</td>
+                                <td style="padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">Outside all subroutines</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">Accessible from</td>
+                                <td style="padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">That subroutine only</td>
+                                <td style="padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">Anywhere in program</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">Lifetime</td>
+                                <td style="padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">While subroutine runs</td>
+                                <td style="padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">Entire program runtime</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">Memory</td>
+                                <td style="padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">Released when done</td>
+                                <td style="padding: 12px 14px; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">Held throughout</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px 14px; color: var(--text-secondary);">Best for</td>
+                                <td style="padding: 12px 14px; color: var(--text-secondary);">Temporary calculations</td>
+                                <td style="padding: 12px 14px; color: var(--text-secondary);">Shared state/settings</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="analogy-box">
+                        <div class="analogy-box-header">🎒 Backpack vs Locker Analogy</div>
+                        <p><strong>Local variables</strong> are like items in your backpack during a class — you bring what you need, use it, then pack it away when class ends. <strong>Global variables</strong> are like items in your school locker — available all day, any class can access them, but anyone could also mess with them.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-compare">
+                        <p>A variable needs to track the player's score across multiple functions in a game. Which type should you use?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('compare', this, false)">Local variable — it's more memory efficient</button>
+                            <button class="option-btn" onclick="checkAnswer('compare', this, true)">Global variable — multiple functions need to access and update it</button>
+                            <button class="option-btn" onclick="checkAnswer('compare', this, false)">It doesn't matter which type you use</button>
+                            <button class="option-btn" onclick="checkAnswer('compare', this, false)">Neither — scores should be hardcoded</button>
+                        </div>
+                        <div class="feedback" id="feedback-compare"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 6: Interactive Code Demo -->
+            <section id="section-6">
+                <div class="card">
+                    <h2>🎮 See It In Action</h2>
+
+                    <p>Watch how local and global variables behave differently when we run this code:</p>
+
+                    <div class="code-demo">
+                        <div class="code-demo-header">
+                            <span class="code-demo-title">Interactive Demo</span>
+                            <button class="code-demo-btn" onclick="runDemo()">▶ Run Code</button>
+                        </div>
+                        <div class="code-demo-body">
+                            <div class="code-block"><span class="global-var">counter</span> <span class="operator">=</span> <span class="number">0</span>                   <span class="comment"># Global</span>
+
+<span class="keyword">def</span> <span class="function">incrementGlobal</span>():
+    <span class="keyword">global</span> <span class="global-var">counter</span>
+    <span class="global-var">counter</span> <span class="operator">=</span> <span class="global-var">counter</span> <span class="operator">+</span> <span class="number">1</span>
+    <span class="builtin">print</span>(<span class="string">"Global counter:"</span>, <span class="global-var">counter</span>)
+
+<span class="keyword">def</span> <span class="function">useLocal</span>():
+    <span class="local-var">counter</span> <span class="operator">=</span> <span class="number">100</span>            <span class="comment"># Local (different variable!)</span>
+    <span class="builtin">print</span>(<span class="string">"Local counter:"</span>, <span class="local-var">counter</span>)
+
+<span class="function">incrementGlobal</span>()            <span class="comment"># Uses global</span>
+<span class="function">incrementGlobal</span>()            <span class="comment"># Uses global again</span>
+<span class="function">useLocal</span>()                   <span class="comment"># Creates separate local</span>
+<span class="builtin">print</span>(<span class="string">"Final global:"</span>, <span class="global-var">counter</span>)</div>
+
+                            <div class="code-demo-output" id="demoOutput">
+                                <span style="color: var(--text-muted);">Click "Run Code" to see the output...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <div class="tip-box-header">💡 Key Observation</div>
+                        <p>Notice that <code>useLocal()</code> creates its <strong>own</strong> variable called <code>counter</code> — it doesn't affect the global one. The name is the same, but they're completely separate variables with different scopes.</p>
+                    </div>
+                </div>
+
+                <!-- Self-check -->
+                <div class="card">
+                    <h3>✓ Quick Check</h3>
+                    <div class="question-box" id="q-demo">
+                        <p>In the demo above, what is the final value of the global <code>counter</code>?</p>
+                        <div class="options">
+                            <button class="option-btn" onclick="checkAnswer('demo', this, false)">0</button>
+                            <button class="option-btn" onclick="checkAnswer('demo', this, true)">2</button>
+                            <button class="option-btn" onclick="checkAnswer('demo', this, false)">100</button>
+                            <button class="option-btn" onclick="checkAnswer('demo', this, false)">102</button>
+                        </div>
+                        <div class="feedback" id="feedback-demo"></div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 7: Interactive Exercise -->
+            <section id="section-7">
+                <div class="card">
+                    <h2>🏷️ Exercise: Classify the Variables</h2>
+
+                    <p>Look at each scenario and decide whether you'd use a <span class="highlight-green">local</span> or <span class="highlight-orange">global</span> variable. Click each item to toggle your answer.</p>
+
+                    <div class="classifier-container">
+                        <div class="classifier-instruction">
+                            💡 Ask yourself: Does this need to be accessed by multiple parts of the program, or just one function?
+                        </div>
+
+                        <div class="classifier-items" id="classifierItems">
+                            <div class="classifier-item" data-correct="local" data-current="none" onclick="cycleClassifier(this)">
+                                <span class="classifier-badge none">Click me</span>
+                                <span class="classifier-text">Temporary calculation inside a function</span>
+                            </div>
+                            <div class="classifier-item" data-correct="global" data-current="none" onclick="cycleClassifier(this)">
+                                <span class="classifier-badge none">Click me</span>
+                                <span class="classifier-text">Player's high score (accessed by multiple functions)</span>
+                            </div>
+                            <div class="classifier-item" data-correct="local" data-current="none" onclick="cycleClassifier(this)">
+                                <span class="classifier-badge none">Click me</span>
+                                <span class="classifier-text">Loop counter in a single function</span>
+                            </div>
+                            <div class="classifier-item" data-correct="global" data-current="none" onclick="cycleClassifier(this)">
+                                <span class="classifier-badge none">Click me</span>
+                                <span class="classifier-text">Username of the currently logged-in user</span>
+                            </div>
+                            <div class="classifier-item" data-correct="local" data-current="none" onclick="cycleClassifier(this)">
+                                <span class="classifier-badge none">Click me</span>
+                                <span class="classifier-text">User's input being validated in a function</span>
+                            </div>
+                            <div class="classifier-item" data-correct="global" data-current="none" onclick="cycleClassifier(this)">
+                                <span class="classifier-badge none">Click me</span>
+                                <span class="classifier-text">Game difficulty setting (used throughout)</span>
+                            </div>
+                        </div>
+
+                        <div class="controls">
+                            <button class="control-btn primary" onclick="checkClassifier()">Check Answers</button>
+                            <button class="control-btn secondary" onclick="resetClassifier()">Reset</button>
+                        </div>
+
+                        <div class="exercise-result" id="classifierResult">
+                            <h4 id="classifierResultTitle"></h4>
+                            <p id="classifierResultMessage"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Decision Guide</div>
+                    <h4>Use Local When...</h4>
+                    <ul>
+                        <li>The variable is only needed in one function</li>
+                        <li>It's a temporary value or calculation</li>
+                        <li>You want to protect it from being changed elsewhere</li>
+                    </ul>
+                    <h4>Use Global When...</h4>
+                    <ul>
+                        <li>Multiple functions need the same data</li>
+                        <li>It's a program-wide setting or state</li>
+                        <li>The value must persist between function calls</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="nextSection()">Next →</button>
+                </div>
+            </section>
+
+            <!-- Section 8: Badge -->
+            <section id="section-8">
+                <div class="card">
+                    <h2>🏆 Resource Complete!</h2>
+
+                    <div class="badge-section">
+                        <div id="badgeLocked" class="badge-locked">
+                            <div class="badge-container">
+                                <div class="badge-ring">🔒</div>
+                            </div>
+                            <div class="badge-title">Scope Master Badge</div>
+                            <div class="badge-desc">Answer all questions to unlock your badge</div>
+                            <div class="badge-progress">
+                                <div class="badge-progress-bar">
+                                    <div class="badge-progress-fill" id="badgeProgressFill" style="width: 0%"></div>
+                                </div>
+                                <p class="badge-progress-text" id="badgeProgressText">0 / 6 questions answered</p>
+                            </div>
+                        </div>
+
+                        <div id="badgeUnlocked" class="badge-unlocked" style="display: none;">
+                            <div class="badge-container">
+                                <div class="badge-ring">🎯</div>
+                            </div>
+                            <div class="badge-title" style="color: var(--accent-green);">Badge Unlocked!</div>
+                            <div class="badge-desc">You've mastered Local & Global Variables</div>
+
+                            <div class="badge-input-group">
+                                <input type="text" class="badge-input" id="badgeNameInput" placeholder="Enter your name">
+                                <button class="badge-generate-btn" onclick="generateBadge()">Generate Badge</button>
+                            </div>
+
+                            <div class="badge-display" id="badgeDisplay">
+                                <div class="badge-display-icon">🎯</div>
+                                <div class="badge-display-title">Scope Master</div>
+                                <div class="badge-display-name" id="badgeStudentName"></div>
+                                <div class="badge-display-date" id="badgeDate"></div>
+                                <div class="badge-display-score" id="badgeScoreText"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notes-summary">
+                    <div class="notes-summary-header">📝 Full Summary</div>
+                    <h4>Scope</h4>
+                    <ul>
+                        <li>The region where a variable can be accessed</li>
+                    </ul>
+                    <h4>Local Variables</h4>
+                    <ul>
+                        <li>Declared inside subroutines</li>
+                        <li>Only accessible within that subroutine</li>
+                        <li>Memory efficient, protected, easier to debug</li>
+                        <li>Use as your default choice</li>
+                    </ul>
+                    <h4>Global Variables</h4>
+                    <ul>
+                        <li>Declared outside all subroutines</li>
+                        <li>Accessible from anywhere</li>
+                        <li>Good for shared state and settings</li>
+                        <li>Use sparingly — can complicate debugging</li>
+                    </ul>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="nav-btn prev" onclick="prevSection()">← Previous</button>
+                    <button class="nav-btn next" onclick="window.location.href='resources.html'">Back to Resources →</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // State
+        let currentSection = 1;
+        const totalSections = 8;
+        const totalQuestions = 6;
+        let answeredQuestions = new Set();
+        let correctAnswers = new Set();
+
+        // Feedback messages
+        const feedbackMessages = {
+            scope: {
+                correct: "Correct! Scope defines where in your program a variable can be accessed.",
+                incorrect: "Not quite. Scope refers to the region or area of a program where a variable can be used."
+            },
+            local: {
+                correct: "Correct! Local variables are automatically removed from memory when their subroutine ends.",
+                incorrect: "Not quite. Local variables are temporary — they're deleted when the subroutine finishes."
+            },
+            global: {
+                correct: "Correct! Global variables are declared outside all subroutines, typically at the program's start.",
+                incorrect: "Not quite. Global variables must be declared outside all subroutines to be accessible everywhere."
+            },
+            compare: {
+                correct: "Correct! A score that multiple functions need to access and update should be global.",
+                incorrect: "Think about it: if multiple functions need to read AND write the score, they need shared access."
+            },
+            demo: {
+                correct: "Correct! incrementGlobal() is called twice, adding 1 each time: 0 → 1 → 2. The local counter (100) doesn't affect it.",
+                incorrect: "Remember: incrementGlobal() adds 1 to the global counter each time it's called (twice). useLocal() creates a separate variable."
+            }
+        };
+
+        // Navigation
+        function updateProgress() {
+            const dots = document.querySelectorAll('.progress-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index + 1 === currentSection) dot.classList.add('active');
+                else if (index + 1 < currentSection) dot.classList.add('completed');
+            });
+            document.getElementById('currentSection').textContent = currentSection;
+        }
+
+        function showSection(num) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(`section-${num}`).classList.add('active');
+            currentSection = num;
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function nextSection() {
+            if (currentSection < totalSections) showSection(currentSection + 1);
+        }
+
+        function prevSection() {
+            if (currentSection > 1) showSection(currentSection - 1);
+        }
+
+        function goToSection(num) {
+            showSection(num);
+        }
+
+        // Answer checking
+        function checkAnswer(questionId, button, isCorrect) {
+            if (answeredQuestions.has(questionId)) return;
+            answeredQuestions.add(questionId);
+
+            const buttons = button.parentElement.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn === button) {
+                    btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+            });
+
+            const feedback = document.getElementById(`feedback-${questionId}`);
+            feedback.textContent = isCorrect ? feedbackMessages[questionId].correct : feedbackMessages[questionId].incorrect;
+            feedback.className = `feedback show ${isCorrect ? 'success' : 'error'}`;
+
+            if (isCorrect) correctAnswers.add(questionId);
+            updateBadgeProgress();
+        }
+
+        // Code Demo
+        function runDemo() {
+            const output = document.getElementById('demoOutput');
+            output.innerHTML = '';
+            
+            const lines = [
+                { text: 'Global counter: 1', class: 'output-value' },
+                { text: 'Global counter: 2', class: 'output-value' },
+                { text: 'Local counter: 100', class: 'output-success' },
+                { text: 'Final global: 2', class: 'output-value' }
+            ];
+            
+            lines.forEach((line, i) => {
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.className = `output-line ${line.class}`;
+                    div.textContent = line.text;
+                    output.appendChild(div);
+                }, i * 500);
+            });
+        }
+
+        // Classifier
+        function cycleClassifier(item) {
+            if (item.classList.contains('locked')) return;
+            
+            const current = item.dataset.current;
+            const next = current === 'none' ? 'local' : current === 'local' ? 'global' : 'none';
+            item.dataset.current = next;
+            
+            const badge = item.querySelector('.classifier-badge');
+            badge.className = `classifier-badge ${next}`;
+            badge.textContent = next === 'none' ? 'Click me' : next.charAt(0).toUpperCase() + next.slice(1);
+        }
+
+        let classifierLocked = false;
+        function checkClassifier() {
+            if (classifierLocked) return;
+            classifierLocked = true;
+
+            const items = document.querySelectorAll('#classifierItems .classifier-item');
+            let correct = 0;
+
+            items.forEach(item => {
+                item.classList.add('locked');
+                const isCorrect = item.dataset.current === item.dataset.correct;
+                item.classList.add(isCorrect ? 'correct' : 'incorrect');
+                if (isCorrect) correct++;
+            });
+
+            const result = document.getElementById('classifierResult');
+            result.classList.add('show');
+            result.className = correct === 6 ? 'exercise-result show success' : 'exercise-result show partial';
+            document.getElementById('classifierResultTitle').textContent = correct === 6 ? '✓ Perfect!' : `${correct}/6 correct`;
+            document.getElementById('classifierResultMessage').textContent = correct === 6 ?
+                'Excellent! You understand when to use local vs global variables.' :
+                'Remember: Local for single-function use, global for shared access across functions.';
+
+            answeredQuestions.add('classifierExercise');
+            if (correct === 6) correctAnswers.add('classifierExercise');
+            updateBadgeProgress();
+        }
+
+        function resetClassifier() {
+            classifierLocked = false;
+            const items = document.querySelectorAll('#classifierItems .classifier-item');
+            items.forEach(item => {
+                item.dataset.current = 'none';
+                item.className = 'classifier-item';
+                item.classList.remove('locked', 'correct', 'incorrect');
+                const badge = item.querySelector('.classifier-badge');
+                badge.className = 'classifier-badge none';
+                badge.textContent = 'Click me';
+            });
+            document.getElementById('classifierResult').classList.remove('show');
+            answeredQuestions.delete('classifierExercise');
+            correctAnswers.delete('classifierExercise');
+            updateBadgeProgress();
+        }
+
+        // Badge System
+        function updateBadgeProgress() {
+            const count = answeredQuestions.size;
+            const pct = (count / totalQuestions) * 100;
+            document.getElementById('badgeProgressFill').style.width = pct + '%';
+            document.getElementById('badgeProgressText').textContent = `${count} / ${totalQuestions} questions answered`;
+            if (count >= totalQuestions) unlockBadge();
+        }
+
+        function unlockBadge() {
+            document.getElementById('badgeLocked').style.display = 'none';
+            document.getElementById('badgeUnlocked').style.display = 'block';
+        }
+
+        function generateBadge() {
+            const name = document.getElementById('badgeNameInput').value.trim();
+            if (!name) {
+                document.getElementById('badgeNameInput').style.borderColor = 'var(--accent-magenta)';
+                setTimeout(() => document.getElementById('badgeNameInput').style.borderColor = '', 2000);
+                return;
+            }
+            document.getElementById('badgeStudentName').textContent = name;
+            document.getElementById('badgeDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('badgeScoreText').textContent = `${correctAnswers.size}/${totalQuestions} correct`;
+            document.getElementById('badgeDisplay').classList.add('show');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProgress();
+            updateBadgeProgress();
+            document.getElementById('badgeNameInput')?.addEventListener('keypress', e => { if (e.key === 'Enter') generateBadge(); });
+        });
+    </script>
+</body>
+</html>

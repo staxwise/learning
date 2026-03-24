@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1.2.2 Secondary Storage — GCSE Computer Science</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:      #08070a;
+  --card:    #0f0d13;
+  --card2:   #141118;
+  --bd:      #201d28;
+  --bd2:     #2a2535;
+  --orange:  #fb923c;
+  --amber:   #fbbf24;
+  --teal:    #2dd4bf;
+  --rose:    #fb7185;
+  --green:   #4ade80;
+  --violet:  #a78bfa;
+  --sky:     #38bdf8;
+  --yellow:  #fde047;
+  --text:    #d4cfe8;
+  --muted:   #4a4460;
+  --font:    'Syne', sans-serif;
+  --serif:   'Source Serif 4', serif;
+  --hand:    'Caveat', cursive;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--serif);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 60% 40% at 25% 0%,rgba(251,146,60,.05) 0%,transparent 60%),
+             radial-gradient(ellipse 45% 35% at 80% 90%,rgba(45,212,191,.04) 0%,transparent 60%);
+  pointer-events:none;z-index:0;}
+.container{max-width:880px;margin:0 auto;padding:20px 20px 80px;position:relative;z-index:1;}
+
+/* ── HEADER ── */
+.site-header{text-align:center;padding:52px 0 34px;}
+.subject-tag{font-family:var(--font);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--orange);background:rgba(251,146,60,.09);border:1px solid rgba(251,146,60,.22);padding:6px 18px;border-radius:3px;display:inline-block;margin-bottom:22px;}
+.spec-tag{font-family:var(--font);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);display:inline-block;margin-left:10px;}
+.site-header h1{font-family:var(--font);font-size:clamp(28px,5.5vw,48px);font-weight:800;color:#fff;line-height:1.07;margin-bottom:14px;}
+.site-header h1 .acc{color:var(--orange);}
+.site-header p{color:var(--muted);font-family:var(--font);font-size:13px;max-width:500px;margin:0 auto;}
+
+/* ── PROGRESS ── */
+.progress-nav{display:flex;justify-content:center;gap:7px;padding:22px 0;flex-wrap:wrap;}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--bd2);cursor:pointer;transition:all .3s;border:none;padding:0;}
+.dot.active{background:var(--orange);transform:scale(1.35);box-shadow:0 0 8px rgba(251,146,60,.5);}
+.dot.completed{background:var(--green);}
+
+/* ── SECTIONS ── */
+.section{display:none;animation:fadeUp .35s ease;}
+.section.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── CARD ── */
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:28px 30px;margin-bottom:14px;}
+.sec-tag{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.sec-num{font-family:var(--font);font-size:10px;letter-spacing:3px;color:var(--muted);background:var(--card2);padding:4px 10px;border-radius:3px;white-space:nowrap;}
+.sec-tag h2{font-family:var(--font);font-size:20px;font-weight:700;color:#fff;}
+p.body{font-size:15px;line-height:1.75;color:#b8b0d0;margin-bottom:12px;}
+p.body strong{color:#fff;}
+ul.bl{padding-left:20px;margin:8px 0 12px;}
+ul.bl li{font-size:14px;line-height:1.7;color:#b8b0d0;margin-bottom:5px;}
+ul.bl li strong{color:#fff;}
+
+/* ── BOXES ── */
+.box{border-radius:10px;padding:16px 20px;margin:14px 0;border-left:4px solid;}
+.box-hd{font-family:var(--font);font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+.box p,.box li{font-size:14px;line-height:1.65;}
+.box ul{padding-left:16px;}
+.box li{margin-bottom:4px;}
+.bx-key{background:rgba(251,146,60,.07);border-color:var(--orange);}
+.bx-key .box-hd{color:var(--orange);}
+.bx-connect{background:rgba(45,212,191,.07);border-color:var(--teal);}
+.bx-connect .box-hd{color:var(--teal);}
+.bx-warn{background:rgba(251,113,133,.07);border-color:var(--rose);}
+.bx-warn .box-hd{color:var(--rose);}
+.bx-think{background:rgba(167,139,250,.07);border-color:var(--violet);}
+.bx-think .box-hd{color:var(--violet);}
+.bx-coming{background:rgba(251,191,36,.07);border-color:var(--amber);}
+.bx-coming .box-hd{color:var(--amber);}
+
+/* ── MCQ ── */
+.mcq-wrap{background:var(--card2);border:1px solid var(--bd2);border-radius:10px;padding:20px;margin-top:18px;}
+.q-label{font-family:var(--font);font-size:10px;letter-spacing:2.5px;color:var(--orange);text-transform:uppercase;margin-bottom:10px;}
+.q-text{font-family:var(--font);font-weight:600;font-size:15px;color:#fff;margin-bottom:14px;line-height:1.5;}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border:1px solid var(--bd);border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all .2s;font-size:14px;color:#b8b0d0;line-height:1.5;}
+.opt:hover{border-color:var(--orange);background:rgba(251,146,60,.05);}
+.opt.correct{border-color:var(--green);background:rgba(74,222,128,.08);color:#fff;}
+.opt.wrong{border-color:var(--rose);background:rgba(251,113,133,.08);}
+.opt .ol{font-family:var(--font);font-size:11px;color:var(--muted);min-width:20px;margin-top:1px;flex-shrink:0;}
+.fb-msg{display:none;padding:12px 16px;border-radius:8px;font-size:13px;margin-top:10px;line-height:1.55;}
+.fb-ok{background:rgba(74,222,128,.09);border:1px solid rgba(74,222,128,.3);color:var(--green);}
+.fb-no{background:rgba(251,113,133,.09);border:1px solid rgba(251,113,133,.3);color:#fca5b4;}
+
+/* ── NAV ── */
+.nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:10px;}
+.btn{font-family:var(--font);font-weight:700;font-size:13px;padding:12px 26px;border-radius:8px;cursor:pointer;border:none;transition:all .2s;}
+.btn-p{background:var(--orange);color:#1a0800;}
+.btn-p:hover{background:#fdba74;transform:translateY(-1px);}
+.btn-g{background:transparent;color:var(--muted);border:1px solid var(--bd2);}
+.btn-g:hover{border-color:var(--orange);color:var(--orange);}
+.btn:disabled{opacity:.3;cursor:not-allowed;transform:none!important;}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0;}
+th{background:var(--card2);padding:9px 13px;text-align:left;font-family:var(--font);font-size:11px;letter-spacing:.5px;color:var(--muted);border:1px solid var(--bd);}
+td{padding:10px 13px;border:1px solid var(--bd);vertical-align:top;line-height:1.55;color:#b8b0d0;}
+tr:nth-child(even) td{background:rgba(255,255,255,.015);}
+td strong{color:#fff;}
+td.good{color:var(--green);}
+td.bad{color:var(--rose);}
+td.ok{color:var(--amber);}
+
+/* ── LINED PAPER ── */
+.lined-notes{margin-top:18px;border-radius:0 10px 10px 10px;overflow:hidden;}
+.lined-tab{display:inline-flex;align-items:center;gap:7px;background:#7a5c0a;padding:7px 18px 7px 14px;border-radius:8px 8px 0 0;font-family:var(--hand);font-size:17px;color:#1a1100;font-weight:600;}
+.lined-paper{background:#faf8f0;background-image:linear-gradient(90deg,#f4c0c0 0px,#f4c0c0 2px,transparent 2px),repeating-linear-gradient(transparent,transparent 31px,#c5d8e8 31px,#c5d8e8 32px);background-size:100% 32px;background-position:0 0,0 8px;padding:16px 20px 16px 36px;min-height:130px;}
+.lined-paper ul{list-style:none;padding:0;margin:0;}
+.lined-paper li{font-family:var(--hand);font-size:18px;color:#1a2838;line-height:32px;display:flex;align-items:center;gap:8px;}
+.lined-paper li::before{content:'•';color:#c5a0a0;font-size:14px;flex-shrink:0;}
+
+/* ── OBJ LIST ── */
+.obj-list{list-style:none;padding:0;}
+.obj-list li{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--bd);font-size:14px;color:#b8b0d0;line-height:1.6;}
+.obj-list li:last-child{border-bottom:none;}
+.obj-tick{color:var(--green);font-size:15px;flex-shrink:0;margin-top:1px;}
+
+/* ── TWO COL ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0;}
+@media(max-width:520px){.two-col{grid-template-columns:1fr;}}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:14px 0;}
+@media(max-width:600px){.three-col{grid-template-columns:1fr;}}
+
+/* ── STORAGE TYPE CARD ── */
+.st-card{border-radius:12px;border:1px solid;padding:20px;}
+.st-mag{background:rgba(251,146,60,.07);border-color:rgba(251,146,60,.3);}
+.st-opt{background:rgba(45,212,191,.07);border-color:rgba(45,212,191,.3);}
+.st-ssd{background:rgba(167,139,250,.07);border-color:rgba(167,139,250,.3);}
+.st-card .st-icon{font-size:40px;margin-bottom:10px;}
+.st-card .st-name{font-family:var(--font);font-size:15px;font-weight:700;margin-bottom:6px;}
+.st-mag .st-name{color:var(--orange);}
+.st-opt .st-name{color:var(--teal);}
+.st-ssd .st-name{color:var(--violet);}
+.st-card .st-eg{font-size:12px;color:var(--muted);font-family:var(--font);letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;}
+.st-card p{font-size:13px;color:#b8b0d0;line-height:1.65;}
+.st-card ul{padding-left:16px;margin-top:6px;}
+.st-card li{font-size:13px;color:#b8b0d0;margin-bottom:3px;line-height:1.5;}
+
+/* ── VOLATILE BOX ── */
+.volatile-display{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+@media(max-width:480px){.volatile-display{grid-template-columns:1fr;}}
+.vol-box{padding:18px;border-radius:12px;border:2px solid;text-align:center;}
+.vol-ram{background:rgba(251,113,133,.08);border-color:rgba(251,113,133,.35);}
+.vol-sec{background:rgba(74,222,128,.08);border-color:rgba(74,222,128,.35);}
+.vol-icon{font-size:38px;margin-bottom:8px;}
+.vol-name{font-family:var(--font);font-size:14px;font-weight:700;margin-bottom:6px;}
+.vol-ram .vol-name{color:var(--rose);}
+.vol-sec .vol-name{color:var(--green);}
+.vol-desc{font-size:13px;line-height:1.55;color:#b8b0d0;}
+.vol-badge{display:inline-block;font-family:var(--font);font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 10px;border-radius:4px;margin-top:8px;}
+.badge-vol{background:rgba(251,113,133,.15);color:var(--rose);border:1px solid rgba(251,113,133,.3);}
+.badge-nonvol{background:rgba(74,222,128,.15);color:var(--green);border:1px solid rgba(74,222,128,.3);}
+
+/* ── CHARACTERISTIC BARS ── */
+.char-grid{display:flex;flex-direction:column;gap:8px;margin:14px 0;}
+.char-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.char-label{font-family:var(--font);font-size:12px;font-weight:700;color:var(--muted);width:90px;flex-shrink:0;text-align:right;text-transform:uppercase;letter-spacing:.5px;}
+.char-bars{display:flex;gap:6px;flex:1;}
+.bar-wrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;}
+.bar-bg{width:100%;background:var(--bd2);border-radius:4px;height:16px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;transition:width .6s ease;}
+.bar-type{font-family:var(--font);font-size:9px;letter-spacing:.5px;color:var(--muted);}
+.b-mag{background:linear-gradient(90deg,var(--orange),#fdba74);}
+.b-opt{background:linear-gradient(90deg,var(--teal),#5eead4);}
+.b-ssd{background:linear-gradient(90deg,var(--violet),#c4b5fd);}
+.char-note{font-size:11px;color:var(--muted);font-family:var(--font);width:100%;text-align:right;margin-top:1px;}
+
+/* ── DRAG DROP CLASSIFY ── */
+.dd-pool{display:flex;flex-wrap:wrap;gap:8px;padding:14px;background:var(--card2);border:2px dashed var(--bd2);border-radius:10px;min-height:56px;margin-bottom:12px;}
+.dd-card{padding:8px 14px;background:var(--card);border:1px solid var(--bd2);border-radius:7px;font-size:13px;color:#b8b0d0;cursor:grab;transition:all .2s;user-select:none;}
+.dd-card:hover{border-color:var(--orange);background:rgba(251,146,60,.06);}
+.dd-card.dragging{opacity:.35;}
+.dd-card.ok{border-color:var(--green)!important;background:rgba(74,222,128,.1)!important;color:#fff!important;}
+.dd-card.no{border-color:var(--rose)!important;background:rgba(251,113,133,.08)!important;}
+.dd-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:560px){.dd-cols{grid-template-columns:1fr;}}
+.dd-zone{border-radius:10px;padding:12px;min-height:90px;border:2px dashed;transition:background .2s;}
+.dz-mag{border-color:rgba(251,146,60,.35);}
+.dz-mag h4{color:var(--orange);}
+.dz-opt{border-color:rgba(45,212,191,.35);}
+.dz-opt h4{color:var(--teal);}
+.dz-ssd{border-color:rgba(167,139,250,.35);}
+.dz-ssd h4{color:var(--violet);}
+.dd-zone h4{font-family:var(--font);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.dd-zone.over{background:rgba(251,146,60,.07);border-color:var(--orange);}
+.btn-dd{font-family:var(--font);font-size:12px;font-weight:700;padding:9px 20px;border-radius:7px;cursor:pointer;background:var(--orange);border:none;color:#1a0800;transition:all .2s;}
+.btn-dd:hover{background:#fdba74;}
+.btn-ddr{font-family:var(--font);font-size:12px;font-weight:700;padding:9px 18px;border-radius:7px;cursor:pointer;background:var(--muted);border:none;color:#fff;margin-left:8px;}
+.dd-result{display:none;font-size:13px;padding:10px 14px;border-radius:8px;margin-top:10px;}
+
+/* ── COMPARE TASK ── */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:12px 0;}
+@media(max-width:540px){.compare-grid{grid-template-columns:1fr;}}
+.cmp-hdr{padding:10px;border-radius:7px 7px 0 0;text-align:center;font-family:var(--font);font-size:12px;font-weight:800;letter-spacing:1px;}
+.cmp-mag{background:rgba(251,146,60,.15);color:var(--orange);}
+.cmp-opt{background:rgba(45,212,191,.12);color:var(--teal);}
+.cmp-ssd{background:rgba(167,139,250,.12);color:var(--violet);}
+.cmp-cell{padding:9px 10px;border:1px solid var(--bd);font-size:12px;color:#b8b0d0;line-height:1.5;background:var(--card2);}
+.cmp-cell.winner{background:rgba(74,222,128,.07);border-color:rgba(74,222,128,.25);color:var(--green);font-weight:600;}
+.cmp-cell.loser{background:rgba(251,113,133,.06);color:var(--rose);}
+.cmp-row-label{font-family:var(--font);font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:8px 0 4px;margin-top:4px;}
+
+/* ── SCENARIO TABS ── */
+.stab-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.stab{font-family:var(--font);font-size:12px;font-weight:700;padding:8px 16px;border-radius:7px;cursor:pointer;border:1px solid var(--bd2);background:var(--card2);color:var(--muted);transition:all .2s;}
+.stab.active{background:rgba(251,146,60,.1);border-color:var(--orange);color:var(--orange);}
+.spane{display:none;}
+.spane.active{display:block;}
+.scenario-box{background:var(--card2);border:1px solid var(--bd2);border-radius:12px;padding:18px;margin-bottom:14px;}
+.scenario-lbl{font-family:var(--font);font-size:9px;letter-spacing:3px;color:var(--orange);text-transform:uppercase;margin-bottom:8px;}
+.scenario-txt{font-size:15px;color:#c8c0e0;line-height:1.75;margin-bottom:4px;}
+
+/* ── CLASSIFY CHOOSE (non-drag) ── */
+.cc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0;}
+@media(max-width:480px){.cc-grid{grid-template-columns:1fr;}}
+.cc-card{padding:14px 16px;border-radius:9px;border:2px solid var(--bd2);background:var(--card2);cursor:pointer;}
+.cc-card .cc-q{font-size:14px;color:#b8b0d0;margin-bottom:10px;line-height:1.55;}
+.cc-btns{display:flex;gap:7px;flex-wrap:wrap;}
+.cc-btn{font-family:var(--font);font-size:11px;font-weight:700;padding:6px 12px;border-radius:5px;cursor:pointer;border:1px solid;background:transparent;transition:all .2s;}
+.cc-mag{border-color:rgba(251,146,60,.4);color:var(--orange);}
+.cc-mag:hover,.cc-mag.sel{background:rgba(251,146,60,.15);}
+.cc-opt{border-color:rgba(45,212,191,.4);color:var(--teal);}
+.cc-opt:hover,.cc-opt.sel{background:rgba(45,212,191,.12);}
+.cc-ssd{border-color:rgba(167,139,250,.4);color:var(--violet);}
+.cc-ssd:hover,.cc-ssd.sel{background:rgba(167,139,250,.12);}
+.cc-verdict{display:none;font-size:12px;font-family:var(--font);font-weight:700;margin-top:8px;padding:7px 10px;border-radius:5px;line-height:1.4;}
+.cc-card.cc-ok{border-color:var(--green)!important;background:rgba(74,222,128,.05)!important;}
+.cc-card.cc-no{border-color:var(--rose)!important;background:rgba(251,113,133,.05)!important;}
+
+/* ── BADGE ── */
+.badge-section{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:32px;text-align:center;margin-top:18px;}
+.badge-prog-txt{font-family:var(--font);font-size:12px;color:var(--muted);letter-spacing:1px;margin-bottom:8px;}
+.badge-bar-outer{background:var(--bd2);border-radius:6px;height:8px;max-width:360px;margin:8px auto 22px;overflow:hidden;}
+.badge-bar-inner{height:100%;background:linear-gradient(90deg,var(--orange),var(--amber));border-radius:6px;transition:width .5s ease;width:0%;}
+.badge-locked{opacity:.3;pointer-events:none;filter:grayscale(1);}
+.badge-unlocked{animation:badgePop .6s ease forwards;}
+@keyframes badgePop{0%{transform:scale(.8);opacity:0;}70%{transform:scale(1.06);}100%{transform:scale(1);opacity:1;}}
+.badge-visual{width:250px;margin:0 auto 20px;background:linear-gradient(150deg,#0e0b0a,#1a1008);border:2px solid var(--orange);border-radius:16px;padding:26px 20px;box-shadow:0 0 50px rgba(251,146,60,.14);}
+.badge-icon{font-size:52px;margin-bottom:10px;}
+.badge-hdr{font-family:var(--font);font-size:9px;letter-spacing:3px;color:var(--orange);text-transform:uppercase;margin-bottom:6px;}
+.badge-topic{font-family:var(--font);font-size:14px;font-weight:800;color:#fff;margin-bottom:4px;}
+.badge-spec{font-family:var(--font);font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:8px;}
+.badge-score-disp{font-family:var(--font);font-size:24px;color:var(--yellow);font-weight:700;margin-bottom:8px;}
+.badge-name-disp{font-size:14px;color:var(--amber);font-weight:600;font-family:var(--font);}
+.badge-ribbon{background:var(--orange);color:#1a0800;font-family:var(--font);font-size:10px;font-weight:800;padding:4px 18px;margin-top:12px;border-radius:3px;display:inline-block;letter-spacing:2px;}
+.name-input{padding:10px 16px;background:var(--card2);border:1px solid var(--bd2);border-radius:8px;color:var(--text);font-family:var(--font);font-size:14px;width:250px;text-align:center;display:block;margin:0 auto 14px;}
+.name-input:focus{outline:none;border-color:var(--orange);}
+.snip-hint{font-size:12px;color:var(--muted);margin-top:12px;font-style:italic;font-family:var(--font);}
+
+/* ── SPEED RACE ── */
+.speed-race{display:flex;flex-direction:column;gap:10px;margin:14px 0;}
+.sp-row{display:flex;align-items:center;gap:12px;}
+.sp-label{font-family:var(--font);font-size:13px;font-weight:700;width:80px;flex-shrink:0;}
+.sp-bar-bg{flex:1;background:var(--bd2);border-radius:6px;height:24px;overflow:hidden;position:relative;}
+.sp-bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;font-family:var(--font);font-size:11px;font-weight:700;color:#fff;white-space:nowrap;transition:width .8s ease;}
+.sp-hdd{background:linear-gradient(90deg,#c2410c,var(--orange));width:35%;}
+.sp-ssd{background:linear-gradient(90deg,#5b21b6,var(--violet));width:90%;}
+.sp-opt{background:linear-gradient(90deg,#0d766e,var(--teal));width:18%;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HEADER -->
+<div class="site-header">
+  <div class="subject-tag">GCSE Computer Science</div>
+  <h1>1.2.2 <span class="acc">Secondary</span><br>Storage</h1>
+  <p>Work through every section, complete the activities, and earn your badge.</p>
+</div>
+
+<div class="progress-nav" id="progressNav"></div>
+
+
+<!-- ══════════════════════════════════════
+     S1 — WELCOME
+══════════════════════════════════════ -->
+<div class="section active" data-section="0">
+  <div class="card">
+    <div class="sec-tag"><span class="sec-num">SECTION 01</span><h2>Welcome &amp; Learning Objectives</h2></div>
+    <p class="body">This resource covers everything you need for <strong>1.2.2 Secondary Storage</strong>. By the end you will be able to:</p>
+    <ul class="obj-list">
+      <li><span class="obj-tick">✓</span>Explain why computers need secondary storage in addition to RAM</li>
+      <li><span class="obj-tick">✓</span>Identify and describe the three types of secondary storage: magnetic, optical, and solid state</li>
+      <li><span class="obj-tick">✓</span>Compare storage types across six characteristics: capacity, speed, portability, durability, reliability, and cost</li>
+      <li><span class="obj-tick">✓</span>Choose and justify the most suitable storage for a given context or scenario</li>
+    </ul>
+
+    <div class="box bx-warn">
+      <div class="box-hd">⚠️ What You Do NOT Need to Know</div>
+      <p>The spec says you do <strong>not</strong> need to understand the internal component parts of each storage type — e.g. you don't need to know how a hard drive's read/write head physically works at a component level. Focus on what each type <em>does</em>, its characteristics, and when to use it.</p>
+    </div>
+
+    <div class="box bx-coming">
+      <div class="box-hd">📌 Links to Other Topics</div>
+      <p>Secondary storage connects to: primary storage (RAM and ROM, 1.2.1), the CPU fetch-execute cycle, and operating system functions. Understanding volatile vs non-volatile memory is essential context for this section.</p>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-g" disabled>← Back</button>
+    <button class="btn btn-p" onclick="goNext()">Start →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S2 — WHY SECONDARY STORAGE?
+══════════════════════════════════════ -->
+<div class="section" data-section="1">
+  <div class="card">
+    <div class="sec-tag"><span class="sec-num">SECTION 02</span><h2>Why Do We Need Secondary Storage?</h2></div>
+
+    <p class="body">To understand why secondary storage exists, you first need to understand one key property of RAM: it is <strong>volatile</strong>.</p>
+
+    <div class="volatile-display">
+      <div class="vol-box vol-ram">
+        <div class="vol-icon">💾</div>
+        <div class="vol-name">RAM (Primary Storage)</div>
+        <div class="vol-desc">Fast working memory. Holds data the CPU is actively using. But — as soon as power is removed, <strong>all data is lost</strong>.</div>
+        <span class="vol-badge badge-vol">VOLATILE</span>
+      </div>
+      <div class="vol-box vol-sec">
+        <div class="vol-icon">🗄️</div>
+        <div class="vol-name">Secondary Storage</div>
+        <div class="vol-desc">Permanent storage. Retains data even when the device is switched off. Data survives power cuts, reboots, and years of storage.</div>
+        <span class="vol-badge badge-nonvol">NON-VOLATILE</span>
+      </div>
+    </div>
+
+    <p class="body">Without secondary storage, <strong>every time you turned off your computer, everything would be deleted</strong> — your files, your operating system, your applications, your photos. The computer would be blank on every restart.</p>
+
+    <div class="box bx-key">
+      <div class="box-hd">📝 The Three Reasons Secondary Storage Is Needed</div>
+      <ul>
+        <li><strong>Permanent storage</strong> — keeps data when power is removed (non-volatile)</li>
+        <li><strong>Capacity</strong> — RAM is limited in size (typically 8–32 GB); secondary storage holds far more (hundreds of GB or even TB)</li>
+        <li><strong>Cost</strong> — secondary storage is much cheaper per gigabyte than RAM — it would be impractical to replace secondary storage with RAM alone</li>
+      </ul>
+    </div>
+
+    <div class="box bx-connect">
+      <div class="box-hd">🔗 Link to Primary Storage (1.2.1)</div>
+      <p>When RAM fills up, the operating system may temporarily move some data to secondary storage as <strong>virtual memory</strong>. This is slower than using RAM but prevents programs from crashing. This is one more reason secondary storage is essential to system operation.</p>
+    </div>
+
+    <!-- Q1 -->
+    <div class="mcq-wrap">
+      <div class="q-label">✓ CHECK — Q1</div>
+      <div class="q-text">A student claims: "If computers had large enough RAM, we wouldn't need secondary storage at all." What is wrong with this statement?</div>
+      <div class="opt" onclick="checkQ(this,false,'q1')"><span class="ol">A</span>Nothing — larger RAM would indeed make secondary storage unnecessary for most users</div>
+      <div class="opt" onclick="checkQ(this,true,'q1')"><span class="ol">B</span>RAM is volatile — all data would still be lost every time the computer was switched off, regardless of RAM size</div>
+      <div class="opt" onclick="checkQ(this,false,'q1')"><span class="ol">C</span>RAM cannot be made any larger than its current typical size due to physical constraints</div>
+      <div class="opt" onclick="checkQ(this,false,'q1')"><span class="ol">D</span>The CPU can only read data from secondary storage, not from RAM directly</div>
+      <div class="fb-msg fb-ok" id="q1-ok">✓ Correct. The fundamental issue is volatility — RAM loses all its contents the moment power is removed. Even with unlimited RAM capacity, you would still need non-volatile secondary storage to preserve data across power cycles. Additionally, RAM remains significantly more expensive per gigabyte.</div>
+      <div class="fb-msg fb-no" id="q1-no">✗ The key problem is that RAM is volatile — it loses all data when power is removed. Size is a secondary concern. Even infinite RAM would not eliminate the need for non-volatile storage, since all files, the operating system, and all data would still be lost on every shutdown.</div>
+    </div>
+  </div>
+
+  <div class="lined-notes">
+    <div class="lined-tab">✏️ Book Notes</div>
+    <div class="lined-paper"><ul>
+      <li>RAM is volatile — loses data when power is off</li>
+      <li>Secondary storage is non-volatile — keeps data permanently</li>
+      <li>Three reasons needed: permanent storage, large capacity, lower cost per GB</li>
+    </ul></div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn btn-g" onclick="goPrev()">← Back</button>
+    <button class="btn btn-p" onclick="goNext()">Next →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S3 — THE THREE TYPES OVERVIEW
+══════════════════════════════════════ -->
+<div class="section" data-section="2">
+  <div class="card">
+    <div class="sec-tag"><span class="sec-num">SECTION 03</span><h2>The Three Types of Secondary Storage</h2></div>
+
+    <p class="body">There are three main categories of secondary storage. Each works in a fundamentally different way.</p>
+
+    <div class="three-col">
+      <div class="st-card st-mag">
+        <div class="st-icon">🖴</div>
+        <div class="st-name">Magnetic</div>
+        <div class="st-eg">HDD — Hard Disk Drive</div>
+        <p>Uses a spinning magnetic platter and a read/write head. Data is stored as magnetic patterns on the disk surface.</p>
+        <ul>
+          <li>Desktop PCs</li>
+          <li>External backup drives</li>
+          <li>Data centre servers</li>
+        </ul>
+      </div>
+      <div class="st-card st-opt">
+        <div class="st-icon">💿</div>
+        <div class="st-name">Optical</div>
+        <div class="st-eg">CD / DVD / Blu-ray</div>
+        <p>Uses a laser to read and write data as tiny pits and lands (bumps) on the surface of a spinning disc.</p>
+        <ul>
+          <li>Music &amp; film distribution</li>
+          <li>Software installation discs</li>
+          <li>Archival/backup media</li>
+        </ul>
+      </div>
+      <div class="st-card st-ssd">
+        <div class="st-icon">⚡</div>
+        <div class="st-name">Solid State</div>
+        <div class="st-eg">SSD / USB / SD Card</div>
+        <p>Uses flash memory chips — no moving parts at all. Data is stored electronically in memory cells.</p>
+        <ul>
+          <li>Laptops &amp; tablets</li>
+          <li>USB flash drives</li>
+          <li>Camera memory cards</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box bx-think">
+      <div class="box-hd">🤔 Key Insight — Moving Parts</div>
+      <p>The most important structural difference: magnetic and optical storage both have <strong>moving mechanical parts</strong> (spinning disks, moving read heads, moving laser). Solid state has <strong>no moving parts at all</strong>. This single difference explains most of the differences in speed, durability, and noise between the types.</p>
+    </div>
+
+    <!-- DRAG-DROP Q2 -->
+    <div style="margin-top:18px;">
+      <p style="font-family:var(--font);font-size:10px;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:12px;">🗂 Activity — Q2: Sort These Devices</p>
+      <p style="font-size:14px;color:#b8b0d0;margin-bottom:12px;">Drag each device into the correct storage type column.</p>
+
+      <div class="dd-pool" id="ddPool">
+        <div class="dd-card" draggable="true" data-id="d1" data-col="mag">🖴 External hard drive (HDD)</div>
+        <div class="dd-card" draggable="true" data-id="d2" data-col="opt">💿 DVD-ROM</div>
+        <div class="dd-card" draggable="true" data-id="d3" data-col="ssd">🔌 USB flash drive</div>
+        <div class="dd-card" draggable="true" data-id="d4" data-col="ssd">💻 Laptop SSD</div>
+        <div class="dd-card" draggable="true" data-id="d5" data-col="opt">🎵 Blu-ray disc</div>
+        <div class="dd-card" draggable="true" data-id="d6" data-col="mag">🗄️ Server hard disk array</div>
+        <div class="dd-card" draggable="true" data-id="d7" data-col="ssd">📷 Camera SD card</div>
+        <div class="dd-card" draggable="true" data-id="d8" data-col="opt">💽 CD-ROM</div>
+      </div>
+
+      <div class="dd-cols">
+        <div class="dd-zone dz-mag" id="dz-mag" data-zone="mag"><h4>🖴 Magnetic</h4></div>
+        <div class="dd-zone dz-opt" id="dz-opt" data-zone="opt"><h4>💿 Optical</h4></div>
+        <div class="dd-zone dz-ssd" id="dz-ssd" data-zone="ssd"><h4>⚡ Solid State</h4></div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;">
+        <button class="btn-dd" onclick="checkDD()">Check Answers</button>
+        <button class="btn-ddr" onclick="resetDD()">Reset</button>
+      </div>
+      <div class="dd-result fb-ok" id="ddOk">✓ All correct! You can correctly identify storage devices by type.</div>
+      <div class="dd-result fb-no" id="ddNo">✗ Some are wrong — highlighted in red. Remember: HDD and hard disk = magnetic; CD/DVD/Blu-ray = optical; SSD, USB, SD card = solid state.</div>
+    </div>
+  </div>
+
+  <div class="lined-notes">
+    <div class="lined-tab">✏️ Book Notes</div>
+    <div class="lined-paper"><ul>
+      <li>Magnetic: HDD — spinning platter, read/write head</li>
+      <li>Optical: CD/DVD/Blu-ray — laser, pits and lands</li>
+      <li>Solid State: SSD/USB/SD — flash memory, NO moving parts</li>
+    </ul></div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn btn-g" onclick="goPrev()">← Back</button>
+    <button class="btn btn-p" onclick="goNext()">Next →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S4 — MAGNETIC STORAGE
+══════════════════════════════════════ -->
+<div class="section" data-section="3">
+  <div class="card">
+    <div class="sec-tag"><span class="sec-num">SECTION 04</span><h2>Magnetic Storage — HDD</h2></div>
+
+    <div class="st-card st-mag" style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <div class="st-icon" style="font-size:52px;margin-bottom:0;">🖴</div>
+        <div>
+          <div class="st-name" style="font-size:17px;">Hard Disk Drive (HDD)</div>
+          <div class="st-eg">Magnetic storage — spinning platters</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="body">A hard disk drive stores data on <strong>one or more spinning magnetic platters</strong>. A read/write head moves across the surface to read or write data as magnetic patterns. The faster the platters spin (measured in RPM), the faster data can be accessed.</p>
+
+    <div class="two-col">
+      <div style="background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.25);border-radius:10px;padding:14px;">
+        <h4 style="font-family:var(--font);font-size:13px;color:var(--green);margin-bottom:8px;">✅ Advantages</h4>
+        <ul style="padding-left:16px;">
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Very high capacity</strong> — typically 1 TB to 20 TB, more for less money</li>
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Low cost per GB</strong> — cheapest form of large-scale storage</li>
+          <li style="font-size:13px;color:#b8b0d0;line-height:1.5;"><strong style="color:#fff;">Widely available</strong> — mature, well-understood technology</li>
+        </ul>
+      </div>
+      <div style="background:rgba(251,113,133,.07);border:1px solid rgba(251,113,133,.25);border-radius:10px;padding:14px;">
+        <h4 style="font-family:var(--font);font-size:13px;color:var(--rose);margin-bottom:8px;">❌ Disadvantages</h4>
+        <ul style="padding-left:16px;">
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Slow compared to SSD</strong> — mechanical movement limits speed</li>
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Fragile</strong> — moving parts can be damaged by drops or vibration</li>
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Heavy and bulky</strong> — poor portability compared to SSD</li>
+          <li style="font-size:13px;color:#b8b0d0;line-height:1.5;"><strong style="color:#fff;">Makes noise</strong> — spinning platters produce sound and heat</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box bx-key">
+      <div class="box-hd">📝 Best Use Cases</div>
+      <p>HDDs are ideal where <strong>large capacity at low cost</strong> is the priority and portability is not needed: desktop PC main drives, external backup drives, and large data centre storage arrays where cost per terabyte matters more than speed.</p>
+    </div>
+
+    <!-- Q3 -->
+    <div class="mcq-wrap">
+      <div class="q-label">✓ CHECK — Q3</div>
+      <div class="q-text">A company stores 50 TB of archive data (accessed only occasionally). They want maximum capacity at minimum cost. Which storage type and justification is most appropriate?</div>
+      <div class="opt" onclick="checkQ(this,false,'q3')"><span class="ol">A</span>Solid state drives — they are the fastest and most reliable option for important data</div>
+      <div class="opt" onclick="checkQ(this,true,'q3')"><span class="ol">B</span>Magnetic hard disk drives — they offer very high capacity at the lowest cost per GB, and access speed is less critical for archive data</div>
+      <div class="opt" onclick="checkQ(this,false,'q3')"><span class="ol">C</span>Optical storage — Blu-ray discs hold more data than any other storage type</div>
+      <div class="opt" onclick="checkQ(this,false,'q3')"><span class="ol">D</span>Magnetic hard disk drives — they are faster than SSDs for large sequential file reading</div>
+      <div class="fb-msg fb-ok" id="q3-ok">✓ Correct. For archive storage — large amounts of data accessed infrequently — the key factors are capacity and cost. HDDs win on both: they provide the highest capacity at the lowest cost per GB. Since the data is rarely accessed, the slower speed compared to SSD is an acceptable trade-off.</div>
+      <div class="fb-msg fb-no" id="q3-no">✗ For archive data, the priorities are capacity and cost-efficiency. HDDs offer far more storage per pound than SSDs and can reach very high capacities (multiple TB per drive). Speed is less important for data that is rarely accessed. Option D is wrong — SSDs are faster than HDDs, not the other way around. Blu-ray doesn't hold more than HDDs.</div>
+    </div>
+  </div>
+
+  <div class="lined-notes">
+    <div class="lined-tab">✏️ Book Notes</div>
+    <div class="lined-paper"><ul>
+      <li>HDD: spinning platters + read/write head → data as magnetic patterns</li>
+      <li>Advantages: very high capacity, low cost per GB</li>
+      <li>Disadvantages: slow, fragile (moving parts), heavy, noisy</li>
+      <li>Best for: large-scale backup, desktop PCs, archives</li>
+    </ul></div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn btn-g" onclick="goPrev()">← Back</button>
+    <button class="btn btn-p" onclick="goNext()">Next →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S5 — OPTICAL STORAGE
+══════════════════════════════════════ -->
+<div class="section" data-section="4">
+  <div class="card">
+    <div class="sec-tag"><span class="sec-num">SECTION 05</span><h2>Optical Storage — CD, DVD, Blu-ray</h2></div>
+
+    <div class="st-card st-opt" style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <div class="st-icon" style="font-size:52px;margin-bottom:0;">💿</div>
+        <div>
+          <div class="st-name" style="font-size:17px;">Optical Disc</div>
+          <div class="st-eg">CD · DVD · Blu-ray</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="body">Optical storage uses a <strong>laser beam</strong> to read (and sometimes write) data. The laser detects microscopic <strong>pits</strong> (indentations) and <strong>lands</strong> (flat areas) on the reflective disc surface, which represent binary 0s and 1s.</p>
+
+    <table>
+      <thead>
+        <tr><th>Type</th><th>Approximate Capacity</th><th>Common Use</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>CD</strong></td><td>~700 MB</td><td>Music, small software</td></tr>
+        <tr><td><strong>DVD</strong></td><td>~4.7 GB (single layer)</td><td>Films, games, software</td></tr>
+        <tr><td><strong>Blu-ray</strong></td><td>~25–50 GB</td><td>HD/4K films, PS5 games</td></tr>
+      </tbody>
+    </table>
+
+    <div class="two-col" style="margin-top:14px;">
+      <div style="background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.25);border-radius:10px;padding:14px;">
+        <h4 style="font-family:var(--font);font-size:13px;color:var(--green);margin-bottom:8px;">✅ Advantages</h4>
+        <ul style="padding-left:16px;">
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Very cheap per disc</strong> — CDs and DVDs cost pennies to manufacture</li>
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Portable and lightweight</strong> — easy to distribute physically</li>
+          <li style="font-size:13px;color:#b8b0d0;line-height:1.5;"><strong style="color:#fff;">Durable if handled well</strong> — no moving parts in the disc itself</li>
+        </ul>
+      </div>
+      <div style="background:rgba(251,113,133,.07);border:1px solid rgba(251,113,133,.25);border-radius:10px;padding:14px;">
+        <h4 style="font-family:var(--font);font-size:13px;color:var(--rose);margin-bottom:8px;">❌ Disadvantages</h4>
+        <ul style="padding-left:16px;">
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Slowest read/write speed</strong> — slower than both HDD and SSD</li>
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Low capacity</strong> — even Blu-ray is small compared to HDD</li>
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Scratches easily</strong> — surface damage destroys data permanently</li>
+          <li style="font-size:13px;color:#b8b0d0;line-height:1.5;"><strong style="color:#fff;">Declining use</strong> — streaming has largely replaced physical media</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box bx-key">
+      <div class="box-hd">📝 Best Use Cases</div>
+      <p>Optical storage is most suitable for <strong>distribution of fixed content</strong> at low cost: music CDs, film DVDs, game discs (PS5 Blu-ray), software installation discs, and low-cost archival of data that doesn't change.</p>
+    </div>
+
+    <!-- Q4 -->
+    <div class="mcq-wrap">
+      <div class="q-label">✓ CHECK — Q4</div>
+      <div class="q-text">A music label wants to distribute 500 copies of a new album to local shops. The album is 600 MB in size. Which storage type is most suitable, and why?</div>
+      <div class="opt" onclick="checkQ(this,false,'q4')"><span class="ol">A</span>SSD — because it is the fastest storage type and will allow shops to access tracks quickly</div>
+      <div class="opt" onclick="checkQ(this,false,'q4')"><span class="ol">B</span>HDD — because it has the highest capacity and can store many albums on one device</div>
+      <div class="opt" onclick="checkQ(this,true,'q4')"><span class="ol">C</span>Optical (CD) — cheap to manufacture, the 600 MB file fits on a single CD, and CDs are easy to physically distribute in bulk</div>
+      <div class="opt" onclick="checkQ(this,false,'q4')"><span class="ol">D</span>Optical (Blu-ray) — it has the highest capacity of the optical types and is the most reliable disc format</div>
+      <div class="fb-msg fb-ok" id="q4-ok">✓ Correct. A CD holds ~700 MB, comfortably fitting the 600 MB album. CDs are extremely cheap to manufacture in bulk (pennies each), lightweight, and easy to distribute physically. Speed is not a priority for music playback. Blu-ray would be unnecessarily expensive and overpowered for this task.</div>
+      <div class="fb-msg fb-no" id="q4-no">✗ For bulk physical distribution of fixed content at low cost, optical media is ideal. A CD holds ~700 MB (enough for the album), costs pennies to manufacture, and is lightweight. SSDs and HDDs are far too expensive to give away per unit. Blu-ray is unnecessarily powerful — and more expensive — for 600 MB of audio data.</div>
+    </div>
+  </div>
+
+  <div class="lined-notes">
+    <div class="lined-tab">✏️ Book Notes</div>
+    <div class="lined-paper"><ul>
+      <li>Optical: laser reads pits and lands on a disc surface</li>
+      <li>CD ~700MB, DVD ~4.7GB, Blu-ray ~25-50GB</li>
+      <li>Advantages: very cheap, lightweight, portable</li>
+      <li>Disadvantages: slowest, low capacity, scratches destroy data</li>
+    </ul></div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn btn-g" onclick="goPrev()">← Back</button>
+    <button class="btn btn-p" onclick="goNext()">Next →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S6 — SOLID STATE STORAGE
+══════════════════════════════════════ -->
+<div class="section" data-section="5">
+  <div class="card">
+    <div class="sec-tag"><span class="sec-num">SECTION 06</span><h2>Solid State Storage — SSD, USB, SD Card</h2></div>
+
+    <div class="st-card st-ssd" style="margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <div class="st-icon" style="font-size:52px;margin-bottom:0;">⚡</div>
+        <div>
+          <div class="st-name" style="font-size:17px;">Solid State Storage</div>
+          <div class="st-eg">SSD · USB Flash Drive · SD Card</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="body">Solid state storage uses <strong>flash memory chips</strong> to store data electronically. There are no spinning discs, no read/write heads, no moving parts of any kind. Data is stored in <strong>memory cells</strong> that retain their state even without power.</p>
+
+    <div class="box bx-think">
+      <div class="box-hd">🤔 Why "Solid State"?</div>
+      <p>"Solid state" means there are no moving parts — everything is done electronically in solid semiconductor material. This is the same principle as RAM and ROM chips. The difference from RAM is that flash memory is <strong>non-volatile</strong> — it keeps its data without power.</p>
+    </div>
+
+    <!-- SPEED VISUALISATION -->
+    <p style="font-family:var(--font);font-size:10px;letter-spacing:2px;color:var(--violet);text-transform:uppercase;margin:16px 0 10px;">📊 Relative Read Speeds</p>
+    <div class="speed-race">
+      <div class="sp-row">
+        <div class="sp-label" style="color:var(--orange);">🖴 HDD</div>
+        <div class="sp-bar-bg"><div class="sp-bar-fill sp-hdd">~150 MB/s</div></div>
+      </div>
+      <div class="sp-row">
+        <div class="sp-label" style="color:var(--violet);">⚡ SSD</div>
+        <div class="sp-bar-bg"><div class="sp-bar-fill sp-ssd">~500–3500 MB/s</div></div>
+      </div>
+      <div class="sp-row">
+        <div class="sp-label" style="color:var(--teal);">💿 Optical</div>
+        <div class="sp-bar-bg"><div class="sp-bar-fill sp-opt">~30–50 MB/s</div></div>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:16px;">
+      <div style="background:rgba(74,222,128,.07);border:1px solid rgba(74,222,128,.25);border-radius:10px;padding:14px;">
+        <h4 style="font-family:var(--font);font-size:13px;color:var(--green);margin-bottom:8px;">✅ Advantages</h4>
+        <ul style="padding-left:16px;">
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Much faster than HDD</strong> — 5–20× quicker read/write speeds</li>
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Very durable</strong> — no moving parts means drop/shock resistant</li>
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Silent and runs cool</strong> — no mechanical movement</li>
+          <li style="font-size:13px;color:#b8b0d0;line-height:1.5;"><strong style="color:#fff;">Highly portable</strong> — USB sticks and SD cards are tiny and lightweight</li>
+        </ul>
+      </div>
+      <div style="background:rgba(251,113,133,.07);border:1px solid rgba(251,113,133,.25);border-radius:10px;padding:14px;">
+        <h4 style="font-family:var(--font);font-size:13px;color:var(--rose);margin-bottom:8px;">❌ Disadvantages</h4>
+        <ul style="padding-left:16px;">
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">More expensive per GB</strong> — costlier than HDD for same capacity</li>
+          <li style="font-size:13px;color:#b8b0d0;margin-bottom:5px;line-height:1.5;"><strong style="color:#fff;">Limited write cycles</strong> — flash memory cells degrade after many writes</li>
+          <li style="font-size:13px;color:#b8b0d0;line-height:1.5;"><strong style="color:#fff;">Lower maximum capacity</strong> — though this gap is closing rapidly</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="mcq-wrap">
+      <div class="q-label">✓ CHECK — Q5</div>
+      <div class="q-text">A graphic designer uses a laptop for professional video editing, carrying it to client meetings daily. Which storage type is most appropriate for their internal laptop drive, and what is the primary reason?</div>
+      <div class="opt" onclick="checkQ(this,false,'q5')"><span class="ol">A</span>HDD — because it offers more storage capacity for large video files at lower cost</div>
+      <div class="opt" onclick="checkQ(this,false,'q5')"><span class="ol">B</span>Optical — because Blu-ray discs are the most portable format for professional work</div>
+      <div class="opt" onclick="checkQ(this,true,'q5')"><span class="ol">C</span>SSD — because it is significantly faster (helping with video editing performance), more durable when carried around, and lighter in a portable device</div>
+      <div class="opt" onclick="checkQ(this,false,'q5')"><span class="ol">D</span>HDD — because it has moving parts that make it more resilient to the stresses of daily travel</div>
+      <div class="fb-msg fb-ok" id="q5-ok">✓ Correct. An SSD wins on all three relevant factors: speed (critical for 4K video editing — rendering and reading/writing large files constantly), durability (no moving parts means drop-resistant, important for a laptop that is carried daily), and weight (lighter). The higher cost per GB is an acceptable trade-off for a professional tool.</div>
+      <div class="fb-msg fb-no" id="q5-no">✗ The key factors for a portable professional device are speed, durability, and weight — all of which favour SSD. HDDs have moving parts that are vulnerable to shock and vibration when being carried (Option D is wrong — moving parts make it MORE fragile, not less). Optical storage cannot serve as an internal laptop drive. SSD's higher cost is a reasonable trade-off for professional use.</div>
+    </div>
+  </div>
+
+  <div class="lined-notes">
+    <div class="lined-tab">✏️ Book Notes</div>
+    <div class="lined-paper"><ul>
+      <li>SSD: flash memory chips, no moving parts</li>
+      <li>Advantages: fastest, very durable, silent, lightweight</li>
+      <li>Disadvantages: more expensive per GB than HDD</li>
+      <li>Best for: laptops, devices needing speed, portable storage</li>
+    </ul></div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn btn-g" onclick="goPrev()">← Back</button>
+    <button class="btn btn-p" onclick="goNext()">Next →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S7 — COMPARING THE SIX CHARACTERISTICS
+══════════════════════════════════════ -->
+<div class="section" data-section="6">
+  <div class="card">
+    <div class="sec-tag"><span class="sec-num">SECTION 07</span><h2>Comparing the Six Characteristics</h2></div>
+
+    <p class="body">The spec requires you to compare storage types across <strong>six characteristics</strong>. Learn the pattern — not every exact figure.</p>
+
+    <div style="margin:14px 0;">
+      <!-- CAPACITY -->
+      <div class="cmp-row-label">📦 Capacity — How Much Can It Store?</div>
+      <div class="compare-grid">
+        <div><div class="cmp-hdr cmp-mag">🖴 Magnetic</div><div class="cmp-cell winner">✅ WINNER — up to 20 TB+. Highest capacity for the price.</div></div>
+        <div><div class="cmp-hdr cmp-opt">💿 Optical</div><div class="cmp-cell loser">❌ LOWEST — CD 700MB, DVD 4.7GB, Blu-ray 50GB. Limited.</div></div>
+        <div><div class="cmp-hdr cmp-ssd">⚡ SSD</div><div class="cmp-cell">⚠️ Good — 256GB to 4TB common. Growing but costly per GB.</div></div>
+      </div>
+
+      <!-- SPEED -->
+      <div class="cmp-row-label">⚡ Speed — How Quickly Is Data Read/Written?</div>
+      <div class="compare-grid">
+        <div><div class="cmp-hdr cmp-mag">🖴 Magnetic</div><div class="cmp-cell">⚠️ Medium — ~100–200 MB/s. Limited by mechanical movement.</div></div>
+        <div><div class="cmp-hdr cmp-opt">💿 Optical</div><div class="cmp-cell loser">❌ SLOWEST — ~30–50 MB/s. Laser and spinning disc limit speed.</div></div>
+        <div><div class="cmp-hdr cmp-ssd">⚡ SSD</div><div class="cmp-cell winner">✅ WINNER — 500 MB/s to 7000+ MB/s (NVMe). No mechanical delay.</div></div>
+      </div>
+
+      <!-- PORTABILITY -->
+      <div class="cmp-row-label">🎒 Portability — How Easy to Carry?</div>
+      <div class="compare-grid">
+        <div><div class="cmp-hdr cmp-mag">🖴 Magnetic</div><div class="cmp-cell loser">❌ LOWEST — heavy, bulky, fragile when moved.</div></div>
+        <div><div class="cmp-hdr cmp-opt">💿 Optical</div><div class="cmp-cell">⚠️ Medium — thin and light but easily scratched without a case.</div></div>
+        <div><div class="cmp-hdr cmp-ssd">⚡ SSD</div><div class="cmp-cell winner">✅ WINNER — USB sticks/SD cards are tiny; SSDs are slim and light.</div></div>
+      </div>
+
+      <!-- DURABILITY -->
+      <div class="cmp-row-label">🛡️ Durability — How Well Does It Survive Knocks/Drops?</div>
+      <div class="compare-grid">
+        <div><div class="cmp-hdr cmp-mag">🖴 Magnetic</div><div class="cmp-cell loser">❌ LOWEST — spinning parts fail if dropped; susceptible to magnets.</div></div>
+        <div><div class="cmp-hdr cmp-opt">💿 Optical</div><div class="cmp-cell">⚠️ Medium — disc is durable but surface scratches destroy data.</div></div>
+        <div><div class="cmp-hdr cmp-ssd">⚡ SSD</div><div class="cmp-cell winner">✅ WINNER — no moving parts; highly shock and vibration resistant.</div></div>
+      </div>
+
+      <!-- RELIABILITY -->
+      <div class="cmp-row-label">🔁 Reliability — How Likely Is Data Loss Over Time?</div>
+      <div class="compare-grid">
+        <div><div class="cmp-hdr cmp-mag">🖴 Magnetic</div><div class="cmp-cell">⚠️ Medium — mechanical failure can happen; estimated 3–5 yr lifespan typical.</div></div>
+        <div><div class="cmp-hdr cmp-opt">💿 Optical</div><div class="cmp-cell">⚠️ Medium — can degrade over decades; scratches cause permanent data loss.</div></div>
+        <div><div class="cmp-hdr cmp-ssd">⚡ SSD</div><div class="cmp-cell winner">✅ WINNER — very reliable; limited write cycles but outlasts HDD in typical use.</div></div>
+      </div>
+
+      <!-- COST -->
+      <div class="cmp-row-label">💷 Cost — Cost Per GB of Storage</div>
+      <div class="compare-grid">
+        <div><div class="cmp-hdr cmp-mag">🖴 Magnetic</div><div class="cmp-cell winner">✅ WINNER — cheapest per GB. ~2–3p per GB at scale.</div></div>
+        <div><div class="cmp-hdr cmp-opt">💿 Optical</div><div class="cmp-cell winner">✅ JOINT WINNER (per disc) — pennies per disc for bulk manufacture.</div></div>
+        <div><div class="cmp-hdr cmp-ssd">⚡ SSD</div><div class="cmp-cell loser">❌ MOST EXPENSIVE per GB — typically 5–10× cost of HDD.</div></div>
+      </div>
+    </div>
+
+    <!-- CLASSIFY Q6 -->
+    <div style="margin-top:20px;">
+      <p style="font-family:var(--font);font-size:10px;letter-spacing:2px;color:var(--orange);text-transform:uppercase;margin-bottom:12px;">📋 Activity — Q6: Which Type Wins?</p>
+      <p style="font-size:14px;color:#b8b0d0;margin-bottom:14px;">For each characteristic below, select which storage type performs <strong>best</strong>.</p>
+
+      <div class="cc-grid" id="ccGrid">
+        <div class="cc-card" id="cc0">
+          <div class="cc-q">Which type has the <strong>fastest</strong> read/write speed?</div>
+          <div class="cc-btns">
+            <button class="cc-btn cc-mag" onclick="selCC(0,'mag',this)">🖴 Magnetic</button>
+            <button class="cc-btn cc-opt" onclick="selCC(0,'opt',this)">💿 Optical</button>
+            <button class="cc-btn cc-ssd" onclick="selCC(0,'ssd',this)">⚡ Solid State</button>
+          </div>
+          <div class="cc-verdict" id="ccv0"></div>
+        </div>
+        <div class="cc-card" id="cc1">
+          <div class="cc-q">Which type has the <strong>lowest cost per GB</strong>?</div>
+          <div class="cc-btns">
+            <button class="cc-btn cc-mag" onclick="selCC(1,'mag',this)">🖴 Magnetic</button>
+            <button class="cc-btn cc-opt" onclick="selCC(1,'opt',this)">💿 Optical</button>
+            <button class="cc-btn cc-ssd" onclick="selCC(1,'ssd',this)">⚡ Solid State</button>
+          </div>
+          <div class="cc-verdict" id="ccv1"></div>
+        </div>
+        <div class="cc-card" id="cc2">
+          <div class="cc-q">Which type is <strong>most durable</strong> (drop/shock resistant)?</div>
+          <div class="cc-btns">
+            <button class="cc-btn cc-mag" onclick="selCC(2,'mag',this)">🖴 Magnetic</button>
+            <button class="cc-btn cc-opt" onclick="selCC(2,'opt',this)">💿 Optical</button>
+            <button class="cc-btn cc-ssd" onclick="selCC(2,'ssd',this)">⚡ Solid State</button>
+          </div>
+          <div class="cc-verdict" id="ccv2"></div>
+        </div>
+        <div class="cc-card" id="cc3">
+          <div class="cc-q">Which type has the <strong>highest maximum capacity</strong>?</div>
+          <div class="cc-btns">
+            <button class="cc-btn cc-mag" onclick="selCC(3,'mag',this)">🖴 Magnetic</button>
+            <button class="cc-btn cc-opt" onclick="selCC(3,'opt',this)">💿 Optical</button>
+            <button class="cc-btn cc-ssd" onclick="selCC(3,'ssd',this)">⚡ Solid State</button>
+          </div>
+          <div class="cc-verdict" id="ccv3"></div>
+        </div>
+      </div>
+      <button class="btn-dd" style="margin-top:8px;" onclick="checkCC()">Check Answers</button>
+      <div class="fb-msg fb-ok" id="ccOk" style="display:none;margin-top:10px;">✓ All correct! You can identify which storage type leads for each characteristic.</div>
+      <div class="fb-msg fb-no" id="ccNo" style="display:none;margin-top:10px;">✗ Some wrong — see feedback on each card. Review the comparison table above.</div>
+    </div>
+  </div>
+
+  <div class="lined-notes">
+    <div class="lined-tab">✏️ Book Notes</div>
+    <div class="lined-paper"><ul>
+      <li>Speed: SSD &gt; HDD &gt; Optical</li>
+      <li>Capacity: HDD &gt; SSD &gt; Optical</li>
+      <li>Durability: SSD &gt; Optical &gt; HDD</li>
+      <li>Cost per GB: HDD / Optical cheapest · SSD most expensive</li>
+    </ul></div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn btn-g" onclick="goPrev()">← Back</button>
+    <button class="btn btn-p" onclick="goNext()">Next →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S8 — CHOOSING THE RIGHT STORAGE
+══════════════════════════════════════ -->
+<div class="section" data-section="7">
+  <div class="card">
+    <div class="sec-tag"><span class="sec-num">SECTION 08</span><h2>Choosing the Right Storage — Scenarios</h2></div>
+
+    <p class="body">Exam questions will ask you to <strong>recommend</strong> a storage type for a specific context and <strong>justify</strong> your choice using the characteristics. Always link the storage properties to the specific requirements of the scenario.</p>
+
+    <div class="box bx-key">
+      <div class="box-hd">📝 How to Structure Your Answer</div>
+      <ul>
+        <li><strong>Identify</strong> the most important factors for the context (speed? cost? portability?)</li>
+        <li><strong>Select</strong> the storage type that best meets those factors</li>
+        <li><strong>Justify</strong> using specific characteristics: "SSD is most suitable because it has faster read speeds, which means…"</li>
+        <li><strong>Trade-off</strong> (for longer answers): acknowledge the disadvantage and explain why it is acceptable</li>
+      </ul>
+    </div>
+
+    <div class="stab-row">
+      <button class="stab active" onclick="showS('sc1',this)">Scenario A</button>
+      <button class="stab" onclick="showS('sc2',this)">Scenario B</button>
+      <button class="stab" onclick="showS('sc3',this)">Scenario C</button>
+    </div>
+
+    <!-- SCENARIO A -->
+    <div id="sc1" class="spane active">
+      <div class="scenario-box">
+        <div class="scenario-lbl">🏥 Scenario A — Hospital Patient Records System</div>
+        <div class="scenario-txt">A hospital stores 80 TB of patient records. Records must be accessed quickly by doctors during appointments. Security and reliability are critical. Cost is a secondary concern. Records are not moved between locations.</div>
+      </div>
+      <div class="mcq-wrap">
+        <div class="q-label">✓ SCENARIO A — Q7</div>
+        <div class="q-text">Which storage solution is most appropriate for this hospital system?</div>
+        <div class="opt" onclick="checkQ(this,false,'q7')"><span class="ol">A</span>Optical (Blu-ray) — extremely reliable and the data can be written once and never altered, reducing risk of corruption</div>
+        <div class="opt" onclick="checkQ(this,false,'q7')"><span class="ol">B</span>Magnetic (HDD) — it has the highest capacity per unit cost, making 80 TB affordable to store</div>
+        <div class="opt" onclick="checkQ(this,true,'q7')"><span class="ol">C</span>Solid state (SSD) — fast access speeds ensure doctors retrieve records quickly; more reliable than HDD (no moving parts); justified by medical critical use even at higher cost</div>
+        <div class="opt" onclick="checkQ(this,false,'q7')"><span class="ol">D</span>Magnetic (HDD) — spinning platters allow the hospital to access many records simultaneously through parallel read heads</div>
+        <div class="fb-msg fb-ok" id="q7-ok">✓ Correct. Speed and reliability are the priority here. SSDs are significantly faster than HDDs, meaning doctors can retrieve patient records without delay — critical in a medical setting. The lack of moving parts makes SSDs more reliable than HDDs. The higher cost per GB is justified when weighed against patient safety and uptime requirements. Option B ignores the speed requirement; Option D is technically incorrect about parallel read heads.</div>
+        <div class="fb-msg fb-no" id="q7-no">✗ In a hospital where speed and reliability are critical, SSD is the correct choice: fast access for real-time use, more reliable than HDD (no moving parts to fail), and stationary so portability is not needed. HDD would work but is slower and less reliable. Optical can't practically store 80 TB and is far too slow for real-time record retrieval.</div>
+      </div>
+    </div>
+
+    <!-- SCENARIO B -->
+    <div id="sc2" class="spane">
+      <div class="scenario-box">
+        <div class="scenario-lbl">🎮 Scenario B — Home User Backup Drive</div>
+        <div class="scenario-txt">A home user wants to back up 3 TB of family photos, videos, and documents. The drive will stay permanently connected to their desktop PC. They have a tight budget and access speed is not critical — backups happen automatically overnight.</div>
+      </div>
+      <div class="mcq-wrap">
+        <div class="q-label">✓ SCENARIO B — Q8</div>
+        <div class="q-text">Which storage type is most suitable for this home backup drive, and why?</div>
+        <div class="opt" onclick="checkQ(this,true,'q8')"><span class="ol">A</span>Magnetic HDD — 3 TB at low cost, access speed is not important for an overnight backup, and the drive is stationary so fragility is less of a concern</div>
+        <div class="opt" onclick="checkQ(this,false,'q8')"><span class="ol">B</span>SSD — SSDs are more reliable than HDDs so backup data is safer on flash memory</div>
+        <div class="opt" onclick="checkQ(this,false,'q8')"><span class="ol">C</span>Optical (Blu-ray) — data can be written once to a disc, protecting it from accidental deletion</div>
+        <div class="opt" onclick="checkQ(this,false,'q8')"><span class="ol">D</span>SSD — because it will need to write data every night, and SSDs handle frequent writes better than HDDs</div>
+        <div class="fb-msg fb-ok" id="q8-ok">✓ Correct. The key factors here are cost and capacity — the user has a tight budget and needs 3 TB. HDDs provide the highest capacity at the lowest cost per GB. Speed is explicitly not required (overnight backup). The drive is stationary (plugged into a desktop), so HDD's poor durability when transported is irrelevant. Option B and D misunderstand the trade-offs — while SSDs are reliable, the cost premium is not justified here. Option C: storing 3 TB on Blu-ray discs would require hundreds of discs and be impractical.</div>
+        <div class="fb-msg fb-no" id="q8-no">✗ For a budget home backup drive that stays on a desk and doesn't need speed, HDD wins: cheapest per GB (best for tight budget), can easily hold 3 TB, and stationary use removes the main durability risk. An SSD would cost significantly more for 3 TB with no benefit — the user doesn't need the speed advantage. Storing 3 TB on Blu-ray would require 60–120 discs and is completely impractical. Option D is factually wrong — HDDs actually handle frequent write cycles better than SSDs (which have limited write endurance).</div>
+      </div>
+    </div>
+
+    <!-- SCENARIO C -->
+    <div id="sc3" class="spane">
+      <div class="scenario-box">
+        <div class="scenario-lbl">📸 Scenario C — Wildlife Photographer</div>
+        <div class="scenario-txt">A wildlife photographer works in remote locations, often in extreme weather. They need to store up to 256 GB of RAW image files per day. Their camera uses removable storage. They carry all equipment in a backpack across rough terrain.</div>
+      </div>
+      <div class="mcq-wrap">
+        <div class="q-label">✓ SCENARIO C — Q9</div>
+        <div class="q-text">Which storage type is most suitable for the photographer's camera storage?</div>
+        <div class="opt" onclick="checkQ(this,false,'q9')"><span class="ol">A</span>Magnetic HDD — high capacity and low cost means they can store many days of photos cheaply</div>
+        <div class="opt" onclick="checkQ(this,false,'q9')"><span class="ol">B</span>Optical (Blu-ray) — water-resistant and easy to swap between camera and laptop in the field</div>
+        <div class="opt" onclick="checkQ(this,true,'q9')"><span class="ol">C</span>Solid state (SD card / SSD) — durable (no moving parts survive rough terrain and weather), portable (small and light), and fast enough for rapid RAW file capture</div>
+        <div class="opt" onclick="checkQ(this,false,'q9')"><span class="ol">D</span>Magnetic HDD — external hard drives can be used as removable camera storage with an adapter</div>
+        <div class="fb-msg fb-ok" id="q9-ok">✓ Correct. The dominant factors here are durability and portability. SD cards and compact SSDs have no moving parts — they survive drops, vibration, rain, dust, and rough terrain where an HDD would almost certainly fail. They are also tiny and lightweight (critical when hiking with a backpack), and fast enough to handle continuous RAW image writing. The higher cost per GB is justified for a professional tool used in harsh environments.</div>
+        <div class="fb-msg fb-no" id="q9-no">✗ For a photographer in rough terrain, durability and portability are critical. SD cards (solid state) have no moving parts — they survive drops, vibration, and weather that would destroy an HDD. HDDs are fragile when moving (moving parts fail on impact) and far too bulky for camera use. Optical discs cannot be used in cameras and are fragile. Solid state is the clear answer whenever portability and durability in demanding conditions are required.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lined-notes">
+    <div class="lined-tab">✏️ Book Notes</div>
+    <div class="lined-paper"><ul>
+      <li>Speed critical + stationary → SSD (e.g. database, hospital, gaming PC)</li>
+      <li>Max capacity, low cost, stationary → HDD (e.g. home backup, server archive)</li>
+      <li>Portability + durability in field → Solid state (e.g. laptop, camera, USB)</li>
+      <li>Cheap physical distribution of fixed content → Optical (e.g. music CD, game disc)</li>
+    </ul></div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn btn-g" onclick="goPrev()">← Back</button>
+    <button class="btn btn-p" onclick="goNext()">Next →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S9 — RECAP
+══════════════════════════════════════ -->
+<div class="section" data-section="8">
+  <div class="card">
+    <div class="sec-tag"><span class="sec-num">SECTION 09</span><h2>Full Recap — Everything at a Glance</h2></div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Characteristic</th>
+          <th style="color:var(--orange);">🖴 Magnetic (HDD)</th>
+          <th style="color:var(--teal);">💿 Optical</th>
+          <th style="color:var(--violet);">⚡ Solid State (SSD)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Capacity</strong></td><td class="good">Very high (1–20+ TB)</td><td class="bad">Low (CD 700MB–Blu-ray 50GB)</td><td class="ok">High (256GB–4TB typical)</td></tr>
+        <tr><td><strong>Speed</strong></td><td class="ok">Medium (~150 MB/s)</td><td class="bad">Slow (~30–50 MB/s)</td><td class="good">Very fast (500–7000 MB/s)</td></tr>
+        <tr><td><strong>Portability</strong></td><td class="bad">Poor (heavy, fragile)</td><td class="ok">Medium (light but fragile)</td><td class="good">Excellent (tiny, robust)</td></tr>
+        <tr><td><strong>Durability</strong></td><td class="bad">Poor (moving parts fail)</td><td class="ok">Medium (scratches destroy data)</td><td class="good">Excellent (no moving parts)</td></tr>
+        <tr><td><strong>Reliability</strong></td><td class="ok">Medium (mechanical failure)</td><td class="ok">Medium (degrades over time)</td><td class="good">High (no mechanical failure)</td></tr>
+        <tr><td><strong>Cost per GB</strong></td><td class="good">Low (~2–3p/GB)</td><td class="good">Very low (per disc)</td><td class="bad">High (5–10× HDD cost)</td></tr>
+        <tr><td><strong>Moving parts?</strong></td><td>Yes — spinning platters</td><td>Yes — spinning disc + laser</td><td>No — purely electronic</td></tr>
+      </tbody>
+    </table>
+
+    <div class="box bx-connect" style="margin-top:16px;">
+      <div class="box-hd">🔗 The Big Idea</div>
+      <p>Every storage decision is a <strong>trade-off</strong>. The fastest storage (SSD) is the most expensive. The cheapest (HDD) is the slowest and most fragile. The most portable (USB stick) has the smallest capacity. Understanding these trade-offs — and linking them to the specific needs of a scenario — is what earns marks in the exam.</p>
+    </div>
+  </div>
+  <div class="nav-row">
+    <button class="btn btn-g" onclick="goPrev()">← Back</button>
+    <button class="btn btn-p" onclick="goNext()">Final Assessment →</button>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     S10 — FINAL ASSESSMENT
+══════════════════════════════════════ -->
+<div class="section" data-section="9">
+  <div class="card">
+    <div class="sec-tag"><span class="sec-num">SECTION 10</span><h2>Final Assessment</h2></div>
+    <p style="font-family:var(--font);font-size:12px;color:var(--muted);letter-spacing:1px;margin-bottom:18px;">Complete all five questions to unlock your badge.</p>
+
+    <!-- FQ10 -->
+    <div class="mcq-wrap" style="margin-bottom:12px;">
+      <div class="q-label">FINAL — Q10</div>
+      <div class="q-text">State two reasons why computers need secondary storage in addition to RAM.</div>
+      <div class="opt" onclick="checkQ(this,false,'fq10')"><span class="ol">A</span>RAM is too fast for most tasks; secondary storage slows down the system to a usable speed</div>
+      <div class="opt" onclick="checkQ(this,true,'fq10')"><span class="ol">B</span>RAM is volatile (data is lost when power is removed) and has limited capacity; secondary storage is non-volatile and can hold far more data at lower cost</div>
+      <div class="opt" onclick="checkQ(this,false,'fq10')"><span class="ol">C</span>The CPU can only directly read from secondary storage, not from RAM</div>
+      <div class="opt" onclick="checkQ(this,false,'fq10')"><span class="ol">D</span>RAM stores the operating system permanently; secondary storage stores temporary files only</div>
+      <div class="fb-msg fb-ok" id="fq10-ok">✓ Correct. The two core reasons: (1) RAM is volatile — it loses all data on power loss, so non-volatile secondary storage is essential to keep files permanently; (2) RAM has limited capacity and is expensive — secondary storage provides far more storage at much lower cost per GB. The OS, applications, and user data all require this permanent, high-capacity storage.</div>
+      <div class="fb-msg fb-no" id="fq10-no">✗ The two reasons are: volatility (RAM loses data when power is off — you need non-volatile storage to keep files permanently) and capacity/cost (RAM is small and expensive; secondary storage holds far more data far more cheaply). Option A is wrong — speed is not the reason. Option C is wrong — the CPU reads directly from RAM. Option D is backwards — the OS is stored on secondary storage and loaded into RAM.</div>
+    </div>
+
+    <!-- FQ11 -->
+    <div class="mcq-wrap" style="margin-bottom:12px;">
+      <div class="q-label">FINAL — Q11</div>
+      <div class="q-text">Which characteristic explains why a solid state drive is more suitable than a magnetic hard disk drive for use inside a laptop that is frequently carried in a bag?</div>
+      <div class="opt" onclick="checkQ(this,false,'fq11')"><span class="ol">A</span>Capacity — SSDs hold more data than HDDs, making laptops more useful on the move</div>
+      <div class="opt" onclick="checkQ(this,true,'fq11')"><span class="ol">B</span>Durability — SSDs have no moving parts, making them resistant to damage from the vibration and impact of being carried, whereas HDD platters can be damaged by movement</div>
+      <div class="opt" onclick="checkQ(this,false,'fq11')"><span class="ol">C</span>Cost — SSDs are cheaper than HDDs, making them more affordable for laptop manufacturers</div>
+      <div class="opt" onclick="checkQ(this,false,'fq11')"><span class="ol">D</span>Reliability — SSDs last longer than HDDs in all circumstances, regardless of how they are used</div>
+      <div class="fb-msg fb-ok" id="fq11-ok">✓ Correct. The key characteristic here is durability. HDDs have spinning platters and a delicate read/write head that can be damaged or cause data corruption if the drive is moved, bumped, or dropped while operating. SSDs have no moving parts — they are fundamentally more resistant to the physical stresses of being carried in a bag. Speed is a bonus, but durability is the direct answer to the "frequently carried" context.</div>
+      <div class="fb-msg fb-no" id="fq11-no">✗ The "frequently carried" context directly points to durability. HDDs have spinning platters that are damaged by movement and impact. SSDs have no moving parts and can withstand being carried without data loss. Option A is wrong — HDDs can actually have higher capacity. Option C is wrong — SSDs are more expensive than HDDs. Option D is overstated — SSDs are not always more reliable in every circumstance, but they are specifically better at surviving physical movement.</div>
+    </div>
+
+    <!-- FQ12 -->
+    <div class="mcq-wrap" style="margin-bottom:12px;">
+      <div class="q-label">FINAL — Q12</div>
+      <div class="q-text">A streaming service stores 500 TB of 4K films on their servers. The films are accessed by millions of users simultaneously at all hours. Which storage type is most appropriate, justified by two characteristics?</div>
+      <div class="opt" onclick="checkQ(this,false,'fq12')"><span class="ol">A</span>Optical (Blu-ray) — Blu-ray was designed for 4K film content and provides the highest quality playback at data centre scale</div>
+      <div class="opt" onclick="checkQ(this,false,'fq12')"><span class="ol">B</span>Magnetic (HDD) — HDDs provide the highest capacity at lowest cost, and speed is not important for streaming services</div>
+      <div class="opt" onclick="checkQ(this,true,'fq12')"><span class="ol">C</span>A combination of HDDs (for maximum capacity at low cost) with SSDs for the most frequently accessed content (for the fast read speeds required by simultaneous users) — justifying each by the characteristic it addresses</div>
+      <div class="opt" onclick="checkQ(this,false,'fq12')"><span class="ol">D</span>Solid state (SSD) — SSDs are most reliable and should always be used when data is commercially important</div>
+      <div class="fb-msg fb-ok" id="fq12-ok">✓ Correct. This is a nuanced real-world answer that many streaming services actually use. 500 TB of content requires HDD-level cost efficiency and capacity. But simultaneously serving millions of users requires the fast read speeds only SSD can provide. A tiered architecture — SSDs for hot/popular content, HDDs for the cold archive — addresses both constraints. This shows sophisticated application of the characteristics. Option B is wrong to dismiss speed — millions of simultaneous streams absolutely require fast storage.</div>
+      <div class="fb-msg fb-no" id="fq12-no">✗ Option C is correct and reflects real practice. 500 TB makes pure SSD prohibitively expensive (SSDs cost far more per GB). But millions of simultaneous streams require fast read speeds that HDD alone can't provide efficiently. The best answer recognises both constraints and proposes a solution that uses each storage type for what it does best. Option B wrongly dismisses speed as unimportant — simultaneous streaming absolutely requires it. Option D wrongly claims SSDs should always be used for commercial data.</div>
+    </div>
+
+    <!-- FQ13 -->
+    <div class="mcq-wrap" style="margin-bottom:12px;">
+      <div class="q-label">FINAL — Q13</div>
+      <div class="q-text">Which row of the table correctly describes all three storage types across capacity and speed?</div>
+      <div class="opt" onclick="checkQ(this,false,'fq13')"><span class="ol">A</span>Magnetic: high capacity, fastest speed · Optical: medium capacity, medium speed · SSD: low capacity, slowest speed</div>
+      <div class="opt" onclick="checkQ(this,false,'fq13')"><span class="ol">B</span>Magnetic: medium capacity, medium speed · Optical: highest capacity, slow speed · SSD: low capacity, fastest speed</div>
+      <div class="opt" onclick="checkQ(this,true,'fq13')"><span class="ol">C</span>Magnetic: very high capacity, medium speed · Optical: lowest capacity, slowest speed · SSD: high capacity, fastest speed</div>
+      <div class="opt" onclick="checkQ(this,false,'fq13')"><span class="ol">D</span>Magnetic: very high capacity, fastest speed · Optical: medium capacity, medium speed · SSD: low capacity, slow speed</div>
+      <div class="fb-msg fb-ok" id="fq13-ok">✓ Correct. Capacity order: Magnetic (biggest) &gt; SSD &gt; Optical (smallest). Speed order: SSD (fastest, by far) &gt; Magnetic (medium, mechanical) &gt; Optical (slowest). These two rankings together rule out Options A, B, and D immediately.</div>
+      <div class="fb-msg fb-no" id="fq13-no">✗ Remember: for capacity — HDD can store the most (20+ TB), followed by SSD, with optical (max ~50GB on Blu-ray) the least. For speed — SSD is by far the fastest (no moving parts), HDD is medium (limited by mechanical movement), and optical is the slowest. Option C is the only row that correctly reflects both rankings.</div>
+    </div>
+
+    <!-- FQ14 -->
+    <div class="mcq-wrap" style="margin-bottom:20px;">
+      <div class="q-label">FINAL — Q14</div>
+      <div class="q-text">Explain why optical storage has the lowest read speed of the three storage types. [2 marks]</div>
+      <div class="opt" onclick="checkQ(this,false,'fq14')"><span class="ol">A</span>Optical discs are made of plastic which absorbs laser energy, slowing down data reading</div>
+      <div class="opt" onclick="checkQ(this,false,'fq14')"><span class="ol">B</span>The laser used in optical drives can only read data in one direction, requiring multiple passes over the disc</div>
+      <div class="opt" onclick="checkQ(this,true,'fq14')"><span class="ol">C</span>Optical drives have a physically spinning disc and a laser mechanism that must move to the correct track — both of these mechanical processes introduce latency that fundamentally limits speed compared to electronic (SSD) or faster magnetic (HDD) storage</div>
+      <div class="opt" onclick="checkQ(this,false,'fq14')"><span class="ol">D</span>Optical discs store less data than other types, so the read speed is proportionally lower</div>
+      <div class="fb-msg fb-ok" id="fq14-ok">✓ Correct — and this is a 2-mark style answer. The two reasons: (1) the disc must spin mechanically to bring the correct data under the laser — spinning speed limits how quickly sequential data can be read; (2) the laser read head must physically move (seek) across the disc to find data — this mechanical seek time adds latency. Both are consequences of having mechanical moving parts, just as HDDs suffer from similar (though less severe) limitations.</div>
+      <div class="fb-msg fb-no" id="fq14-no">✗ Optical drives are slow because of their mechanical components: (1) the disc must spin and the laser must be in the right position before data can be read — this physical movement takes time; (2) the laser head must seek across the disc surface, creating seek latency. Neither the material of the disc nor the direction of reading is the cause. Small capacity doesn't cause slow speed — the two characteristics are independent.</div>
+    </div>
+  </div>
+
+  <!-- BADGE -->
+  <div class="badge-section">
+    <div class="badge-prog-txt" id="badgeProg">0 / 14 questions answered</div>
+    <div class="badge-bar-outer"><div class="badge-bar-inner" id="badgeBar"></div></div>
+    <div id="badgeWrapper" class="badge-locked">
+      <p style="font-family:var(--font);font-size:12px;color:var(--muted);margin-bottom:16px;">Answer all questions to unlock your badge</p>
+      <input class="name-input" id="studentName" type="text" placeholder="Enter your name" oninput="updateBadgeName()">
+      <div class="badge-visual">
+        <div class="badge-icon">🗄️</div>
+        <div class="badge-hdr">GCSE Computer Science</div>
+        <div class="badge-topic">Secondary Storage</div>
+        <div class="badge-spec">1.2.2</div>
+        <div class="badge-score-disp" id="bScore">— / 14</div>
+        <div class="badge-name-disp" id="bName">—</div>
+        <div class="badge-ribbon">COMPLETED</div>
+      </div>
+      <p class="snip-hint">💡 Use Snipping Tool (Windows) or Screenshot (Mac) to save your badge</p>
+    </div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn btn-g" onclick="goPrev()">← Back</button>
+    <button class="btn btn-p" id="finishBtn" disabled style="opacity:.3;">Finish ✓</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+const TOTAL_SEC = 10;
+const TOTAL_Q   = 14; // Q1–Q9 + CC(Q6) + FQ10–FQ14 = 14
+// Tracked: q1,q3,q4,q5,q7,q8,q9,fq10,fq11,fq12,fq13,fq14 = 12 MCQ
+//          dd (Q2 drag-drop) = 1
+//          cc (Q6 classify) = 1
+// Total = 14
+const answered = new Set();
+const correct  = new Set();
+let current = 0;
+
+// ─── NAV ─────────────────────────────
+function buildDots(){
+  const nav=document.getElementById('progressNav');
+  for(let i=0;i<TOTAL_SEC;i++){
+    const b=document.createElement('button');
+    b.className='dot'+(i===0?' active':'');
+    b.onclick=()=>goTo(i);
+    nav.appendChild(b);
+  }
+}
+function goTo(i){
+  document.querySelectorAll('.section')[current].classList.remove('active');
+  current=i;
+  document.querySelectorAll('.section')[current].classList.add('active');
+  updateDots();
+  window.scrollTo(0,0);
+}
+function goNext(){ if(current<TOTAL_SEC-1) goTo(current+1); }
+function goPrev(){ if(current>0) goTo(current-1); }
+function updateDots(){
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.className='dot';
+    if(i===current) d.classList.add('active');
+    else if(i<current) d.classList.add('completed');
+  });
+}
+
+// ─── MCQ ─────────────────────────────
+function checkQ(el,isOk,qid){
+  if(answered.has(qid)) return;
+  answered.add(qid);
+  el.parentElement.querySelectorAll('.opt').forEach(o=>o.onclick=null);
+  if(isOk){ el.classList.add('correct'); document.getElementById(qid+'-ok').style.display='block'; correct.add(qid); }
+  else     { el.classList.add('wrong');   document.getElementById(qid+'-no').style.display='block'; }
+  updateBadge();
+}
+
+// ─── DRAG-DROP ────────────────────────
+let ddDone=false, ddDragged=null;
+function initDD(){
+  document.querySelectorAll('.dd-card').forEach(c=>{
+    c.addEventListener('dragstart',()=>{ ddDragged=c; setTimeout(()=>c.classList.add('dragging'),0); });
+    c.addEventListener('dragend',()=>c.classList.remove('dragging'));
+  });
+  ['dz-mag','dz-opt','dz-ssd'].forEach(id=>{
+    const z=document.getElementById(id);
+    z.addEventListener('dragover',e=>{ e.preventDefault(); z.classList.add('over'); });
+    z.addEventListener('dragleave',()=>z.classList.remove('over'));
+    z.addEventListener('drop',e=>{ e.preventDefault(); z.classList.remove('over'); if(ddDragged) z.appendChild(ddDragged); });
+  });
+  const pool=document.getElementById('ddPool');
+  pool.addEventListener('dragover',e=>{ e.preventDefault(); });
+  pool.addEventListener('drop',e=>{ e.preventDefault(); if(ddDragged) pool.appendChild(ddDragged); });
+}
+function checkDD(){
+  if(ddDone) return;
+  let allOk=true;
+  ['dz-mag','dz-opt','dz-ssd'].forEach(id=>{
+    const zone=document.getElementById(id);
+    const expected=zone.dataset.zone; // 'mag','opt','ssd'
+    zone.querySelectorAll('.dd-card').forEach(c=>{
+      c.classList.remove('ok','no');
+      if(c.dataset.col===expected) c.classList.add('ok');
+      else { c.classList.add('no'); allOk=false; }
+    });
+  });
+  document.querySelectorAll('#ddPool .dd-card').forEach(c=>{ c.classList.add('no'); allOk=false; });
+  answered.add('dd');
+  if(allOk){ document.getElementById('ddOk').style.display='block'; correct.add('dd'); ddDone=true; }
+  else       document.getElementById('ddNo').style.display='block';
+  updateBadge();
+}
+function resetDD(){
+  if(ddDone) return;
+  const pool=document.getElementById('ddPool');
+  document.querySelectorAll('.dd-card').forEach(c=>{ c.classList.remove('ok','no','dragging'); pool.appendChild(c); });
+  document.getElementById('ddOk').style.display='none';
+  document.getElementById('ddNo').style.display='none';
+}
+
+// ─── CLASSIFY CC ─────────────────────
+const ccAnswers=['ssd','mag','ssd','mag'];
+const ccSels=[null,null,null,null];
+let ccDone=false;
+const ccFB={
+  0:{ ok:'✓ SSD — no moving parts means no mechanical delay; purely electronic access is far faster than any spinning medium.',no:'✗ Solid State (SSD) is fastest. HDD is medium (mechanical). Optical is slowest (spinning disc + laser seek).' },
+  1:{ ok:'✓ Magnetic HDD — cheapest per GB. SSDs cost significantly more per GB. Optical is cheap per disc but impractical at scale.',no:'✗ Magnetic HDD has the lowest cost per GB. SSDs cost significantly more. Optical discs are cheap per disc but low-capacity.' },
+  2:{ ok:'✓ SSD — no moving parts makes it highly resistant to drops and vibration. HDDs have fragile spinning platters.',no:'✗ SSD is most durable — no moving parts to break. HDD is most fragile (spinning parts fail on impact). Optical scratches easily.' },
+  3:{ ok:'✓ Magnetic HDD — up to 20+ TB per drive at relatively low cost. SSDs are catching up but remain smaller at the same price point.',no:'✗ Magnetic HDD has the highest maximum capacity. Even large SSDs cost significantly more for equivalent TB. Optical tops out at 50GB (Blu-ray).' }
+};
+function selCC(idx,val,btn){
+  if(ccDone) return;
+  ccSels[idx]=val;
+  document.getElementById('cc'+idx).querySelectorAll('.cc-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+function checkCC(){
+  if(ccDone) return;
+  if(ccSels.some(s=>s===null)){ alert('Please answer all four questions first.'); return; }
+  ccDone=true;
+  let allOk=true;
+  for(let i=0;i<4;i++){
+    const card=document.getElementById('cc'+i);
+    const vd=document.getElementById('ccv'+i);
+    const isOk=ccSels[i]===ccAnswers[i];
+    vd.style.display='block';
+    if(isOk){ card.classList.add('cc-ok'); vd.style.color='var(--green)'; vd.style.background='rgba(74,222,128,.08)'; vd.style.border='1px solid rgba(74,222,128,.2)'; vd.textContent=ccFB[i].ok; }
+    else { card.classList.add('cc-no'); vd.style.color='#fca5b4'; vd.style.background='rgba(251,113,133,.08)'; vd.style.border='1px solid rgba(251,113,133,.2)'; allOk=false; vd.textContent=ccFB[i].no; }
+  }
+  answered.add('cc');
+  if(allOk){ document.getElementById('ccOk').style.display='block'; correct.add('cc'); }
+  else       document.getElementById('ccNo').style.display='block';
+  updateBadge();
+}
+
+// ─── SCENARIO TABS ────────────────────
+function showS(id,btn){
+  document.querySelectorAll('.spane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── BADGE ───────────────────────────
+function updateBadge(){
+  const a=answered.size, c=correct.size;
+  document.getElementById('badgeProg').textContent=`${a} / ${TOTAL_Q} questions answered`;
+  document.getElementById('badgeBar').style.width=`${(a/TOTAL_Q)*100}%`;
+  document.getElementById('bScore').textContent=`${c} / ${TOTAL_Q} correct`;
+  if(a>=TOTAL_Q){
+    document.getElementById('badgeWrapper').classList.remove('badge-locked');
+    document.getElementById('badgeWrapper').classList.add('badge-unlocked');
+    document.getElementById('finishBtn').disabled=false;
+    document.getElementById('finishBtn').style.opacity='1';
+  }
+}
+function updateBadgeName(){
+  document.getElementById('bName').textContent=document.getElementById('studentName').value||'—';
+}
+
+// ─── INIT ─────────────────────────────
+buildDots();
+initDD();
+updateBadge();
+</script>
+</body>
+</html>
